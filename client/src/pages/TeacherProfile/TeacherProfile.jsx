@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { AppContext } from "../../context/AppContext";
-import Loader from "../../Components/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 import Sidebar from "./Components/Sidebar";
 import ProfileTab from "./Components/ProfileTab";
 import SalaryTab from "./Components/SalaryTab";
