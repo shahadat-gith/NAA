@@ -2,12 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { AppContext } from "../../context/AppContext";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../Components/Loader/Loader";
 import Sidebar from "./Components/Sidebar";
-import ProfileTab from "./components/ProfileTab";
-import SalaryTab from "./components/SalaryTab";
-import BankTab from "./components/BankTab";
-import AttendanceTab from "./components/AttendanceTab";
+import ProfileTab from "./Components/ProfileTab";
+import SalaryTab from "./Components/SalaryTab";
+import BankTab from "./Components/BankTab";
+import AttendanceTab from "./Components/AttendanceTab";
 import { fetchSalaryTransactions, fetchAttendanceHistory, handleMarkAttendance, handleAcknowledgeSalary, handleBankDetailsUpdate } from "./api";
 import "./TeacherProfile.css";
 
