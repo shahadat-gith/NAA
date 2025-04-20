@@ -15,7 +15,7 @@ import router from "./routes/StudentRoute.js";
 const app = express();
 const port = process.env.PORT || 5000;
 
-const allowedOrigins = [process.env.CLIENT_URL, process.env.ADMIN_URL, https://naa-client.onrender.com];
+const allowedOrigins = [process.env.CLIENT_URL, process.env.ADMIN_URL, "https://naa-client.onrender.com"];
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 app.use(cookieParser());
