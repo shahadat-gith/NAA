@@ -1,0 +1,464 @@
+/* Admissions.css */
+/* Main Container */
+.admissions-container {
+  margin: 50px auto; /* Updated to match other files */
+  padding: 2rem;
+  width: 90%;
+  max-width: 1200px;
+  background: #1e2a44;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Header */
+.admissions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.section-title h1 {
+  color: #e2e8f0;
+  font-size: 2rem;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #3b82f6;
+}
+
+.admissions-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Search and Filter */
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #2d3b5e;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  background-color: #2d3b5e;
+  color: #e2e8f0;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.status-filter {
+  padding: 0.75rem 1rem;
+  border: 1px solid #2d3b5e;
+  border-radius: 4px;
+  background-color: #2d3b5e;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #e2e8f0;
+}
+
+.status-filter:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Table */
+.table-container {
+  overflow-x: auto;
+  background-color: #1e2a44;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.admissions-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.admissions-table th {
+  background-color: #2d3b5e;
+  color: #e2e8f0;
+  text-align: center;
+  padding: 1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #2d3b5e;
+}
+
+.admissions-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #2d3b5e;
+  color: #94a3b8;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.admissions-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admissions-table tr:hover {
+  background-color: #2d3b5e;
+}
+
+.admission-name {
+  font-weight: 500;
+  color: #3b82f6;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.admission-name:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.pending {
+  background-color: #7e2a0e;
+  color: #ffedd5;
+}
+
+.status-badge.approved {
+  background-color: #10b34e;
+  color: #dcfce7;
+}
+
+.action-buttons-admission {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.accept-btn {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.accept-btn:hover {
+  background-color: #2563eb;
+}
+
+.reject-btn {
+  background-color: #ffb700;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #e69500;
+}
+
+.delete-btn {
+  background-color: #e94560;
+  color: white;
+}
+
+.delete-btn:hover {
+  background-color: #c7374f;
+}
+
+.action-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+  background-color: #333;
+}
+
+.admission-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Modal */
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-modal {
+  background-color: #1e2a44;
+  border-radius: 8px;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.delete-modal h3 {
+  margin-top: 0;
+  color: #e2e8f0;
+}
+
+.warning-text {
+  color: #e94560;
+  font-weight: 500;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-btn {
+  background-color: #2d3b5e;
+  color: #e2e8f0;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.delete-confirm-btn {
+  background-color: #e94560;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.delete-confirm-btn:hover {
+  background-color: #c7374f;
+}
+
+/* No Admissions & Loading */
+.no-admissions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem;
+  background-color: #1e2a44;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.no-admissions p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.admissions-loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #2d3b5e;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admissions-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .section-title h1 {
+    font-size: 1.8rem;
+  }
+
+  .search-input {
+    width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admissions-container {
+    padding: 1rem;
+  }
+
+  .admissions-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .section-title h1 {
+    font-size: 1.5rem;
+  }
+
+  .admissions-controls {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .search-input,
+  .status-filter {
+    width: 100%;
+  }
+
+  .admissions-table th,
+  .admissions-table td {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .action-buttons-admission {
+    gap: 10px;
+  }
+
+  .action-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .admission-image {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admissions-container {
+    padding: 0.75rem;
+    width: 100%;
+    margin-left: 0; /* Remove margin-left for small screens */
+  }
+
+  .section-title h1 {
+    font-size: 1.3rem;
+  }
+
+  .admissions-table th,
+  .admissions-table td {
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .action-buttons-admission {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .action-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    width: 100%; /* Full width buttons on very small screens */
+  }
+
+  .admission-image {
+    width: 30px;
+    height: 30px;
+  }
+
+  .delete-modal {
+    padding: 16px;
+    width: 90%;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cancel-btn,
+  .delete-confirm-btn {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .no-admissions p {
+    font-size: 0.95rem;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 360px) {
+  .admissions-container {
+    padding: 0.5rem;
+  }
+
+  .section-title h1 {
+    font-size: 1.1rem;
+  }
+
+  .admissions-table th,
+  .admissions-table td {
+    padding: 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .status-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .action-btn {
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+.admissions-controls .export-btn {
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admissions-controls .export-btn:hover {
+  background-color: #27ae60;
+}

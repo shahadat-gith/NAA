@@ -1,0 +1,38 @@
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../../../context/AppContext';
+
+const TeacherListItem = ({ teacher, index }) => {
+  const { backendUrl } = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/staffs/teacher?id=${teacher._id}`);
+  };
+
+  return (
+    <div className="teacher-list-item" onClick={handleClick}>
+      <div className="teacher-list-image">
+        <img
+          src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+          alt={teacher.name}
+          loading="lazy"
+        />
+      </div>
+      <div className="teacher-list-details">
+        <h3>{teacher.name}</h3>
+        <div className="teacher-list-info">
+          <span className="teacher-list-subject">{teacher.subject}</span>
+          <span className="teacher-list-department">{teacher.department}</span>
+        </div>
+      </div>
+      <div className="teacher-list-experience">
+        <i className="fas fa-briefcase"></i>
+        <span>{teacher.experience}</span>
+      </div>
+      <button className="view-profile-btn">View Profile</button>
+    </div>
+  );
+};
+
+export default TeacherListItem;

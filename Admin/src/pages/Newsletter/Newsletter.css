@@ -1,0 +1,217 @@
+
+.admin-newsletter-container {
+    width: calc(100% - 250px);
+    margin: 20px auto;
+    padding: 20px;
+    min-height: calc(100vh - 100px);
+}
+
+.admin-newsletter-page {
+    max-width: 800px;
+    padding: 30px;
+    background-color: #2c3e5a;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.3s ease;
+}
+
+.admin-newsletter-page:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px);
+}
+
+.admin-newsletter-page h2 {
+    text-align: center;
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 40px;
+    position: relative;
+    padding-bottom: 15px;
+    font-size: 24px;
+}
+
+.admin-newsletter-page h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100px;
+    height: 4px;
+    background-color: #4ecdc4;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.promotion-section,
+.subscribers-section {
+    background-color: #334057;
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 40px;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: all 0.3s ease;
+}
+
+.promotion-section:hover,
+.subscribers-section:hover {
+    background-color: #3a4a66;
+}
+
+.promotion-section h3,
+.subscribers-section h3 {
+    color: #4ecdc4;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.promotion-subject,
+.promotion-textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #3f4d66;
+    border-radius: 8px;
+    background-color: #2c3e5a;
+    color: #ffffff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.promotion-subject:focus,
+.promotion-textarea:focus {
+    border-color: #4ecdc4;
+    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.2);
+}
+
+.send-button {
+    width: 100%;
+    background-color: #4ecdc4;
+    color: #1e2a44;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.send-button:hover {
+    background-color: #3aa394;
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(0, 0, 0, 0.25);
+}
+
+.send-button:disabled {
+    background-color: #6c7b8b;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.subscribers-section p {
+    color: #a0aec0;
+    text-align: center;
+}
+
+.subscribers-list {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.subscribers-list li {
+    padding: 15px;
+    border-bottom: 1px solid #3f4d66;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e2e8f0;
+    transition: background-color 0.3s ease;
+}
+
+.subscribers-list li:hover {
+    background-color: #3a4a66;
+}
+
+.subscribers-list li:last-child {
+    border-bottom: none;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 20px;
+    color: #a0aec0;
+}
+
+.pagination-button {
+    background-color: #4ecdc4;
+    color: #1e2a44;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.pagination-button:hover:not(:disabled) {
+    background-color: #3aa394;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.25);
+}
+
+.pagination-button:disabled {
+    background-color: #6c7b8b;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Scrollbar styling */
+.subscribers-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.subscribers-list::-webkit-scrollbar-track {
+    background: #2c3e5a;
+    border-radius: 10px;
+}
+
+.subscribers-list::-webkit-scrollbar-thumb {
+    background: #4ecdc4;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-newsletter-container {
+        width: 100%;
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .admin-newsletter-page {
+        margin-top: 20px;
+        padding: 20px;
+        width: 100%;
+    }
+
+    .promotion-subject,
+    .promotion-textarea,
+    .send-button {
+        width: 100%;
+    }
+}

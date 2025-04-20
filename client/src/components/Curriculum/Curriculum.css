@@ -1,0 +1,113 @@
+.curriculum-section {
+  padding: 4rem 2rem;
+  background: #f9f9f9;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.curriculum-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.title-underline {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: #e94560;
+  display: block;
+}
+
+/* Curriculum Cards */
+.curriculum-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap; /* Allows wrapping based on screen size */
+}
+
+.curriculum-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+  flex: 1 1 calc(25% - 2rem); /* 4 cards per row on large screens */
+  max-width: 280px;
+}
+
+.curriculum-card:hover {
+  transform: translateY(-10px);
+}
+
+/* Card Icon */
+.card-icon img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 1.2rem;
+  background: transparent;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.curriculum-card-title {
+  font-size: 1rem;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+/* Card Description */
+.card-description {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* Card Link */
+.card-link {
+  display: inline-block;
+  color: #f4a261;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+.card-link:hover {
+  color: #e76f51;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .curriculum-card {
+      flex: 1 1 calc(50% - 2rem); /* 2 cards per row on tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  .curriculum-cards {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .curriculum-card {
+      flex: 1 1 100%; /* 1 card per row on small screens */
+      max-width: 90%;
+  }
+
+  .curriculum-title {
+    font-size: 1.7rem;
+   
+  }
+}

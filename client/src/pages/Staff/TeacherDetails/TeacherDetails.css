@@ -1,0 +1,234 @@
+/* TeacherDetails.css */
+.teacher-details-page {
+  padding: 40px 0;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.teacher-details {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 15px 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn i {
+  margin-right: 6px;
+}
+
+.back-btn:hover {
+  color: #e94560;
+}
+
+.details-header {
+  padding: 25px 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.details-header-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-name {
+  font-size: 28px;
+  margin: 0 0 6px 0;
+  color: #333;
+}
+
+.details-position {
+  font-size: 16px;
+  margin: 0;
+  color: #666;
+}
+
+.details-body {
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .details-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.details-image-container {
+  position: relative;
+}
+
+.details-image {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  aspect-ratio: 3/4;
+}
+
+.details-department-badge {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  background-color: #e94560;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(233, 69, 96, 0.3);
+}
+
+.details-info {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.details-info-section {
+  margin-bottom: 5px;
+}
+
+.details-section-title {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f1f1f1;
+}
+
+.details-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.details-info-item {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.details-info-item i {
+  font-size: 18px;
+  margin-right: 15px;
+  color: #e94560;
+}
+
+.details-info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.details-info-label {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.details-info-value {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.details-contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.details-contact-item {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #333;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.details-contact-item:hover {
+  background-color: #f0f0f0;
+  transform: translateX(5px);
+}
+
+.details-contact-item i {
+  font-size: 16px;
+  margin-right: 15px;
+  color: #e94560;
+}
+
+.details-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.details-action-btn {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.details-action-btn.schedule {
+  background-color: #e94560;
+  color: white;
+  box-shadow: 0 4px 10px rgba(233, 69, 96, 0.3);
+}
+
+.details-action-btn.schedule:hover {
+  background-color: #d63a53;
+  transform: translateY(-2px);
+}
+
+.details-action-btn.message {
+  background-color: #fff;
+  color: #e94560;
+  border: 1px solid #e94560;
+}
+
+.details-action-btn.message:hover {
+  background-color: #fdf4f6;
+  transform: translateY(-2px);
+}
+
+/* Animation classes for Framer Motion (if needed) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

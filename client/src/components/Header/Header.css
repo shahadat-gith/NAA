@@ -1,0 +1,272 @@
+.header-premium {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 50vw, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.header-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
+  opacity: 0.9;
+  z-index: 0;
+}
+
+.header-premium::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23e94560" fill-opacity="0.2" d="M0,192L48,208C96,224,192,256,288,245.3C384,235,480,181,576,170.7C672,160,768,192,864,213.3C960,235,1056,245,1152,229.3C1248,213,1344,171,1392,149.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>')
+    center center / cover no-repeat;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+.header-overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 26, 46, 0.3);
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+  z-index: 2;
+  padding: 0; 
+}
+
+.header-content {
+  text-align: center;
+  color: #ffffff;
+  width: min(90%, 1200px);
+  z-index: 3;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 1s ease forwards;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 1rem);
+}
+
+.header-school-name {
+  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: clamp(1px, 0.3vw, 3px);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  color: #e94560;
+  line-height: 1.2;
+  margin: 0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out 0.2s forwards;
+}
+
+.header-school-tagline {
+  font-size: clamp(1rem, 2.5vw, 1.8rem);
+  font-weight: 500;
+  color: #f4a261;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+  margin: 0;
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out 0.5s forwards;
+}
+
+/* Premium Button */
+.premium-button-header{
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background: #e94560;
+  border-radius: 50px;
+  transition: 0.3s;
+  text-decoration: none;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.premium-button-header:hover {
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1440px) {
+  .header-content {
+    width: 85%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-premium {
+    height: 380px;
+  }
+  
+  .header-school-name {
+    font-size: 3.5rem;
+  }
+  
+  .header-school-tagline {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .header-premium {
+    height: 350px;
+  }
+  
+  .header-school-name {
+    font-size: 3rem;
+  }
+  
+  .header-school-tagline {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-premium {
+    height: 320px;
+    margin-bottom: 3rem;
+  }
+  
+  .header-school-name {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .header-school-tagline {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .header-premium {
+    height: 300px;
+    margin-bottom: 2.5rem;
+  }
+  
+  .header-content {
+    width: 90%;
+  }
+  
+  .header-school-name {
+    font-size: 2rem;
+    letter-spacing: 1.5px;
+  }
+  
+  .header-school-tagline {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-premium {
+    height: 260px;
+    margin-bottom: 2rem;
+  }
+  
+  .header-content {
+    width: 92%;
+    gap: 0.5rem;
+  }
+  
+  .header-school-name {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+  
+  .header-school-tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .header-premium {
+    height: 230px;
+    margin-bottom: 1.8rem;
+  }
+  
+  .header-content {
+    gap: 0.4rem;
+  }
+  
+  .header-school-name {
+    font-size: 1.7rem;
+  }
+  
+  .header-school-tagline {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .header-premium {
+    height: 210px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .header-school-name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .header-premium {
+    height: 190px;
+    margin-bottom: 1.2rem;
+  }
+  
+  .header-content {
+    width: 94%;
+    gap: 0.3rem;
+  }
+  
+  .header-school-name {
+    font-size: 1.4rem;
+    letter-spacing: 0.8px;
+  }
+  
+  .header-school-tagline {
+    font-size: 0.9rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .header-premium {
+    height: 240px;
+  }
+  
+  .header-content {
+    gap: 0.4rem;
+  }
+}

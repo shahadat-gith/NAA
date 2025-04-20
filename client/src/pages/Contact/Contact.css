@@ -1,0 +1,316 @@
+
+/* Contact Sections */
+.contact-section {
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+  padding: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.form-section { animation-delay: 0.2s; }
+.details-section { animation-delay: 0.4s; }
+.map-section { animation-delay: 0.6s; }
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 2rem;
+  position: relative;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: #e94560;
+}
+
+/* Contact Form (Display Only) */
+.contact-form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #e94560;
+  outline: none;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-submit-button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: #e94560;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.form-submit-button:hover {
+  background: #f4a261;
+}
+
+/* Contact Details */
+.contact-details {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.contact-detail-item i {
+  font-size: 1.5rem;
+  color: #e94560;
+}
+
+/* Map Section */
+.map-container {
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+ 
+
+  .contact-header-title {
+    font-size: 3rem;
+  }
+
+  .contact-header-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .contact-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+
+  .contact-details {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-detail-item {
+    text-align: center;
+  }
+
+  .map-container iframe {
+    height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+ 
+
+  .contact-header-title {
+    font-size: 2.5rem;
+  }
+
+  .contact-header-subtitle {
+    font-size: 1.2rem;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .contact-form {
+    padding: 1.5rem;
+  }
+
+  .form-submit-button {
+    font-size: 1rem;
+  }
+}
+
+/* Pop-up Confirmation Message */
+.confirmation-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.confirmation-popup {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  animation: popupFadeIn 0.5s ease forwards;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+}
+
+.tick-container {
+  margin-bottom: 1.5rem;
+}
+
+.tick-sign {
+  width: 80px;
+  height: 80px;
+}
+
+.tick-circle {
+  fill: #e94560;
+  stroke: #fff;
+  stroke-width: 2;
+  opacity: 0;
+  animation: circleFadeIn 0.5s ease forwards;
+}
+
+.tick-check {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: checkDraw 0.5s ease forwards 0.5s;
+}
+
+.confirmation-title {
+  font-size: 2.5rem;
+  color: #e94560;
+  margin-bottom: 1rem;
+}
+
+.confirmation-text {
+  font-size: 1.2rem;
+  color: #1a1a2e;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.close-button {
+  padding: 0.8rem 2rem;
+  background: #e94560;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.close-button:hover {
+  background: #f4a261;
+}
+
+@keyframes popupFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes circleFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes checkDraw {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}

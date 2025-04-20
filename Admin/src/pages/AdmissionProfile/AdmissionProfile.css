@@ -1,0 +1,655 @@
+/* AdmissionProfile.css */
+
+/* Container for the entire profile */
+.admission-profile-container {
+  margin: 10px auto;
+  padding: 2rem;
+  width: 90%;
+  max-width: 1200px;
+  color: #e2e8f0;
+  background: #1e2a44;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+/* Status */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.pending {
+  background-color: #7e2a0e;
+  color: #ffedd5;
+}
+
+.status-badge.approved {
+  background-color: #10b34e;
+  color: #dcfce7;
+}
+
+.status-badge.rejected {
+  background-color: #e94560;
+  color: #fee2e2;
+}
+
+.status-badge.completed {
+  background-color: #10b34e;
+  color: #dcfce7;
+}
+
+/* Profile Content */
+.profile-content {
+  background-color: #1e2a44;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.profile-main {
+  padding: 2rem;
+  background-color: #2d3b5e;
+  border-bottom: 1px solid #2d3b5e;
+  gap: 2rem;
+}
+
+.profile-container-admission {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profile-image-admission {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.profile-image-admission img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-name-details {
+  flex: 1;
+}
+
+.profile-name-details h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  color: #e2e8f0;
+}
+
+/* Profile Sections */
+.profile-sections {
+  padding: 2rem;
+}
+
+.profile-section {
+  margin-bottom: 2.5rem;
+  width: 90%;
+  margin: 0 auto 2.5rem;
+  padding: 20px;
+}
+
+.profile-section:last-child {
+  margin-bottom: 0;
+}
+
+.profile-section h3 {
+  color: #3b82f6;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #2d3b5e;
+  font-size: 1.3rem;
+}
+
+.profile-section p {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.profile-heading {
+  color: #e2e8f0;
+  font-size: 24px;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.profile-heading:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 50px;
+  background-color: #3b82f6;
+}
+
+/* Card */
+.card {
+  background-color: #2d3b5e;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  overflow-x: auto;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+}
+
+/* Info Table */
+.admission-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.admission-info-table th,
+.admission-info-table td {
+  padding: 16px 15px;
+  text-align: left;
+  border-right: 1px solid #2d3b5e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admission-info-table th {
+  background-color: #2d3b5e;
+  font-weight: 600;
+  color: #94a3b8;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.admission-info-table td {
+  font-weight: normal;
+  color: #e2e8f0;
+}
+
+.admission-info-table th:last-child,
+.admission-info-table td:last-child {
+  border-right: none;
+}
+
+.admission-info-table th:first-child,
+.admission-info-table td:first-child {
+  min-width: 180px;
+}
+
+.admission-info-table th:nth-child(2),
+.admission-info-table td:nth-child(2) {
+  min-width: 80px;
+}
+
+.admission-info-table th:nth-child(3),
+.admission-info-table td:nth-child(3) {
+  min-width: 120px;
+}
+
+.admission-info-table th:nth-child(4),
+.admission-info-table td:nth-child(4) {
+  min-width: 100px;
+}
+
+/* Info Item */
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 0.25rem;
+}
+
+.info-value {
+  color: #e2e8f0;
+  font-weight: 400;
+}
+
+.fee-total {
+  font-weight: 700;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+}
+
+/* Loading & Not Found */
+.admission-loading,
+.admission-not-found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #2d3b5e;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.admission-not-found h2 {
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.admission-not-found p {
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #2563eb;
+}
+
+/* Cash Payment Button and Modal Styles */
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.cash-btn {
+  background-color: #2196F3;
+  color: white;
+  margin-top: 10px;
+}
+
+.cash-btn:hover {
+  background-color: #1976D2;
+}
+
+.cash-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.delete-modal {
+  background-color: #1e2a44;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-modal h3 {
+  margin-bottom: 10px;
+  color: #e2e8f0;
+}
+
+.delete-modal p {
+  margin-bottom: 20px;
+  color: #94a3b8;
+}
+
+.modal-input {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.modal-input label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.modal-input input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #2d3b5e;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #2d3b5e;
+  color: #e2e8f0;
+}
+
+.modal-input input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #bbb;
+}
+
+.delete-confirm-btn {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-confirm-btn:hover {
+  background-color: #da190b;
+}
+
+/* Transaction History Table */
+.transaction-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.transaction-history-table th,
+.transaction-history-table td {
+  padding: 16px 15px;
+  text-align: left;
+  border-right: 1px solid #2d3b5e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-history-table th {
+  background-color: #2d3b5e;
+  font-weight: 600;
+  color: #94a3b8;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.transaction-history-table td {
+  font-weight: normal;
+  color: #e2e8f0;
+}
+
+.transaction-history-table th:last-child,
+.transaction-history-table td:last-child {
+  border-right: none;
+}
+
+.transaction-history-table th:first-child,
+.transaction-history-table td:first-child {
+  min-width: 200px; /* For Transaction ID */
+}
+
+.transaction-history-table th:nth-child(2),
+.transaction-history-table td:nth-child(2) {
+  min-width: 100px; /* For Amount */
+}
+
+.transaction-history-table th:nth-child(3),
+.transaction-history-table td:nth-child(3) {
+  min-width: 150px; /* For Date */
+}
+
+.transaction-history-table th:nth-child(4),
+.transaction-history-table td:nth-child(4) {
+  min-width: 100px; /* For Status */
+}
+
+.transaction-history-table th:nth-child(5),
+.transaction-history-table td:nth-child(5) {
+  min-width: 150px; /* For Action */
+}
+
+/* Download Button */
+.download-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.download-btn:hover {
+  background-color: #45a049;
+}
+
+.download-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admission-profile-container {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .profile-image-admission {
+    width: 180px;
+    height: 180px;
+  }
+
+  .profile-name-details h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admission-profile-container {
+    padding: 1rem;
+  }
+
+  .profile-main {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .profile-container-admission {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-image-admission {
+    width: 150px;
+    height: 150px;
+  }
+
+  .profile-name-details h2 {
+    font-size: 1.4rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-section h3 {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .admission-info-table th,
+  .admission-info-table td {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+
+  .transaction-history-table th,
+  .transaction-history-table td {
+    padding: 12px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .admission-profile-container {
+    padding: 0.75rem;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .profile-main {
+    padding: 1rem;
+  }
+
+  .profile-image-admission {
+    width: 120px;
+    height: 120px;
+    font-size: 2rem;
+  }
+
+  .profile-name-details h2 {
+    font-size: 1.2rem;
+  }
+
+  .profile-sections {
+    padding: 1rem;
+  }
+
+  .profile-section {
+    padding: 15px;
+  }
+
+  .profile-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .admission-info-table th,
+  .admission-info-table td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  .admission-info-table th:first-child,
+  .admission-info-table td:first-child {
+    min-width: 140px;
+  }
+
+  .transaction-history-table th,
+  .transaction-history-table td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  .transaction-history-table th:first-child,
+  .transaction-history-table td:first-child {
+    min-width: 150px;
+  }
+
+  .status-badge {
+    font-size: 0.75rem;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 360px) {
+  .admission-profile-container {
+    padding: 0.5rem;
+  }
+
+  .profile-image-admission {
+    width: 100px;
+    height: 100px;
+    font-size: 1.8rem;
+  }
+
+  .profile-name-details h2 {
+    font-size: 1.1rem;
+  }
+
+  .profile-section h3 {
+    font-size: 1rem;
+  }
+
+  .admission-info-table th,
+  .admission-info-table td {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+  }
+
+  .transaction-history-table th,
+  .transaction-history-table td {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+  }
+}
