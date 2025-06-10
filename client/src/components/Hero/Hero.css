@@ -1,0 +1,85 @@
+/* Hero Container */
+.hero-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw; /* Full viewport width */
+  padding: 0; /* No padding to ensure edge-to-edge */
+  margin: 0; /* Ensure no external spacing */
+}
+
+/* Slider Wrapper */
+.slider-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Slider */
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Slide */
+.slide {
+  position: relative;
+  width: 100vw; /* Full viewport width per slide */
+  flex-shrink: 0;
+}
+
+/* Slide Image */
+.slide-image {
+  width: 100%;
+  height: 600px; /* Default height for large screens */
+  object-fit: cover; /* Ensures image covers the entire slide */
+}
+
+
+/* Dot Indicators */
+.dot-indicators {
+  display: flex;
+  align-items: center;
+  margin-top: 1.25rem;
+  gap: 0.5rem;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background: #e94560;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.dot.active {
+  background: #012512; /* Solid white for active dot */
+}
+
+
+
+@media (max-width: 768px) {
+  .slide-image {
+    height: auto; /* Further reduced for medium screens */
+  }
+
+
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dot-indicators {
+    margin-top: 1rem;
+    gap: 0.4rem;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+}

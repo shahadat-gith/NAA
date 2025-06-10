@@ -1,0 +1,131 @@
+/* Teacher Bank Page Styles */
+.teacher-bank-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background-color: #f7f9fc;
+}
+
+.teacher-bank-card {
+  width: 100%;
+  max-width: 600px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  transition: transform 0.3s ease;
+}
+
+.teacher-bank-card:hover {
+  transform: translateY(-5px);
+}
+
+.teacher-bank-title {
+  color: #2c3e50;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.teacher-bank-title:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 3px;
+}
+
+.teacher-bank-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.teacher-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.teacher-info-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #596275;
+}
+
+.teacher-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dfe4ea;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.teacher-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15);
+}
+
+.teacher-bank-submit {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  background: linear-gradient(90deg, #e52b41, #fa2a42);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+
+.teacher-bank-submit:hover {
+  background: linear-gradient(90deg, #f22090, #df1c6a);
+  transform: translateY(-2px);
+}
+
+.teacher-bank-submit:disabled {
+  background: #a5b1c2;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .teacher-bank-container {
+    padding: 1rem;
+  }
+  
+  .teacher-bank-card {
+    padding: 1.5rem;
+  }
+  
+  .teacher-bank-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .teacher-bank-card {
+    padding: 1.25rem;
+  }
+  
+  .teacher-input {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .teacher-bank-submit {
+    padding: 0.75rem;
+  }
+}

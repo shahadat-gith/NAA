@@ -6,6 +6,11 @@ const TeacherListItem = ({ teacher, index }) => {
   const { backendUrl } = useContext(AppContext);
   const navigate = useNavigate();
 
+  const formatSubjects = (mappings) => {
+    if (!mappings || mappings.length === 0) return 'N/A';
+    return mappings.map((m) => m.subject).join(', ');
+  };
+
   const handleClick = () => {
     navigate(`/staffs/teacher?id=${teacher._id}`);
   };
@@ -22,13 +27,12 @@ const TeacherListItem = ({ teacher, index }) => {
       <div className="teacher-list-details">
         <h3>{teacher.name}</h3>
         <div className="teacher-list-info">
-          <span className="teacher-list-subject">{teacher.subject}</span>
-          <span className="teacher-list-department">{teacher.department}</span>
+          <span className="teacher-list-subject">{formatSubjects(teacher.subjectClassMappings)}</span>
         </div>
       </div>
       <div className="teacher-list-experience">
         <i className="fas fa-briefcase"></i>
-        <span>{teacher.experience}</span>
+        <span>{teacher.experience ? `${teacher.experience} years` : 'N/A'}</span>
       </div>
       <button className="view-profile-btn">View Profile</button>
     </div>

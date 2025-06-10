@@ -6,6 +6,12 @@ const TeacherCard = ({ teacher }) => {
   const { backendUrl } = useContext(AppContext);
   const navigate = useNavigate();
 
+  // Format subjects for display
+  const formatSubjects = (mappings) => {
+    if (!mappings || mappings.length === 0) return 'N/A';
+    return mappings.map((m) => m.subject).join(', ');
+  };
+
   const handleClick = () => {
     navigate(`/staffs/teacher?id=${teacher._id}`);
   };
@@ -19,14 +25,13 @@ const TeacherCard = ({ teacher }) => {
           className="teacher-card-image"
           loading="lazy"
         />
-        <div className="teacher-card-department">{teacher.department}</div>
       </div>
       <div className="teacher-card-content">
         <h3 className="teacher-card-name">{teacher.name}</h3>
-        <p className="teacher-card-subject">{teacher.subject}</p>
+        <p className="teacher-card-subject">{formatSubjects(teacher.subjectClassMappings)}</p>
         <div className="teacher-card-footer">
           <span className="teacher-card-experience">
-            <i className="fas fa-briefcase"></i> {teacher.experience}
+            <i className="fas fa-briefcase"></i> {teacher.experience ? `${teacher.experience} years` : 'N/A'}
           </span>
           <button className="teacher-card-btn">View Profile</button>
         </div>

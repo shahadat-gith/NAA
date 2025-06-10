@@ -1,0 +1,76 @@
+/* ID Service Unavailable Notice Styles */
+.notice-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 28px 24px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #e94560;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  color: #333;
+}
+
+.notice-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  color: #f44336;
+}
+
+.notice-title {
+  margin: 0 0 16px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.notice-message {
+  font-size: 1.1rem;
+  margin: 0 0 12px 0;
+  font-weight: 500;
+  color: #555;
+}
+
+.notice-instruction {
+  margin: 0 0 24px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #666;
+}
+
+.notice-support {
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+.notice-link {
+  display: inline-block;
+  margin-left: 8px;
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.notice-link:hover {
+  text-decoration: underline;
+  color: #0d47a1;
+}
+
+@media (max-width: 600px) {
+  .notice-container {
+    margin: 20px 16px;
+    padding: 20px 16px;
+  }
+  
+  .notice-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .notice-title {
+    font-size: 1.3rem;
+  }
+}

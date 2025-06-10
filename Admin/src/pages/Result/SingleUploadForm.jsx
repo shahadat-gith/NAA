@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import "./Result.css";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { AdminContext } from "../../context/AdminContext";
 
 const SingleUploadForm = () => {

@@ -9,7 +9,6 @@ import "./StudentList.css";
 
 const StudentList = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -32,7 +31,7 @@ const StudentList = () => {
     let filtered = students;
     if (searchTerm) {
       filtered = filtered.filter((student) =>
-        `${student.firstName} ${student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+        student.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
     if (mediumFilter) filtered = filtered.filter((student) => student.medium === mediumFilter);
@@ -61,7 +60,7 @@ const StudentList = () => {
         setSelectedStudent={setSelectedStudent}
         admitCardConfig={admitCardConfig}
         backendUrl={backendUrl}
-        adminToken = {adminToken}
+        adminToken={adminToken}
       />
       <StudentTable
         filteredStudents={filteredStudents}

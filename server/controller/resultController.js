@@ -1,4 +1,4 @@
-import Student from "../models/StudentModel.js";
+import Student from "../models/Student.js";
 import XLSX from "xlsx";
 
 export const uploadResult = async (req, res) => {
@@ -257,60 +257,72 @@ export const getSingleResult = async (req, res) => {
   try {
     const { registrationNo, examName, academicSession } = req.body;
 
+    // Validate required fields
     if (!registrationNo || !examName || !academicSession) {
       return res.status(400).json({
         success: false,
-        message: "Registration number, exam name, and academic session are required",
+        message: 'Registration number, exam name, and academic session are required',
       });
     }
 
-    // Normalize registrationNo: "NAA-" prefix + uppercase suffix, no spaces
-    const trimmedRegistrationNo = registrationNo.trim();
-    const suffix = trimmedRegistrationNo.replace(/^NAA-?/i, "").replace(/\s+/g, "").toUpperCase();
-    const normalizedRegistrationNo = "NAA-" + suffix;
+    // Clean input: only trim to remove leading/trailing spaces
+    const cleanedRegistrationNo = registrationNo.trim();
+    const cleanedExamName = examName.trim().toLowerCase();
+    const cleanedAcademicSession = academicSession.trim();
 
-    const query = {
-      registrationNo: normalizedRegistrationNo,
-      "results.examName": examName.trim().toLowerCase(),
-      "results.academicSession": academicSession.trim(),
-    };
-
-    const student = await Student.findOne(query)
-      .select("firstName lastName rollNo registrationNo class medium stream dueAmount results")
+    // Query using $elemMatch for embedded results array
+    const student = await Student.findOne({
+      registrationNo: cleanedRegistrationNo,
+      results: {
+        $elemMatch: {
+          examName: cleanedExamName,
+          academicSession: cleanedAcademicSession,
+        },
+      },
+    })
+      .select('name father mother registrationNo class medium stream dues results')
       .lean();
 
+    // Check if student or result exists
     if (!student) {
-      return res.status(404).json({ success: false, message: "Student or result not found" });
-    }
-
-    // Optional: Enforce dueAmount check server-side
-    if (student.dueAmount > 0) {
-      return res.status(403).json({
+      return res.status(404).json({
         success: false,
-        message: "Please clear your balanced monthly fee !.",
+        message: 'Student or result not found',
       });
     }
 
-    const filteredResults = student.results.filter(
-      (r) =>
-        r.examName?.trim().toLowerCase() === examName.trim().toLowerCase() &&
-        r.academicSession?.trim() === academicSession.trim()
-    );
-
-    if (filteredResults.length === 0) {
-      return res.status(404).json({ success: false, message: "No matching result found for this exam and session" });
+    // Check for dues (monthlyDue or hostelDue)
+    const totalDues = (student.dues.monthlyDue.amount || 0) + (student.dues.hostelDue.amount || 0);
+    if (totalDues > 0) {
+      return res.status(403).json({
+        success: false,
+        message: 'Please clear your outstanding dues to view the result.',
+      });
     }
 
-    const result = filteredResults[0];
+    // Find the matching result
+    const result = student.results.find(
+      (r) =>
+        r.examName?.trim().toLowerCase() === cleanedExamName &&
+        r.academicSession?.trim() === cleanedAcademicSession
+    );
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: 'No matching result found for this exam and session',
+      });
+    }
+
+    // Construct response data
     const resultData = {
-      firstName: student.firstName,
-      lastName: student.lastName || "",
-      rollNo: student.rollNo,
+      name: student.name,
+      father: student.father,
+      mother: student.mother,
       registrationNo: student.registrationNo,
       class: student.class,
       medium: student.medium,
-      stream: student.stream || undefined,
-      dueAmount: student.dueAmount, // Add dueAmount to resultData
+      stream: student.stream || "N/A",
       result: {
         examName: result.examName,
         academicSession: result.academicSession,
@@ -318,13 +330,18 @@ export const getSingleResult = async (req, res) => {
         totalMarks: result.totalMarks,
         maxTotalMarks: result.maxTotalMarks,
         percentage: result.percentage,
+        rollNo: result.rollNo,
         maxMarksPerSubject: result.maxMarksPerSubject,
       },
     };
 
     return res.status(200).json({ success: true, data: resultData });
   } catch (error) {
-    console.error("Error in getSingleResult:", error);
-    return res.status(500).json({ success: false, message: "Server error", error: error.message });
+    console.error('Error in getSingleResult:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message,
+    });
   }
-};
+}

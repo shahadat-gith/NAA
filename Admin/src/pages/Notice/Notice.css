@@ -1,10 +1,8 @@
-/* Notices.css */
 /* Main Container */
 .admin-content {
-  margin: 20px auto; /* Updated to match other files */
+  margin: 20px auto;
   padding: 2rem;
   min-height: calc(100vh - 60px);
-  background: #1e2a44;
   width: 90%;
   max-width: 1400px;
   transition: all 0.3s ease;
@@ -20,15 +18,26 @@
 
 /* Form */
 .notices-form {
-  max-width: 500px;
+  
   margin: 0 auto;
-  background: #2d3b5e;
   padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
+  
+}
+
+/* Form Row */
+.form-row {
+  display: flex;
   gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.form-row .form-group {
+  flex: 1;
+  min-width: 200px;
 }
 
 /* Form Group */
@@ -36,6 +45,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.form-group.full-width {
+  flex: 1 0 100%;
 }
 
 .form-group label {
@@ -139,7 +152,11 @@
   }
 
   .notices-form {
-    max-width: 450px;
+    max-width: 700px;
+  }
+
+  .form-row {
+    gap: 1rem;
   }
 }
 
@@ -148,13 +165,18 @@
     padding: 1rem;
   }
 
-  .section-title h1 {
+  .admin-content h1 {
     font-size: 1.5rem;
   }
 
   .notices-form {
     padding: 1.5rem;
     max-width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   .form-group label {
@@ -184,10 +206,9 @@
   .admin-content {
     padding: 0.75rem;
     width: 100%;
-    margin-left: 0; /* Remove margin-left for small screens */
   }
 
-  .section-title h1 {
+  .admin-content h1 {
     font-size: 1.3rem;
   }
 
@@ -210,7 +231,7 @@
   .premium-button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
-    width: 100%; /* Full width on small screens */
+    width: 100%;
   }
 
   .file-name {
@@ -229,7 +250,7 @@
     padding: 0.5rem;
   }
 
-  .section-title h1 {
+  .admin-content h1 {
     font-size: 1.1rem;
   }
 

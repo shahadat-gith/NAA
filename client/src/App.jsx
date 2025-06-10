@@ -1,78 +1,94 @@
 import React, { useEffect } from 'react';
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
+import { useUserContext } from './context/UserContext';
 import Navbar from './components/Navbar/Navbar';
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import TeacherNavbar from './Teacher Dashboard/TeacherNavbar/TeacherNavbar';
+import { ToastContainer } from 'react-toastify';
+import { Toaster } from 'react-hot-toast';
+import 'react-toastify/dist/ReactToastify.css';
+
+// Public Pages
 import Home from './pages/Home/Home';
 import About from './pages/About/About';
-import Admission from './pages/Admission/Admission';
 import Staff from './pages/Staff/Staff';
 import Academics from './pages/Academics/Academics';
 import Contact from './pages/Contact/Contact';
-import Login from './pages/Login/Login';
 import Footer from './components/Footer/Footer';
-import AdmissionForm from './pages/AdmissionForm/AdmissionForm';
-import PaymentFailed from './pages/PaymentFailed/PaymentFailed '
-import PaymentSuccess from './pages/PaymentSucess/PaymentSuccess';
-import ForgotPassword from './pages/ForgotPassword/ForgotPassword';
-import StudentProfileCard from './pages/StudentProfileCard/StudentProfileCard';
-import TeacherProfile from './pages/TeacherProfile/TeacherProfile';
-import Notices from './pages/Notices/Notices';
-import StudentPortal from './pages/StudentPortal/StudentPortal';
-import FeePayment from './pages/StudentPortal/Payments/FeePayment';
-import StudentServices from './pages/StudentPortal/Services/StudentServices';
 import TeacherDetails from './pages/Staff/TeacherDetails/TeacherDetails';
+import CurriculumDetails from './components/Curriculum/CurriculumDetails';
+import Login from './components/Login/Login';
+
+// Portal Pages
+import Portal from './pages/Portal/Portal';
+import Payment from './pages/Portal/Payment';
+import Services from './pages/Portal/Services';
+import StudentDetails from './pages/Portal/Components/StudentDetails/StudentDetails';
+import PaymentDetails from './pages/Portal/Components/PaymentDetails/PaymentDetails';
+import ResultDownload from './pages/Portal/Result/ResultDownload';
+
+// Teacher Dashboard
+import TeacherHome from './Teacher Dashboard/Pages/Home/Home';
+import TeacherAttendance from './Teacher Dashboard/Pages/Attendance/Attendance';
+import TeacherSalary from './Teacher Dashboard/Pages/Salary/Salary';
+import TeacherBank from './Teacher Dashboard/Pages/Bank/Bank';
+import TaskPage from './Teacher Dashboard/Pages/TaskPage/TaskPage';
+
+// Not Found Page
+import PageNotFound from './components/404/PageNotFound';
+import Gallery from './pages/Gallery/Gallery';
 
 const App = () => {
   const location = useLocation();
-  
+  const { teacherToken } = useUserContext();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
-  
+
+  const isTeacherLoggedIn = !!teacherToken;
+
   return (
     <div>
-      <Navbar />
-      
+      {isTeacherLoggedIn ? <TeacherNavbar /> : <Navbar />}
       <ToastContainer />
-      
+      <Toaster position="top-center" />
+
       <Routes>
-        <Route path="/login/:tab" element={<Login />} />
-        <Route path="/student-login" element={<Login />} />
-        <Route path="/teacher-login" element={<Login />} />
-        <Route path="/admin-login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        
-        <Route path="/forgot-password/:tab" element={<ForgotPassword />} />
-        <Route path="/student" element={<ForgotPassword />} />
-        <Route path="/teacher" element={<ForgotPassword />} />
-        
-        <Route path="/student/profile" element={<StudentProfileCard />} />
-        <Route path="/teacher/profile" element={<TeacherProfile />} />
-        
-        <Route path="/" element={<Home />} />
-        <Route path="/notices" element={<Notices />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/admission-portal" element={<Admission />} />
-        <Route path="/admission-portal/admission-form" element={<AdmissionForm />} />
-        <Route path="/staffs" element={<Staff />} />
-        <Route path="/staffs/teacher" element={<TeacherDetails />} />
-        <Route path="/academics" element={<Academics />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/payment-success" element={<PaymentSuccess />} />
-        <Route path="/payment-failed" element={<PaymentFailed />} />
-        <Route path="/student-portal" element={<StudentPortal />} />
-        
-        {/* Student Services Routes */}
-        <Route path="/student-portal/student-services" element={<StudentServices defaultTab="result" />} />
-        <Route path="/student-portal/student-services/:tab" element={<StudentServices />} />
-       
-        
-        {/* Updated Fee Payment Routes */}
-        <Route path="/student-portal/fee-payment" element={<FeePayment defaultTab="monthly" />} />
-        <Route path="/student-portal/fee-payment/:tab" element={<FeePayment />} />
+        {isTeacherLoggedIn ? (
+          <>
+            <Route path="/teacher" element={<TeacherHome />} />
+            <Route path="/teacher/attendance" element={<TeacherAttendance />} />
+            <Route path="/teacher/salary" element={<TeacherSalary />} />
+            <Route path="/teacher/bank" element={<TeacherBank />} />
+            <Route path="/teacher/tasks" element={<TaskPage />} />
+            <Route path="*" element={<PageNotFound />} />
+          </>
+        ) : (
+          <>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/staffs" element={<Staff />} />
+            <Route path="/staffs/teacher" element={<TeacherDetails />} />
+            <Route path="/curriculum" element={<CurriculumDetails />} />
+            <Route path="/academics" element={<Academics />} />
+            <Route path='/gallery' element = {<Gallery/>} />
+            <Route path="/contact" element={<Contact />} />
+
+            {/* Portal */}
+            <Route path="/portal" element={<Portal />} />
+            <Route path="/portal/fee/:type" element={<Payment />} />
+            <Route path="/portal/services/:type" element={<Services />} />
+            <Route path="/portal/services/:type/:id" element={<StudentDetails />} />
+            <Route path="/portal/services/result/download" element={<ResultDownload />} />
+            <Route path="/portal/fee/:type/:id" element={<StudentDetails />} />
+            <Route path="/portal/fee/:type/:id/payment/:paymentId" element={<PaymentDetails />} />
+
+            <Route path="*" element={<PageNotFound />} />
+          </>
+        )}
       </Routes>
-      
+
       <Footer />
     </div>
   );

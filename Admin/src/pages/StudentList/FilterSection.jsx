@@ -1,6 +1,6 @@
 import React from "react";
 import * as XLSX from "xlsx";
-import { toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import generateBulkAdmitCards from "./utils/generateBulkAdmitCards";
 import { addMonthlyFee } from "./api";
 
@@ -14,6 +14,13 @@ const formatClassName = (cls) => {
   return cls.charAt(0).toUpperCase() + cls.slice(1);
 };
 
+const getCurrentMonthString = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+};
+
 const FilterSection = ({
   searchTerm,
   setSearchTerm,
@@ -23,26 +30,27 @@ const FilterSection = ({
   setClassFilter,
   streamFilter,
   setStreamFilter,
-  filteredStudents,
+  filteredStudents = [],
   fetchStudents,
   setSelectedStudent,
   admitCardConfig,
   backendUrl,
-  adminToken
+  adminToken,
 }) => {
   const exportToExcel = () => {
+    if (!filteredStudents.length) {
+      toast.error("No students to export.");
+      return;
+    }
     const exportData = filteredStudents.map((student) => ({
-      "First Name": student.firstName,
-      "Last Name": student.lastName,
+      Name: student.name,
       Class: formatClassName(student.class),
       Medium: student.medium,
       Stream: student.stream || "-",
-      "Due Amount": `₹${student.dueAmount || 0}`,
-      "Hostel Due Amount": `₹${student.hostelDueAmount || 0}`,
-      "Roll No": student.rollNo || "-",
-      "Father Name": student.fatherName,
-      "Mother Name": student.motherName,
-      Status: student.admissionStatus || "Pending",
+      "Monthly Due": `₹${student.dues?.monthlyDue?.amount || 0}`,
+      "Hostel Due": `₹${student.dues?.hostelDue?.amount || 0}`,
+      "Registration No": student.registrationNo || "-",
+      Hostel: student.hostel || "No",
     }));
     const worksheet = XLSX.utils.json_to_sheet(exportData);
     const workbook = XLSX.utils.book_new();
@@ -52,29 +60,54 @@ const FilterSection = ({
   };
 
   const handleAddMonthlyFee = async () => {
-    if (!classFilter || !mediumFilter) {
-      toast.warn("Please select both medium and class to add monthly fee");
+    if (!mediumFilter || !classFilter) {
+      toast.error("Please select both medium and class to add monthly fee.");
       return;
     }
     if (mediumFilter === "assamese" && ["11", "12"].includes(classFilter) && !streamFilter) {
-      toast.warn("Please select a stream (Science or Arts) for Assamese Class 11 or 12");
+      toast.error("Please select a stream (Science or Arts) for Assamese Class 11 or 12.");
       return;
     }
-    await addMonthlyFee(backendUrl,adminToken, classFilter, mediumFilter, streamFilter, fetchStudents);
-    setSelectedStudent(null);
+    try {
+      await addMonthlyFee(backendUrl, adminToken, classFilter, mediumFilter, streamFilter, fetchStudents);
+      setSelectedStudent(null);
+    } catch (error) {
+       console.log(error)
+    }
   };
 
   const handleDownloadAllAdmitCards = () => {
     if (!admitCardConfig) {
-      toast.warn("Admit card configuration is not available.");
+      toast.error("Admit card configuration is not available.");
       return;
     }
-    if (filteredStudents.length === 0) {
-      toast.warn("No students found in the filtered list.");
+    if (!filteredStudents.length) {
+      toast.error("No students found in the filtered list.");
       return;
     }
     generateBulkAdmitCards(filteredStudents, admitCardConfig);
   };
+
+  const onMediumChange = (e) => {
+    setMediumFilter(e.target.value);
+    setClassFilter("");
+    setStreamFilter("");
+  };
+
+  const onClassChange = (e) => {
+    setClassFilter(e.target.value);
+    setStreamFilter("");
+  };
+
+  // Check if fees have already been added for the current month
+  const currentMonth = getCurrentMonthString();
+  const isFeeAddedThisMonth = filteredStudents.some(
+    (student) =>
+      student.class === classFilter &&
+      student.medium === mediumFilter &&
+      (mediumFilter !== "assamese" || !["11", "12"].includes(classFilter) || student.stream === streamFilter) &&
+      student.dues?.monthlyDue?.lastUpdatedMonth === currentMonth
+  );
 
   return (
     <div className="filter-section">
@@ -87,63 +120,60 @@ const FilterSection = ({
           className="search-input"
         />
       </div>
+
       <div className="filter-group">
         <label htmlFor="mediumFilter">Medium:</label>
-        <select
-          id="mediumFilter"
-          value={mediumFilter}
-          onChange={(e) => {
-            setMediumFilter(e.target.value);
-            setClassFilter("");
-            setStreamFilter("");
-          }}
-        >
+        <select id="mediumFilter" value={mediumFilter} onChange={onMediumChange}>
           <option value="">All Mediums</option>
           <option value="english">English</option>
           <option value="assamese">Assamese</option>
         </select>
       </div>
-      <div className="filter-group">
-        {mediumFilter && (
-          <>
-            <label htmlFor="classFilter">Class:</label>
-            <select
-              id="classFilter"
-              value={classFilter}
-              onChange={(e) => {
-                setClassFilter(e.target.value);
-                setStreamFilter("");
-              }}
-            >
-              <option value="">All Classes</option>
-              {classOptions[mediumFilter].map((cls) => (
-                <option key={cls} value={cls}>
-                  {formatClassName(cls)}
-                </option>
-              ))}
-            </select>
-          </>
-        )}
-      </div>
-      <div className="filter-group">
-        {mediumFilter === "assamese" && ["11", "12"].includes(classFilter) && (
-          <>
-            <label htmlFor="streamFilter">Stream:</label>
-            <select id="streamFilter" value={streamFilter} onChange={(e) => setStreamFilter(e.target.value)}>
-              <option value="">Select Stream</option>
-              <option value="science">Science</option>
-              <option value="arts">Arts</option>
-            </select>
-          </>
-        )}
-      </div>
+
+      {mediumFilter && (
+        <div className="filter-group">
+          <label htmlFor="classFilter">Class:</label>
+          <select id="classFilter" value={classFilter} onChange={onClassChange}>
+            <option value="">All Classes</option>
+            {classOptions[mediumFilter].map((cls) => (
+              <option key={cls} value={cls}>
+                {formatClassName(cls)}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {mediumFilter === "assamese" && ["11", "12"].includes(classFilter) && (
+        <div className="filter-group">
+          <label htmlFor="streamFilter">Stream:</label>
+          <select id="streamFilter" value={streamFilter} onChange={(e) => setStreamFilter(e.target.value)}>
+            <option value="">Select Stream</option>
+            <option value="science">Science</option>
+            <option value="arts">Arts</option>
+          </select>
+        </div>
+      )}
+
       <div className="student-filter-btns">
-        {classFilter && mediumFilter && (
-          <button onClick={handleAddMonthlyFee} className="add-fee-btn" disabled={filteredStudents.length === 0}>
-            Add Monthly Fee to {formatClassName(classFilter)}
-            {streamFilter ? ` (${streamFilter})` : ""}
-          </button>
-        )}
+        <button
+          onClick={handleAddMonthlyFee}
+          className="add-fee-btn"
+          disabled={
+            !classFilter ||
+            !mediumFilter ||
+            (mediumFilter === "assamese" && ["11", "12"].includes(classFilter) && !streamFilter) ||
+            filteredStudents.length === 0 ||
+            isFeeAddedThisMonth
+          }
+        >
+          {isFeeAddedThisMonth ? (
+            "Already updated monthly fee for this month"
+          ) : (
+            `Add Monthly Fee to ${formatClassName(classFilter)}${streamFilter ? ` (${streamFilter})` : ""}`
+          )}
+        </button>
+
         <button onClick={exportToExcel} className="export-btn" disabled={filteredStudents.length === 0}>
           Export to Excel
         </button>

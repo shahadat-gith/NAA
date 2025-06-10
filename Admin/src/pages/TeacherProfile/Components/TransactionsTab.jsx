@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-const TransactionsTab = ({ transactions, setShowPayForm, setFormData, teacher }) => {
+const TransactionsTab = ({ transactions }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const sortedTransactions = [...transactions].sort((a, b) => 
+  const sortedTransactions = [...transactions].sort((a, b) =>
     new Date(b.createdAt) - new Date(a.createdAt)
   );
 
@@ -26,16 +26,6 @@ const TransactionsTab = ({ transactions, setShowPayForm, setFormData, teacher })
     }
   };
 
-  const handleRecordPayment = (transaction) => {
-    setFormData({
-      amount: transaction.amount || teacher.salary || "",
-      description: "Salary",
-      date: transaction.paymentMonth,
-      status: "Successful",
-    });
-    setShowPayForm(true);
-  };
-
   return (
     <div className="transactions-tab">
       <div className="card">
@@ -52,7 +42,7 @@ const TransactionsTab = ({ transactions, setShowPayForm, setFormData, teacher })
                       <th>Description</th>
                       <th>Status</th>
                       <th>Acknowledged</th>
-                      <th>Action</th>
+                      <th>Acknowledged On</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -68,12 +58,13 @@ const TransactionsTab = ({ transactions, setShowPayForm, setFormData, teacher })
                         </td>
                         <td>{transaction.acknowledged ? "Yes" : "No"}</td>
                         <td>
-                          <button
-                            className="action-btn"
-                            onClick={() => handleRecordPayment(transaction)}
-                          >
-                            Record Payment
-                          </button>
+                          {transaction.acknowledgedOn
+                            ? new Date(transaction.acknowledgedOn).toLocaleDateString('en-GB', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric',
+                            })
+                            : 'N/A'}
                         </td>
                       </tr>
                     ))}

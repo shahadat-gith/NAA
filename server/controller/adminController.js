@@ -1,3 +1,4 @@
+import Event from '../models/events.js';
 import Notice from '../models/noticeModel.js';
 
 export const addNotice = async (req, res) => {
@@ -86,3 +87,52 @@ export const getNotices = async (req, res) => {
     });
   }
 };
+
+export const addEvents = async (req,res) =>{
+  const { title, date, time } = req.body;
+
+  if (!title || !date || !time) {
+    return res.status(400).json({ success: false, message: "All required fields (title,  date, time) must be provided!" });
+  }
+
+  try {
+    const newEvent = new Event({
+      title,
+      date: new Date(date),
+      time,
+    });
+
+    await newEvent.save();
+
+    return res.status(201).json({
+      success: true,
+      message: "New Event Added successfully!",
+    });
+  } catch (error) {
+    console.error('Error adding event:', error);
+    return res.status(500).json({
+      success: false,
+      message: "Error adding event!",
+      error: error.message,
+    });
+  }
+}
+
+export const getEvents = async (req,res) =>{
+  try {
+    const events = await Event.find()
+      .sort({ date: -1 })
+
+    return res.status(200).json({
+      success: true,
+      events,
+    });
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching events!",
+      error: error.message,
+    });
+  }
+}

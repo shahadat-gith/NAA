@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import "./AdmissionProfile.css";
 import { AppContext } from "../../context/AppContext";
 import { AdminContext } from "../../context/AdminContext";

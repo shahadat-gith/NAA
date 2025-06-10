@@ -42,6 +42,12 @@ const TeacherDetails = () => {
     );
   }
 
+  // Format subjects for display
+  const formatSubjects = (mappings) => {
+    if (!mappings || mappings.length === 0) return 'N/A';
+    return mappings.map((m) => m.subject).join(', ');
+  };
+
   return (
     <div className="teacher-details-page">
       <div className="container">
@@ -53,7 +59,7 @@ const TeacherDetails = () => {
           <div className="details-header">
             <div className="details-header-content">
               <h2 className="details-name">{teacher.name}</h2>
-              <p className="details-position">{teacher.subject}</p>
+              <p className="details-position">{formatSubjects(teacher.subjectClassMappings)}</p>
             </div>
           </div>
 
@@ -64,7 +70,6 @@ const TeacherDetails = () => {
                 alt={teacher.name}
                 className="details-image"
               />
-              <div className="details-department-badge">{teacher.department}</div>
             </div>
 
             <div className="details-info">
@@ -82,7 +87,7 @@ const TeacherDetails = () => {
                     <i className="fas fa-briefcase"></i>
                     <div className="details-info-content">
                       <span className="details-info-label">Experience</span>
-                      <span className="details-info-value">{teacher.experience}</span>
+                      <span className="details-info-value">{teacher.experience ? `${teacher.experience} years` : 'N/A'}</span>
                     </div>
                   </div>
                 </div>
@@ -103,8 +108,12 @@ const TeacherDetails = () => {
               </div>
 
               <div className="details-actions">
-                <button className="details-action-btn schedule">Schedule Meeting</button>
-                <button className="details-action-btn message">Send Message</button>
+                <a href={`tel:${teacher.contact}`} className="details-action-btn call">
+                  <i className="fas fa-phone"></i> Call Me
+                </a>
+                <a href={`https://wa.me/${teacher.contact}`} className="details-action-btn whatsapp">
+                  <i className="fab fa-whatsapp"></i> WhatsApp Me
+                </a>
               </div>
             </div>
           </div>

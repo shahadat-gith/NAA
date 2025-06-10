@@ -21,36 +21,34 @@ export const getSettings = async (req, res) => {
 
 export const updateSettings = async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Log incoming request
-
     const { hostelFee, classFees, admitCardConfig } = req.body;
 
     let settings = await Settings.findOne();
     if (!settings) {
-      console.log("No settings found, creating new one");
       settings = new Settings();
     }
 
     // Validate and update hostelFee
     if (hostelFee !== undefined) {
-      if (typeof hostelFee !== "number" || hostelFee < 0) {
-        return res.status(400).json({ success: false, message: "Invalid hostel fee: must be a non-negative number" });
+      if (typeof hostelFee !== "string" || !/^\d+(\.\d+)?$/.test(hostelFee) || Number(hostelFee) < 0) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "Invalid hostel fee: must be a string representing a non-negative number" 
+        });
       }
       settings.hostelFee = hostelFee;
     }
 
     // Validate and update classFees
     if (classFees) {
-      console.log("Processing classFees:", classFees);
-      
       // Validate English medium fees
       if (classFees.english) {
         for (const className in classFees.english) {
           const fee = classFees.english[className];
-          if (typeof fee !== "number" || fee < 0) {
+          if (typeof fee !== "string" || !/^\d+(\.\d+)?$/.test(fee) || Number(fee) < 0) {
             return res.status(400).json({ 
               success: false, 
-              message: `Invalid fee for English ${className}: must be a non-negative number` 
+              message: `Invalid fee for English ${className}: must be a string representing a non-negative number` 
             });
           }
           settings.classFees.english[className] = fee;
@@ -62,22 +60,24 @@ export const updateSettings = async (req, res) => {
         for (const className in classFees.assamese) {
           const fee = classFees.assamese[className];
           if (typeof fee === "object") {
-            if (typeof fee.science !== "number" || fee.science < 0 || 
-                typeof fee.arts !== "number" || fee.arts < 0) {
+            if (
+              typeof fee.science !== "string" || !/^\d+(\.\d+)?$/.test(fee.science) || Number(fee.science) < 0 ||
+              typeof fee.arts !== "string" || !/^\d+(\.\d+)?$/.test(fee.arts) || Number(fee.arts) < 0
+            ) {
               return res.status(400).json({ 
                 success: false, 
-                message: `Invalid fee for Assamese ${className}: science and arts must be non-negative numbers` 
+                message: `Invalid fee for Assamese ${className}: science and arts must be strings representing non-negative numbers` 
               });
             }
             settings.classFees.assamese[className] = {
               science: fee.science,
-              arts: fee.arts
+              arts: fee.arts,
             };
           } else {
-            if (typeof fee !== "number" || fee < 0) {
+            if (typeof fee !== "string" || !/^\d+(\.\d+)?$/.test(fee) || Number(fee) < 0) {
               return res.status(400).json({ 
                 success: false, 
-                message: `Invalid fee for Assamese ${className}: must be a non-negative number` 
+                message: `Invalid fee for Assamese ${className}: must be a string representing a non-negative number` 
               });
             }
             settings.classFees.assamese[className] = fee;
@@ -104,7 +104,6 @@ export const updateSettings = async (req, res) => {
     }
 
     settings.lastUpdated = new Date();
-    console.log("Saving settings:", JSON.stringify(settings, null, 2));
     await settings.save();
 
     res.status(200).json({ success: true, message: "Settings updated successfully", data: settings });
@@ -122,8 +121,8 @@ export const updateSettings = async (req, res) => {
 export const updateHostelFee = async (req, res) => {
   try {
     const { hostelFee } = req.body;
-    if (hostelFee === undefined || typeof hostelFee !== "number" || hostelFee < 0) {
-      return res.status(400).json({ success: false, message: "Invalid hostel fee" });
+    if (hostelFee === undefined || typeof hostelFee !== "string" || !/^\d+(\.\d+)?$/.test(hostelFee) || Number(hostelFee) < 0) {
+      return res.status(400).json({ success: false, message: "Invalid hostel fee: must be a string representing a non-negative number" });
     }
 
     let settings = await Settings.findOne();

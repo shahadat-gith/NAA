@@ -1,64 +1,104 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Academics.css";
-import student1 from "/teacher1.jpg";
-import student2 from "/teacher2.jpg";
 import Header from "../../components/Header/Header";
+import { AppContext } from '../../context/AppContext';
+import axios from "axios";
+import user from '/user.jpg'
 
 const Academics = () => {
+  const { backendUrl } = useContext(AppContext);
+  const [achievers, setAchievers] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const fetchAchievers = async () => {
+    setLoading(true)
+    try {
+      const response = await axios.get(`${backendUrl}/api/achievers/get-achievers`);
+      if (response.data.success) {
+        setAchievers(response.data.achievers);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    fetchAchievers();
+  }, [backendUrl]);
+
+  const openImagePopup = (imageUrl) => {
+    if(!imageUrl){
+      return
+    }
+    
+    setSelectedImage(imageUrl);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeImagePopup = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = 'unset';
+  };
 
   return (
     <div className="academics-page">
-      <div className="bubble-background">
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-        <div className="bubble"></div>
-      </div>
-
       <section className="academics-header">
         <Header title={"Academics 2025"} tagline={"Empowering Excellence in Education"} />
       </section>
-
-      
-
       <section className="academics-section achievers-section">
         <h2 className="section-title">Our Top Achievers</h2>
         <div className="achievers-container">
-          <div className="achiever-wrapper">
-            <div className="achiever-card">
-              <img src={student2} alt="Aliya Khan" className="achiever-photo" />
-              <h3 className="card-name">Aliya Khan</h3>
-              <p className="card-role">Student</p>
-              <p className="card-achievement">Scored 98% in the 2024 Annual Exams</p>
+          {loading ? (
+            <p className="no-achievers">Loading data...</p>
+          ) : achievers?.length > 0 ? (
+            <div className="achievers-table-wrapper">
+              <table className="achievers-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Achievement</th>
+                    <th>Father</th>
+                    <th>Mother</th>
+                    <th>Village</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {achievers.map((achiever, index) => (
+                    <tr key={index} className="achiever-row" onClick={() => openImagePopup(achiever.image)}>
+                      <td className="image-cell">
+                        {achiever.image ? (
+                          <img
+                            src={achiever.image}
+                            alt={achiever.name}
+                            className="achiever-image"
+                          />
+                        ) : (
+                           <img
+                            src={user}
+                            className="achiever-image"
+                          />
+                        )}
+                      </td>
+                      <td>{achiever.name}</td>
+                      <td>{`Scored ${achiever.percentage}% in class ${achiever.className} in ${achiever.year}`}</td>
+                      <td>{achiever.father || 'N/A'}</td>
+                      <td>{achiever.mother || 'N/A'}</td>
+                      <td>{achiever.village || 'N/A'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-          <div className="achiever-wrapper">
-            <div className="achiever-card">
-              <img src={student1} alt="Rahul Sharma" className="achiever-photo" />
-              <h3 className="card-name">Rahul Sharma</h3>
-              <p className="card-role">Student</p>
-              <p className="card-achievement">1st Place in the National Math Olympiad 2024</p>
-            </div>
-          </div>
-          <div className="achiever-wrapper">
-            <div className="achiever-card">
-              <img src={student1} alt="Rahul Sharma" className="achiever-photo" />
-              <h3 className="card-name">Rahul Sharma</h3>
-              <p className="card-role">Student</p>
-              <p className="card-achievement">1st Place in the National Math Olympiad 2024</p>
-            </div>
-          </div>
-          <div className="achiever-wrapper">
-            <div className="achiever-card">
-              <img src={student1} alt="Rahul Sharma" className="achiever-photo" />
-              <h3 className="card-name">Rahul Sharma</h3>
-              <p className="card-role">Student</p>
-              <p className="card-achievement">1st Place in the National Math Olympiad 2024</p>
-            </div>
-          </div>
+          ) : (
+            <p className="no-achievers">No achievers available.</p>
+          )}
         </div>
       </section>
+
 
       <section className="resources-section">
         <h2 className="section-title">Online Learning Resources</h2>
@@ -87,6 +127,18 @@ const Academics = () => {
           </div>
         </div>
       </section>
+
+      {/* Image Popup Modal */}
+      {selectedImage && (
+        <div className="image-popup-modal" onClick={closeImagePopup}>
+          <div className="image-popup-content" onClick={(e) => e.stopPropagation()}>
+            <button className="image-popup-close" onClick={closeImagePopup} title="Close">
+              <i className="fas fa-times"></i>
+            </button>
+            <img src={selectedImage} alt="Large Achiever Image" className="image-popup-img" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

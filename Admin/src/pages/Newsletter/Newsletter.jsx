@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import "./Newsletter.css";
 import { AdminContext } from "../../context/AdminContext";
 

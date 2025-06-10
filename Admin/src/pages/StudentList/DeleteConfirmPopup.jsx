@@ -1,6 +1,7 @@
+// DeleteConfirmPopup.js
 import React from "react";
 import { deleteStudent } from "./api";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 const DeleteConfirmPopup = ({ student, onConfirm, onCancel, backendUrl, adminToken }) => {
   const handleDeleteStudent = async () => {
@@ -13,7 +14,7 @@ const DeleteConfirmPopup = ({ student, onConfirm, onCancel, backendUrl, adminTok
       <div className="popup-content">
         <h4>Confirm Deletion</h4>
         <p>
-          Are you sure you want to delete {student.firstName} {student.lastName}?
+          Are you sure you want to delete {student.name}?
         </p>
         <div className="popup-buttons">
           <button onClick={handleDeleteStudent} className="confirm-btn">

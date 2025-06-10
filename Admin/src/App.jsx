@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from 'react-hot-toast';
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 import Result from "./pages/Result/Result";
 import Teacher from "./pages/Teacher/Teacher";
@@ -21,6 +22,11 @@ import AddStudents from "./pages/AddStudents/AddStudents";
 import Hostel from "./pages/Hostel/Hostel";
 import AdmissionProfile from "./pages/AdmissionProfile/AdmissionProfile";
 import Settings from "./pages/Settings/Settings";
+import AddEvents from "./pages/Events/AddEvents";
+import TaskManager from "./pages/TaskManager/TaskManager";
+import TaskStats from "./pages/TaskManager/TaskStats";
+import Gallery from "./pages/Gallery/Gallery";
+import Achievers from "./pages/Achievers/Achievers";
 
 const App = () => {
   const { adminToken, setAdminToken } = useContext(AdminContext);
@@ -58,6 +64,7 @@ const App = () => {
   return (
     <>
       <ToastContainer />
+      <Toaster position="top-center" toastOptions={{ style: { background: '#253650', color: '#e2e5e9' } }} />
       <AdminLayout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -76,6 +83,12 @@ const App = () => {
           <Route path="/newsletters" element={<Newsletter />} />
           <Route path = "/settings" element = {<Settings/>}/>
           <Route path = "/hostel" element = {<Hostel/>}/>
+          <Route path="/add-events" element = {<AddEvents/>}/>
+          <Route path="/gallery" element = {<Gallery/>}/>
+          <Route path="/achievers" element = {<Achievers/>}/>
+
+          <Route path="/task-manager" element = {<TaskManager/>}/>
+          <Route path="/tasks-info/:teacherId" element = {<TaskStats/>}/>
         </Routes>
       </AdminLayout>
     </>

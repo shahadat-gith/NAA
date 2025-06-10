@@ -1,4 +1,5 @@
 import { teacherModel } from "../models/teacherModel.js";
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import transporter from "../config/nodemailer.js";
 import validator from "validator";
@@ -11,51 +12,81 @@ const __dirname = path.dirname(__filename);
 
 export const addTeacher = async (req, res) => {
   try {
-    const { name, subject, email, contact, department, degree, experience, salary, dueBalance } = req.body;
+    const { name, email, contact, degree, experience, salary, dueBalance, subjectClassMappings } = req.body;
     if (!req.file) {
       return res.status(400).json({ success: false, message: "Teacher image is required!" });
     }
 
     const image = req.file.path;
 
-    if (!name || !subject || !email || !contact || !department || !degree || !experience || !salary) {
+    // Validate required fields
+    if (!name || !email || !contact || !degree || !experience || !salary || !subjectClassMappings) {
       return res.status(400).json({ success: false, message: "All fields are mandatory!" });
     }
 
+    // Validate email
     if (!validator.isEmail(email)) {
       return res.status(400).json({ success: false, message: "Invalid email format!" });
     }
 
+    // Validate contact number
     if (!validator.isMobilePhone(contact, "any", { strictMode: false })) {
       return res.status(400).json({ success: false, message: "Invalid contact number!" });
     }
 
+    // Validate experience (must be a non-negative integer)
+    const experienceNum = Number(experience);
+    if (isNaN(experienceNum) || experienceNum < 0 || !Number.isInteger(experienceNum)) {
+      return res.status(400).json({ success: false, message: "Experience must be a non-negative whole number!" });
+    }
+
+    // Validate subjectClassMappings
+    let parsedMappings;
+    try {
+      parsedMappings = JSON.parse(subjectClassMappings);
+      if (!Array.isArray(parsedMappings) || parsedMappings.length === 0) {
+        return res.status(400).json({ success: false, message: "Subject-class mappings must be a non-empty array!" });
+      }
+      for (const mapping of parsedMappings) {
+        if (!mapping.subject || !Array.isArray(mapping.classes) || mapping.classes.length === 0) {
+          return res.status(400).json({ success: false, message: "Each subject-class mapping must have a subject and at least one class!" });
+        }
+      }
+    } catch (error) {
+      return res.status(400).json({ success: false, message: "Invalid subject-class mappings format!" });
+    }
+
+    // Check for existing teacher
     const existingTeacher = await teacherModel.findOne({ email });
     if (existingTeacher) {
       return res.status(400).json({ success: false, message: "A teacher with this email already exists!" });
     }
 
+    // Generate default password
     const password = "123456";
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create new teacher
     const newTeacher = new teacherModel({
       name,
-      subject,
       email,
       password: hashedPassword,
       contact,
-      department,
       degree,
-      experience,
+      experience: experienceNum,
       salary: Number(salary),
       dueBalance: Number(dueBalance) || 0,
+      subjectClassMappings: parsedMappings,
       image,
       attendance: [],
       transactions: [],
+      notifications: [],
+      tasks: [],
     });
 
     await newTeacher.save();
 
+    // Send welcome email
     try {
       await transporter.sendMail({
         from: process.env.SENDER_EMAIL,
@@ -105,7 +136,7 @@ export const deleteTeacher = async (req, res) => {
 
 export const getAllTeachers = async (req, res) => {
   try {
-    const teachers = await teacherModel.find();
+    const teachers = await teacherModel.find().select('-password'); // Exclude password for security
     return res.status(200).json({ success: true, teachers });
   } catch (error) {
     console.error("Error in getAllTeachers:", error);
@@ -116,7 +147,7 @@ export const getAllTeachers = async (req, res) => {
 export const getOneTeacher = async (req, res) => {
   try {
     const { teacherId } = req.params;
-    const teacher = await teacherModel.findById(teacherId);
+    const teacher = await teacherModel.findById(teacherId).select('-password'); // Exclude password
     if (!teacher) {
       return res.status(404).json({ success: false, message: "Teacher not found!" });
     }
@@ -149,8 +180,8 @@ export const markAttendance = async (req, res) => {
     }
 
     if (!isAdmin && (status === 'Present' || status === 'Late')) {
-      const SCHOOL_LAT = 24.7485085;
-      const SCHOOL_LNG = 92.7879498;
+      const SCHOOL_LAT = 26.1157917;
+      const SCHOOL_LNG = 91.7085933;
       const MAX_RADIUS = 0.3;
 
       if (!latitude || !longitude) {
@@ -170,6 +201,9 @@ export const markAttendance = async (req, res) => {
       };
 
       const distance = haversine(latitude, longitude, SCHOOL_LAT, SCHOOL_LNG);
+      console.log("Latitude:", latitude);
+      console.log("Longitude:", longitude);
+      console.log(`Distance from school: ${distance.toFixed(3)} km`);
       if (distance > MAX_RADIUS) {
         return res.status(403).json({
           success: false,
@@ -178,17 +212,14 @@ export const markAttendance = async (req, res) => {
       }
     }
 
-    // Normalize targetDate to midnight UTC
     let targetDate;
     if (date) {
       const parsedDate = new Date(date);
       if (isNaN(parsedDate)) {
         return res.status(400).json({ success: false, message: "Invalid date format" });
       }
-      // Set to midnight UTC of the same day
       targetDate = new Date(Date.UTC(parsedDate.getUTCFullYear(), parsedDate.getUTCMonth(), parsedDate.getUTCDate()));
     } else {
-      // Fallback to current date in IST, converted to UTC midnight
       const now = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
       const localDate = new Date(now);
       targetDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
@@ -206,8 +237,6 @@ export const markAttendance = async (req, res) => {
       if (!isAdmin) {
         return res.status(400).json({ success: false, message: "Attendance already marked for this date" });
       }
-
-      // Admin overrides existing attendance
       existingAttendance.status = status;
       existingAttendance.location = status !== 'Absent' && latitude && longitude
         ? { latitude, longitude }
@@ -215,7 +244,6 @@ export const markAttendance = async (req, res) => {
       existingAttendance.markedBy = 'Admin';
       existingAttendance.markedAt = new Date();
     } else {
-      // Create new attendance
       teacher.attendance.push({
         date: targetDate,
         status,
@@ -226,7 +254,10 @@ export const markAttendance = async (req, res) => {
     }
 
     await teacher.save();
-    return res.status(200).json({ success: true, message: `Attendance ${existingAttendance ? 'updated' : 'marked'} as ${status}` });
+    return res.status(200).json({
+      success: true,
+      message: `Attendance ${existingAttendance ? 'updated' : 'marked'} as ${status}`,
+    });
 
   } catch (error) {
     console.error("Error in markAttendance:", error);
@@ -336,7 +367,7 @@ export const getAttendanceReport = async (req, res) => {
 export const getAttendanceHistory = async (req, res) => {
   try {
     const teacherId = req.user.id;
-    const teacher = await teacherModel.findById(teacherId);
+    const teacher = await teacherModel.findById(teacherId).select('-password');
     if (!teacher) {
       return res.status(404).json({ success: false, message: "Teacher not found" });
     }
@@ -359,7 +390,7 @@ export const getAllTransactions = async (req, res) => {
   }
 
   try {
-    const teacher = await teacherModel.findById(teacherId);
+    const teacher = await teacherModel.findById(teacherId).select('transactions');
     if (!teacher) {
       return res.status(404).json({ success: false, message: "Teacher not found" });
     }
@@ -399,6 +430,7 @@ export const acknowledgeSalary = async (req, res) => {
     }
 
     transaction.acknowledged = true;
+    transaction.acknowledgedOn = new Date();
     await teacher.save();
 
     return res.status(200).json({ success: true, message: "Transaction acknowledged successfully" });
@@ -464,11 +496,27 @@ export const recordTransaction = async (req, res) => {
 
     teacher.transactions.push(newTransaction);
     teacher.dueBalance = Math.max(0, teacher.dueBalance - Number(amount));
+
+    // Add notification
+    const monthName = new Date(`${paymentMonth}-01`).toLocaleString('default', { month: 'long' });
+
+    const newNotification = {
+      title: "Salary Credited",
+      message: `Your salary for the month of ${monthName} has been credited. Amount: ₹${amount}.`,
+      createdAt: new Date(),
+    };
+
+    teacher.notifications.push(newNotification);
+
     await teacher.save();
 
     const savedTransaction = teacher.transactions[teacher.transactions.length - 1];
 
-    res.status(201).json({ success: true, message: "Payment recorded successfully", transaction: savedTransaction });
+    res.status(201).json({
+      success: true,
+      message: "Payment recorded successfully",
+      transaction: savedTransaction,
+    });
   } catch (error) {
     console.error("Error recording transaction:", error);
     res.status(500).json({ success: false, message: "Server error", error: error.message });
@@ -478,9 +526,47 @@ export const recordTransaction = async (req, res) => {
 export const updateTeacher = async (req, res) => {
   try {
     const { teacherId } = req.params;
-    const updates = req.body;
+    const { name, email, contact, degree, experience, salary, dueBalance, subjectClassMappings } = req.body;
 
-    const teacher = await teacherModel.findByIdAndUpdate(teacherId, updates, { new: true });
+    // Validate inputs if provided
+    if (email && !validator.isEmail(email)) {
+      return res.status(400).json({ success: false, message: "Invalid email format!" });
+    }
+    if (contact && !validator.isMobilePhone(contact, "any", { strictMode: false })) {
+      return res.status(400).json({ success: false, message: "Invalid contact number!" });
+    }
+    if (experience && (isNaN(experience) || experience < 0 || !Number.isInteger(Number(experience)))) {
+      return res.status(400).json({ success: false, message: "Experience must be a non-negative whole number!" });
+    }
+    if (subjectClassMappings) {
+      let parsedMappings;
+      try {
+        parsedMappings = JSON.parse(subjectClassMappings);
+        if (!Array.isArray(parsedMappings)) {
+          return res.status(400).json({ success: false, message: "Subject-class mappings must be an array!" });
+        }
+        for (const mapping of parsedMappings) {
+          if (!mapping.subject || !Array.isArray(mapping.classes)) {
+            return res.status(400).json({ success: false, message: "Each subject-class mapping must have a subject and classes array!" });
+          }
+        }
+      } catch (error) {
+        return res.status(400).json({ success: false, message: "Invalid subject-class mappings format!" });
+      }
+    }
+
+    const updates = {
+      ...(name && { name }),
+      ...(email && { email }),
+      ...(contact && { contact }),
+      ...(degree && { degree }),
+      ...(experience && { experience: Number(experience) }),
+      ...(salary && { salary: Number(salary) }),
+      ...(dueBalance !== undefined && { dueBalance: Number(dueBalance) }),
+      ...(subjectClassMappings && { subjectClassMappings: parsedMappings }),
+    };
+
+    const teacher = await teacherModel.findByIdAndUpdate(teacherId, updates, { new: true, runValidators: true }).select('-password');
     if (!teacher) {
       return res.status(404).json({ success: false, message: "Teacher not found" });
     }
@@ -526,5 +612,32 @@ export const updateProfilePicture = async (req, res) => {
   } catch (error) {
     console.error("Error updating profile picture:", error);
     return res.status(500).json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+export const UpdateDueBalance = async (req, res) => {
+  try {
+    const currentMonth = new Date().toISOString().slice(0, 7); // Format: 'YYYY-MM'
+    const teachers = await teacherModel.find();
+
+    const updatedTeachers = [];
+
+    for (const teacher of teachers) {
+      if (teacher.updateDueBalanceMonth === currentMonth) continue;
+
+      teacher.dueBalance += teacher.salary;
+      teacher.updateDueBalanceMonth = currentMonth;
+      await teacher.save();
+
+      updatedTeachers.push(teacher._id);
+    }
+
+    return res.status(200).json({
+      message: "Due balances updated successfully for eligible teachers.",
+      updatedCount: updatedTeachers.length,
+    });
+  } catch (error) {
+    console.error("Update Due Balance Error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

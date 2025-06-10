@@ -10,16 +10,19 @@ import './Staff.css';
 
 const Staff = () => {
   const { teachers } = useContext(AppContext);
-  const [selectedDepartment, setSelectedDepartment] = useState('All');
+  const [selectedSubject, setSelectedSubject] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [viewMode, setViewMode] = useState('grid');
+  const [viewMode, setViewMode] = useState('list');
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [paginatedTeachers, setPaginatedTeachers] = useState([]);
 
-  const departments = ['All', ...new Set(teachers.map((t) => t.department))];
-
+  // Extract unique subjects from subjectClassMappings
+  const subjects = useMemo(() => {
+    const allSubjects = teachers.flatMap((t) => t.subjectClassMappings.map((m) => m.subject));
+    return ['All', ...new Set(allSubjects)];
+  }, [teachers]);
 
   const sortTeachers = (list) => {
     return [...list].sort((a, b) => {
@@ -28,14 +31,16 @@ const Staff = () => {
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
       }
-      if (sortBy === 'department') {
+      if (sortBy === 'subject') {
+        const subjectA = a.subjectClassMappings[0]?.subject || '';
+        const subjectB = b.subjectClassMappings[0]?.subject || '';
         return sortOrder === 'asc'
-          ? a.department.localeCompare(b.department)
-          : b.department.localeCompare(a.department);
+          ? subjectA.localeCompare(subjectB)
+          : subjectB.localeCompare(subjectA);
       }
       if (sortBy === 'experience') {
-        const expA = parseInt(a.experience) || 0;
-        const expB = parseInt(b.experience) || 0;
+        const expA = Number(a.experience) || 0;
+        const expB = Number(b.experience) || 0;
         return sortOrder === 'asc' ? expA - expB : expB - expA;
       }
       return 0;
@@ -46,21 +51,22 @@ const Staff = () => {
     return sortTeachers(
       teachers
         .filter((t) =>
-          selectedDepartment === 'All' ? true : t.department === selectedDepartment
+          selectedSubject === 'All'
+            ? true
+            : t.subjectClassMappings.some((m) => m.subject === selectedSubject)
         )
         .filter((t) =>
-          [t.name, t.subject, t.department].some((field) =>
+          [t.name, ...t.subjectClassMappings.map((m) => m.subject)].some((field) =>
             field.toLowerCase().includes(searchTerm.toLowerCase())
           )
         )
     );
-  }, [teachers, selectedDepartment, searchTerm, sortBy, sortOrder]);
+  }, [teachers, selectedSubject, searchTerm, sortBy, sortOrder]);
 
-    // Reset pagination when viewMode or filteredTeachers change
-    useEffect(() => {
-      setPaginatedTeachers(filteredTeachers.slice(0, viewMode === 'grid' ? 4 : 5));
-    }, [viewMode, filteredTeachers]);
-  
+  useEffect(() => {
+    setPaginatedTeachers(filteredTeachers.slice(0, viewMode === 'grid' ? 4 : 5));
+  }, [viewMode, filteredTeachers]);
+
   const handlePageDataChange = useCallback((currentItems) => {
     setPaginatedTeachers(currentItems);
     document.querySelector('.teachers-grid')?.scrollIntoView({ behavior: 'smooth' });
@@ -68,7 +74,7 @@ const Staff = () => {
   }, []);
 
   const resetFilters = () => {
-    setSelectedDepartment('All');
+    setSelectedSubject('All');
     setSearchTerm('');
     setSortBy('name');
     setSortOrder('asc');
@@ -88,18 +94,20 @@ const Staff = () => {
           <div className="directory-header">
             <h2 className="section-title">Staff Directory</h2>
             <div className="view-toggle">
+               <button
+                className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
+                onClick={() => setViewMode('list')}
+              >
+                <i className="fas fa-list"></i> List
+              </button>
+              
               <button
                 className={`view-toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
                 onClick={() => setViewMode('grid')}
               >
                 <i className="fas fa-th"></i> Grid
               </button>
-              <button
-                className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
-                onClick={() => setViewMode('list')}
-              >
-                <i className="fas fa-list"></i> List
-              </button>
+             
             </div>
           </div>
 
@@ -108,9 +116,9 @@ const Staff = () => {
             setSearchTerm={setSearchTerm}
             isFilterOpen={isFilterOpen}
             setIsFilterOpen={setIsFilterOpen}
-            departments={departments}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
+            subjects={subjects}
+            selectedSubject={selectedSubject}
+            setSelectedSubject={setSelectedSubject}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortOrder={sortOrder}
@@ -121,7 +129,7 @@ const Staff = () => {
           <ResultsInfo
             currentTeachers={paginatedTeachers}
             filteredTeachers={filteredTeachers}
-            selectedDepartment={selectedDepartment}
+            selectedSubject={selectedSubject}
             searchTerm={searchTerm}
           />
 

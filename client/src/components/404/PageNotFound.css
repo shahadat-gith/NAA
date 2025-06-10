@@ -1,0 +1,71 @@
+/* PageNotFound.css */
+
+.not-found-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  font-family: 'Arial', sans-serif;
+}
+
+.not-found-content {
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 800;
+  color: #e94560;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.clock-icon {
+  font-size: 5rem;
+  color: #5a4c4c;
+  margin: 1.5rem 0;
+  animation: bounce 2s infinite;
+}
+
+.not-found-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #e94560;
+  margin-bottom: 1rem;
+}
+
+.not-found-message {
+  font-size: 1.125rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.back-home-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #e94560;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1.5rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.back-home-button:hover {
+  background-color: #6d031f;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}

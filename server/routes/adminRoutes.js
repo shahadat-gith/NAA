@@ -1,8 +1,8 @@
 import express from "express";
-import { addNotice, getNotices } from "../controller/adminController.js";
+import { addEvents, addNotice, getEvents, getNotices } from "../controller/adminController.js";
 import { authMiddleware } from "../middleware/auth.js";
 import multer from "multer";
-import path from "path";
+
 
 const adminRouter = express.Router();
 
@@ -31,5 +31,7 @@ const upload = multer({
 // Routes
 adminRouter.post("/add-notice", authMiddleware, upload.single("pdf"), addNotice);
 adminRouter.get("/get-notices", getNotices);
+adminRouter.post("/add-event", authMiddleware, addEvents);
+adminRouter.get("/get-events",getEvents);
 
 export default adminRouter;

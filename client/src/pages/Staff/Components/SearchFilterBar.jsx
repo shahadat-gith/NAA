@@ -6,9 +6,9 @@ const SearchFilterBar = ({
   setSearchTerm,
   isFilterOpen,
   setIsFilterOpen,
-  departments,
-  selectedDepartment,
-  setSelectedDepartment,
+  subjects,
+  selectedSubject,
+  setSelectedSubject,
   sortBy,
   setSortBy,
   sortOrder,
@@ -47,9 +47,9 @@ const SearchFilterBar = ({
       {isFilterOpen && (
         <div className="filter-panel">
           <FilterPanel
-            departments={departments}
-            selectedDepartment={selectedDepartment}
-            setSelectedDepartment={setSelectedDepartment}
+            subjects={subjects}
+            selectedSubject={selectedSubject}
+            setSelectedSubject={setSelectedSubject}
             sortBy={sortBy}
             setSortBy={setSortBy}
             sortOrder={sortOrder}

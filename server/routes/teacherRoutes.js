@@ -14,6 +14,7 @@ import {
   getAttendanceReport,
   getAttendanceHistory,
   updateProfilePicture,
+  UpdateDueBalance,
 } from "../controller/teacherController.js";
 import { authMiddleware } from "../middleware/auth.js";
 
@@ -44,5 +45,6 @@ teacherRouter.post("/unmark-attendance", authMiddleware, unmarkAttendance);
 teacherRouter.post("/get-attendance-report", authMiddleware, getAttendanceReport);
 teacherRouter.get("/attendance-history", authMiddleware, getAttendanceHistory);
 teacherRouter.post("/update-profile-picture", upload.single("profilePicture"),updateProfilePicture);
+teacherRouter.put("/update-due-balance", authMiddleware, UpdateDueBalance);
 
 export default teacherRouter;

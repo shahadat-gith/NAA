@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import axios from "axios";
 import { AdminContext } from "../../context/AdminContext";
-import ShowAdmissions from "./ShowAdmissions";
-import AdmissionProfile from "./AdmissionProfile";
+import ShowBoarders from "./ShowBoarders";
+import BoarderProfile from "./BoarderProfile";
 import TransactionDetails from "./TransactionDetails";
 import "./Hostel.css";
 
@@ -14,7 +14,7 @@ const Hostel = () => {
   const [selectedAdmission, setSelectedAdmission] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [paymentAmount, setPaymentAmount] = useState("");
-  const [hostelFee, setHostelFee] = useState(0); // State for hostelFee
+  const [hostelFee, setHostelFee] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,14 +28,13 @@ const Hostel = () => {
       const response = await axios.get(`${backendUrl}/api/students`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
-      console.log("Students response:", response.data);
-      const allStudents = response.data.data || [];
+      const allStudents = response.data.students || [];
       const hostelStudents = allStudents.filter(student => student.hostel === "Yes");
       setAdmissions(hostelStudents);
       setFilteredAdmissions(hostelStudents);
     } catch (err) {
       setError(err.response?.data?.message || "Error fetching hostel students");
-      console.error("Error fetching students:", err);
+      toast.error(err.response?.data?.message || "Error fetching hostel students");
       setAdmissions([]);
       setFilteredAdmissions([]);
     } finally {
@@ -50,12 +49,10 @@ const Hostel = () => {
       const response = await axios.get(`${backendUrl}/api/students/${id}`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
-      console.log("Single student response:", response.data);
-      setSelectedAdmission(response.data.data);
+      setSelectedAdmission(response.data.student);
     } catch (err) {
       setError(err.response?.data?.message || "Error fetching student");
       toast.error(err.response?.data?.message || "Error fetching student");
-      console.error("Error fetching single student:", err);
     } finally {
       setLoading(false);
     }
@@ -67,10 +64,8 @@ const Hostel = () => {
         transaction => transaction.paymentType === "hosteladmissionfee" || transaction.paymentType === "hostelmonthlyfee"
       );
       setTransactions(hostelTransactions);
-      console.log("Filtered hostel transactions:", hostelTransactions);
     } else {
       setTransactions([]);
-      console.log("No payments found for student:", student);
     }
   };
 
@@ -79,13 +74,13 @@ const Hostel = () => {
       const response = await axios.get(`${backendUrl}/api/settings/settings`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
-      console.log("Settings response on mount:", response.data);
       const fee = response.data.data?.hostelFee || 0;
       setHostelFee(fee);
       return fee;
     } catch (err) {
       console.error("Error fetching hostel fee:", err);
-      setHostelFee(0); // Fallback to 0 on error
+      setHostelFee(0);
+      toast.error("Failed to fetch hostel fee");
       return 0;
     }
   };
@@ -100,28 +95,25 @@ const Hostel = () => {
       setLoading(true);
       setError("");
       const response = await axios.post(
-        `${backendUrl}/api/students/payment`,
+        `${backendUrl}/api/students/${studentId}/payments`,
         {
-          studentId,
-          month: `${new Date().toLocaleString("default", { month: "long" })} ${new Date().getFullYear()}`,
           amount: parseInt(paymentAmount),
           paymentType: "hostelmonthlyfee",
           paymentMode: "cash",
+          month: getCurrentMonthString(),
         },
         { headers: { Authorization: `Bearer ${adminToken}` } }
       );
-      console.log("Payment response:", response.data);
       toast.success("Cash payment recorded successfully!");
       setPaymentAmount("");
       setShowCashPopupFor(null);
-      fetchAllAdmissions();
+      await fetchAllAdmissions();
       if (selectedAdmission && selectedAdmission._id === studentId) {
-        fetchSingleAdmission(studentId);
+        await fetchSingleAdmission(studentId);
       }
     } catch (err) {
       setError(err.response?.data?.message || "Error recording payment");
       toast.error(err.response?.data?.message || "Error recording payment");
-      console.error("Error recording payment:", err);
     } finally {
       setLoading(false);
     }
@@ -133,18 +125,16 @@ const Hostel = () => {
       setLoading(true);
       setError("");
       const response = await axios.put(
-        `${backendUrl}/api/students/${id}/hostel/remove`, 
-        null, 
-        { headers: { Authorization: `Bearer ${adminToken}` } } 
+        `${backendUrl}/api/students/${id}/hostel/remove`,
+        {},
+        { headers: { Authorization: `Bearer ${adminToken}` } }
       );
-      console.log("Delete response:", response.data);
       toast.success("Student removed from hostel management!");
       setSelectedAdmission(null);
-      fetchAllAdmissions();
+      await fetchAllAdmissions();
     } catch (err) {
       setError(err.response?.data?.message || "Error removing student");
       toast.error(err.response?.data?.message || "Error removing student");
-      console.error("Error removing student:", err);
     } finally {
       setLoading(false);
     }
@@ -155,49 +145,37 @@ const Hostel = () => {
     try {
       setLoading(true);
       setError("");
-
-      // Fetch the latest hostelFee
-      const settingsResponse = await axios.get(`${backendUrl}/api/settings/settings`, {
-        headers: { Authorization: `Bearer ${adminToken}` },
-      });
-      const fetchedHostelFee = settingsResponse.data.data?.hostelFee || 0;
-
-      if (!fetchedHostelFee) {
-        throw new Error("Hostel fee not configured in settings");
-      }
-
-      setHostelFee(fetchedHostelFee); // Update state with latest value
-
-      await Promise.all(
-        admissions.map(async (student) => {
-          const updateResponse = await axios.put(
-            `${backendUrl}/api/students/${student._id}/due`,
-            { hostelDueAmount: (student.hostelDueAmount || 0) + fetchedHostelFee },
-            { headers: { Authorization: `Bearer ${adminToken}` } }
-          );
-          console.log(`Update response for student ${student._id}:`, updateResponse.data);
-        })
+      const response = await axios.post(
+        `${backendUrl}/api/students/update-hostel-dues`,
+        {},
+        { headers: { Authorization: `Bearer ${adminToken}` } }
       );
-      toast.success(`Due amount of ₹${fetchedHostelFee} added to all hostel students!`);
-      fetchAllAdmissions();
+      toast.success(response.data.message || "Monthly dues added to all hostel students!");
+      await fetchAllAdmissions();
     } catch (err) {
-      console.error("Error in handleAddDue:", err);
-      setError(err.response?.data?.message || err.message || "Error adding due amount");
-      toast.error(err.response?.data?.message || err.message || "Error adding due amount");
+      setError(err.response?.data?.message || "Error adding due amount");
+      toast.error(err.response?.data?.message || "Error adding due amount");
     } finally {
       setLoading(false);
     }
   };
 
+  const getCurrentMonthString = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    return `${year}-${month}`;
+  };
+
   useEffect(() => {
-    fetchHostelFee(); // Fetch hostelFee on mount
+    fetchHostelFee();
     fetchAllAdmissions();
   }, []);
 
   useEffect(() => {
     if (searchTerm) {
       const filtered = admissions.filter((student) =>
-        `${student.firstName} ${student.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+        student.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredAdmissions(filtered);
     } else {
@@ -213,7 +191,7 @@ const Hostel = () => {
 
       {error && <div className="error-message">{error}</div>}
 
-      <ShowAdmissions
+      <ShowBoarders
         admissions={admissions}
         filteredAdmissions={filteredAdmissions}
         searchTerm={searchTerm}
@@ -229,11 +207,11 @@ const Hostel = () => {
         setShowCashPopupFor={setShowCashPopupFor}
         paymentAmount={paymentAmount}
         setPaymentAmount={setPaymentAmount}
-        hostelFee={hostelFee} // Pass hostelFee to ShowAdmissions
+        hostelFee={hostelFee}
       />
 
       {selectedAdmission && (
-        <AdmissionProfile
+        <BoarderProfile
           selectedAdmission={selectedAdmission}
           paymentAmount={paymentAmount}
           setPaymentAmount={setPaymentAmount}

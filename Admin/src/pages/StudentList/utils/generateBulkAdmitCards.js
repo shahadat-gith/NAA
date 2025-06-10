@@ -1,4 +1,6 @@
 import { jsPDF } from "jspdf";
+import principalSignature from "/principal_sign.png"; // Adjust path
+import examIcSignature from "/exam_ic_sign.png"; // Adjust path
 
 // Helper function to capitalize words
 const capitalizeWords = (str) => {
@@ -23,171 +25,222 @@ const generateBulkAdmitCards = (students, admitCardConfig) => {
     format: "a4",
   });
 
+  // Refined minimal color scheme
+  const primaryColor = [34, 47, 62]; // Deep charcoal
+  const accentColor = [78, 100, 123]; // Slate blue
+  const textColor = [75, 75, 75]; // Medium gray
+  const backgroundColor = [255, 255, 255]; // Pure white
+  const dividerColor = [220, 220, 220]; // Light gray for dividers
+  const sectionBg = [248, 248, 248]; // Very light gray for subtle backgrounds
+
   students.forEach((student, index) => {
     if (index > 0) {
       doc.addPage();
     }
 
-    const primaryColor = [0, 51, 102];
-    const backgroundColor = [245, 245, 245];
-
-    // Background and border
+    // Page setup
     doc.setFillColor(...backgroundColor);
-    doc.rect(10, 10, 190, 277, "F");
+    doc.rect(0, 0, 210, 297, "F");
 
-    doc.setDrawColor(...primaryColor);
-    doc.setLineWidth(1);
-    doc.rect(10, 10, 190, 277);
-
-    // Header
+    // Simple header with no corner structures
     doc.setFillColor(...primaryColor);
-    doc.rect(10, 10, 190, 25, "F");
+    doc.rect(0, 0, 210, 28, "F");
 
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(22);
-    doc.setFont("helvetica", "bold");
-    doc.text("NASHIB ALI ACADEMY", 105, 25, { align: "center" });
-
-    // Admit Card Title
-    doc.setFillColor(220, 220, 220);
-    doc.rect(60, 40, 90, 10, "F");
-    doc.setTextColor(...primaryColor);
     doc.setFontSize(16);
     doc.setFont("helvetica", "bold");
-    doc.text("ADMIT CARD", 105, 47, { align: "center" });
+    doc.text("NASHIB ALI ACADEMY", 105, 13, { align: "center" });
 
-    // Student Information Section (extended to fit more fields)
-    doc.setFillColor(240, 240, 240);
-    doc.rect(15, 55, 180, 80, "F");
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("ADMIT CARD", 105, 23, { align: "center" });
 
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.text("STUDENT INFORMATION", 20, 62);
-
-    doc.setDrawColor(...primaryColor);
+    // Subtle horizontal divider below header
+    doc.setDrawColor(...dividerColor);
     doc.setLineWidth(0.5);
-    doc.line(20, 64, 140, 64);
+    doc.line(15, 38, 195, 38);
 
-    doc.setTextColor(60, 60, 60);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
+    // Student Information Section
+    let yPos = 50;
 
-    const leftCol = 20;
-    const rightCol = 80;
-    let yPos = 72;
-    const lineHeight = 7;
-
-    const fullName = `${capitalizeWords(student.firstName)} ${capitalizeWords(student.lastName || "")}`.trim();
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Name:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(fullName, rightCol, yPos);
-    yPos += lineHeight;
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Class:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(capitalizeWords(student.class) || "N/A", rightCol, yPos);
-    yPos += lineHeight;
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Medium:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(capitalizeWords(student.medium) || "N/A", rightCol, yPos);
-    yPos += lineHeight;
-
-    if (student.stream) {
-      doc.setFont("helvetica", "bold");
-      doc.text("Stream:", leftCol, yPos);
-      doc.setFont("helvetica", "normal");
-      doc.text(capitalizeWords(student.stream), rightCol, yPos);
-      yPos += lineHeight;
-    }
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Father's Name:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(capitalizeWords(student.fatherName) || "N/A", rightCol, yPos);
-    yPos += lineHeight;
-
-    doc.setFont("helvetica", "bold");
-    doc.text("Mother's Name:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(capitalizeWords(student.motherName) || "N/A", rightCol, yPos);
-    yPos += lineHeight;
-
-    // Examination Details Section
-    doc.setFillColor(240, 240, 240);
-    doc.rect(15, 140, 180, 60, "F");
-
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(...primaryColor);
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text("EXAMINATION DETAILS", 20, 147);
+    doc.text("STUDENT INFORMATION", 20, yPos);
 
-    doc.setDrawColor(...primaryColor);
-    doc.line(20, 149, 140, 149);
+    // Subtle divider
+    doc.setDrawColor(...accentColor);
+    doc.setLineWidth(0.75);
+    doc.line(20, yPos + 4, 100, yPos + 4);
 
-    doc.setTextColor(60, 60, 60);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
+    // Function to add two-column layout fields
+    const addTwoColumnField = (label1, value1, label2, value2, y) => {
+      // Column 1
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...textColor);
+      doc.text(label1, 25, y);
 
-    yPos = 157;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...primaryColor);
+      doc.text(value1 || "N/A", 25, y + 6);
+
+      // Column 2
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.setTextColor(...textColor);
+      doc.text(label2, 115, y);
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(10);
+      doc.setTextColor(...primaryColor);
+      doc.text(value2 || "N/A", 115, y + 6);
+
+      return y + 16;
+    };
+
+    // Information grid
+    yPos += 15;
+    yPos = addTwoColumnField("NAME", capitalizeWords(student.name), "REGISTRATION NO", student.registrationNo, yPos);
+    yPos = addTwoColumnField("CLASS", capitalizeWords(student.class), "ROLL NO", student.results?.rollNo, yPos);
+    yPos = addTwoColumnField("MEDIUM", capitalizeWords(student.medium), 
+                            "STREAM", student.stream ? capitalizeWords(student.stream) : "N/A", yPos);
+    yPos = addTwoColumnField("FATHER'S NAME", capitalizeWords(student.father), "MOTHER'S NAME", capitalizeWords(student.mother), yPos);
+
+    // Examination details section
+    yPos += 10;
+    const examSectionTop = yPos;
+
+    // Clean left-aligned heading with subtle indicator
+    doc.setDrawColor(...accentColor);
+    doc.setLineWidth(3);
+    doc.line(15, examSectionTop, 15, examSectionTop + 16);
+
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text("Exam:", leftCol, yPos);
-    doc.setFont("helvetica", "normal");
-    doc.text(capitalizeWords(admitCardConfig.examName) || "N/A", rightCol, yPos);
-    yPos += lineHeight;
+    doc.text("EXAMINATION DETAILS", 20, examSectionTop + 5);
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Date:", leftCol, yPos);
+    // Light gray background for exam info
+    doc.setFillColor(...sectionBg);
+    doc.roundedRect(15, examSectionTop + 10, 180, 25, 1, 1, "F");
+
+    // Three-column exam details
+    const col1 = 25;
+    const col2 = 90;
+    const col3 = 155;
+    const detailsY = examSectionTop + 20;
+
+    // Exam name
     doc.setFont("helvetica", "normal");
+    doc.setFontSize(9);
+    doc.setTextColor(...textColor);
+    doc.text("EXAM", col1, detailsY);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryColor);
+    doc.text(capitalizeWords(admitCardConfig.examName) || "N/A", col1, detailsY + 6);
+
+    // Exam date
+    doc.setFont("helvetica", "normal");
+    doc.setTextColor(...textColor);
+    doc.text("DATE", col2, detailsY);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryColor);
     doc.text(
       admitCardConfig.examDate ? new Date(admitCardConfig.examDate).toLocaleDateString("en-IN") : "N/A",
-      rightCol,
-      yPos
+      col2,
+      detailsY + 6
     );
-    yPos += lineHeight;
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Center:", leftCol, yPos);
+    // Exam center
     doc.setFont("helvetica", "normal");
-    doc.text(admitCardConfig.examCenter || "N/A", rightCol, yPos);
+    doc.setTextColor(...textColor);
+    doc.text("CENTER", col3, detailsY);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(...primaryColor);
+    doc.text(capitalizeWords(admitCardConfig.examCenter) || "N/A", col3 - 15, detailsY + 6);
 
-    // Signatures
-    yPos = 210;
+    // Instructions section
+    yPos = examSectionTop + 45;
+
+    // Left-aligned heading with subtle indicator
+    doc.setDrawColor(...accentColor);
+    doc.setLineWidth(3);
+    doc.line(15, yPos, 15, yPos + 16);
+
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text("INSTRUCTIONS", 20, yPos + 5);
+
+    // Light gray background for instructions
+    doc.setFillColor(...sectionBg);
+    doc.roundedRect(15, yPos + 10, 180, 30, 1, 1, "F");
+
+    // Instructions in clean layout
+    doc.setTextColor(...textColor);
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+
+    const instructions = [
+      "Please bring this admit card along with a valid photo ID to the examination center.",
+      "Mobile phones and electronic devices are strictly prohibited in the examination hall.",
+      "Candidates should arrive at the center at least 30 minutes before the examination time."
+    ];
+
+    yPos += 20;
+    instructions.forEach((instruction, index) => {
+      doc.text("•", 25, yPos + (index * 8));
+      doc.text(instruction, 32, yPos + (index * 8));
+    });
+
+    // Signature section with cleaner design
+    yPos += 45;
+
+    // Light signature background
+    doc.setFillColor(...sectionBg);
+    doc.rect(15, yPos - 5, 180, 35, "F");
+
     try {
-      doc.addImage("/principal_sign.png", "PNG", 20, yPos, 60, 20);
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.text("Principal's Signature", 50, yPos + 25, { align: "center" });
+      // Principal signature
+      doc.addImage(principalSignature, "PNG", 40, yPos, 45, 18);
+      doc.setDrawColor(...dividerColor);
+      doc.setLineWidth(0.75);
+      doc.line(40, yPos + 20, 85, yPos + 20);
+      doc.setFontSize(8);
+      doc.setTextColor(...textColor);
+      doc.text("Principal", 62, yPos + 26, { align: "center" });
 
-      doc.addImage("/exam_ic_sign.png", "PNG", 120, yPos, 60, 20);
-      doc.setFontSize(10);
-      doc.text("Academic In-Charge Signature", 150, yPos + 25, { align: "center" });
+      // Exam IC signature
+      doc.addImage(examIcSignature, "PNG", 125, yPos, 45, 18);
+      doc.line(125, yPos + 20, 170, yPos + 20);
+      doc.text("Academic In-Charge", 147, yPos + 26, { align: "center" });
     } catch (error) {
       console.error("Error adding signatures to PDF:", error);
-      doc.setFontSize(10);
       doc.text("Signature Error", 105, yPos + 10, { align: "center" });
     }
 
-    // Footer
-    doc.setFillColor(...primaryColor);
-    doc.rect(10, 270, 190, 17, "F");
+    // Clean footer
+    const footerY = 270;
 
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(10);
+    // Subtle top border for footer
+    doc.setDrawColor(...dividerColor);
+    doc.setLineWidth(0.75);
+    doc.line(15, footerY, 195, footerY);
+
+    // Contact information in footer
+    doc.setTextColor(...primaryColor);
+    doc.setFontSize(9);
     doc.setFont("helvetica", "bold");
-    doc.text("NASHIB ALI ACADEMY", 105, 278, { align: "center" });
 
-    doc.setFontSize(8);
+    doc.setFontSize(7);
     doc.setFont("helvetica", "normal");
+    doc.setTextColor(...textColor);
     doc.text(
-      `Generated on: ${new Date().toLocaleString("en-IN")} | 123 Education Street, Knowledge City - 100001 | Phone: +91 9876543210`,
+      `Generated: ${new Date().toLocaleDateString("en-IN")} | 123 Education Street, Knowledge City | Contact: +91 9876543210`,
       105,
-      284,
+      footerY + 15,
       { align: "center" }
     );
   });

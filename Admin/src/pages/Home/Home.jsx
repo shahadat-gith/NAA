@@ -1,6 +1,7 @@
 // Home.jsx
 import React, { useContext } from "react";
 import "./Home.css";
+import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import { TeacherContext } from "../../context/TeacherContext";
 import { AppContext } from "../../context/AppContext";
@@ -11,11 +12,11 @@ const Home = () => {
   const { pendingAdmissions, approvedAdmissions } = useContext(AppContext);
 
   return (
-    <div className="admin-home-container">
-      <main className="admin-content-home">
-        <section className="stats-overview">
+    <div className="admin-dashboard-container">
+      <main className="admin-dashboard-content">
+        <section className="dashboard-stats-overview">
           <h2>Dashboard Overview</h2>
-          <div className="stats-cards">
+          <div className="dashboard-stats-cards">
             {[
               {
                 title: "Total Teachers",
@@ -46,12 +47,12 @@ const Home = () => {
               //   icon: "fas fa-dollar-sign"
               // }
             ].map((stat, index) => (
-              <div key={index} className="stat-card" style={{ '--card-color': stat.color }}>
-                <i className={`${stat.icon} stat-icon`}></i>
+              <div key={index} className="dashboard-stat-card" style={{ '--card-color': stat.color }}>
+                <i className={`${stat.icon} dashboard-stat-icon`}></i>
                 <h3>{stat.title}</h3>
-                <p className="stat-value" style={{ color: stat.color }}>{stat.value}</p>
+                <p className="dashboard-stat-value" style={{ color: stat.color }}>{stat.value}</p>
                 <button
-                  className="view-btn"
+                  className="dashboard-view-btn"
                   onClick={() => navigate(stat.path)}
                   style={{ backgroundColor: stat.color }}
                 >
@@ -62,9 +63,9 @@ const Home = () => {
           </div>
         </section>
 
-        <section className="quick-actions">
+        <section className="dashboard-quick-actions">
           <h2>Quick Actions</h2>
-          <div className="action-cards">
+          <div className="dashboard-action-cards">
             {[
               { title: "Add New Teacher", path: "/add-teachers", icon: "fas fa-user-plus" },
               { title: "Process Admission", path: "/admin/admission-form", icon: "fas fa-file-alt" },
@@ -72,16 +73,16 @@ const Home = () => {
             ].map((action, index) => (
               <div
                 key={index}
-                className="action-card"
+                className="dashboard-action-card"
                 onClick={() => navigate(action.path)}
               >
                 <i className={action.icon}></i>
                 <h3>{action.title}</h3>
-                <p>{action.title === "Add New Teacher" ? 
-                  "Register a new teacher" : 
-                  action.title === "Process Admission" ? 
-                  "Handle new admissions" : 
-                  "View academy analytics"}
+                <p>{action.title === "Add New Teacher" ?
+                   "Register a new teacher" :
+                   action.title === "Process Admission" ?
+                   "Handle new admissions" :
+                   "View academy analytics"}
                 </p>
               </div>
             ))}

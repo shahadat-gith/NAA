@@ -4,7 +4,7 @@ const TransactionDetails = ({ transactions, fetchTransactions, selectedAdmission
   return (
     <div className="card">
       <div className="card-header">
-        <h3>Transaction Details for {`${selectedAdmission.firstName} ${selectedAdmission.lastName}`}</h3>
+        <h3>Transaction Details for {selectedAdmission.name}</h3>
       </div>
       <div className="card-body">
         {loading ? (
@@ -22,7 +22,6 @@ const TransactionDetails = ({ transactions, fetchTransactions, selectedAdmission
                   <th>Month</th>
                   <th>Amount</th>
                   <th>Payment Type</th>
-                  <th>Payment ID</th>
                   <th>Status</th>
                   <th>Payment Mode</th>
                 </tr>
@@ -30,10 +29,16 @@ const TransactionDetails = ({ transactions, fetchTransactions, selectedAdmission
               <tbody>
                 {transactions.map((transaction) => (
                   <tr key={transaction._id}>
-                    <td>{transaction.month || "N/A"}</td>
+                    <td>
+                      {transaction.paymentDate
+                        ? new Date(transaction.paymentDate).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                        })
+                        : 'N/A'}
+                    </td>
                     <td>₹{transaction.amount}</td>
                     <td>{transaction.paymentType}</td>
-                    <td>{transaction.paymentId || "N/A"}</td>
                     <td>{transaction.status}</td>
                     <td>{transaction.paymentMode}</td>
                   </tr>

@@ -8,12 +8,9 @@ import { AppContext } from "../../context/AppContext";
 const Navbar = () => {
   const { studentToken, teacherToken, studentData, teacherData, clearUserData } = useUserContext();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLoginDropdownOpen, setIsLoginDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const navigate = useNavigate();
 
-  // Determine logged-in user
   const isLoggedIn = studentToken || teacherToken;
   const userData = studentToken ? studentData : teacherToken ? teacherData : null;
   const userRole = studentToken ? "student" : teacherToken ? "teacher" : null;
@@ -23,9 +20,6 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsLoginDropdownOpen(false);
-      }
       if (
         mobileMenuRef.current &&
         !mobileMenuRef.current.contains(event.target) &&
@@ -43,7 +37,6 @@ const Navbar = () => {
     const handleEscKey = (event) => {
       if (event.key === "Escape") {
         setIsMobileMenuOpen(false);
-        setIsLoginDropdownOpen(false);
       }
     };
 
@@ -61,18 +54,12 @@ const Navbar = () => {
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
-    { to: "/notices", label: "Notices" },
-    {to : "/student-portal", label : "Student-portal"},
+    { to: "/portal", label: "Online Portal" },
     { to: "/academics", label: "Academics" },
-    { to: "/admission-portal", label: "Admission", isNew: true },
+    { to: "/curriculum?type=kinder", label: "Curriculum" }, // Updated to use query parameter
     { to: "/staffs", label: "Staffs" },
+    { to: "/gallery", label: "Gallery" },
     { to: "/contact", label: "Contact" },
-  ];
-
-  const loginOptions = [
-    { to: "/login/student", icon: "fas fa-user-graduate", label: "Login as Student" },
-    { to: "/login/teacher", icon: "fas fa-chalkboard-teacher", label: "Login as Teacher" },
-    { to: "/login/admin", icon: "fas fa-user-shield", label: "Login as Admin" },
   ];
 
   const userOptions = [
@@ -80,20 +67,14 @@ const Navbar = () => {
     { to: "/", icon: "fas fa-sign-out-alt", label: "Logout", onClick: handleLogout },
   ];
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-    if (isLoginDropdownOpen) setIsLoginDropdownOpen(false);
-  };
-
-  const toggleLoginDropdown = () => {
-    setIsLoginDropdownOpen(!isLoginDropdownOpen);
-  };
-
   function handleLogout() {
     clearUserData(userRole);
-    setIsLoginDropdownOpen(false);
-    navigate(`/login/${userRole}`);
+    navigate(`/login`);
   }
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <nav className="navbar">
@@ -110,85 +91,44 @@ const Navbar = () => {
           </div>
 
           <div className="desktop-nav">
-            <div className="nav-links">
-              {navLinks.map((link) => (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  className={({ isActive }) =>
-                    `nav-link ${isActive ? "nav-link-active" : ""}`
-                  }
-                >
-                  {typeof link.label === "string" ? link.label : link.label}
-                  {link.isNew && <span className="new-badge">NEW</span>}
-                </NavLink>
-              ))}
-            </div>
+            {!teacherToken && (
+              <div className="nav-links">
+                {navLinks.map((link) => (
+                  <NavLink
+                    key={link.to}
+                    to={link.to}
+                    className={({ isActive }) =>
+                      `nav-link ${isActive ? "nav-link-active" : ""}`
+                    }
+                  >
+                    {typeof link.label === "string" ? link.label : link.label}
+                    {link.isNew && <span className="new-badge">NEW</span>}
+                  </NavLink>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="desktop-login">
-           
-
-            {/* Login Dropdown */}
-            <div className="login-dropdown" ref={dropdownRef}>
-              {isLoggedIn ? (
-                <div className="profile-container">
-                  <button className="profile-toggle" onClick={toggleLoginDropdown}>
-                    <span className="user-role-label">
-                      {userRole === "student" ? "Student" : "Teacher"}
-                    </span>
-                    {profilePicUrl ? (
-                      <img src={profilePicUrl} alt="Profile" className="profile-pic" />
-                    ) : (
-                      <span className="profile-initial">{initialLetter}</span>
-                    )}
-                    <i
-                      className={`fas fa-chevron-${isLoginDropdownOpen ? "up" : "down"} profile-chevron`}
-                    ></i>
-                  </button>
-                  {isLoginDropdownOpen && (
-                    <div className="dropdown-menu">
-                      {userOptions.map((option) => (
-                        <NavLink
-                          key={option.to}
-                          to={option.to}
-                          className="dropdown-item"
-                          onClick={(e) => {
-                            if (option.onClick) {
-                              e.preventDefault();
-                              option.onClick();
-                            }
-                            setIsLoginDropdownOpen(false);
-                          }}
-                        >
-                          <i className={`${option.icon} dropdown-icon`}></i> {option.label}
-                        </NavLink>
-                      ))}
-                    </div>
+            {isLoggedIn ? (
+              <div className="profile-container">
+                <button className="profile-toggle" onClick={() => navigate(`/${userRole}/profile`)}>
+                  <span className="user-role-label">
+                    {userRole === "student" ? "Student" : "Teacher"}
+                  </span>
+                  {profilePicUrl ? (
+                    <img src={profilePicUrl} alt="Profile" className="profile-pic" />
+                  ) : (
+                    <span className="profile-initial">{initialLetter}</span>
                   )}
-                </div>
-              ) : (
-                <>
-                  <button className="login-button" onClick={toggleLoginDropdown}>
-                    Login <i className={`fas fa-chevron-${isLoginDropdownOpen ? "up" : "down"}`}></i>
-                  </button>
-                  {isLoginDropdownOpen && (
-                    <div className="dropdown-menu">
-                      {loginOptions.map((option) => (
-                        <NavLink
-                          key={option.to}
-                          to={option.to}
-                          className="dropdown-item"
-                          onClick={() => setIsLoginDropdownOpen(false)}
-                        >
-                          <i className={`${option.icon} dropdown-icon`}></i> {option.label}
-                        </NavLink>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+                  <i className="fas fa-chevron-down profile-chevron"></i>
+                </button>
+              </div>
+            ) : (
+              <NavLink to="/login" className="login-button">
+                Login
+              </NavLink>
+            )}
           </div>
 
           <div className="mobile-menu-button">
@@ -247,40 +187,34 @@ const Navbar = () => {
                 ))}
               </div>
             ) : (
-              <>
-                <div className="mobile-login-header">
-                  <p className="mobile-login-title">Account Options</p>
-                </div>
-                <div className="mobile-login-options">
-                  {loginOptions.map((option) => (
-                    <NavLink
-                      key={option.to}
-                      to={option.to}
-                      className="mobile-login-item"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      <i className={`${option.icon} mobile-login-icon`}></i> {option.label}
-                    </NavLink>
-                  ))}
-                </div>
-              </>
+              <div className="mobile-login-options">
+                <NavLink
+                  to="/login"
+                  className="mobile-login-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <i className="fas fa-sign-in-alt mobile-login-icon"></i> Login
+                </NavLink>
+              </div>
             )}
           </div>
-          <div className="mobile-nav-links">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={({ isActive }) =>
-                  `mobile-nav-link ${isActive ? "mobile-nav-link-active" : ""}`
-                }
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {typeof link.label === "string" ? link.label : link.label}
-                {link.isNew && <span className="mobile-new-badge">NEW</span>}
-              </NavLink>
-            ))}
-          </div>
+          {!teacherToken && (
+            <div className="mobile-nav-links">
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `mobile-nav-link ${isActive ? "mobile-nav-link-active" : ""}`
+                  }
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {typeof link.label === "string" ? link.label : link.label}
+                  {link.isNew && <span className="mobile-new-badge">NEW</span>}
+                </NavLink>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </nav>

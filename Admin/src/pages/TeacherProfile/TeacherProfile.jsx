@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import "./TeacherProfile.css";
 import { TeacherContext } from "../../context/TeacherContext";
-import OverViewTab from "./components/OverViewTab";
-import TransactionsTab from "./components/TransactionsTab";
+import OverViewTab from "./Components/OverViewTab";
+import TransactionsTab from "./Components/TransactionsTab";
 import { AdminContext } from "../../context/AdminContext";
-import { fetchTeacherData, fetchAttendanceData, fetchTransactions, recordPayment } from "./api";
-import AttendanceTab from "./Components/AttendanceTab";
+import AttendanceTab from "./Components/AttendanceTab"; // Updated import path
+import BankTab from "./Components/BankTab";
+import axios from "axios";
+import toast from 'react-hot-toast';
 
 const TeacherProfile = () => {
   const { adminToken } = useContext(AdminContext);
@@ -25,18 +27,59 @@ const TeacherProfile = () => {
     date: "",
     status: "Successful",
   });
-  const [isClearingDue, setIsClearingDue] = useState(false);
+
+  const fetchTeacherData = async () => {
+    try {
+      const response = await axios.get(`${backendUrl}/api/teacher/teacher/${teacherId}`, {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+      if (response.data.success) {
+        setTeacher(response.data.teacher);
+        setFormData((prev) => ({ ...prev, amount: response.data.teacher.salary?.toString() || "" }));
+      } else {
+        console.error('Teacher fetch failed:', response.data.message);
+        setError(response.data.message || "Failed to fetch teacher data.");
+        setTeacher(null);
+      }
+    } catch (error) {
+      console.error("Error fetching teacher data:", error.message, error.response?.data);
+      setError(error.response?.data?.message || "Error fetching teacher data.");
+      setTeacher(null);
+    }
+  };
+
+  const recordPayment = async (paymentData) => {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/teacher/record-transaction`,
+        paymentData,
+        { headers: { Authorization: `Bearer ${adminToken}` } }
+      );
+      if (response.data.success) {
+        toast.success("Payment recorded successfully!");
+        await fetchTeacherData();
+      } else {
+        setError(response.data.message || "Failed to record payment.");
+        toast.error(response.data.message || "Failed to record payment.");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Error recording payment.";
+      console.error('Record payment error:', message, error.response?.data);
+      setError(message);
+      toast.error(message);
+    }
+  };
 
   useEffect(() => {
-    fetchTeacherData(backendUrl, adminToken, teacherId, setTeacher, setFormData, setError);
+    fetchTeacherData();
   }, [teacherId, backendUrl, adminToken]);
 
   useEffect(() => {
     if (teacher) {
-      fetchAttendanceData(backendUrl, adminToken, teacher._id, setAttendance, setError);
-      fetchTransactions(backendUrl, adminToken, teacher._id, setTransactions, setError);
+      setAttendance(teacher.attendance || []);
+      setTransactions(teacher.transactions || []);
     }
-  }, [teacher, backendUrl, adminToken]);
+  }, [teacher]);
 
   useEffect(() => {
     const selectedTeacher = Array.isArray(teachers)
@@ -44,27 +87,47 @@ const TeacherProfile = () => {
       : teachers[teacherId];
     if (selectedTeacher && (!teacher || teacher._id !== selectedTeacher._id)) {
       setTeacher(selectedTeacher);
-      setFormData((prev) => ({ ...prev, amount: selectedTeacher.salary || "" }));
+      setFormData((prev) => ({ ...prev, amount: selectedTeacher.salary?.toString() || "" }));
+      setAttendance(selectedTeacher.attendance || []);
+      setTransactions(selectedTeacher.transactions || []);
     }
   }, [teacherId, teachers, teacher]);
 
-  const handlePaySalary = async (e, selectedPaymentMonth = null) => {
+  const handleRecordPayment = async (e) => {
     e.preventDefault();
+    if (!showPayForm) {
+      setFormData({
+        amount: teacher?.salary?.toString() || "",
+        description: "Salary",
+        date: new Date().toISOString().slice(0, 7),
+        status: "Successful",
+      });
+      setError("");
+      setShowPayForm(true);
+      return;
+    }
+
     setIsSubmitting(true);
     setError("");
 
-    const description = isClearingDue ? "Due balance" : "Salary";
+    const amount = parseFloat(formData.amount);
+    if (isNaN(amount) || amount <= 0) {
+      setError("Please enter a valid positive amount.");
+      setIsSubmitting(false);
+      toast.error("Please enter a valid positive amount.");
+      return;
+    }
+
     const paymentData = {
       teacherId: teacher._id,
-      amount: parseFloat(formData.amount),
-      description,
-      paymentMonth: formData.date || selectedPaymentMonth || new Date().toISOString().slice(0, 7),
+      amount,
+      description: formData.description,
+      paymentMonth: formData.date || new Date().toISOString().slice(0, 7),
     };
 
     try {
-      await recordPayment(backendUrl, adminToken, paymentData, setTransactions, setTeacher, setError);
+      await recordPayment(paymentData);
       setShowPayForm(false);
-      setIsClearingDue(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -75,20 +138,6 @@ const TeacherProfile = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClearDue = (e) => {
-    e.preventDefault();
-    if (teacher.dueBalance > 0) {
-      setFormData({
-        amount: teacher.dueBalance,
-        description: "Due balance",
-        date: "",
-        status: "Successful",
-      });
-      setIsClearingDue(true);
-      setShowPayForm(true);
-    }
-  };
-
   if (!teacher) {
     return (
       <div className="error-container">
@@ -96,37 +145,6 @@ const TeacherProfile = () => {
       </div>
     );
   }
-
-  const calculateDueBalance = () => {
-    if (!teacher || !teacher.salary || !teacher.createdAt) return 0;
-    const currentDate = new Date();
-    const startDate = new Date(teacher.createdAt);
-    if (isNaN(startDate.getTime())) return 0;
-
-    const monthsSinceStart =
-      (currentDate.getFullYear() - startDate.getFullYear()) * 12 +
-      (currentDate.getMonth() - startDate.getMonth());
-    const salaryPerMonth = teacher.salary || 0;
-
-    const paidMonths = new Set(
-      transactions
-        .filter((t) => t.status === "Successful" && t.paymentMonth)
-        .map((t) => t.paymentMonth)
-    );
-
-    let totalDue = 0;
-    for (let i = 0; i <= monthsSinceStart; i++) {
-      const monthDate = new Date(startDate);
-      monthDate.setMonth(startDate.getMonth() + i);
-      const monthKey = `${monthDate.getFullYear()}-${(monthDate.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}`;
-      if (!paidMonths.has(monthKey) && monthDate <= currentDate) {
-        totalDue += salaryPerMonth;
-      }
-    }
-    return totalDue;
-  };
 
   const monthlyAttendance = attendance.filter(
     (att) =>
@@ -137,6 +155,12 @@ const TeacherProfile = () => {
   const absentCount = monthlyAttendance.filter((att) => att.status === "Absent").length;
   const totalDays = presentCount + absentCount;
   const attendancePercentage = totalDays > 0 ? (presentCount / totalDays) * 100 : 0;
+
+  // Format subjects for display
+  const formatSubjects = (mappings) => {
+    if (!mappings || mappings.length === 0) return "N/A";
+    return mappings.map((mapping) => mapping.subject).join(", ");
+  };
 
   return (
     <div className="teacher-profile-container">
@@ -151,15 +175,10 @@ const TeacherProfile = () => {
             />
           </div>
           <div className="profile-avatar-name">
-            <h1 className="teacher-name">
-              {teacher.name}
-            </h1>
-          </div>
-          <div className="profile-avatar-teacher-subject">
-            <h3 className="teacher-title">{teacher.subject} Teacher</h3>
+            <h1 className="teacher-name">{teacher.name}</h1>
           </div>
           <div className="profile-avatar-teacher-experience">
-            <h4 className="teacher-title">{teacher.experience} years experience</h4>
+            <h4 className="teacher-title">{teacher.experience ? `${teacher.experience} years experience` : "N/A"}</h4>
           </div>
         </div>
 
@@ -171,7 +190,7 @@ const TeacherProfile = () => {
             </div>
             <div className="stat-item">
               <span className="stat-label">Balance Due</span>
-              <span className="stat-value">₹{calculateDueBalance().toLocaleString()}</span>
+              <span className="stat-value">₹{(teacher?.dueBalance || 0).toLocaleString()}</span>
             </div>
             <div className="stat-item">
               <span className="stat-label">Attendance</span>
@@ -183,44 +202,39 @@ const TeacherProfile = () => {
         <div className="pay-action">
           <button
             className="btn btn-pay"
-            onClick={handleClearDue}
-            disabled={isSubmitting || calculateDueBalance() === 0}
+            onClick={handleRecordPayment}
+            disabled={isSubmitting}
           >
-            Clear Due
+            Record Payment
           </button>
         </div>
       </div>
 
       {showPayForm && (
         <div className="card pay-form-card">
-          <h2 className="card-title">{isClearingDue ? "Record Due Payment" : "Record Salary Payment"}</h2>
+          <h2 className="card-title">Record Payment</h2>
           <div className="card-content">
             {error && <p className="error-message">{error}</p>}
-            <form onSubmit={handlePaySalary} className="pay-form">
+            <form onSubmit={handleRecordPayment} className="pay-form">
               <div className="form-group">
                 <label htmlFor="amount">Payment Amount (₹)</label>
                 <input
-                  type="number"
+                  type="text"
                   id="amount"
                   name="amount"
                   value={formData.amount}
                   onChange={handleInputChange}
                   required
                   disabled={isSubmitting}
-                  min="1"
-                  max={isClearingDue ? calculateDueBalance() : undefined}
+                  pattern="[0-9]+(\.[0-9]{1,2})?"
+                  title="Please enter a valid amount (e.g., 50000 or 50000.00)"
                 />
-                {isClearingDue && (
-                  <small className="form-hint">
-                    Enter an amount up to ₹{calculateDueBalance().toLocaleString()}.
-                  </small>
-                )}
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <input
                   type="text"
-                  id="description"
+                  id="description" // Fixed ID to match name
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
@@ -236,14 +250,9 @@ const TeacherProfile = () => {
                   name="date"
                   value={formData.date}
                   onChange={handleInputChange}
-                  required={!isClearingDue}
+                  required
                   disabled={isSubmitting}
                 />
-                {isClearingDue && (
-                  <small className="form-hint">
-                    Optional: Specify a month if clearing a specific period.
-                  </small>
-                )}
               </div>
               <div className="form-actions">
                 <button type="submit" className="btn btn-pay" disabled={isSubmitting}>
@@ -254,7 +263,6 @@ const TeacherProfile = () => {
                   className="btn btn-cancel"
                   onClick={() => {
                     setShowPayForm(false);
-                    setIsClearingDue(false);
                   }}
                   disabled={isSubmitting}
                 >
@@ -277,6 +285,9 @@ const TeacherProfile = () => {
           <li className={activeTab === "transactions" ? "active" : ""}>
             <button onClick={() => setActiveTab("transactions")}>Transactions</button>
           </li>
+          <li className={activeTab === "bank" ? "active" : ""}>
+            <button onClick={() => setActiveTab("bank")}>Bank Details</button>
+          </li>
         </ul>
       </div>
 
@@ -285,7 +296,6 @@ const TeacherProfile = () => {
           <OverViewTab
             teacher={teacher}
             attendance={attendance}
-            transactions={transactions}
             monthlyAttendance={monthlyAttendance}
           />
         )}
@@ -297,16 +307,13 @@ const TeacherProfile = () => {
             attendance={attendance}
             setAttendance={setAttendance}
             setError={setError}
+            setTeacher={setTeacher}
           />
         )}
         {activeTab === "transactions" && (
-          <TransactionsTab
-            transactions={transactions}
-            setShowPayForm={setShowPayForm}
-            setFormData={setFormData}
-            teacher={teacher}
-          />
+          <TransactionsTab transactions={transactions} />
         )}
+        {activeTab === "bank" && <BankTab teacher={teacher} />}
       </div>
     </div>
   );

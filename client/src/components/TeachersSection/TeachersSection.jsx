@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './TeachersSection.css';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
@@ -7,11 +7,32 @@ const TeachersSection = () => {
   const { teachers, backendUrl } = useContext(AppContext);
 
   // Sort teachers by experience (descending) and take top 4
-  const topTeachers = [...teachers].sort((a, b) => {
+  const topTeachers = [...teachers]
+    .sort((a, b) => {
       const expA = parseInt(a.experience) || 0;
       const expB = parseInt(b.experience) || 0;
       return expB - expA;
-    }).slice(0, 4);
+    })
+    .slice(0, 4);
+
+  // Helper function to get primary subject from subjectClassMappings
+  const getPrimarySubject = (subjectClassMappings) => {
+    if (subjectClassMappings && subjectClassMappings.length > 0) {
+      return subjectClassMappings[0].subject || 'Unknown Subject';
+    }
+    return 'Unknown Subject';
+  };
+
+  // Helper function to get a concise list of subjects
+  const getSubjectsList = (subjectClassMappings) => {
+    if (!subjectClassMappings || subjectClassMappings.length === 0) {
+      return 'various subjects';
+    }
+    const subjects = subjectClassMappings.map(mapping => mapping.subject);
+    return subjects.length > 2
+      ? `${subjects.slice(0, 2).join(', ')} and more`
+      : subjects.join(', ');
+  };
 
   return (
     <section className="educators-section">
@@ -35,9 +56,9 @@ const TeachersSection = () => {
                 />
               </div>
               <h3 className="educator-name">{teacher.name}</h3>
-              <p className="educator-role">{teacher.subject}</p>
+              <p className="educator-role">{getPrimarySubject(teacher.subjectClassMappings)}</p>
               <p className="educator-description">
-                Experienced educator with {teacher.experience} in {teacher.subject}.
+                Experienced educator with a {teacher.degree} and {teacher.experience} years teaching {getSubjectsList(teacher.subjectClassMappings)}.
               </p>
             </Link>
           ))}

@@ -1,10 +1,9 @@
-// src/components/Staff/FilterPanel.jsx
 import React from 'react';
 
 const FilterPanel = ({
-  departments,
-  selectedDepartment,
-  setSelectedDepartment,
+  subjects,
+  selectedSubject,
+  setSelectedSubject,
   sortBy,
   setSortBy,
   sortOrder,
@@ -15,16 +14,16 @@ const FilterPanel = ({
     <>
       <div className="filter-options">
         <div className="filter-group">
-          <label htmlFor="department-filter">Department</label>
+          <label htmlFor="subject-filter">Subject</label>
           <select
-            id="department-filter"
-            value={selectedDepartment}
-            onChange={(e) => setSelectedDepartment(e.target.value)}
+            id="subject-filter"
+            value={selectedSubject}
+            onChange={(e) => setSelectedSubject(e.target.value)}
             className="filter-select"
           >
-            {departments.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
+            {subjects.map((subject) => (
+              <option key={subject} value={subject}>
+                {subject}
               </option>
             ))}
           </select>
@@ -43,8 +42,8 @@ const FilterPanel = ({
           >
             <option value="name-asc">Name (A-Z)</option>
             <option value="name-desc">Name (Z-A)</option>
-            <option value="department-asc">Department (A-Z)</option>
-            <option value="department-desc">Department (Z-A)</option>
+            <option value="subject-asc">Subject (A-Z)</option>
+            <option value="subject-desc">Subject (Z-A)</option>
             <option value="experience-desc">Experience (High-Low)</option>
             <option value="experience-asc">Experience (Low-High)</option>
           </select>

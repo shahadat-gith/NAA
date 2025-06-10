@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import axios from "axios";
 import { AdminContext } from "../../context/AdminContext";
 import "./Settings.css";
@@ -12,39 +12,57 @@ const Settings = () => {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("english");
 
-  const [hostelFee, setHostelFee] = useState("4000");
+  const [hostelFee, setHostelFee] = useState("0");
   const [classFees, setClassFees] = useState({
     english: {
-      nursery: "800",
-      kg: "800",
-      "1": "900",
-      "2": "900",
-      "3": "1000",
-      "4": "1000",
-      "5": "1100",
-      "6": "1100",
-      "7": "1200",
-      "8": "1200",
-      "9": "1300",
-      "10": "1300",
+      nursery: "0",
+      kg: "0",
+      "1": "0",
+      "2": "0",
+      "3": "0",
+      "4": "0",
+      "5": "0",
+      "6": "0",
+      "7": "0",
+      "8": "0",
+      "9": "0",
+      "10": "0",
     },
     assamese: {
-      ankur: "700",
-      mukul: "700",
-      "1": "900",
-      "2": "900",
-      "3": "1000",
-      "4": "1000",
-      "5": "1100",
-      "6": "1100",
-      "7": "1200",
-      "8": "1200",
-      "9": "1300",
-      "10": "1300",
-      "11": { science: "1500", arts: "1400" },
-      "12": { science: "1600", arts: "1500" },
+      ankur: "0",
+      mukul: "0",
+      "1": "0",
+      "2": "0",
+      "3": "0",
+      "4": "0",
+      "5": "0",
+      "6": "0",
+      "7": "0",
+      "8": "0",
+      "9": "0",
+      "10": "0",
+      "11": { science: "0", arts: "0" },
+      "12": { science: "0", arts: "0" },
     },
   });
+
+  const examOptions = [
+    'Half Yearly Examination',
+    'Annual Examination',
+    'Unit Test 1',
+    'Unit Test 2',
+    'Unit Test 3',
+    'Unit Test 4',
+  ];
+
+  const sessionOptions = [
+    '2023-2024',
+    '2024-2025',
+    '2025-2026',
+    '2026-2027',
+    '2027-2028',
+  ];
+
   const [admitCardConfig, setAdmitCardConfig] = useState({
     isEnabled: false,
     examName: "",
@@ -60,16 +78,16 @@ const Settings = () => {
 
       if (response.data.success) {
         const settings = response.data.data;
-        setHostelFee(settings.hostelFee.toString());
+        setHostelFee(settings.hostelFee);
         setClassFees({
           english: Object.fromEntries(
-            Object.entries(settings.classFees.english).map(([key, value]) => [key, value.toString()])
+            Object.entries(settings.classFees.english).map(([key, value]) => [key, value])
           ),
           assamese: Object.fromEntries(
             Object.entries(settings.classFees.assamese).map(([key, value]) =>
               typeof value === "object"
-                ? [key, { science: value.science.toString(), arts: value.arts.toString() }]
-                : [key, value.toString()]
+                ? [key, { science: value.science, arts: value.arts }]
+                : [key, value]
             )
           ),
         });
@@ -93,14 +111,12 @@ const Settings = () => {
     setLoadingHostel(true);
     setError("");
     try {
-      const numericFee = hostelFee === "" ? 0 : Number(hostelFee);
       await axios.put(
         `${backendUrl}/api/settings/update`,
-        { hostelFee: numericFee },
+        { hostelFee },
         { headers: { Authorization: `Bearer ${adminToken}` } }
       );
       toast.success("Hostel fee updated successfully");
-      setHostelFee(numericFee.toString());
     } catch (err) {
       setError(err.response?.data?.message || "Error updating hostel fee");
       toast.error(err.response?.data?.message || "Error updating hostel fee");
@@ -114,27 +130,9 @@ const Settings = () => {
     setLoadingClassFees(true);
     setError("");
     try {
-      const numericClassFees = {
-        english: Object.fromEntries(
-          Object.entries(classFees.english).map(([key, value]) => [key, value === "" ? 0 : Number(value)])
-        ),
-        assamese: Object.fromEntries(
-          Object.entries(classFees.assamese).map(([key, value]) =>
-            typeof value === "object"
-              ? [
-                  key,
-                  {
-                    science: value.science === "" ? 0 : Number(value.science),
-                    arts: value.arts === "" ? 0 : Number(value.arts),
-                  },
-                ]
-              : [key, value === "" ? 0 : Number(value)]
-          )
-        ),
-      };
       await axios.put(
         `${backendUrl}/api/settings/update`,
-        { classFees: numericClassFees },
+        { classFees },
         { headers: { Authorization: `Bearer ${adminToken}` } }
       );
       toast.success("Class fees updated successfully");
@@ -209,10 +207,9 @@ const Settings = () => {
               <div className="input-with-icon">
                 <span className="input-icon">₹</span>
                 <input
-                  type="number"
+                  type="text"
                   value={hostelFee}
                   onChange={(e) => setHostelFee(e.target.value)}
-                  min="0"
                   disabled={loadingHostel}
                   required
                 />
@@ -252,17 +249,23 @@ const Settings = () => {
                 <span className="slider"></span>
               </label>
             </div>
-
             <div className="form-group">
               <label>Exam Name</label>
-              <input
-                type="text"
+              <select
                 value={admitCardConfig.examName}
-                onChange={(e) => setAdmitCardConfig({ ...admitCardConfig, examName: e.target.value })}
-                placeholder="e.g., Annual Examination 2025"
+                onChange={(e) =>
+                  setAdmitCardConfig({ ...admitCardConfig, examName: e.target.value })
+                }
                 disabled={loadingAdmitCard}
                 required
-              />
+              >
+                <option value="" disabled>Select an exam</option>
+                {examOptions.map((item, index) => (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">
@@ -338,10 +341,9 @@ const Settings = () => {
                         <div className="input-with-icon">
                           <span className="input-icon">₹</span>
                           <input
-                            type="number"
+                            type="text"
                             value={classFees.english[className]}
                             onChange={(e) => handleClassFeeChange("english", className, null, e.target.value)}
-                            min="0"
                             disabled={loadingClassFees}
                             required
                           />
@@ -366,12 +368,11 @@ const Settings = () => {
                               <div className="input-with-icon">
                                 <span className="input-icon">₹</span>
                                 <input
-                                  type="number"
+                                  type="text"
                                   value={classFees.assamese[className].science}
                                   onChange={(e) =>
                                     handleClassFeeChange("assamese", className, "science", e.target.value)
                                   }
-                                  min="0"
                                   disabled={loadingClassFees}
                                   required
                                 />
@@ -382,12 +383,11 @@ const Settings = () => {
                               <div className="input-with-icon">
                                 <span className="input-icon">₹</span>
                                 <input
-                                  type="number"
+                                  type="text"
                                   value={classFees.assamese[className].arts}
                                   onChange={(e) =>
                                     handleClassFeeChange("assamese", className, "arts", e.target.value)
                                   }
-                                  min="0"
                                   disabled={loadingClassFees}
                                   required
                                 />
@@ -398,10 +398,9 @@ const Settings = () => {
                           <div className="input-with-icon">
                             <span className="input-icon">₹</span>
                             <input
-                              type="number"
+                              type="text"
                               value={classFees.assamese[className]}
                               onChange={(e) => handleClassFeeChange("assamese", className, null, e.target.value)}
-                              min="0"
                               disabled={loadingClassFees}
                               required
                             />

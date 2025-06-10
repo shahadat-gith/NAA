@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react";
 import "./Notice.css";
 import { AdminContext } from "../../context/AdminContext";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import axios from "axios";
 
 const Notice = () => {
@@ -12,7 +12,7 @@ const Notice = () => {
   const [date, setDate] = useState(today);
   const [category, setCategory] = useState("academic");
   const [pdfFile, setPdfFile] = useState(null);
-  const fileInputRef = useRef(null); // Ref to trigger file input click
+  const fileInputRef = useRef(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +48,7 @@ const Notice = () => {
         setDate(today);
         setCategory("academic");
         setPdfFile(null);
+        fileInputRef.current.value = null;
       })
       .catch((error) => {
         console.error("Error adding notice:", error);
@@ -63,7 +64,12 @@ const Notice = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setPdfFile(file);
+    if (file && file.type === "application/pdf") {
+      setPdfFile(file);
+    } else {
+      toast.error("Please select a valid PDF file");
+      setPdfFile(null);
+    }
   };
 
   const triggerFileInput = () => {
@@ -74,55 +80,60 @@ const Notice = () => {
     <div className="admin-content">
       <h1>Notices Management</h1>
       <form onSubmit={handleSubmit} className="notices-form">
-        <div className="form-group">
-          <label htmlFor="notice-title">Title</label>
-          <input
-            type="text"
-            id="notice-title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter notice title"
-            required
-          />
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="notice-title">Title</label>
+            <input
+              type="text"
+              id="notice-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Enter notice title"
+              required
+            />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group">
+            <label htmlFor="notice-date">Date</label>
+            <input
+              type="date"
+              id="notice-date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="notice-category">Category</label>
+            <select
+              id="notice-category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              required
+            >
+              <option value="academic">Academic</option>
+              <option value="administrative">Administrative</option>
+              <option value="extracurricular">Extracurricular</option>
+            </select>
+          </div>
+        </div>
+        <div className="form-row">
+
+          <div className="form-group">
+            <label htmlFor="notice-description">Description</label>
+            <textarea
+              id="notice-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter notice description"
+              required
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="notice-description">Description</label>
-          <textarea
-            id="notice-description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter notice description"
-            required
-          />
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="notice-date">Date</label>
-          <input
-            type="date"
-            id="notice-date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="notice-category">Category</label>
-          <select
-            id="notice-category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="academic">Academic</option>
-            <option value="administrative">Administrative</option>
-            <option value="extracurricular">Extracurricular</option>
-          </select>
-        </div>
-
-        <div className="form-group">
+        <div className="form-group full-width">
           <label htmlFor="notice-pdf">Attach PDF (Optional)</label>
           <div className="custom-file-upload">
             <button type="button" onClick={triggerFileInput} className="upload-btn">
@@ -153,7 +164,6 @@ const Notice = () => {
             {pdfFile && <span className="file-name">{pdfFile.name}</span>}
           </div>
         </div>
-
         <button type="submit" className="premium-button">
           Add Notice
         </button>

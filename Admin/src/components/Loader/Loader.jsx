@@ -1,27 +1,18 @@
-// Loader.jsx
 import React from 'react';
 import './Loader.css';
+import HashLoader from 'react-spinners/HashLoader';
 
-const Loader = ({ 
-  message = "Loading...", 
-  size = "medium", // small, medium, large
-  color = "#007bff" // Default blue color
-}) => {
+const Loader = ({ text = "loading..." }) => {
   return (
-    <div className="loader-overlay">
-      <div className={`loader-container ${size}`}>
-        <div 
-          className="loader-spinner"
-          style={{
-            borderTopColor: color,
-            borderRightColor: 'transparent',
-            borderBottomColor: 'transparent',
-            borderLeftColor: 'transparent'
-          }}
-        ></div>
-        {message && (
-          <p className="loader-message">{message}</p>
-        )}
+    <div className='loader-container-admin'>
+      <div className="loader-content-admin">
+        <HashLoader
+          color="#e94560"
+          size={50}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
+        {text && <div className="loader-text-admin">{text}</div>}
       </div>
     </div>
   );

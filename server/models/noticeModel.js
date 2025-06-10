@@ -35,17 +35,8 @@ const noticeSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  updatedAt: {
-    type: Date,
-    default: Date.now
-  }
 });
 
-// Middleware to update the `updatedAt` field on save
-noticeSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
 
 // Index for efficient querying by category and date
 noticeSchema.index({ category: 1, date: -1 });

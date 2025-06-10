@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { markAttendance, unmarkAttendance } from "../api";
+import axios from "axios";
 
-const AttendanceTab = ({ teacher, backendUrl, adminToken, attendance, setAttendance, setError }) => {
+const AttendanceTab = ({ teacher, backendUrl, adminToken, attendance, setAttendance, setError, setTeacher }) => {
   const [value, onChange] = useState(new Date());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
@@ -16,18 +16,82 @@ const AttendanceTab = ({ teacher, backendUrl, adminToken, attendance, setAttenda
     return `${year}-${month}-${day}`;
   };
 
+  const markAttendance = async (status, dateStr) => {
+    try {
+      const localDate = new Date(dateStr);
+      localDate.setHours(0, 0, 0, 0);
+      const utcDate = new Date(
+        Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate())
+      );
+
+      const response = await axios.post(
+        `${backendUrl}/api/teacher/mark-attendance`,
+        { teacherId: teacher._id, status, date: utcDate.toISOString() },
+        { headers: { Authorization: `Bearer ${adminToken}` } }
+      );
+
+      if (response.data.success) {
+        // Refresh teacher data to sync attendance
+        const teacherResponse = await axios.get(`${backendUrl}/api/teacher/teacher/${teacher._id}`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (teacherResponse.data.success) {
+          setTeacher(teacherResponse.data.teacher);
+          setAttendance(teacherResponse.data.teacher.attendance || []);
+        }
+        toast.success(`Marked as ${status}`);
+      } else {
+        setError(response.data.message || "Failed to mark attendance.");
+        toast.error(response.data.message || "Failed to mark attendance.");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Error marking attendance.";
+      setError(message);
+      toast.error(message);
+      throw new Error(message);
+    }
+  };
+
+  const unmarkAttendance = async (attendanceId) => {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/teacher/unmark-attendance`,
+        { teacherId: teacher._id, attendanceId },
+        { headers: { Authorization: `Bearer ${adminToken}` } }
+      );
+      if (response.data.success) {
+        // Refresh teacher data to sync attendance
+        const teacherResponse = await axios.get(`${backendUrl}/api/teacher/teacher/${teacher._id}`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (teacherResponse.data.success) {
+          setTeacher(teacherResponse.data.teacher);
+          setAttendance(teacherResponse.data.teacher.attendance || []);
+        }
+        toast.success("Attendance unmarked successfully");
+      } else {
+        setError(response.data.message || "Failed to unmark attendance.");
+        toast.error(response.data.message || "Failed to unmark attendance.");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Error unmarking attendance.";
+      setError(message);
+      throw new Error(message);
+    }
+  };
+
   const handleMarkAttendance = async (status, dateStr) => {
     const targetDate = dateStr || formatLocalDate(value);
     try {
-      await markAttendance(backendUrl, adminToken, teacher._id, status, targetDate, setAttendance, setError);
+      await markAttendance(status, targetDate);
     } catch (error) {
       toast.error(error.message || "Error marking attendance.");
     }
   };
 
-  const handleUnmarkAttendance = async (attendanceId, dateStr) => {
+  const handleUnmarkAttendance = async (attendanceId) => {
     try {
-      await unmarkAttendance(backendUrl, adminToken, teacher._id, attendanceId, setAttendance, setError);
+      await unmarkAttendance(attendanceId);
     } catch (error) {
       toast.error(error.message || "Error unmarking attendance.");
     }
@@ -38,7 +102,7 @@ const AttendanceTab = ({ teacher, backendUrl, adminToken, attendance, setAttenda
     if (!action) return;
     const formattedDate = formatLocalDate(new Date(record.date));
     if (action === "unmark") {
-      await handleUnmarkAttendance(record._id, formattedDate);
+      await handleUnmarkAttendance(record._id);
     } else {
       await handleMarkAttendance(action, formattedDate);
     }

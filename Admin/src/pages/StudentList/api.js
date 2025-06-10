@@ -1,4 +1,6 @@
-import { toast } from "react-toastify";
+
+// frontend: api.js
+import { toast } from "react-hot-toast";
 
 export const fetchStudents = async (backendUrl, adminToken, setStudents, setFilteredStudents) => {
   try {
@@ -6,13 +8,11 @@ export const fetchStudents = async (backendUrl, adminToken, setStudents, setFilt
       headers: { Authorization: `Bearer ${adminToken}` },
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Failed to fetch students");
-    if (data.success) {
-      setStudents(data.data);
-      setFilteredStudents(data.data);
-    } else {
+    if (!response.ok || !data.success) {
       throw new Error(data.message || "Failed to fetch students");
     }
+    setStudents(data.students);
+    setFilteredStudents(data.students);
   } catch (err) {
     toast.error(err.message);
   }
@@ -34,63 +34,80 @@ export const fetchAdmitCardConfig = async (backendUrl, adminToken, setAdmitCardC
   }
 };
 
-export const addMonthlyFee = async (backendUrl,adminToken, classFilter, mediumFilter, streamFilter, fetchStudents) => {
+export const addMonthlyFee = async (backendUrl, adminToken, classFilter, mediumFilter, streamFilter, fetchStudents) => {
   try {
-    const response = await fetch(`${backendUrl}/api/students/add-monthly-fee`, {
+    const response = await fetch(`${backendUrl}/api/students/update-monthly-dues`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${adminToken}`,
       },
       body: JSON.stringify({
-        class: classFilter,
+        className: classFilter,
         medium: mediumFilter,
         stream: streamFilter || "",
       }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Failed to add monthly fee");
-    toast.success(
-      `Monthly fee added to all students in ${formatClassName(classFilter)}${
-        streamFilter ? ` (${streamFilter})` : ""
-      }`
-    );
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to add monthly fee");
+    }
+    toast.success(data.message);
     await fetchStudents();
   } catch (err) {
-    toast.error(err.message);
+    toast.error(`Error: ${err.message}`);
+    throw err;
   }
 };
 
-export const recordCashPayment = async (backendUrl, adminToken, student, cashAmount, paymentType, fetchStudents) => {
-  const dueField = paymentType.includes("hostel") ? "hostelDueAmount" : "dueAmount";
-  const currentMonth = `${new Date().toLocaleString("default", { month: "long" })} ${new Date().getFullYear()}`;
+export const recordCashPayment = async (backendUrl, adminToken, student, cashAmount, paymentType, fetchStudents,setLoading) => {
+  const amount = parseInt(cashAmount);
+  const currentMonth = `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
+  setLoading(true)
   try {
-    const response = await fetch(`${backendUrl}/api/students/payment`, {
+
+    const response = await fetch(`${backendUrl}/api/students/${student._id}/payments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${adminToken}`,
       },
       body: JSON.stringify({
-        studentId: student._id,
-        amount: parseInt(cashAmount),
+        amount,
         paymentType,
         month: paymentType.includes("monthly") ? currentMonth : undefined,
         paymentMode: "cash",
       }),
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Failed to record cash payment");
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to record cash payment");
+    }
 
-    toast.success(`Cash payment of ₹${cashAmount} recorded for ${student.firstName} ${student.lastName}`);
+    toast.success(`Cash payment of ₹${amount} recorded for ${student.name}`);
     await fetchStudents();
     return {
       ...student,
-      [dueField]: student[dueField] - cashAmount,
+      dues: {
+        ...student.dues,
+        monthlyDue: {
+          ...student.dues.monthlyDue,
+          amount: paymentType === "monthlyfee"
+            ? Math.max(0, (student.dues?.monthlyDue?.amount || 0) - amount)
+            : student.dues?.monthlyDue?.amount || 0,
+        },
+        hostelDue: {
+          ...student.dues.hostelDue,
+          amount: paymentType === "hostelmonthlyfee"
+            ? Math.max(0, (student.dues?.hostelDue?.amount || 0) - amount)
+            : student.dues?.hostelDue?.amount || 0,
+        },
+      },
       payments: [
         ...student.payments,
-        data.data.transaction || {
-          amount: cashAmount,
+        {
+          _id: data.transaction?._id || new Date().toISOString(),
+          amount,
           paymentType,
           month: paymentType.includes("monthly") ? currentMonth : undefined,
           paymentMode: "cash",
@@ -100,8 +117,11 @@ export const recordCashPayment = async (backendUrl, adminToken, student, cashAmo
       ],
     };
   } catch (err) {
-    toast.error(err.message);
+    toast.error(`Error: ${err.message}`);
     throw err;
+  }
+  finally{
+    setLoading(false)
   }
 };
 
@@ -114,7 +134,9 @@ export const deleteStudent = async (backendUrl, adminToken, studentId) => {
       },
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Failed to delete student");
+    if (!response.ok || !data.success) {
+      throw new Error(data.message || "Failed to delete student");
+    }
     toast.success("Student deleted successfully");
   } catch (err) {
     toast.error(err.message);
@@ -122,8 +144,8 @@ export const deleteStudent = async (backendUrl, adminToken, studentId) => {
   }
 };
 
-// Helper function used in addMonthlyFee
 const formatClassName = (cls) => {
   if (/^\d+$/.test(cls)) return `Class ${cls}`;
   return cls.charAt(0).toUpperCase() + cls.slice(1);
 };
+

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './About.css';
 import Header from '../../components/Header/Header';
 
@@ -65,7 +66,6 @@ const About = () => {
         "We regularly update parents via email, SMS notifications, and our official website. Parents can also attend PTA meetings for further engagement.",
     },
   ];
-  
 
   const [openFaq, setOpenFaq] = useState(null);
 
@@ -75,18 +75,17 @@ const About = () => {
 
   return (
     <div className="about-page">
-     <Header
-        title={"About Nashib Ali Academy"}
-        tagline={"A Legacy of Excellency in Education"}
-
-     />
+      <Header
+        title="About Nashib Ali Academy"
+        tagline="A Legacy of Excellence in Education"
+      />
 
       {/* Our Mission */}
       <section className="about-section mission-section">
         <div className="section-container">
           <h2 className="section-title">Our Mission</h2>
           <p className="section-content">
-            At Nashib Ali Academy, our mission is to empower students with a world-class education that nurtures their intellectual, emotional, and social growth.
+            At Nashib Ali Academy, our mission is to empower students with a world-class education that nurtures their intellectual, emotional, and social growth. We strive to create a dynamic learning environment that fosters creativity, critical thinking, and a passion for lifelong learning.
           </p>
         </div>
       </section>
@@ -96,13 +95,107 @@ const About = () => {
         <div className="section-container">
           <h2 className="section-title">Our History</h2>
           <p className="section-content">
-            Founded in 1995 by visionary educator Nashib Ali, our academy has grown into a prestigious school known for academic excellence.
+            Founded in 2015 by visionary men Abdul Mozid Mondal(Principal) and Sultan Mahmud(Managing Director), our academy has grown into a prestigious institution known for academic excellence and holistic development. Over the years, we have shaped thousands of students into confident, compassionate, and capable individuals, contributing to society with integrity and purpose.
           </p>
         </div>
       </section>
 
+      {/* Our Values */}
+      <section className="about-section values-section">
+        <div className="section-container">
+          <h2 className="section-title">Our Values</h2>
+          <p className="section-content">
+            Our core values guide everything we do, shaping our students into well-rounded individuals ready to face the world.
+          </p>
+          <div className="values-list">
+            <span className="value-item">Integrity</span>
+            <span className="value-item">Excellence</span>
+            <span className="value-item">Community</span>
+            <span className="value-item">Innovation</span>
+          </div>
+        </div>
+      </section>
 
-{/*FAQ SECTION*/}
+      {/* Our Programs */}
+      <section className="about-section programs-section">
+        <div className="section-container">
+          <h2 className="section-title">Our Programs</h2>
+          <p className="section-content">
+            We offer a diverse range of educational programs tailored to meet the needs of students from Nursery to Higher Secondary.
+          </p>
+          <div className="programs-list">
+            <div className="program-item">
+              <div className="program-icon">
+                <i className="fas fa-book"></i>
+              </div>
+              <h3 className="program-title">English Medium Education</h3>
+              <p className="program-description">
+                From Nursery to Class 10, our English medium curriculum emphasizes proficiency in English, Mathematics, General Science, and more through interactive learning.
+              </p>
+            </div>
+            <div className="program-item">
+              <div className="program-icon">
+                <i className="fas fa-language"></i>
+              </div>
+              <h3 className="program-title">Assamese Medium Education</h3>
+              <p className="program-description">
+                From Ankur to Class 10, we provide a culturally rich education focusing on Assamese language and literature alongside core subjects like Mathematics and Social Studies.
+              </p>
+            </div>
+            <div className="program-item">
+              <div className="program-icon">
+                <i className="fas fa-graduation-cap"></i>
+              </div>
+              <h3 className="program-title">Higher Secondary Streams</h3>
+              <p className="program-description">
+                Specialized Arts and Science streams for Classes 11–12, offering subjects like Physics, Chemistry, Biology, Political Science, and Advance Assamese.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Facilities */}
+      <section className="about-section facilities-section">
+        <div className="section-container">
+          <h2 className="section-title">Our Facilities</h2>
+          <p className="section-content">
+            Our state-of-the-art facilities create an environment conducive to learning, creativity, and personal growth.
+          </p>
+          <div className="facilities-list">
+            <div className="facility-item">
+              <div className="facility-icon">
+                <i className="fas fa-building"></i>
+              </div>
+              <h3 className="facility-title">Separate Hostels</h3>
+              <p className="facility-description">
+                Safe and comfortable residential facilities with separate hostels for girls and boys, fostering a supportive community.
+              </p>
+            </div>
+            <div className="facility-item">
+              <div className="facility-icon">
+                <i className="fas fa-flask"></i>
+              </div>
+              <h3 className="facility-title">Modern Laboratories</h3>
+              <p className="facility-description">
+                Well-equipped labs for Chemistry, enabling hands-on learning and experimentation.
+              </p>
+            </div>
+            <div className="facility-item">
+              <div className="facility-icon">
+                <i className="fas fa-book-open"></i>
+              </div>
+              <h3 className="facility-title">Mini Library</h3>
+              <p className="facility-description">
+                A vast collection of textbooks are available in our mini library
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* FAQ Section */}
       <section className="faq-section">
         <div className="section-container">
           <h2 className="faq-title">Frequently Asked Questions</h2>

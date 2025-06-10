@@ -1,0 +1,107 @@
+/* Payment Details Container */
+.payment-details-container {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #F9FAFB;
+}
+
+/* Card Styling */
+.payment-details-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  border: 1px solid #E5E7EB;
+}
+
+/* Header */
+.payment-details-header {
+  font-size: 1.5rem;
+  color: #1F2937;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Table Styling */
+.payment-details-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.payment-details-table tr.row-even {
+  background-color: #F9FAFB;
+}
+
+.payment-details-table tr.row-odd {
+  background-color: white;
+}
+
+.payment-details-table td {
+  padding: 0.75rem;
+  font-size: 0.925rem;
+  color: #1F2937;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.payment-details-table .label-cell {
+  font-weight: 600;
+  width: 40%;
+}
+
+.payment-details-table .value-cell {
+  width: 60%;
+}
+
+.payment-details-table .due-amount {
+  color: #4F46E5;
+  font-weight: 600;
+}
+
+/* Actions */
+.payment-details-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.payment-details-actions .search-results-action-link {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Error Message */
+.error-message {
+  font-size: 0.925rem;
+  color: #6B7280;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .payment-details-card {
+    padding: 1.5rem;
+  }
+
+  .payment-details-table td {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .payment-details-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .payment-details-actions .search-results-action-link {
+    width: 100%;
+    text-align: center;
+  }
+}

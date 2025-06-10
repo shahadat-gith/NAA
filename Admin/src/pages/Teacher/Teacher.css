@@ -1,4 +1,33 @@
-/* Teacher.css */
+:root {
+  /* Background colors */
+  --form-bg: #243552;
+  --input-bg: #1b2438;
+  --hover-bg: #2a3a54;
+  --disabled-bg: #364564;
+
+  /* Text colors */
+  --text-primary: #ffffff;
+  --text-secondary: #d0d5e0;
+  --text-muted: #8a94a6;
+
+  /* Accent colors */
+  --primary-accent: #e94560; /* Primary color (replaces blue) */
+  --primary-accent-hover: #d13950; /* Darker shade for hover */
+  --success-green: #22c55e;
+  --error-red: #ff6b6b;
+  --error-red-hover: #ff5252;
+
+  /* Border colors */
+  --border-default: #3a4d6b;
+
+  /* Shadow colors */
+  --primary-accent-shadow: rgba(233, 69, 96, 0.2); /* Shadow for primary accent */
+  --primary-accent-shadow-dark: rgba(233, 69, 96, 0.3); /* Darker shadow for primary accent */
+
+  /* Spinner colors */
+  --spinner-border: rgba(255, 255, 255, 0.3);
+}
+
 .admin-content-teacher {
   padding: 24px;
   max-width: 900px;
@@ -6,19 +35,19 @@
 }
 
 .teachers-form {
-  background-color: #243552;
+  background-color: var(--form-bg);
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .teachers-form h1 {
-  color: #ffffff;
+  color: var(--text-primary);
   font-size: 28px;
   margin-bottom: 30px;
   font-weight: 600;
   text-align: center;
-  border-bottom: 1px solid #3a4d6b;
+  border-bottom: 1px solid var(--border-default);
   padding-bottom: 15px;
 }
 
@@ -37,12 +66,12 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #d0d5e0;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
 .form-group label span {
-  color: #ff6b6b;
+  color: var(--error-red);
   margin-left: 3px;
 }
 
@@ -51,9 +80,9 @@
   width: 100%;
   padding: 12px 16px;
   border-radius: 6px;
-  border: 1px solid #3a4d6b;
-  background-color: #1b2438;
-  color: #ffffff;
+  border: 1px solid var(--border-default);
+  background-color: var(--input-bg);
+  color: var(--text-primary);
   font-family: "Poppins", sans-serif;
   font-size: 14px;
   transition: all 0.3s ease;
@@ -62,19 +91,191 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #4d7bff;
-  box-shadow: 0 0 0 2px rgba(77, 123, 255, 0.2);
+  border-color: var(--primary-accent);
+  box-shadow: 0 0 0 2px var(--primary-accent-shadow);
 }
 
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
 
+/* Subject & Class Assignment Section */
+.subject-class-section {
+  margin: 30px 0;
+  padding: 25px;
+  background-color: var(--input-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+}
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-header h3 {
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.add-mapping-btn {
+  background-color: var(--primary-accent);
+  color: var(--text-primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 26px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: "Poppins", sans-serif;
+}
+
+.add-mapping-btn:hover {
+  background-color: var(--primary-accent-hover);
+}
+
+.subject-class-mapping {
+  background-color: var(--form-bg);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid var(--border-default);
+}
+
+.mapping-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.mapping-header h4 {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.remove-mapping-btn {
+  background-color: var(--error-red);
+  color: var(--text-primary);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.remove-mapping-btn:hover {
+  background-color: var(--error-red-hover);
+}
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.class-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 12px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-default);
+  border-radius: 28px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-align: center;
+}
+
+.class-button:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--primary-accent);
+}
+
+.class-button.selected {
+  background-color: var(--primary-accent);
+  border-color: var(--primary-accent-hover);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.class-button.selected::after {
+  content: '\2713'; /* Checkmark symbol */
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+.class-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-accent-shadow-dark);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .classes-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+  }
+
+  .class-button {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .classes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .class-button {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 16px;
+}
 
 /* Add button styling */
 .add-button {
-  background-color: #4d7bff;
-  color: white;
+  background-color: var(--primary-accent);
+  color: var(--text-primary);
   border: none;
-  border-radius: 6px;
+  border-radius: 26px;
   padding: 14px 28px;
   font-size: 16px;
   font-weight: 500;
@@ -88,12 +289,12 @@
   align-items: center;
 }
 
-.add-button:hover {
-  background-color: #3d6aee;
+.add-button:hover:not(:disabled) {
+  background-color: var(--primary-accent-hover);
 }
 
 .add-button:disabled {
-  background-color: #364564;
+  background-color: var(--disabled-bg);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -103,9 +304,9 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
+  border: 3px solid var(--spinner-border);
   border-radius: 50%;
-  border-top-color: #fff;
+  border-top-color: var(--text-primary);
   animation: spin 1s ease-in-out infinite;
 }
 
@@ -135,5 +336,17 @@
   .add-button {
     padding: 12px 20px;
     font-size: 15px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
+  .mapping-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
   }
 }
