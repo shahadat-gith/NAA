@@ -81,9 +81,9 @@ const TaskManager = () => {
             }
             console.log('Assign Task Response:', response.data); // Debug
             if (response.data.success) {
-                toast.success(isAssignToAll 
-                    ? 'Task assigned to all teachers successfully!' 
-                    : `Task assigned to ${selectedTeacher.name} successfully!`, 
+                toast.success(isAssignToAll
+                    ? 'Task assigned to all teachers successfully!'
+                    : `Task assigned to ${selectedTeacher.name} successfully!`,
                     { id: toastId }
                 );
                 closeTaskForm();
@@ -176,17 +176,19 @@ const TaskManager = () => {
                         </div>
 
                         <div className="modal-body">
-                            <div className="form-group">
-                                <label>Task Name</label>
-                                <input
-                                    type="text"
-                                    name="taskName"
-                                    value={taskForm.taskName}
-                                    onChange={handleInputChange}
-                                    placeholder="Task name"
-                                />
-                            </div>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Task Name</label>
+                                    <input
+                                        type="text"
+                                        name="taskName"
+                                        value={taskForm.taskName}
+                                        onChange={handleInputChange}
+                                        placeholder="Task name"
+                                    />
+                                </div>
 
+                            </div>
                             <div className="form-row">
                                 <div className="form-group">
                                     <label>Priority</label>
@@ -213,30 +215,33 @@ const TaskManager = () => {
                                     />
                                 </div>
                             </div>
+                            <div className="form-row">
+                                <div className="form-group">
+                                    <label>Description</label>
+                                    <textarea
+                                        name="taskDescription"
+                                        value={taskForm.taskDescription}
+                                        onChange={handleInputChange}
+                                        placeholder="Task description"
+                                        rows="3"
+                                    />
+                                </div>
 
-                            <div className="form-group">
-                                <label>Description</label>
-                                <textarea
-                                    name="taskDescription"
-                                    value={taskForm.taskDescription}
-                                    onChange={handleInputChange}
-                                    placeholder="Task description"
-                                    rows="3"
-                                />
+                                <div className="form-group">
+                                    <label>Assigned By</label>
+                                    <select
+                                        name="assignedBy"
+                                        value={taskForm.assignedBy}
+                                        onChange={handleInputChange}
+                                    >
+                                        {assignedByOptions.map(option => (
+                                            <option key={option} value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
 
-                            <div className="form-group">
-                                <label>Assigned By</label>
-                                <select
-                                    name="assignedBy"
-                                    value={taskForm.assignedBy}
-                                    onChange={handleInputChange}
-                                >
-                                    {assignedByOptions.map(option => (
-                                        <option key={option} value={option}>{option}</option>
-                                    ))}
-                                </select>
-                            </div>
+
                         </div>
 
                         <div className="modal-footer">
