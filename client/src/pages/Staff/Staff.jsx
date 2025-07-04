@@ -156,7 +156,7 @@ const Staff = () => {
                 <i className="fas fa-frown fa-3x"></i>
               </div>
               <h3>No teachers found</h3>
-              <p>We couldn't find any teachers matching your criteria</p>
+              <p>We couldn't find any teachers</p>
               <button className="reset-all-btn" onClick={resetFilters}>
                 Reset All Filters
               </button>

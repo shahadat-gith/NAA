@@ -39,8 +39,20 @@ const TeachersSection = () => {
       <div className="educators-container">
         <h2 className="educators-title">
           Our Top Educators
-          <span className="title-underline"></span>
+          <span className="naa-title-underline"></span>
         </h2>
+
+        <div className="server-error-message">
+          {teachers.length === 0 && (
+           <div className="no-results">
+              <div className="no-results-icon">
+                <i className="fas fa-frown fa-3x"></i>
+              </div>
+              <h3>No teachers found</h3>
+              <p>We couldn't find any teachers</p>
+            </div>
+          )}
+        </div>
         <div className="educators-list">
           {topTeachers.map((teacher, index) => (
             <Link

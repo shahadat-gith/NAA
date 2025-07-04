@@ -14,16 +14,7 @@
   position: relative;
 }
 
-.title-underline {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 50px;
-  height: 3px;
-  background: #e94560;
-  display: block;
-}
+
 
 /* Curriculum Cards */
 .curriculum-cards {

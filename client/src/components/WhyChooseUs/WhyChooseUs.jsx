@@ -32,7 +32,7 @@ const WhyChooseUs = () => {
       <div className="why-choose-us-container">
         <h2 className="why-choose-us-title">
           Why Our Schools are the Right Fit for Your Child?
-          <span className="title-underline"></span>
+          <span className="naa-title-underline"></span>
         </h2>
         <div className="reasons-list">
           {reasonsData.map((item, index) => (

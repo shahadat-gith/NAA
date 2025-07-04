@@ -42,7 +42,7 @@ const Curriculum = () => {
     <section className="curriculum-section">
       <h2 className="curriculum-title">
         Standard Curriculum
-        <span className="title-underline"></span>
+        <span className="naa-title-underline"></span>
       </h2>
       <div className="curriculum-cards">
         {curriculumData.map((item, index) => (

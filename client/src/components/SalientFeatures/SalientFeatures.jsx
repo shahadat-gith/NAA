@@ -31,7 +31,7 @@ const SalientFeatures = () => {
       <div className="salient-features-container">
         <h2 className="salient-features-title">
           Salient Features
-          <span className="title-underline"></span>
+          <span className="naa-title-underline"></span>
         </h2>
         <div className="features-list">
           {features.map((feature, index) => (
