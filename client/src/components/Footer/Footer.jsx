@@ -59,15 +59,15 @@ const Footer = () => {
           <ul className="footer-contact">
             <li>
               <i className="fas fa-map-marker-alt"></i>
-              <span>123 Education Lane, Knowledge City, 12345</span>
+              <span>Shimulbari Mahachara Chariali, Barpeta, Assam</span>
             </li>
             <li>
               <i className="fas fa-phone"></i>
-              <span>+1 (555) 123-4567</span>
+              <span>+91 6001-416724</span>
             </li>
             <li>
               <i className="fas fa-envelope"></i>
-              <span>info@nashibaliacademy.edu</span>
+              <span>nashibaliacademy.offl@gmail.com</span>
             </li>
           </ul>
         </div>
