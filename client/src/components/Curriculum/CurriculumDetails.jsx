@@ -119,11 +119,6 @@ const CurriculumDetails = () => {
                 </div>
               </div>
 
-              <div className="call-to-action">
-                <h3>Ready to enroll your child?</h3>
-                <p>Contact our admissions office to schedule a visit or learn more about our programs.</p>
-                <Link to="/contact" className="cta-button">Contact Admissions</Link>
-              </div>
             </div>
           </>
         ) : (
