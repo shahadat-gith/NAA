@@ -66,7 +66,7 @@ const TeacherDetails = () => {
           <div className="details-body">
             <div className="details-image-container">
               <img
-                src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+                src={teacher.image}
                 alt={teacher.name}
                 className="details-image"
               />

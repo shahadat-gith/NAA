@@ -20,7 +20,7 @@ const TeacherCard = ({ teacher }) => {
     <div className="teacher-card" onClick={handleClick}>
       <div className="teacher-card-image-container">
         <img
-          src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+          src={teacher.image}
           alt={teacher.name}
           className="teacher-card-image"
           loading="lazy"

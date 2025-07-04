@@ -144,11 +144,7 @@ const Home = () => {
           </div>
           <div className="teacher-profile">
             <img
-              src={
-                teacher?.image
-                  ? `${backendUrl}/${teacher.image}`
-                  : '/user.jpg'
-              }
+              src={teacher.image}
               alt="Teacher"
               className="welcome-profile-pic"
               onError={(e) => (e.target.src = '/user.jpg')}

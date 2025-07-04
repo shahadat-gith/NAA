@@ -242,7 +242,7 @@ const TeacherNavbar = () => {
                 aria-haspopup="true"
               >
                 <img
-                  src={teacher.image ? `${backendUrl}/${teacher.image}` : '/default-avatar.png'}
+                  src={teacher.image}
                   alt={teacher.name || 'Teacher'}
                   className="tnav__profile-photo"
                   onError={(e) => (e.target.src = '/default-avatar.png')}
@@ -290,7 +290,7 @@ const TeacherNavbar = () => {
           <div className="tnav__mobile-header">
             <div className="tnav__mobile-teacher">
               <img
-                src={teacher.image ? `${backendUrl}/${teacher.image}` : '/default-avatar.png'}
+                src={teacher.image}
                 alt={teacher.name || 'Teacher'}
                 className="tnav__mobile-photo"
                 onError={(e) => (e.target.src = '/default-avatar.png')}

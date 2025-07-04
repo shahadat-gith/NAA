@@ -19,7 +19,7 @@ const TeacherListItem = ({ teacher, index }) => {
     <div className="teacher-list-item" onClick={handleClick}>
       <div className="teacher-list-image">
         <img
-          src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+          src={teacher.image}
           alt={teacher.name}
           loading="lazy"
         />
