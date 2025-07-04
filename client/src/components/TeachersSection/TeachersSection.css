@@ -1,5 +1,5 @@
 .educators-section {
-  padding: 5rem 2rem;
+  padding: 5rem 1rem;
   background: linear-gradient(135deg, #f5f7fa 0%, #e6e6e6 100%);
   position: relative;
   overflow: hidden;
@@ -40,17 +40,15 @@
   font-size: 2.8rem;
   font-weight: 700;
   color: #1a1a2e;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
   position: relative;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .title-underline {
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  margin: 0.5rem auto;
   width: 60px;
   height: 4px;
   background: #e94560;
@@ -58,79 +56,88 @@
 }
 
 .educators-list {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 1.5rem;
   justify-content: center;
-  flex-wrap: nowrap; /* Ensures all 4 educators stay in a single row */
-  gap: 2rem; /* Reduced gap to fit all educators comfortably */
-  overflow-x: auto; /* Adds horizontal scrolling if needed on smaller screens */
-  padding-bottom: 1rem; /* Space for scrollbar */
+  padding: 0 1rem;
 }
 
 .educator-card {
-  flex: 0 0 250px; /* Fixed width for each educator card to fit 4 in a row */
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.6s ease forwards;
   animation-delay: calc(0.2s * var(--index));
-  text-decoration: none; /* Remove underline from Link */
-  color: inherit; /* Inherit text color */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.educator-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.3);
 }
 
 .educator-image {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .educator-image img {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  border: 4px solid #fff;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
 }
 
 .educator-card:hover .educator-image img {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
 }
 
 .educator-name {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #1a1a2e;
   margin-bottom: 0.5rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .educator-role {
   font-size: 1rem;
   font-weight: 500;
   color: #e94560;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-style: italic;
 }
 
 .educator-description {
   font-size: 0.9rem;
   color: #666;
-  line-height: 1.5;
+  line-height: 1.4;
+  text-align: center;
 }
 
 .cta-container {
-  margin-top: 4rem;
-  text-align: center;
+  margin-top: 3rem;
 }
 
 .cta-link {
   display: inline-block;
-  padding: 1rem 3rem;
+  padding: 0.8rem 2rem;
   background: #e94560;
   color: #fff;
   text-decoration: none;
-  border-radius: 30px;
-  font-size: 1.1rem;
+  border-radius: 25px;
+  font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;
   transition: all 0.3s ease;
@@ -138,11 +145,11 @@
 
 .cta-link:hover {
   background: #d32f4a;
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
 }
 
-/* Fade-in Animation */
+/* Animation */
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -153,11 +160,8 @@
 /* Responsive Design */
 @media (max-width: 1024px) {
   .educators-list {
-    gap: 1.5rem;
-  }
-
-  .educator-card {
-    flex: 0 0 200px; /* Slightly smaller width for medium screens */
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
+    gap: 1.25rem;
   }
 }
 
@@ -167,13 +171,13 @@
   }
 
   .educators-list {
-    flex-wrap: wrap; /* Stack educators vertically on smaller screens */
-    justify-content: center;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   .educator-card {
-    flex: 1 1 calc(50% - 1rem); /* 2 educators per row */
-    max-width: 300px;
+    max-width: 350px;
+    margin: 0 auto;
   }
 }
 
@@ -182,34 +186,25 @@
     font-size: 1.8rem;
   }
 
-  .educators-list {
-    gap: 2rem;
-  }
-
-  .educator-card {
-    flex: 1 1 100%; /* 1 educator per row */
-    max-width: 300px;
+  .educator-image img {
+    width: 80px;
+    height: 80px;
   }
 
   .educator-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .educator-role {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .educator-description {
     font-size: 0.85rem;
   }
 
-  .educator-image img {
-    width: 100px;
-    height: 100px;
-  }
-
   .cta-link {
-    padding: 0.75rem 2rem;
-    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
   }
 }

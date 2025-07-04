@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import './TeachersSection.css';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
@@ -47,11 +47,11 @@ const TeachersSection = () => {
               key={index}
               to={`/staffs/teacher?id=${teacher._id}`}
               className="educator-card"
-              style={{ '--index': index }} // For animation delay
+              style={{ '--index': index }}
             >
               <div className="educator-image">
                 <img
-                  src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+                  src={teacher.image}
                   alt={teacher.name}
                 />
               </div>
