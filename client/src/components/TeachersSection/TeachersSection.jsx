@@ -51,7 +51,7 @@ const TeachersSection = () => {
             >
               <div className="educator-image">
                 <img
-                  src={`${backendUrl}/${teacher.image.replace('\\', '/')}`}
+                  src={teacher.image}
                   alt={teacher.name}
                 />
               </div>
