@@ -30,7 +30,6 @@ import ResultDownload from './pages/Portal/Result/ResultDownload';
 import TeacherHome from './Teacher Dashboard/Pages/Home/Home';
 import TeacherAttendance from './Teacher Dashboard/Pages/Attendance/Attendance';
 import TeacherSalary from './Teacher Dashboard/Pages/Salary/Salary';
-import TeacherBank from './Teacher Dashboard/Pages/Bank/Bank';
 
 // Not Found Page
 import PageNotFound from './components/404/PageNotFound';
@@ -58,7 +57,6 @@ const App = () => {
             <Route path="/teacher" element={<TeacherHome />} />
             <Route path="/teacher/attendance" element={<TeacherAttendance />} />
             <Route path="/teacher/salary" element={<TeacherSalary />} />
-            <Route path="/teacher/bank" element={<TeacherBank />} />
             <Route path="*" element={<PageNotFound />} />
           </>
         ) : (

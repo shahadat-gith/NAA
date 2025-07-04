@@ -71,54 +71,59 @@ const TeacherAttendance = () => {
       toast.error('Error fetching attendance history');
     }
   };
-
-  const handleMarkAttendance = async () => {
-    setIsMarking(true);
-    try {
-      if (!navigator.geolocation) {
-        throw new Error('Geolocation not supported');
-      }
-
-      const position = await getCurrentLocation();
-      const { latitude, longitude } = position.coords;
-
-      const now = new Date();
-      const localDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-      localDate.setHours(0, 0, 0, 0);
-      const utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
-
-      const response = await fetch(`${backendUrl}/api/teacher/mark-attendance`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${teacherToken}`,
-        },
-        body: JSON.stringify({
-          status: 'Present',
-          latitude,
-          longitude,
-          date: utcDate.toISOString(),
-        }),
-      });
-
-      const data = await response.json();
-      console.log('Mark Attendance Response:', data);
-
-      if (data.success) {
-        toast.success('Attendance marked as Present!');
-        setSelectedMonth('all');
-        setSelectedYear('all');
-        await fetchAttendanceHistory();
-      } else {
-        toast.error(data.message || 'Failed to mark attendance');
-      }
-    } catch (error) {
-      console.error('Error marking attendance:', error);
-      toast.error(error.message || 'Error marking attendance');
-    } finally {
-      setIsMarking(false);
+const handleMarkAttendance = async () => {
+  setIsMarking(true);
+  try {
+    if (!navigator.geolocation) {
+      throw new Error('Geolocation not supported');
     }
-  };
+
+    const position = await getCurrentLocation();
+    const latitude = parseFloat(position.coords.latitude);
+    const longitude = parseFloat(position.coords.longitude);
+
+    if (isNaN(latitude) || isNaN(longitude)) {
+      throw new Error('Failed to retrieve valid location');
+    }
+
+    const now = new Date();
+    const localDate = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+    localDate.setHours(0, 0, 0, 0);
+    const utcDate = new Date(Date.UTC(localDate.getFullYear(), localDate.getMonth(), localDate.getDate()));
+
+    const response = await fetch(`${backendUrl}/api/teacher/mark-attendance`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${teacherToken}`,
+      },
+      body: JSON.stringify({
+        status: 'Present',
+        latitude,
+        longitude,
+        date: utcDate.toISOString(),
+      }),
+    });
+
+    const data = await response.json();
+    console.log('Mark Attendance Response:', data);
+
+    if (data.success) {
+      toast.success('Attendance marked as Present!');
+      setSelectedMonth('all');
+      setSelectedYear('all');
+      await fetchAttendanceHistory();
+    } else {
+      toast.error(data.message || 'Failed to mark attendance');
+    }
+  } catch (error) {
+    console.error('Error marking attendance:', error);
+    toast.error(error.message || 'Error marking attendance');
+  } finally {
+    setIsMarking(false);
+  }
+};
+
 
   useEffect(() => {
     if (!teacherToken) {

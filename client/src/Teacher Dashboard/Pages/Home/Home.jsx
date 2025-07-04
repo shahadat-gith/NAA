@@ -1,44 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../../context/UserContext';
 import { AppContext } from '../../../context/AppContext';
-import { useNavigate } from 'react-router-dom';
 import './Home.css';
-import axios from 'axios';
 
 const Home = () => {
   const { teacherData: teacher } = useContext(UserContext);
   const { backendUrl, teacherToken } = useContext(AppContext);
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [tasks,setTasks] = useState([])
   const [greeting, setGreeting] = useState('');
   const [stats, setStats] = useState({
     attendanceRate: 0,
     totalSalary: 0,
     dueBalance: 0,
-    upcomingEvents: [],
     recentNotifications: [],
   });
-
-  const navigate = useNavigate();
-
-  const fetchEvents = async () => {
-    try {
-      const response = await axios.get(backendUrl + '/api/admin/get-events');
-      if (response.data.success) {
-        const sortedEvents = response.data.events.sort((a, b) => new Date(a.date) - new Date(b.date));
-        setStats((prevStats) => ({
-          ...prevStats,
-          upcomingEvents: sortedEvents,
-        }));
-      }
-    } catch (error) {
-      console.log('Error fetching events:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchEvents();
-  }, [backendUrl]);
 
   useEffect(() => {
     const updateGreeting = () => {
@@ -56,28 +31,6 @@ const Home = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-
-   const fetchTasks = async () => {
-      try {
-        const response = await axios.get(`${backendUrl}/api/task/get-tasks/${teacher._id}`, {
-          headers: { Authorization: `Bearer ${teacherToken}` },
-        });
-        if (response.data.success) {
-          setTasks(response.data.tasks);
-        } else {
-          console.log('API Error:', response.data.message || 'Failed to load tasks.');
-        }
-      } catch (error) {
-        console.error('Fetch Tasks Error:', error.message);
-      }
-    }
-
-  useEffect(() => {
-   fetchTasks()
-  }, [teacher, teacherToken, backendUrl]);
-
-
 
   useEffect(() => {
     if (teacher) {
@@ -117,10 +70,6 @@ const Home = () => {
     }
   };
 
-  const handleTaskClick = () => {
-    navigate('/teacher/tasks');
-  };
-
   const formattedDate = `${currentTime.toLocaleString('default', {
     weekday: 'long',
   })}, ${currentTime.getDate()}${getDaySuffix(
@@ -144,17 +93,11 @@ const Home = () => {
           </div>
           <div className="teacher-profile">
             <img
-              src={teacher.image}
+              src={teacher?.image}
               alt="Teacher"
               className="welcome-profile-pic"
               onError={(e) => (e.target.src = '/user.jpg')}
             />
-            <div className="teacher-role">
-              <span className="subject-badge">
-                {teacher?.subject || 'Subject'}
-              </span>
-              <span className="role-badge">Teacher</span>
-            </div>
           </div>
         </div>
       </div>
@@ -193,20 +136,6 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="stat-card tasks-card" onClick={handleTaskClick}>
-          <div className="stat-icon">
-            <i className="fas fa-tasks"></i>
-          </div>
-          <div className="stat-content">
-            <h3>Your Tasks</h3>
-            <div className="stat-value">
-              <span className="stat-number">
-                {tasks?.length || 0}
-              </span>
-            </div>
-          </div>
-        </div>
-
         <div className="stat-card balance-card">
           <div className="stat-icon">
             <i className="fas fa-wallet"></i>
@@ -223,54 +152,6 @@ const Home = () => {
       </div>
 
       <div className="dashboard-content">
-        <div className="dashboard-card events-card">
-          <div className="card-header">
-            <h2>Upcoming Events</h2>
-          </div>
-
-          <div className="events-list">
-            {stats.upcomingEvents.length > 0 ? (
-              stats.upcomingEvents.map((event) => (
-                <div key={event._id || event.id} className="event-item">
-                  <div className="event-date">
-                    <div className="event-calendar">
-                      <span className="event-month">
-                        {new Date(event.date).toLocaleString('default', {
-                          month: 'short',
-                        })}
-                      </span>
-                      <span className="event-day">
-                        {new Date(event.date).getDate()}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="event-details">
-                    <h4 className="event-title">{event.title}</h4>
-                    <div className="event-meta">
-                      <span>
-                        <i className="far fa-clock"></i>{' '}
-                        {new Date(
-                          '2000-01-01T' + event.time
-                        ).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                          hour12: true,
-                        })}
-                      </span>
-                      <span>
-                        <i className="far fa-calendar"></i>{' '}
-                        {formatDate(event.date)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="no-data-message">No upcoming events</p>
-            )}
-          </div>
-        </div>
-
         <div className="dashboard-card notifications-list-card">
           <div className="card-header">
             <h2>Recent Notifications</h2>

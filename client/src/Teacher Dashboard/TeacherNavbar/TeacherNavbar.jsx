@@ -28,7 +28,6 @@ const TeacherNavbar = () => {
     { id: 'home', label: 'Home', icon: 'fas fa-home', path: '/teacher' },
     { id: 'attendance', label: 'Attendance', icon: 'fas fa-calendar-check', path: '/teacher/attendance' },
     { id: 'salary', label: 'Transactions', icon: 'fas fa-money-check-alt', path: '/teacher/salary' },
-    { id: 'bank', label: 'Bank Details', icon: 'fas fa-university', path: '/teacher/bank' },
   ];
 
   // Update active page based on current URL
@@ -207,7 +206,7 @@ const TeacherNavbar = () => {
           {/* Left Section: School Logo and Name */}
           <div className="tnav__school" onClick={() => navigate('/teacher/home')}>
             <img 
-              src="/logo.png" 
+              src="/NAA_LOGO.png" 
               alt="School Logo" 
               className="tnav__school-logo"
               onError={(e) => (e.target.src = '/default-logo.png')}
@@ -242,7 +241,7 @@ const TeacherNavbar = () => {
                 aria-haspopup="true"
               >
                 <img
-                  src={teacher.image}
+                  src={teacher?.image}
                   alt={teacher.name || 'Teacher'}
                   className="tnav__profile-photo"
                   onError={(e) => (e.target.src = '/default-avatar.png')}
@@ -290,7 +289,7 @@ const TeacherNavbar = () => {
           <div className="tnav__mobile-header">
             <div className="tnav__mobile-teacher">
               <img
-                src={teacher.image}
+                src={teacher?.image}
                 alt={teacher.name || 'Teacher'}
                 className="tnav__mobile-photo"
                 onError={(e) => (e.target.src = '/default-avatar.png')}
@@ -349,7 +348,7 @@ const TeacherNavbar = () => {
                   />
                 ) : (
                   <img
-                    src={teacher.image ? `${backendUrl}/${teacher.image}` : '/default-avatar.png'}
+                    src={teacher?.image}
                     alt={teacher.name || 'Teacher'}
                     className="tnav__modal-current-image"
                     onError={(e) => (e.target.src = '/default-avatar.png')}

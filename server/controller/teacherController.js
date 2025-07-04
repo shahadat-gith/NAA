@@ -239,7 +239,13 @@ export const getOneTeacher = async (req, res) => {
 
 export const markAttendance = async (req, res) => {
   try {
-    const { teacherId, status, latitude, longitude, date } = req.body;
+    const { teacherId, status, date } = req.body;
+
+    const rawLat = req.body.latitude;
+    const rawLng = req.body.longitude;
+    const latitude = rawLat !== undefined ? parseFloat(rawLat) : null;
+    const longitude = rawLng !== undefined ? parseFloat(rawLng) : null;
+
     const isAdmin = req.user.role === 'admin';
     const userTeacherId = req.user.id;
 
@@ -259,12 +265,12 @@ export const markAttendance = async (req, res) => {
     }
 
     if (!isAdmin && (status === 'Present' || status === 'Late')) {
-      const SCHOOL_LAT = 26.1157917;
-      const SCHOOL_LNG = 91.7085933;
-      const MAX_RADIUS = 0.3;
+      const SCHOOL_LAT = 26.14164;
+      const SCHOOL_LNG = 91.05914;
+      const MAX_RADIUS = 0.6; // 400 meters
 
-      if (!latitude || !longitude) {
-        return res.status(400).json({ success: false, message: "Location data is required for teachers!" });
+      if (latitude === null || longitude === null || isNaN(latitude) || isNaN(longitude)) {
+        return res.status(400).json({ success: false, message: "Valid latitude and longitude are required!" });
       }
 
       const haversine = (lat1, lon1, lat2, lon2) => {
@@ -283,6 +289,7 @@ export const markAttendance = async (req, res) => {
       console.log("Latitude:", latitude);
       console.log("Longitude:", longitude);
       console.log(`Distance from school: ${distance.toFixed(3)} km`);
+
       if (distance > MAX_RADIUS) {
         return res.status(403).json({
           success: false,
@@ -343,6 +350,7 @@ export const markAttendance = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 };
+
 
 export const unmarkAttendance = async (req, res) => {
   try {
