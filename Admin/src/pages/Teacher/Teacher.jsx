@@ -1,339 +1,176 @@
-import React, { useContext, useState, useRef } from "react";
-import "./Teacher.css";
-import axios from "axios";
-import { AdminContext } from "../../context/AdminContext";
-import toast from 'react-hot-toast';
+import React, { useContext, useEffect, useState } from "react";
 import { TeacherContext } from "../../context/TeacherContext";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom"; // Removed useNavigate since it's not used
+import "./Teacher.css";
+import { AdminContext } from "../../context/AdminContext";
+import TeacherModal from "./TeacherModal/TeacherModal";
 
 const Teacher = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [degree, setDegree] = useState("");
-  const [contact, setContact] = useState("");
-  const [experience, setExperience] = useState("");
-  const [salary, setSalary] = useState("");
-  const [teacher_image, setTeacher_Image] = useState(null);
-  const [dueBalance, setDueBalance] = useState(0);
-  const [subjectClassMappings, setSubjectClassMappings] = useState([]);
-  const [loading, setLoading] = useState(false);
+    const { backendUrl, teachers, getAllTeachers } = useContext(TeacherContext);
+    const [loading, setLoading] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const [teacherToDelete, setTeacherToDelete] = useState(null);
+    const [isUpdateDisabled, setIsUpdateDisabled] = useState(false);
+    const { adminToken } = useContext(AdminContext);
+    const [teacherPopUp, setTeacherPopUp] = useState(false); // State for modal visibility
 
-  const fileInputRef = useRef(null);
-  const { backendUrl, adminToken } = useContext(AdminContext);
-  const { getAllTeachers } = useContext(TeacherContext);
-
-  const subjects = [
-    "Mathematics",
-    "Advanced Mathematics",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "Assamese",
-    "Advance Assamese",
-    "English",
-    "Alternative English",
-    "Geography",
-    "Education",
-    "Political Science",
-    "History",
-    "Arabic",
-    "Social Studies",
-    "Computer",
-    "Garments Design",
-    "Drawing",
-    "Drawing/Handwriting",
-    "General Science",
-    "GK",
-    "EVS",
-    "Hindi",
-    "Retail Management"
-  ];
-
-  const classes = [
-    "Nursery", "KG", "Ankur", "Mukul", "Class 1", "Class 2", "Class 3", "Class 4", "Class 5",
-    "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"
-  ];
-
-  const addSubjectClassMapping = () => {
-    setSubjectClassMappings([...subjectClassMappings, { subject: "", classes: [] }]);
-  };
-
-  const removeSubjectClassMapping = (index) => {
-    const updated = subjectClassMappings.filter((_, i) => i !== index);
-    setSubjectClassMappings(updated);
-  };
-
-  const updateSubjectInMapping = (index, subject) => {
-    const updated = [...subjectClassMappings];
-    updated[index].subject = subject;
-    setSubjectClassMappings(updated);
-  };
-
-  const updateClassesInMapping = (index, className) => {
-    const updated = [...subjectClassMappings];
-    const classes = updated[index].classes;
-    updated[index].classes = classes.includes(className)
-      ? classes.filter(c => c !== className)
-      : [...classes, className];
-    setSubjectClassMappings(updated);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-
-    if (!teacher_image) {
-      toast.error("Please select an image file!");
-      return;
-    }
-
-    if (subjectClassMappings.length === 0) {
-      toast.error("Please add at least one subject-class mapping!");
-      return;
-    }
-
-    if (!experience || experience < 0) {
-      toast.error("Please enter a valid number of years of experience!");
-      return;
-    }
-
-    const isValid = subjectClassMappings.every(mapping => 
-      mapping.subject && mapping.classes.length > 0
-    );
-
-    if (!isValid) {
-      toast.error("Please complete all subject-class mappings!");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("contact", contact);
-      formData.append("degree", degree);
-      formData.append("experience", Number(experience));
-      formData.append("salary", Number(salary));
-      formData.append("image", teacher_image);
-      formData.append("dueBalance", dueBalance);
-      formData.append("subjectClassMappings", JSON.stringify(subjectClassMappings));
-
-      const { data } = await axios.post(`${backendUrl}/api/teacher/add-teacher`, formData, 
-        { headers: { Authorization: `Bearer ${adminToken}` } }
-      );
-
-      if (data.success) {
-        toast.success(data.message);
-        setName("");
-        setEmail("");
-        setContact("");
-        setDegree("");
-        setExperience("");
-        setSalary("");
-        setTeacher_Image(null);
-        setDueBalance(0);
-        setSubjectClassMappings([]);
+    useEffect(() => {
         getAllTeachers();
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
+    }, []);
+
+    useEffect(() => {
+        const currentMonth = new Date().toISOString().slice(0, 7); // "YYYY-MM"
+        const alreadyUpdated = teachers.length > 0 && teachers.every(t => t.updateDueBalanceMonth === currentMonth);
+        setIsUpdateDisabled(alreadyUpdated);
+    }, [teachers]);
+
+    const handleDelete = async (teacherId) => {
+        setShowPopup(true);
+        setTeacherToDelete(teacherId);
+    };
+
+    const confirmDelete = async () => {
+        if (!teacherToDelete) return;
+
+        setLoading(true);
+        setShowPopup(false);
+        try {
+            await axios.delete(`${backendUrl}/api/teacher/delete-teacher/${teacherToDelete}`, {
+                headers: { Authorization: `Bearer ${adminToken}` },
+            });
+            getAllTeachers();
+            toast.success("Teacher deleted successfully!");
+        } catch (error) {
+            toast.error("Failed to delete teacher. Please try again.");
+            console.error("Error deleting teacher:", error);
+        } finally {
+            setLoading(false);
+            setTeacherToDelete(null);
         }
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  return (
-    <div className="admin-content-teacher">
-      <form onSubmit={handleSubmit} className="teachers-form" encType="multipart/form-data">
-        <h1>Add Teacher</h1>
-        
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="teacher-name">Teacher Name <span>*</span></label>
-            <input
-              type="text"
-              id="teacher-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter teacher name"
-              required
-            />
-          </div>
+    const cancelDelete = () => {
+        setShowPopup(false);
+        setTeacherToDelete(null);
+    };
 
-          <div className="form-group">
-            <label htmlFor="teacher-image">Profile Image <span>*</span></label>
-            <input
-              type="file"
-              id="teacher-image"
-              ref={fileInputRef}
-              accept="image/*"
-              onChange={(e) => setTeacher_Image(e.target.files[0])}
-              required
-            />
-          </div>
-        </div>
+    const handleUpdateDueBalance = async () => {
+        setLoading(true);
+        try {
+            await axios.put(`${backendUrl}/api/teacher/update-due-balance`, null, {
+                headers: { Authorization: `Bearer ${adminToken}` },
+            });
+            toast.success("Due balances updated successfully!");
+            getAllTeachers();
+        } catch (error) {
+            console.error("Error updating due balances:", error);
+            toast.error("Failed to update due balances.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="teacher-email">Email Address <span>*</span></label>
-            <input
-              type="email"
-              id="teacher-email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter email address"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="teacher-contact">Contact Number <span>*</span></label>
-            <input
-              type="tel"
-              id="teacher-contact"
-              value={contact}
-              onChange={(e) => setContact(e.target.value)}
-              placeholder="Enter contact number"
-              required
-            />
-          </div>
-        </div>
+    const openFormHandler = () => {
+        setTeacherPopUp(true); 
+    };
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="teacher-degree">Qualification/Degree <span>*</span></label>
-            <input
-              type="text"
-              id="teacher-degree"
-              value={degree}
-              onChange={(e) => setDegree(e.target.value)}
-              placeholder="Enter qualification/degree"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="teacher-experience">Experience (Years) <span>*</span></label>
-            <input
-              type="number"
-              id="teacher-experience"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              placeholder="Enter years of experience"
-              min="0"
-              max="100"
-              step="1"
-              required
-            />
-          </div>
-        </div>
+    const closeFormHandler = () => {
+        setTeacherPopUp(false); 
+    };
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="teacher-salary">Monthly Salary <span>*</span></label>
-            <input
-              type="number"
-              id="teacher-salary"
-              value={salary}
-              onChange={(e) => setSalary(e.target.value)}
-              placeholder="Enter monthly salary"
-              required
-            />
-          </div>
+    return (
+        <div className="teacher-list">
+            <h2>All Teachers</h2>
 
-          <div className="form-group">
-            <label htmlFor="due-balance">Due Balance <span>*</span></label>
-            <input
-              type="number"
-              id="due-balance"
-              value={dueBalance}
-              onChange={(e) => setDueBalance(e.target.value)}
-              placeholder="Enter due balance"
-              required
-            />
-          </div>
-        </div>
-
-        <div className="subject-class-section">
-          <div className="section-header">
-            <h3>Subject & Class</h3>
-            <button 
-              type="button" 
-              className="add-mapping-btn"
-              onClick={addSubjectClassMapping}
-            >
-              + Add Subject
-            </button>
-          </div>
-
-          {subjectClassMappings.map((mapping, index) => (
-            <div key={index} className="subject-class-mapping">
-              <div className="mapping-header">
-                <h4>Subject #{index + 1}</h4>
+            <div style={{ marginBottom: "20px" }} className="teacher-actions">
                 <button
-                  type="button"
-                  className="remove-mapping-btn"
-                  onClick={() => removeSubjectClassMapping(index)}
+                    className="update-balance-button"
+                    onClick={handleUpdateDueBalance}
+                    disabled={loading || isUpdateDisabled}
                 >
-                  Remove
+                    {loading
+                        ? "Updating..."
+                        : isUpdateDisabled
+                        ? "Already Updated This Month"
+                        : "Update Due Balances"}
                 </button>
-              </div>
 
-              <div className="form-group">
-                <label>Select Subject <span>*</span></label>
-                <select
-                  value={mapping.subject}
-                  onChange={(e) => updateSubjectInMapping(index, e.target.value)}
-                  required
-                >
-                  <option value="">Choose a subject</option>
-                  {subjects.map((subject) => (
-                    <option key={subject} value={subject}>
-                      {subject}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <button className="teacher-add-btn" onClick={openFormHandler}>
+                    Add New Teacher +
+                </button>
+            </div>
 
-              <div className="form-group">
-                <label>Select Classes <span>*</span></label>
-                <div className="classes-grid">
-                  {classes.map((className) => (
-                    <button
-                      key={className}
-                      type="button"
-                      className={`class-button ${mapping.classes.includes(className) ? 'selected' : ''}`}
-                      onClick={() => updateClassesInMapping(index, className)}
-                      aria-pressed={mapping.classes.includes(className)}
-                      aria-label={`Toggle ${className} class`}
-                    >
-                      {className}
-                    </button>
-                  ))}
+            {teachers.length > 0 ? (
+                <table className="teacher-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Experience</th>
+                            <th>Salary</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {teachers.map((teacher) => (
+                            <tr key={teacher._id} className="underlined-row">
+                                <td>
+                                    <img
+                                        src={teacher.image}
+                                        alt={teacher.name}
+                                        className="teacher-img"
+                                    />
+                                </td>
+                                <td>
+                                    <Link to={`/teachers/${teacher._id}`} className="teacher-link">
+                                        {teacher.name}
+                                        <i className="fas fa-arrow-up-right-from-square icon"></i>
+                                    </Link>
+                                </td>
+                                <td>{teacher.email}</td>
+                                <td>{teacher.experience} Years</td>
+                                <td>₹{teacher.salary}</td>
+                                <td>
+                                    <button
+                                        className="delete-button"
+                                        onClick={() => handleDelete(teacher._id)}
+                                        disabled={loading}
+                                    >
+                                        {loading ? "Deleting..." : "Delete"}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No teachers found.</p>
+            )}
+
+            {showPopup && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h3>Confirm Deletion</h3>
+                        <p>Are you sure you want to delete this teacher?</p>
+                        <div className="modal-buttons">
+                            <button className="confirm-button" onClick={confirmDelete} disabled={loading}>
+                                {loading ? "Deleting..." : "Yes"}
+                            </button>
+                            <button className="cancel-button" onClick={cancelDelete} disabled={loading}>
+                                No
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>
-          ))}
+            )}
 
-          {subjectClassMappings.length === 0 && (
-            <div className="empty-state">
-              <p>No subject added yet. Click "Add Subject" to get started.</p>
-            </div>
-          )}
+            {/* Render the TeacherModal */}
+            <TeacherModal isOpen={teacherPopUp} onClose={closeFormHandler} />
         </div>
-
-        <button type="submit" className="add-button" disabled={loading}>
-          {loading ? <span className="spinner"></span> : "Add Teacher"}
-        </button>
-      </form>
-    </div>
-  );
+    );
 };
 
 export default Teacher;

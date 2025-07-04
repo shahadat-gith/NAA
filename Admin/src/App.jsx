@@ -5,28 +5,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from 'react-hot-toast';
 import AdminLayout from "./components/AdminLayout/AdminLayout";
 import Result from "./pages/Result/Result";
-import Teacher from "./pages/Teacher/Teacher";
-import Notice from "./pages/Notice/Notice";
-import Admission from "./pages/Admission/Admission";
 import { AdminContext } from "./context/AdminContext";
-import ListAllTeacher from "./pages/ListTeacher/ListAllTeacher";
-import TeacherProfile from "./pages/TeacherProfile/TeacherProfile";
+import Teacher from "./pages/Teacher/Teacher";
 import Home from "./pages/Home/Home";
-import ContactQuery from "./pages/ContactQuery/ContactQuery";
-import AdmissionQuery from "./pages/AdmissionQuery/AdmissionQuery";
-import Admissions from "./pages/Admission/Admission";
 import Loader from "./components/Loader/Loader";
-import Newsletter from "./pages/Newsletter/Newsletter";
-import StudentList from "./pages/StudentList/StudentList";
-import AddStudents from "./pages/AddStudents/AddStudents";
+import Student from "./pages/Student/Student";
 import Hostel from "./pages/Hostel/Hostel";
-import AdmissionProfile from "./pages/AdmissionProfile/AdmissionProfile";
 import Settings from "./pages/Settings/Settings";
-import AddEvents from "./pages/Events/AddEvents";
-import TaskManager from "./pages/TaskManager/TaskManager";
-import TaskStats from "./pages/TaskManager/TaskStats";
 import Gallery from "./pages/Gallery/Gallery";
 import Achievers from "./pages/Achievers/Achievers";
+import TeacherProfile from "./pages/Teacher/TeacherProfile/TeacherProfile";
+import StudentDetails from "./pages/Student/StudentDetails/StudentDetails";
 
 const App = () => {
   const { adminToken, setAdminToken } = useContext(AdminContext);
@@ -69,26 +58,14 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/results" element={<Result />} />
-          <Route path="/notices" element={<Notice />} />
-          <Route path="/add-teachers" element={<Teacher />} />
-          <Route path="/admission" element={<Admission />} />
-          <Route path="/all-teachers" element={<ListAllTeacher />} />
-          <Route path="/add-students" element = {<AddStudents/>}/>
-          <Route path = "/student-list" element = {<StudentList/>}/>
-          <Route path="/teacher/:teacherId" element={<TeacherProfile />} />
-          <Route path="/contact-queries" element={<ContactQuery />} />
-          <Route path="/admission-queries" element={<AdmissionQuery />} />
-          <Route path="/admin/admissions" element={<Admissions />} />
-          <Route path="/admin/admission/:id" element={<AdmissionProfile />} />
-          <Route path="/newsletters" element={<Newsletter />} />
+          <Route path="/teachers" element={<Teacher />} />
+          <Route path = "/students" element = {<Student/>}/>
+          <Route path = "/students/:id" element = {<StudentDetails/>}/>
+          <Route path="/teachers/:teacherId" element ={<TeacherProfile/>} />
           <Route path = "/settings" element = {<Settings/>}/>
           <Route path = "/hostel" element = {<Hostel/>}/>
-          <Route path="/add-events" element = {<AddEvents/>}/>
           <Route path="/gallery" element = {<Gallery/>}/>
           <Route path="/achievers" element = {<Achievers/>}/>
-
-          <Route path="/task-manager" element = {<TaskManager/>}/>
-          <Route path="/tasks-info/:teacherId" element = {<TaskStats/>}/>
         </Routes>
       </AdminLayout>
     </>

@@ -26,18 +26,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-
-      const response = await axios.post(`${backendUrl}/api/query/submit-contact-query`, formData)
-
-      if (response.data.success) {
-        setShowPopup(true);
-        setMessage(response.data.message)
-      }
-
-    } catch (error) {
-      toast.error(error.message)
-    }
+   
 
   };
 

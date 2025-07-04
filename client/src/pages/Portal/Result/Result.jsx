@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { AppContext } from '../../../context/AppContext';
@@ -70,6 +70,13 @@ const Result = () => {
             setLoading(false);
         }
     };
+
+
+    useEffect(() => {
+        if (resultData) {
+            navigate("download", { state: { resultData } });
+        }
+    }, [resultData, navigate]);
 
     return (
         <div className="result-page">
@@ -158,18 +165,6 @@ const Result = () => {
                 {isResultChecked && !resultData && !error && (
                     <div className="not-found-message">
                         No results found for the provided information. Please verify your details and try again.
-                    </div>
-                )}
-
-                {resultData && (
-                    <div className="success-message">
-                        Your result is available!
-                        <span
-                            className="download-link"
-                            onClick={() => navigate("download", { state: { resultData } })}
-                        >
-                            Click here to download
-                        </span>
                     </div>
                 )}
             </div>

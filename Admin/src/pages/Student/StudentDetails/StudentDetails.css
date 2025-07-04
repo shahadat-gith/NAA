@@ -1,0 +1,312 @@
+/* StudentDetails.css - Dark Bluish Theme */
+
+/* Container */
+.naa-student-details {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+              0 0 0 1px rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+/* Title */
+.naa-student-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.naa-student-title::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 2px;
+}
+
+/* Summary */
+.naa-student-summary {
+  margin-bottom: 32px;
+}
+
+.naa-summary-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  background: rgba(30, 41, 59, 0.8);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.naa-summary-item {
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+.naa-summary-item strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+/* Details Container */
+.naa-details-container {
+  margin-bottom: 32px;
+}
+
+.naa-details-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.naa-details-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.naa-details-section {
+  margin-bottom: 24px;
+}
+
+.naa-details-section h4 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f1f5f9;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.naa-details-section h4::before {
+  content: '';
+  width: 4px;
+  height: 18px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 2px;
+}
+
+.naa-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.naa-details-table td {
+  padding: 12px;
+  font-size: 14px;
+  color: #cbd5e1;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.naa-details-table td:first-child {
+  font-weight: 500;
+  color: #f1f5f9;
+  width: 40%;
+}
+
+/* Payment History */
+.naa-payment-history {
+  margin-bottom: 32px;
+}
+
+.naa-payment-history table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.naa-payment-history th,
+.naa-payment-history td {
+  padding: 12px;
+  font-size: 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.naa-payment-history th {
+  background: rgba(51, 65, 85, 0.5);
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+.naa-payment-history td {
+  color: #cbd5e1;
+}
+
+.naa-payment-history p {
+  color: #94a3b8;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.naa-status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.naa-status-badge.completed {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.naa-status-badge.pending {
+  background: rgba(234, 179, 8, 0.2);
+  color: #eab308;
+}
+
+.naa-status-badge.failed {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+/* Action Buttons */
+.naa-action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.naa-admit-card-btn,
+.naa-delete-student-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 160px;
+  justify-content: center;
+}
+
+.naa-admit-card-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.naa-admit-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.naa-delete-student-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+}
+
+.naa-delete-student-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+/* Loading and Error States */
+.naa-loading,
+.naa-error {
+  text-align: center;
+  font-size: 16px;
+  color: #f1f5f9;
+  padding: 32px;
+}
+
+.naa-payment-btn {
+  display: flex;
+  justify-content: flex-end; /* Aligns the button to the right */
+  margin: 20px 0;
+}
+
+.naa-record-payment-btn {
+  padding: 10px 20px;
+  background-color: #28a745; /* Bootstrap success green */
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.naa-record-payment-btn:hover {
+  background-color: #218838; /* Darker green */
+}
+
+.naa-record-payment-btn:active {
+  transform: scale(0.98);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .naa-student-details {
+    margin: 10px;
+    padding: 20px;
+  }
+
+  .naa-student-title {
+    font-size: 20px;
+  }
+
+  .naa-summary-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .naa-details-row {
+    grid-template-columns: 1fr;
+  }
+
+  .naa-admit-card-btn,
+  .naa-delete-student-btn {
+    padding: 12px 24px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .naa-student-details {
+    margin: 5px;
+    padding: 16px;
+  }
+
+  .naa-student-title {
+    font-size: 18px;
+  }
+
+  .naa-summary-info {
+    grid-template-columns: 1fr;
+  }
+
+  .naa-details-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .naa-payment-history th,
+  .naa-payment-history td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

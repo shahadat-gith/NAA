@@ -44,7 +44,7 @@
 
 .sd-profile {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
   padding: 1.5rem;
@@ -270,10 +270,10 @@
     font-size: 1.5rem;
   }
 
-  .sd-profile {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
+.sd-profile {
+  grid-template-columns: repeat(3, 1fr);
+  padding: 1rem;
+}
 
   .sd-payment-container h3, .sd-action-container h3 {
     font-size: 1.1rem;
@@ -302,4 +302,8 @@
   .sd-field span {
     font-size: 1rem;
   }
+  .sd-profile {
+  grid-template-columns: repeat(2, 1fr);
+  padding: 1rem;
+}
 }

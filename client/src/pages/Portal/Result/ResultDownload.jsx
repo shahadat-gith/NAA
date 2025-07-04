@@ -8,23 +8,6 @@ const ResultDownload = () => {
   const navigate = useNavigate();
   const resultData = state?.resultData;
 
-  // If no resultData, show error and redirect option
-  if (!resultData) {
-    return (
-      <div className="report-card-page">
-        <div className="error-container">
-          <h2>Result Not Found</h2>
-          <p>No result data is available. Please check your result again.</p>
-          <button
-            className="action-btn back-btn"
-            onClick={() => navigate('/result/default')}
-          >
-            Go Back to Results Page
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   // Handle download (PDF format)
   const handleDownload = () => {

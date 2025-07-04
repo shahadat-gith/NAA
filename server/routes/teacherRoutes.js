@@ -1,5 +1,5 @@
 import express from "express";
-import multer from "multer";
+import { upload } from "../config/multer.js";
 import {
   addTeacher,
   getAllTeachers,
@@ -20,16 +20,6 @@ import { authMiddleware } from "../middleware/auth.js";
 
 const teacherRouter = express.Router();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/teachers");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 // Routes
 teacherRouter.post("/add-teacher", upload.single("image"), authMiddleware, addTeacher);
@@ -44,7 +34,7 @@ teacherRouter.post("/mark-attendance", authMiddleware, markAttendance);
 teacherRouter.post("/unmark-attendance", authMiddleware, unmarkAttendance);
 teacherRouter.post("/get-attendance-report", authMiddleware, getAttendanceReport);
 teacherRouter.get("/attendance-history", authMiddleware, getAttendanceHistory);
-teacherRouter.post("/update-profile-picture", upload.single("profilePicture"),updateProfilePicture);
+teacherRouter.post("/update-profile-picture", upload.single("profilePicture"), authMiddleware, updateProfilePicture);
 teacherRouter.put("/update-due-balance", authMiddleware, UpdateDueBalance);
 
 export default teacherRouter;

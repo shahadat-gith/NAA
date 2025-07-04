@@ -1,0 +1,87 @@
+/* StudentTable.css - Dark Bluish Theme */
+
+/* Table Container */
+.student-table {
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* No Students Message */
+.student-table p {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 16px;
+  padding: 20px;
+}
+
+/* Table */
+.student-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Table Header */
+.student-table th {
+  background: rgba(51, 65, 85, 0.5);
+  color: #f1f5f9;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px;
+  text-align: left;
+}
+
+/* Table Rows */
+.student-table td {
+  padding: 12px;
+  color: #cbd5e1;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+/* Hover and Selected States */
+.student-table tr {
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.student-table tr:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.student-table tr.selected {
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Focus State for Accessibility */
+.student-table tr:focus {
+  outline: none;
+  background: rgba(59, 130, 246, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .student-table th,
+  .student-table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-table {
+    overflow-x: auto;
+  }
+
+  .student-table table {
+    min-width: 600px;
+  }
+
+  .student-table th,
+  .student-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+}

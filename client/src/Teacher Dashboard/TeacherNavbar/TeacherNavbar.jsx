@@ -28,7 +28,6 @@ const TeacherNavbar = () => {
     { id: 'home', label: 'Home', icon: 'fas fa-home', path: '/teacher' },
     { id: 'attendance', label: 'Attendance', icon: 'fas fa-calendar-check', path: '/teacher/attendance' },
     { id: 'salary', label: 'Transactions', icon: 'fas fa-money-check-alt', path: '/teacher/salary' },
-    { id: 'tasks', label: 'Tasks', icon: 'fa-solid fa-list-check', path: '/teacher/tasks' },
     { id: 'bank', label: 'Bank Details', icon: 'fas fa-university', path: '/teacher/bank' },
   ];
 

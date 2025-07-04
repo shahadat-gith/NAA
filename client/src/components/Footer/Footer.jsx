@@ -15,55 +15,7 @@ const Footer = () => {
   };
 
   const handleNewsletterSubmit = async (e) => {
-    e.preventDefault();
-    if (!email.trim()) {
-      toast.error("Please enter your email address.");
-      return;
-    }
-    if (!isValidEmail(email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`${backendUrl}/api/newsletter/subscribe`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      // Check if response is OK before parsing JSON
-      if (!response.ok) {
-        const errorText = await response.text(); // Get raw text for debugging
-        console.error("Server response (non-OK):", errorText);
-        throw new Error(`Server error: ${response.status} - ${errorText || "Unknown error"}`);
-      }
-
-      let data;
-      try {
-        data = await response.json();
-      } catch (jsonError) {
-        const rawText = await response.text(); // Fallback to raw text if JSON fails
-        console.error("Failed to parse JSON. Raw response:", rawText);
-        throw new Error("Invalid server response format");
-      }
-
-      if (data.success) {
-        toast.success("Successfully subscribed to the newsletter!");
-        setEmail("");
-      } else {
-        toast.error(data.message || "Failed to subscribe. Please try again.");
-      }
-    } catch (error) {
-      console.error("Newsletter subscription error:", error);
-      toast.error(error.message || "Something went wrong. Please try again later.");
-    } finally {
-      setIsSubmitting(false);
-    }
+   
   };
 
   return (

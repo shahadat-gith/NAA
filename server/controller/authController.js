@@ -1,4 +1,4 @@
-import { teacherModel } from "../models/teacherModel.js";
+import { teacherModel } from "../models/teacher.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js";

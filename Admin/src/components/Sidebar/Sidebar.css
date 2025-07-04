@@ -1,135 +1,122 @@
+
 .admin-sidebar {
-  width: 280px;
-  height: 100%;
-  background-color: #172033; /* Dark blue-gray background */
-  padding: 20px 0;
-  margin-top: 20px;
-  position: fixed; /* Fix sidebar to the left */
-  top: 0;
+  width: 250px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  height: 100vh;
+  position: fixed;
+  top: 90px;
   left: 0;
-  overflow-y: auto; /* Allow scrolling if content overflows */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  padding: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+  border-right: 1px solid rgba(51, 65, 85, 0.3);
+  overflow-y: auto;
 }
 
+/* Menu */
 .sidebar-menu {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Section Headers */
-.sidebar-section-header {
-  padding: 10px 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #a0aec0; /* Light gray for contrast */
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle divider */
-  margin: 10px 0 5px;
+/* Menu Item */
+.sidebar-menu li {
+  margin-bottom: 8px;
 }
 
-/* Sidebar Items */
+/* NavLink */
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 12px 20px;
-  color: #d1d5db; /* Light gray text */
+  gap: 12px;
+  padding: 12px 16px;
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 500;
   text-decoration: none;
-  font-size: 0.95rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sidebar-item i {
-  margin-right: 12px; /* Slightly increased spacing */
-  font-size: 1.1rem;
-  width: 20px; /* Fixed width for icon alignment */
-  text-align: center;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
 .sidebar-item:hover {
-  background-color: #3b82f6; /* Blue hover effect */
-  color: #ffffff;
+  background: rgba(59, 130, 246, 0.1);
+  color: #f1f5f9;
 }
 
-/* Active State */
 .sidebar-item.active {
-  background-color: #3b82f6; /* Blue active background */
-  color: #ffffff;
-  font-weight: 500;
-  position: relative; /* For potential active indicator */
-}
-
-/* Optional: Add a left bar indicator for active item */
-.sidebar-item.active::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background-color: #ffffff; /* White accent for active item */
-}
-
-/* Badge Styling */
-.badge {
-  background-color: #ef4444; /* Red badge for pending queries */
-  color: #ffffff;
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 0.7rem;
-  margin-left: 8px;
+  background: rgba(59, 130, 246, 0.2);
+  color: #f1f5f9;
   font-weight: 600;
 }
 
-.badge-icon {
-  position: relative;
+.sidebar-item i {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+}
+
+/* Badge */
+.badge {
+  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 12px;
+  margin-left: auto;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .admin-sidebar {
-    width: 250px; /* Slightly narrower for smaller screens */
-    position: fixed;
-    z-index: 1000; /* Ensure it stays above content */
+    width: 200px;
+    top: 3%;
+    padding: 16px;
   }
 
   .sidebar-item {
-    padding: 10px 15px; /* Reduced padding for compactness */
-    font-size: 0.9rem;
+    font-size: 12px;
+    padding: 10px 12px;
   }
 
   .sidebar-item i {
-    margin-right: 10px;
-    font-size: 1rem;
+    font-size: 14px;
+    width: 20px;
   }
 
-  .sidebar-section-header {
-    padding: 8px 15px;
-    font-size: 0.8rem;
+  .badge {
+    font-size: 10px;
+    padding: 3px 6px;
   }
 }
 
 @media (max-width: 480px) {
   .admin-sidebar {
-    width: 100%;
-    height: auto;
-    position: relative; /* Stack on top of content */
-    margin-top: 0;
-    padding: 10px 0;
-  }
-
-  .sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    padding: 10px;
   }
 
   .sidebar-item {
-    padding: 10px 15px;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    font-size: 10px;
+    text-align: center;
   }
 
-  .sidebar-section-header {
-    display: none; /* Hide headers on very small screens */
+  .sidebar-item i {
+    font-size: 16px;
+    width: auto;
+  }
+
+  .sidebar-item span:not(.badge) {
+    display: none; /* Hide text labels on small screens */
+  }
+
+  .badge {
+    font-size: 8px;
+    padding: 2px 4px;
+    position: absolute;
+    top: 4px;
+    right: 4px;
   }
 }

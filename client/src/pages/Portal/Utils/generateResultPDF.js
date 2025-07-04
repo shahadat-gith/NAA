@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import principalSignature from "/principal_sign.png"; // Adjust path
 import examIcSignature from "/exam_ic_sign.png"; // Adjust path
-import logoImage from "/logo.png"; // Add a school logo
+import logoImage from "/NAA_LOGO.png"; // Add a school logo
 
 // Helper function to capitalize words
 const capitalizeWords = (str) => {

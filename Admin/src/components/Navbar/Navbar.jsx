@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import "./Navbar.css";
-import logo from "/logo.png";
+import logo from "/NAA_LOGO.png";
 import { useNavigate } from "react-router-dom";
 import { AdminContext } from "../../context/AdminContext";
 
