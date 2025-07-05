@@ -120,10 +120,6 @@ const TeacherModal = ({ isOpen, onClose }) => {
       formData.append("dueBalance", Number(dueBalance));
       formData.append("subjectClassMappings", JSON.stringify(subjectClassMappings));
 
-      // Debug FormData contents
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
 
       const { data } = await axios.post(`${backendUrl}/api/teacher/add-teacher`, formData, {
         headers: { 
@@ -144,7 +140,6 @@ const TeacherModal = ({ isOpen, onClose }) => {
         setImagePreview(null);
         setDueBalance(0);
         setSubjectClassMappings([]);
-        setProgress(0);
         getAllTeachers();
         if (fileInputRef.current) {
           fileInputRef.current.value = "";
@@ -154,12 +149,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
         toast.error(data.message);
       }
     } catch (error) {
-      if (axios.isCancel(error)) {
-        console.log("Upload cancelled:", error.message);
-      } else {
-        console.error("Error in addTeacher:", error);
-        toast.error(error.response?.data?.message || "Failed to add teacher");
-      }
+      toast.error(error.message)
     } finally {
       setLoading(false);
     }
@@ -225,7 +215,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
                 className="naa-hidden-input"
                 required
               />
-              <p className="naa-upload-text">Click to upload profile image</p>
+              <div className="naa-upload-text">Click to upload profile image</div>
             </div>
 
             {/* Basic Information */}
