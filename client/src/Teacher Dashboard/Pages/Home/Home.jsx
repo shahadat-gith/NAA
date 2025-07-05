@@ -51,10 +51,6 @@ const Home = () => {
     }
   }, [teacher]);
 
-  const formatDate = (dateStr) => {
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    return new Date(dateStr).toLocaleDateString(undefined, options);
-  };
 
   const getDaySuffix = (day) => {
     if (day > 3 && day < 21) return 'th';

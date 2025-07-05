@@ -27,7 +27,7 @@ import PaymentDetails from './pages/Portal/Components/PaymentDetails/PaymentDeta
 import ResultDownload from './pages/Portal/Result/ResultDownload';
 
 // Teacher Dashboard
-import TeacherHome from './Teacher Dashboard/Pages/Home/Home';
+import Home from './Teacher Dashboard/Pages/Home/Home'
 import TeacherAttendance from './Teacher Dashboard/Pages/Attendance/Attendance';
 import TeacherSalary from './Teacher Dashboard/Pages/Salary/Salary';
 
@@ -54,7 +54,7 @@ const App = () => {
       <Routes>
         {isTeacherLoggedIn ? (
           <>
-            <Route path="/" element={<TeacherHome />} />
+            <Route path="/" element={<Home />} />
             <Route path="/teacher/attendance" element={<TeacherAttendance />} />
             <Route path="/teacher/salary" element={<TeacherSalary />} />
             <Route path="*" element={<PageNotFound />} />
