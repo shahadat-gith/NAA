@@ -3,7 +3,7 @@ import { UserContext } from '../../../context/UserContext';
 import { AppContext } from '../../../context/AppContext';
 import './Home.css';
 
-const Home = () => {
+const TeacherHome = () => {
   const { teacherData: teacher } = useContext(UserContext);
   const { backendUrl, teacherToken } = useContext(AppContext);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -179,4 +179,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default TeacherHome;
