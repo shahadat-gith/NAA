@@ -54,7 +54,7 @@ const App = () => {
       <Routes>
         {isTeacherLoggedIn ? (
           <>
-            <Route path="/teacher" element={<TeacherHome />} />
+            <Route path="/" element={<TeacherHome />} />
             <Route path="/teacher/attendance" element={<TeacherAttendance />} />
             <Route path="/teacher/salary" element={<TeacherSalary />} />
             <Route path="*" element={<PageNotFound />} />
