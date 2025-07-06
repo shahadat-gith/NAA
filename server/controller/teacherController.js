@@ -14,14 +14,11 @@ export const addTeacher = async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ success: false, message: "Teacher image is required!" });
     }
-    if (!name || !email || !contact || !degree || !experience || !salary || !subjectClassMappings) {
+    if (!name  || !contact || !degree || !experience || !salary || !subjectClassMappings) {
       return res.status(400).json({ success: false, message: "All fields are mandatory!" });
     }
 
-    // Validate email
-    if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Invalid email format!" });
-    }
+
 
     // Validate contact number
     if (!validator.isMobilePhone(contact, "any", { strictMode: false })) {
@@ -99,7 +96,6 @@ export const addTeacher = async (req, res) => {
       imagePublicId: result.public_id, // Store Cloudinary public_id
       attendance: [],
       transactions: [],
-      notifications: [],
     });
 
     // Save teacher to database
@@ -111,7 +107,7 @@ export const addTeacher = async (req, res) => {
         from: process.env.SENDER_EMAIL,
         to: email,
         subject: "Account Created at Nashib Ali Academy",
-        text: `Congratulations! Your account has been created at Nashib Ali Academy.\n\nLogin Details:\nEmail: ${email}\nPassword: ${password}\n\nPlease change your password after logging in.\n\nWebsite link: ${process.env.CLIENT_URL}`,
+        text: `Congratulations! Your account has been created at Nashib Ali Academy.\n\nLogin Details:\n\nContact: ${contact}\nPassword: ${password}\n\nPlease change your password after logging in.\n\nWebsite link: ${process.env.CLIENT_URL}`,
       });
     } catch (emailError) {
       console.error("Email sending failed:", emailError);
@@ -518,25 +514,13 @@ export const recordTransaction = async (req, res) => {
     teacher.transactions.push(newTransaction);
     teacher.dueBalance = Math.max(0, teacher.dueBalance - Number(amount));
 
-    // Add notification
-    const monthName = new Date(`${paymentMonth}-01`).toLocaleString('default', { month: 'long' });
-
-    const newNotification = {
-      title: "Salary Credited",
-      message: `Your salary for the month of ${monthName} has been credited. Amount: ₹${amount}.`,
-      createdAt: new Date(),
-    };
-
-    teacher.notifications.push(newNotification);
-
+ 
     await teacher.save();
-
-    const savedTransaction = teacher.transactions[teacher.transactions.length - 1];
 
     res.status(201).json({
       success: true,
       message: "Payment recorded successfully",
-      transaction: savedTransaction,
+      transaction: newTransaction,
     });
   } catch (error) {
     console.error("Error recording transaction:", error);

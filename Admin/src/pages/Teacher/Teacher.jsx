@@ -130,7 +130,7 @@ const Teacher = () => {
                                         <i className="fas fa-arrow-up-right-from-square icon"></i>
                                     </Link>
                                 </td>
-                                <td>{teacher.email}</td>
+                                <td>{teacher.email ? teacher.email : "Not Available"}</td>
                                 <td>{teacher.experience} Years</td>
                                 <td>₹{teacher.salary}</td>
                                 <td>

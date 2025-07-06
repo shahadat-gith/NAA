@@ -94,26 +94,55 @@ const TeacherDetails = () => {
               </div>
 
               <div className="details-info-section">
-                <h3 className="details-section-title">Contact Information</h3>
+                <h3 className="details-section-title">Subjects & Classes</h3>
                 <div className="details-contact-info">
-                  <a href={`mailto:${teacher.email}`} className="details-contact-item">
-                    <i className="fas fa-envelope"></i>
-                    <span>{teacher.email}</span>
-                  </a>
-                  <a href={`tel:${teacher.contact}`} className="details-contact-item">
-                    <i className="fas fa-phone"></i>
-                    <span>{teacher.contact}</span>
-                  </a>
-                </div>
-              </div>
+                  {teacher.subjectClassMappings && teacher.subjectClassMappings.length > 0 && (
+                    <p className="details-contact-item">
+                      Teaches{" "}
+                      {teacher.subjectClassMappings.map((item, index) => {
+                        const formattedClasses = (() => {
+                          const cls = item.classes;
+                          if (cls.length === 1) return <strong>{cls[0]}</strong>;
+                          if (cls.length === 2)
+                            return (
+                              <>
+                                <strong>{cls[0]}</strong> and <strong>{cls[1]}</strong>
+                              </>
+                            );
+                          return (
+                            <>
+                              {cls.slice(0, -1).map((c, i) => (
+                                <span key={i}>
+                                  <strong>{c}</strong>,{" "}
+                                </span>
+                              ))}
+                              and <strong>{cls[cls.length - 1]}</strong>
+                            </>
+                          );
+                        })();
 
-              <div className="details-actions">
-                <a href={`tel:${teacher.contact}`} className="details-action-btn call">
-                  <i className="fas fa-phone"></i> Call Me
-                </a>
-                <a href={`https://wa.me/${teacher.contact}`} className="details-action-btn whatsapp">
-                  <i className="fab fa-whatsapp"></i> WhatsApp Me
-                </a>
+                        const subjectText = (
+                          <>
+                            <strong>{item.subject}</strong> in {formattedClasses}
+                          </>
+                        );
+
+                        const isLast = index === teacher.subjectClassMappings.length - 1;
+                        const isSecondLast = index === teacher.subjectClassMappings.length - 2;
+
+                        return (
+                          <span key={index}>
+                            {isLast && index !== 0
+                              ? "and "
+                              : ""}
+                            {subjectText}
+                            {isLast ? "." : ", "}
+                          </span>
+                        );
+                      })}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>

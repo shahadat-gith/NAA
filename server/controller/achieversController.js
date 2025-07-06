@@ -1,5 +1,6 @@
 import Achievers from "../models/achievers.js";
 import cloudinary from "../config/cloudinary.js";
+import mongoose from "mongoose";
 
 export const addAchieversDetails = async (req, res) => {
   try {
@@ -90,6 +91,84 @@ export const getAchievers = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to fetch achievers",
+      error: error.message,
+    });
+  }
+};
+
+export const updateAchiever = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, father, mother, village, percentage, className, year } = req.body;
+    const imgFile = req.file;
+
+    // Validate achiever ID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid achiever ID",
+      });
+    }
+
+    // Find achiever by _id
+    const achiever = await Achievers.findById(id);
+    if (!achiever) {
+      return res.status(404).json({
+        success: false,
+        message: "Achiever not found",
+      });
+    }
+
+    // Validate required fields
+    if (!name || !percentage || !className || !year) {
+      return res.status(400).json({
+        success: false,
+        message: "Name, percentage, class, and year are required",
+      });
+    }
+
+
+
+    // Handle image update
+    let imageUrl = achiever.image;
+    if (imgFile) {
+      // Delete existing image from Cloudinary if it exists
+      if (achiever.image) {
+        const publicId = achiever.image.split('/').pop().split('.')[0];
+        await cloudinary.uploader.destroy(`achievers/${publicId}`);
+      }
+
+      // Upload new image to Cloudinary
+      const uploadResult = await cloudinary.uploader.upload(imgFile.path, {
+        folder: "achievers",
+        resource_type: "image",
+      });
+      imageUrl = uploadResult.secure_url;
+    }
+
+    // Update achiever fields
+    achiever.name = name;
+    achiever.father = father || "";
+    achiever.mother = mother || "";
+    achiever.village = village || "";
+    achiever.percentage = percentage;
+    achiever.className = className;
+    achiever.year = year;
+    achiever.image = imageUrl;
+
+    // Save updated achiever
+    await achiever.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Achiever updated successfully",
+      data: achiever,
+    });
+  } catch (error) {
+    console.error("Update achiever error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update achiever",
       error: error.message,
     });
   }

@@ -343,6 +343,30 @@
 }
 
 
+.update-btn, .delete-btn {
+  background-color: #3ABEF9;
+  color: white;
+  padding: 6px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.update-btn:hover {
+  background-color: #2a9be0;
+}
+
+.delete-btn {
+  background-color: #E94560;
+}
+
+.delete-btn:hover {
+  background-color: #d43c55;
+}
+
+
 
 /* Delete Confirmation Modal */
 .delete-confirm-modal {

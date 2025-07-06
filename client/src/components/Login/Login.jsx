@@ -6,16 +6,16 @@ import axios from 'axios';
 import { AppContext } from '../../context/AppContext';
 import { UserContext } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
-import ForgotPassword from '../ForgotPassword/ForgotPassword'; // Import the ForgotPassword component
+import ForgotPassword from '../ForgotPassword/ForgotPassword';
 
 const Login = () => {
   const { backendUrl, adminUrl } = useContext(AppContext);
   const { saveUserData } = useContext(UserContext);
   const [loginType, setLoginType] = useState('teacher');
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [formData, setFormData] = useState({ contact: '', password: '' });
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false); // State for ForgotPassword modal
+  const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -33,7 +33,7 @@ const Login = () => {
           const token = response.data.token;
           await saveUserData('teacher', token, rememberMe);
           toast.success(response.data.message);
-          navigate('/teacher');
+          navigate('/');
         } else {
           toast.error(response.data.message);
         }
@@ -55,13 +55,11 @@ const Login = () => {
     }
   };
 
-  // Function to open ForgotPassword modal
   const openForgotPassword = (e) => {
-    e.preventDefault(); // Prevent default link behavior
+    e.preventDefault();
     setIsForgotPasswordOpen(true);
   };
 
-  // Function to close ForgotPassword modal
   const closeForgotPassword = () => {
     setIsForgotPasswordOpen(false);
   };
@@ -105,20 +103,22 @@ const Login = () => {
 
             <div className="login-page__divider">
               <div className="login-page__divider-line"></div>
-              <p className="login-page__divider-text">or sign in with email</p>
+              <p className="login-page__divider-text">or sign in with phone</p>
               <div className="login-page__divider-line"></div>
             </div>
 
             <div className="login-page__input-group">
               <User className="login-page__input-icon" size={20} />
               <input
-                type="email"
-                name="email"
-                value={formData.email}
+                type="tel"
+                name="contact"
+                value={formData.contact}
                 onChange={handleInputChange}
-                placeholder="Email id"
+                placeholder="Phone Number"
                 className="login-page__input"
                 required
+                pattern="[0-9]{10}"
+                title="Please enter a valid 10-digit phone number"
               />
             </div>
 
@@ -151,7 +151,7 @@ const Login = () => {
               <a
                 href="#"
                 className="login-page__forgot-link"
-                onClick={openForgotPassword} // Trigger modal instead of default link
+                onClick={openForgotPassword}
               >
                 Forgot password?
               </a>
@@ -179,7 +179,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Render ForgotPassword modal */}
       <ForgotPassword isOpen={isForgotPasswordOpen} onClose={closeForgotPassword} />
     </div>
   );

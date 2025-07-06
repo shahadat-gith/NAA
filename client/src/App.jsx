@@ -26,14 +26,11 @@ import StudentDetails from './pages/Portal/Components/StudentDetails/StudentDeta
 import PaymentDetails from './pages/Portal/Components/PaymentDetails/PaymentDetails';
 import ResultDownload from './pages/Portal/Result/ResultDownload';
 
-// Teacher Dashboard
-import TeacherHome from './Teacher Dashboard/Pages/Home/Home'
-import TeacherAttendance from './Teacher Dashboard/Pages/Attendance/Attendance';
-import TeacherSalary from './Teacher Dashboard/Pages/Salary/Salary';
 
 // Not Found Page
 import PageNotFound from './components/404/PageNotFound';
 import Gallery from './pages/Gallery/Gallery';
+import Teacher from './Teacher Dashboard/Teacher/Teacher';
 
 const App = () => {
   const location = useLocation();
@@ -54,9 +51,7 @@ const App = () => {
       <Routes>
         {isTeacherLoggedIn ? (
           <>
-            <Route path="/" element={<TeacherHome />} />
-            <Route path="/teacher/attendance" element={<TeacherAttendance />} />
-            <Route path="/teacher/salary" element={<TeacherSalary />} />
+            <Route path="/" element={<Teacher />} />
             <Route path="*" element={<PageNotFound />} />
           </>
         ) : (

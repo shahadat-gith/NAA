@@ -92,8 +92,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
     if (!isOpen) return null;
 
     return (
-        <div className="modal-container" onClick={onClose}>
-            <div className="modal-content add-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="ach-modal-container" onClick={onClose}>
+            <div className="ach-modal-content add-modal" onClick={(e) => e.stopPropagation()}>
                 <button className="modal-btn" onClick={onClose} title="Close" aria-label="Close add achiever modal">
                     <i className="fas fa-times"></i>
                 </button>

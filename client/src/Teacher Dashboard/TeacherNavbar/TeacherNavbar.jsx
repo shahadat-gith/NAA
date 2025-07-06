@@ -24,27 +24,7 @@ const TeacherNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const navItems = [
-    { id: 'home', label: 'Home', icon: 'fas fa-home', path: '/teacher' },
-    { id: 'attendance', label: 'Attendance', icon: 'fas fa-calendar-check', path: '/teacher/attendance' },
-    { id: 'salary', label: 'Transactions', icon: 'fas fa-money-check-alt', path: '/teacher/salary' },
-  ];
 
-  // Update active page based on current URL
-  useEffect(() => {
-    const path = location.pathname;
-    const currentPage = navItems.find(item => path.includes(item.id));
-    if (currentPage) {
-      setActivePage(currentPage.id);
-    } else if (path === '/teacher' || path === '/teacher/') {
-      setActivePage('home');
-    }
-  }, [location.pathname]);
-
-  const handleNavClick = (path) => {
-    navigate(path);
-    setIsMobileMenuOpen(false);
-  };
 
   const toggleDropdown = (e) => {
     e.stopPropagation();
@@ -213,23 +193,10 @@ const TeacherNavbar = () => {
             />
             <div className="tnav__school-info">
               <h2 className="tnav__school-name">Nashib Ali Academy</h2>
-              <p className="tnav__school-tagline">Educating Tomorrow's Leaders</p>
+              <p className="tnav__school-tagline">Teacher Dashboard</p>
             </div>
           </div>
 
-          {/* Center Section: Navigation Items (Desktop) */}
-          <div className="tnav__items">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                className={`tnav__item ${activePage === item.id ? 'tnav__item--active' : ''}`}
-                onClick={() => handleNavClick(item.path)}
-              >
-                <i className={`${item.icon} tnav__item-icon`}></i>
-                <span className="tnav__item-label">{item.label}</span>
-              </button>
-            ))}
-          </div>
 
           {/* Right Section: Teacher Info and Profile Dropdown */}
           <div className="tnav__profile">
@@ -295,19 +262,6 @@ const TeacherNavbar = () => {
                 onError={(e) => (e.target.src = '/default-avatar.png')}
               />
             </div>
-          </div>
-          
-          <div className="tnav__mobile-nav">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                className={`tnav__mobile-item ${activePage === item.id ? 'tnav__mobile-item--active' : ''}`}
-                onClick={() => handleNavClick(item.path)}
-              >
-                <i className={`${item.icon} tnav__mobile-item-icon`}></i>
-                <span className="tnav__mobile-item-label">{item.label}</span>
-              </button>
-            ))}
           </div>
           
           <div className="tnav__mobile-actions">

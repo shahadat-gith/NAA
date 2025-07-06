@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const teacherSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, default: "N/A"},
     contact: { type: String, required: true },
     degree: { type: String, required: true },
     experience: { type: Number, required: true },
@@ -48,25 +48,11 @@ const teacherSchema = new mongoose.Schema(
         paymentMonth: { type: String, required: true },
       },
     ], 
-    notifications: [
-      {
-        title: { type: String, required: true },
-        message: { type: String, required: true },
-        type: { type: String },
-        createdAt: { type: Date, default: Date.now },
-      },
-    ], 
 
   },
 );
 
-// Pre-save hook to limit the number of notifications
-teacherSchema.pre('save', function(next) {
-  if (this.notifications.length > 5) {
-    this.notifications = this.notifications.slice(-5); // Keep the latest 5 notifications
-  }
-  next();
-});
+
 
 // Create model
 export const teacherModel = mongoose.models.teachers || mongoose.model("teachers", teacherSchema);

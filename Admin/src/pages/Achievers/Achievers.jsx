@@ -3,6 +3,7 @@ import { AdminContext } from '../../context/AdminContext';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import AddAchieverModal from './AddAchieverModal';
+import UpdateAchieverModal from './UpdateAchieverModal';
 import ImageModal from '../../components/ImageModal/ImageModal';
 import './Achievers.css';
 
@@ -12,11 +13,11 @@ const Achievers = () => {
     const [filteredAchievers, setFilteredAchievers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showUpdateModal, setShowUpdateModal] = useState(null); // null or achiever object
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(null); // null or _id
     const [isLoading, setIsLoading] = useState(false);
-    const [person, setPerson] = useState(null)
-    const [imageOpen, setImageOpen] = useState(false)
-
+    const [person, setPerson] = useState(null);
+    const [imageOpen, setImageOpen] = useState(false);
 
     // Fetch all achievers
     const loadAchievers = async () => {
@@ -53,7 +54,6 @@ const Achievers = () => {
         }
     }, [searchTerm, achievers]);
 
-
     const openAddModal = () => {
         setShowAddModal(true);
         document.body.style.overflow = 'hidden';
@@ -61,6 +61,16 @@ const Achievers = () => {
 
     const closeAddModal = () => {
         setShowAddModal(false);
+        document.body.style.overflow = 'unset';
+    };
+
+    const openUpdateModal = (achiever) => {
+        setShowUpdateModal(achiever);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeUpdateModal = () => {
+        setShowUpdateModal(null);
         document.body.style.overflow = 'unset';
     };
 
@@ -74,10 +84,9 @@ const Achievers = () => {
         document.body.style.overflow = 'unset';
     };
 
-    const closeImageModal = ()=>{
-        setImageOpen(false)
-    }
-    
+    const closeImageModal = () => {
+        setImageOpen(false);
+    };
 
     // Handle delete achiever
     const handleDelete = async (id) => {
@@ -155,8 +164,8 @@ const Achievers = () => {
                                                 alt={achiever.name}
                                                 className="achiever-image"
                                                 onClick={() => {
-                                                    setPerson(achiever)
-                                                    setImageOpen(true)
+                                                    setPerson(achiever);
+                                                    setImageOpen(true);
                                                 }}
                                             />
                                         ) : (
@@ -173,6 +182,14 @@ const Achievers = () => {
                                     <td>{achiever.year}</td>
                                     <td>{achiever.className}</td>
                                     <td className="actions-cell">
+                                        <button
+                                            className="update-btn"
+                                            onClick={() => openUpdateModal(achiever)}
+                                            title="Update Achiever"
+                                            aria-label={`Update ${achiever.name}`}
+                                        >
+                                            <i className="fas fa-edit"></i>
+                                        </button>
                                         <button
                                             className="delete-btn"
                                             onClick={() => openDeleteConfirm(achiever._id)}
@@ -209,9 +226,11 @@ const Achievers = () => {
                     </div>
                 </div>
             )}
-            {imageOpen && person && 
-               <ImageModal isOpen={imageOpen} person={person} onClose={closeImageModal}/>
-            }
+
+            {/* Image Modal */}
+            {imageOpen && person && (
+                <ImageModal isOpen={imageOpen} person={person} onClose={closeImageModal} />
+            )}
 
             {/* Add Achiever Modal */}
             <AddAchieverModal
@@ -221,6 +240,18 @@ const Achievers = () => {
                 adminToken={adminToken}
                 onAddSuccess={loadAchievers}
             />
+
+            {/* Update Achiever Modal */}
+            {showUpdateModal && (
+                <UpdateAchieverModal
+                    isOpen={!!showUpdateModal}
+                    onClose={closeUpdateModal}
+                    backendUrl={backendUrl}
+                    adminToken={adminToken}
+                    achiever={showUpdateModal}
+                    onUpdateSuccess={loadAchievers}
+                />
+            )}
         </div>
     );
 };

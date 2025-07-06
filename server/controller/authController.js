@@ -10,13 +10,13 @@ const generateOTP = () => {
 
 // Teacher Login
 export const teacherLogin = async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { contact, password } = req.body;
+  if (!contact || !password) {
     return res.json({ success: false, message: "All fields are required!" });
   }
 
   try {
-    const teacher = await teacherModel.findOne({ email });
+    const teacher = await teacherModel.findOne({ contact });
     if (!teacher) {
       return res.json({ success: false, message: "Your account does not exist! Create a new account!" });
     }

@@ -1,0 +1,244 @@
+/* Modal Container */
+.ach-modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Modal Content */
+.ach-modal-content {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 1000px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(51, 65, 85, 0.3);
+    position: relative;
+    animation: scaleIn 0.3s ease-in-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(71, 85, 105, 0.5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #cbd5e1;
+    transition: all 0.2s ease;
+}
+
+.modal-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    transform: scale(1.05);
+}
+
+.modal-btn i {
+    font-size: 16px;
+}
+
+/* Update Modal */
+.ach-update-modal {
+    padding: 24px;
+}
+
+.update-modal h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0 0 16px;
+}
+
+.update-achiever-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #cbd5e1;
+}
+
+.form-group input,
+.form-group input[type="file"] {
+    padding: 12px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    color: #f1f5f9;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: rgba(30, 41, 59, 1);
+}
+
+.form-group input::placeholder {
+    color: #64748b;
+}
+
+.form-group input[type="file"] {
+    padding: 10px;
+}
+
+.image-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-top: 8px;
+}
+
+.ach-form-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.ach-cancel-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: #e2e8f0;
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ach-cancel-btn:hover {
+    background: #d1d9e0;
+    transform: translateY(-2px);
+}
+
+.ach-submit-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ach-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 90%;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .update-modal h2 {
+        font-size: 18px;
+        margin: 0 0 12px;
+    }
+
+    .update-modal {
+        padding: 16px;
+    }
+
+    .form-group input,
+    .form-group input[type="file"] {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-btn {
+        width: 28px;
+        height: 28px;
+        top: 12px;
+        right: 12px;
+    }
+
+    .modal-btn i {
+        font-size: 14px;
+    }
+
+     .form-row {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
