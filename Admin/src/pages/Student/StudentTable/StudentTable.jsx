@@ -1,13 +1,20 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { formatClassName } from "../utils/formatclass";
-import './StudentTable.css'
+import "./StudentTable.css";
 
-const StudentTable = ({ filteredStudents = [], selectedStudent, setSelectedStudent }) => {
+const StudentTable = ({
+  filteredStudents = [],
+  selectedStudent,
+  setSelectedStudent,
+}) => {
+  const navigate = useNavigate();
+
   const handleStudentClick = (student) => {
-    setSelectedStudent(selectedStudent?._id === student._id ? null : student);
+    setSelectedStudent(
+      selectedStudent?._id === student._id ? null : student
+    );
   };
-  const navigate = useNavigate()
 
   return (
     <div className="student-table">
@@ -23,8 +30,6 @@ const StudentTable = ({ filteredStudents = [], selectedStudent, setSelectedStude
               <th>Medium</th>
               <th>Stream</th>
               <th>Registration No</th>
-              <th>Monthly Due</th>
-              <th>Hostel Due</th>
             </tr>
           </thead>
           <tbody>
@@ -33,14 +38,20 @@ const StudentTable = ({ filteredStudents = [], selectedStudent, setSelectedStude
                 key={student._id}
                 onClick={() => {
                   handleStudentClick(student);
-                  navigate(`/students/${student._id}`, { state: { student } });
+                  navigate(`/students/${student._id}`, {
+                    state: { student },
+                  });
                 }}
-                className={selectedStudent?._id === student._id ? "selected" : ""}
+                className={
+                  selectedStudent?._id === student._id ? "selected" : ""
+                }
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     handleStudentClick(student);
-                    navigate(`/students/${student._id}`, { state: { student } });
+                    navigate(`/students/${student._id}`, {
+                      state: { student },
+                    });
                   }
                 }}
               >
@@ -50,8 +61,6 @@ const StudentTable = ({ filteredStudents = [], selectedStudent, setSelectedStude
                 <td>{student.medium}</td>
                 <td>{student.stream || "-"}</td>
                 <td>{student.registrationNo || "-"}</td>
-                <td>₹{student.dues?.monthlyDue?.amount || 0}</td>
-                <td>₹{student.dues?.hostelDue?.amount || 0}</td>
               </tr>
             ))}
           </tbody>

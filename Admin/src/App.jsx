@@ -4,13 +4,11 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Toaster } from 'react-hot-toast';
 import AdminLayout from "./components/AdminLayout/AdminLayout";
-import Result from "./pages/Result/Result";
 import { AdminContext } from "./context/AdminContext";
 import Teacher from "./pages/Teacher/Teacher";
 import Home from "./pages/Home/Home";
 import Loader from "./components/Loader/Loader";
 import Student from "./pages/Student/Student";
-import Hostel from "./pages/Hostel/Hostel";
 import Settings from "./pages/Settings/Settings";
 import Gallery from "./pages/Gallery/Gallery";
 import Achievers from "./pages/Achievers/Achievers";
@@ -57,13 +55,11 @@ const App = () => {
       <AdminLayout>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/results" element={<Result />} />
           <Route path="/teachers" element={<Teacher />} />
           <Route path = "/students" element = {<Student/>}/>
           <Route path = "/students/:id" element = {<StudentDetails/>}/>
           <Route path="/teachers/:teacherId" element ={<TeacherProfile/>} />
           <Route path = "/settings" element = {<Settings/>}/>
-          <Route path = "/hostel" element = {<Hostel/>}/>
           <Route path="/gallery" element = {<Gallery/>}/>
           <Route path="/achievers" element = {<Achievers/>}/>
         </Routes>

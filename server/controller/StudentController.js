@@ -1,663 +1,539 @@
 import mongoose from "mongoose";
-import Settings from "../models/Settings.js";
-import Student from "../models/Student.js";
-import Razorpay from "razorpay";
-import crypto from "crypto";
+import XLSX from "xlsx";
+import Student from "../models/Student/student.js";
+import Admission from "../models/Student/admission.js";
+import Result from "../models/Student/result.js";
+import { calculateClassRanks } from "../utils/calculateClassRanks.js";
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_API_KEY,
-  key_secret: process.env.RAZORPAY_SECRET_KEY,
-});
-
-// Utility for Razorpay signature verification
-const verifyRazorpaySignature = (orderId, paymentId, signature) => {
-  const sign = `${orderId}|${paymentId}`;
-  const expectedSign = crypto
-    .createHmac("sha256", process.env.RAZORPAY_SECRET_KEY)
-    .update(sign)
-    .digest("hex");
-  return expectedSign === signature;
-};
-
-const getHostelFee = async () => {
-  let settings = await Settings.findOne();
-  if (!settings) {
-    settings = new Settings();
-    await settings.save();
-  }
-  return settings.hostelFee || 0;
-};
-
-const getAdmissionFees = async () => {
-  let settings = await Settings.findOne();
-  if (!settings) {
-    settings = new Settings();
-    await settings.save();
-  }
-  return {
-    admissionFee: settings.admissionFee || 0,
-    hostelAdmissionFee: settings.hostelAdmissionFee || 0,
-  };
-};
-
-const getClassFees = async (className, medium, stream) => {
-  let settings = await Settings.findOne();
-  if (!settings) {
-    settings = new Settings();
-    await settings.save();
-  }
-
-  const classFees = settings.classFees || { english: {}, assamese: {} };
-  if (medium === "assamese" && ["11", "12"].includes(className)) {
-    if (!stream) {
-      throw new Error("Stream is required for Assamese Class 11/12");
-    }
-    return classFees.assamese?.[className]?.[stream] || 0;
-  }
-  return classFees[medium]?.[className] || 0;
-};
-
-const getCurrentMonthString = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  return `${year}-${month}`;
-};
-
-export const createStudent = async (req, res) => {
-  try {
-    const { name, registrationNo, class: className, medium, stream, hostel, father, mother, phone } = req.body;
-
-    if (!name || !registrationNo || !className || !medium || !father || !mother) {
-      return res.status(400).json({ success: false, message: "Missing required fields" });
-    }
-
-    if (!["Yes", "No"].includes(hostel)) {
-      return res.status(400).json({ success: false, message: "Hostel must be 'Yes' or 'No'" });
-    }
-
-    const existing = await Student.findOne({ registrationNo });
-    if (existing) {
-      return res.status(409).json({ success: false, message: "Student already exists" });
-    }
-
-    const newStudent = new Student({
-      name,
-      father,
-      mother,
-      registrationNo,
-      class: className,
-      medium,
-      stream: stream || "",
-      hostel,
-      phone,
-      admissionfees: {
-        admissionFee: 0,
-        hostelAdmissionFee: 0,
-      },
-      dues: {
-        monthlyDue: { amount: 0, lastUpdatedMonth: "" },
-        hostelDue: { amount: 0, lastUpdatedMonth: "" },
-      },
-      payments: [],
-      results: [],
-    });
-
-    await newStudent.save();
-    res.status(201).json({ success: true, student: newStudent });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error creating student", error: err.message });
-  }
-};
 
 export const getAllStudents = async (req, res) => {
   try {
-    const { name } = req.query;
-    const filter = name ? { name: { $regex: name, $options: "i" } } : {};
-    const students = await Student.find(filter).lean();
-    res.status(200).json({ success: true, students });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error fetching students", error: err.message });
+    const students = await Student.find().sort({ createdAt: -1 });
+    res.status(200).json(students);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching students", error: error.message });
   }
 };
 
+// Get student by ID
 export const getStudentById = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const student = await Student.findById(id).lean();
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-    res.status(200).json({ success: true, student });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error fetching student", error: err.message });
+    const student = await Student.findById(req.params.id);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+    res.status(200).json(student);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching student", error: error.message });
   }
 };
 
+// Update student
 export const updateStudent = async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const { hostel } = req.body;
-    if (hostel && !["Yes", "No"].includes(hostel)) {
-      return res.status(400).json({ success: false, message: "Hostel must be 'Yes' or 'No'" });
-    }
-    const updated = await Student.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-    if (!updated) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-    res.status(200).json({ success: true, student: updated });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error updating student", error: err.message });
-  }
-};
-
-export const deleteStudent = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const deleted = await Student.findByIdAndDelete(id);
-    if (!deleted) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-    res.status(200).json({ success: true, message: "Student deleted" });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error deleting student", error: err.message });
-  }
-};
-
-export const massAddStudents = async (req, res) => {
-  try {
-    const students = req.body.students;
-    if (!Array.isArray(students) || students.length === 0) {
-      return res.status(400).json({ success: false, message: "Invalid input array" });
-    }
-
-    const toInsert = [];
-    const skipped = [];
-
-    for (const stu of students) {
-      const { name, registrationNo, class: className, medium, stream, hostel, father, mother, phone } = stu;
-
-      if (!name || !registrationNo || !className || !medium || !father || !mother) {
-        skipped.push({ registrationNo, reason: "Missing required fields" });
-        continue;
-      }
-
-      if (!["Yes", "No"].includes(hostel)) {
-        skipped.push({ registrationNo, reason: "Invalid hostel value, must be 'Yes' or 'No'" });
-        continue;
-      }
-
-      const existing = await Student.findOne({ registrationNo });
-      if (existing) {
-        skipped.push({ registrationNo, reason: "Already exists" });
-        continue;
-      }
-
-      toInsert.push({
-        name,
-        father,
-        mother,
-        registrationNo,
-        class: className,
-        medium,
-        stream: stream || "",
-        hostel,
-        phone,
-        admissionfees: {
-          admissionFee: 0,
-          hostelAdmissionFee: 0,
-        },
-        dues: {
-          monthlyDue: { amount: 0, lastUpdatedMonth: "" },
-          hostelDue: { amount: 0, lastUpdatedMonth: "" },
-        },
-        payments: [],
-        results: [],
-      });
-    }
-
-    const inserted = await Student.insertMany(toInsert);
-    res.status(201).json({ success: true, insertedCount: inserted.length, skipped });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error in bulk upload", error: err.message });
-  }
-};
-
-export const updateSpecialStatus = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const { isSpecial, specialMonthlyFee } = req.body;
-
-    if (typeof isSpecial !== "boolean" || (isSpecial && (!specialMonthlyFee || specialMonthlyFee < 0))) {
-      return res.status(400).json({ success: false, message: "Invalid isSpecial or specialMonthlyFee" });
-    }
-
-    const student = await Student.findById(id);
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    student.isSpecial = isSpecial;
-    student.specialMonthlyFee = isSpecial ? specialMonthlyFee : 0;
-    await student.save();
-
-    res.status(200).json({ success: true, student });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Error updating special status", error: err.message });
-  }
-};
-
-export const updateMonthlyDuesForClass = async (req, res) => {
-  try {
-    const { className, medium, stream } = req.body;
-
-    if (!className || !medium) {
-      return res.status(400).json({ success: false, message: "className and medium are required" });
-    }
-
-    const filter = { class: className, medium };
-    if (["11", "12"].includes(className) && medium === "assamese") {
-      if (!stream) {
-        return res.status(400).json({ success: false, message: "Stream is required for Assamese Class 11/12" });
-      }
-      filter.stream = stream;
-    }
-
-    const students = await Student.find(filter);
-    if (!students.length) {
-      return res.status(404).json({
-        success: false,
-        message: `No students found for class ${className} (${medium}${stream ? `, stream: ${stream}` : ""})`,
-      });
-    }
-
-    const classFee = await getClassFees(className, medium, stream);
-    if (classFee === 0) {
-      return res.status(400).json({
-        success: false,
-        message: `No fee configured for class ${className} (${medium}${stream ? `, stream: ${stream}` : ""})`,
-      });
-    }
-
-    const lastUpdatedMonth = getCurrentMonthString();
-    const result = await Student.updateMany(
-      filter,
-      {
-        $set: {
-          "dues.monthlyDue": {
-            amount: classFee,
-            lastUpdatedMonth,
-          },
-        },
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: `Monthly dues updated to ₹${classFee} for ${result.modifiedCount} students in class ${className} (${medium}${stream ? `, stream: ${stream}` : ""}) for ${lastUpdatedMonth}`,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to update monthly dues", error: err.message });
-  }
-};
-
-export const updateHostelDues = async (req, res) => {
-  try {
-    const hostelFee = await getHostelFee();
-    const lastUpdatedMonth = getCurrentMonthString();
-
-    // Initialize hostelDue for students missing it
-    await Student.updateMany(
-      { hostel: "Yes", "dues.hostelDue": { $not: { $type: "object" } } },
-      { $set: { "dues.hostelDue": { amount: 0, lastUpdatedMonth: "" } } }
-    );
-
-    const result = await Student.updateMany(
-      { hostel: "Yes" },
-      {
-        $set: {
-          "dues.hostelDue": {
-            amount: hostelFee,
-            lastUpdatedMonth,
-          },
-        },
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: `Hostel dues updated to ₹${hostelFee} for ${result.modifiedCount} hostel boarders for ${lastUpdatedMonth}`,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to update hostel dues", error: err.message });
-  }
-};
-
-export const updateAdmissionFees = async (req, res) => {
-  try {
-    const { className, medium, stream } = req.body;
-
-    const filter = { class: className, medium };
-    if (["11", "12"].includes(className) && medium === "assamese") {
-      if (!stream) {
-        return res.status(400).json({ success: false, message: "Stream is required for Assamese Class 11/12" });
-      }
-      filter.stream = stream;
-    }
-
-    const students = await Student.find(filter);
-    if (!students.length) {
-      return res.status(404).json({
-        success: false,
-        message: `No students found for class ${className} (${medium}${stream ? `, stream: ${stream}` : ""})`,
-      });
-    }
-
-    const { admissionFee, hostelAdmissionFee } = await getAdmissionFees();
-    if (admissionFee === 0) {
-      return res.status(400).json({
-        success: false,
-        message: `No admission fee configured for class ${className} (${medium}${stream ? `, stream: ${stream}` : ""})`,
-      });
-    }
-
-    const result = await Student.updateMany(
-      filter,
-      {
-        $set: {
-          "admissionfees.admissionFee": admissionFee,
-          "admissionfees.hostelAdmissionFee": { $cond: [{ $eq: ["$hostel", "Yes"] }, hostelAdmissionFee, 0] },
-        },
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: `Admission fees updated for ${result.modifiedCount} students in class ${className} (${medium}${stream ? `, stream: ${stream}` : ""})`,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: "Failed to update admission fees", error: err.message });
-  }
-};
-
-export const addPayment = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const { amount, paymentType, month, paymentMode } = req.body;
-
-    if (!amount || !paymentType || !paymentMode) {
-      return res.status(400).json({ success: false, message: "Missing required payment fields" });
-    }
-
-    const amountNum = parseInt(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      return res.status(400).json({ success: false, message: "Invalid payment amount" });
-    }
-
-    if (paymentType.includes("monthly") && month && !/^\d{4}-\d{2}$/.test(month)) {
-      return res.status(400).json({ success: false, message: "Invalid month format. Use YYYY-MM" });
-    }
-
-    const validPaymentTypes = ["admissionfee", "hosteladmissionfee", "monthlyfee", "hostelmonthlyfee"];
-    if (!validPaymentTypes.includes(paymentType)) {
-      return res.status(400).json({ success: false, message: "Invalid payment type" });
-    }
-
-    const student = await Student.findById(id);
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    const payment = {
-      amount: amountNum,
-      paymentType,
-      paymentMode,
-      paymentDate: new Date(),
-      status: "completed",
-      month: paymentType.includes("monthly") ? month : undefined,
-    };
-
-    let currentDue = 0;
-    if (paymentType === "monthlyfee") {
-      currentDue = student.dues.monthlyDue.amount || 0;
-      student.dues.monthlyDue.amount = Math.max(0, currentDue - amountNum);
-    } else if (paymentType === "hostelmonthlyfee") {
-      currentDue = student.dues.hostelDue.amount || 0;
-      student.dues.hostelDue.amount = Math.max(0, currentDue - amountNum);
-    } else if (paymentType === "admissionfee") {
-      currentDue = student.admissionfees.admissionFee || 0;
-      student.admissionfees.admissionFee = Math.max(0, currentDue - amountNum);
-    } else if (paymentType === "hosteladmissionfee") {
-      currentDue = student.admissionfees.hostelAdmissionFee || 0;
-      student.admissionfees.hostelAdmissionFee = Math.max(0, currentDue - amountNum);
-    }
-
-    if (amountNum > currentDue) {
-      return res.status(400).json({ success: false, message: "Payment amount exceeds dues" });
-    }
-
-    student.payments.push(payment);
-    await student.save();
-
-    res.status(201).json({ success: true, transaction: payment });
-  } catch (err) {
-    console.error("Error in addPayment:", err);
-    res.status(500).json({ success: false, message: "Error recording payment", error: err.message });
-  }
-};
-
-export const removeHostelStatus = async (req, res) => {
-  try {
-    const { id } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-    const student = await Student.findById(id);
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    if (student.hostel !== "Yes") {
-      return res.status(400).json({ success: false, message: "Student is not a hostel boarder" });
-    }
-
-    student.hostel = "No";
-    student.dues.hostelDue = { amount: 0, lastUpdatedMonth: "" };
-    student.admissionfees.hostelAdmissionFee = 0;
-    await student.save();
-
-    res.status(200).json({ success: true, message: "Student removed from hostel management" });
-  } catch (err) {
-    console.error("Error in removeHostelStatus:", err);
-    res.status(500).json({ success: false, message: "Error removing hostel status", error: err.message });
-  }
-};
-
-export const createPaymentOrder = async (req, res) => {
-  try {
-    const { studentId, amount, paymentType, feeType, month } = req.body;
-
-    if (!mongoose.isValidObjectId(studentId)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-
-    const student = await Student.findById(studentId);
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    const validPaymentTypes = ["admissionfee", "hosteladmissionfee", "monthlyfee", "hostelmonthlyfee"];
-    if (!validPaymentTypes.includes(paymentType)) {
-      return res.status(400).json({ success: false, message: "Invalid payment type" });
-    }
-
-    let currentDue = 0;
-    if (paymentType === "monthlyfee") {
-      const feeAmount = student.isSpecial
-        ? student.specialMonthlyFee
-        : student.dues.monthlyDue?.amount || (await getClassFees(student.class, student.medium, student.stream));
-      currentDue = feeAmount;
-    } else if (paymentType === "hostelmonthlyfee") {
-      currentDue = student.dues.hostelDue?.amount || 0;
-    } else if (paymentType === "admissionfee") {
-      currentDue = student.admissionfees?.admissionFee || 0;
-    } else if (paymentType === "hosteladmissionfee") {
-      currentDue = student.admissionfees?.hostelAdmissionFee || 0;
-    }
-
-    if (amount > currentDue) {
-      return res.status(400).json({ success: false, message: "Amount exceeds dues" });
-    }
-
-    const receipt = `Pay-${studentId}-${paymentType}${month ? `-${month}` : ""}`.slice(0, 40);
-
-    const order = await razorpay.orders.create({
-      amount: amount * 100, // Razorpay expects amount in paisa
-      currency: "INR",
-      receipt,
-      notes: { studentId, paymentType, feeType, month },
-    });
-
-    res.status(200).json({
-      success: true,
-      orderId: order.id,
-      amount: order.amount,
-      key: process.env.RAZORPAY_API_KEY,
-    });
-  } catch (err) {
-    console.error("Error in createPaymentOrder:", err);
-    res.status(err.statusCode || 500).json({
-      success: false,
-      message: err.message || "Payment order creation failed",
-      error: err,
-    });
-  }
-};
-
-export const verifyPayment = async (req, res) => {
-  try {
-    const { razorpay_payment_id, razorpay_order_id, razorpay_signature, studentId, amount, paymentType, feeType, month } = req.body;
-
-    if (!mongoose.isValidObjectId(studentId)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
-    }
-
-    const student = await Student.findById(studentId);
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    const validPaymentTypes = ["admissionfee", "hosteladmissionfee", "monthlyfee", "hostelmonthlyfee"];
-    if (!validPaymentTypes.includes(paymentType)) {
-      return res.status(400).json({ success: false, message: "Invalid payment type" });
-    }
-
-    if (!verifyRazorpaySignature(razorpay_order_id, razorpay_payment_id, razorpay_signature)) {
-      return res.status(400).json({ success: false, message: "Invalid signature" });
-    }
-
-    let currentDue = 0;
-    let updateField = {};
-    if (paymentType === "monthlyfee") {
-      currentDue = student.isSpecial ? student.specialMonthlyFee : student.dues.monthlyDue?.amount || 0;
-      updateField = { "dues.monthlyDue.amount": Math.max(0, currentDue - amount) };
-    } else if (paymentType === "hostelmonthlyfee") {
-      currentDue = student.dues.hostelDue?.amount || 0;
-      updateField = { "dues.hostelDue.amount": Math.max(0, currentDue - amount) };
-    } else if (paymentType === "admissionfee") {
-      currentDue = student.admissionfees?.admissionFee || 0;
-      updateField = { "admissionfees.admissionFee": Math.max(0, currentDue - amount) };
-    } else if (paymentType === "hosteladmissionfee") {
-      currentDue = student.admissionfees?.hostelAdmissionFee || 0;
-      updateField = { "admissionfees.hostelAdmissionFee": Math.max(0, currentDue - amount) };
-    }
-
-    if (amount > currentDue) {
-      return res.status(400).json({ success: false, message: "Amount exceeds dues" });
-    }
-
-    const payment = {
-      paymentId: razorpay_payment_id,
-      orderId: razorpay_order_id,
-      signature: razorpay_signature,
-      amount,
-      paymentType,
-      paymentMode: "online",
-      status: "completed",
-      paymentDate: new Date(),
-      month: paymentType.includes("monthly") ? month : undefined,
-    };
-
-    const updatedStudent = await Student.findByIdAndUpdate(
-      studentId,
-      {
-        $push: { payments: payment },
-        $set: updateField,
-      },
+    const student = await Student.findByIdAndUpdate(
+      req.params.id,
+      req.body,
       { new: true, runValidators: true }
     );
 
-    res.status(200).json({ success: true, message: "Payment verified successfully", student: updatedStudent });
-  } catch (err) {
-    console.error("Error in verifyPayment:", err);
-    res.status(500).json({ success: false, message: "Payment verification failed", error: err.message });
+    if (!student) return res.status(404).json({ message: "Student not found" });
+    res.status(200).json(student);
+  } catch (error) {
+    res.status(400).json({ message: "Error updating student", error: error.message });
   }
 };
 
-export const getPaymentDetails = async (req, res) => {
+// Delete student
+export const deleteStudent = async (req, res) => {
   try {
-    const { id, paymentId } = req.params;
-    if (!mongoose.isValidObjectId(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
+    const student = await Student.findByIdAndDelete(req.params.id);
+    if (!student) return res.status(404).json({ message: "Student not found" });
+
+    await Admission.deleteMany({ student: req.params.id });
+    await Result.deleteMany({ student: req.params.id });
+
+    res.status(200).json({ message: "Student deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting student", error: error.message });
+  }
+};
+
+
+
+/* ================= ADMISSION ================= */
+
+// Single admission
+export const createAdmission = async (req, res) => {
+  try {
+    const {
+      name,
+      fatherName,
+      motherName,
+      registrationNo,
+      class: studentClass,
+      stream,
+      medium,
+      phone,
+      academicSession,
+    } = req.body;
+
+    const exists = await Student.findOne({ registrationNo });
+    if (exists) {
+      return res.status(400).json({ message: "Student already exists" });
     }
-    const student = await Student.findById(id);
-    if (!student) {
+
+    const student = await Student.create({
+      name,
+      fatherName,
+      motherName,
+      registrationNo,
+      class: studentClass,
+      stream,
+      medium,
+      phone,
+    });
+
+    const admission = await Admission.create({
+      student: student._id,
+      academicSession,
+      status: "applied",
+    });
+
+    res.status(201).json({
+      message: "Admission applied successfully",
+      student,
+      admission,
+    });
+  } catch (error) {
+    res.status(400).json({ message: "Error applying for admission", error: error.message });
+  }
+};
+
+
+// Mass admission via Excel (class-wise)
+export const massAdmission = async (req, res) => {
+  try {
+    const { class: studentClass, medium, stream } = req.body;
+
+    if (!studentClass || !medium) {
+      return res.status(400).json({
+        message: "Class and Medium are required for mass admission",
+      });
+    }
+
+    if (!req.file?.buffer) {
+      return res.status(400).json({ message: "Excel file is required" });
+    }
+
+    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+    let created = 0;
+    const skipped = [];
+
+    for (const [index, row] of rows.entries()) {
+      const registrationNo = row.registrationNo?.toString().trim();
+
+      if (!registrationNo || !row.name || !row.fatherName || !row.motherName) {
+        skipped.push({
+          row: index + 2, // Excel row number
+          registrationNo: registrationNo || null,
+          reason: "Missing required fields",
+        });
+        continue;
+      }
+
+      const exists = await Student.findOne({ registrationNo });
+      if (exists) {
+        skipped.push({
+          row: index + 2,
+          registrationNo,
+          reason: "Student already exists",
+        });
+        continue;
+      }
+
+      const student = await Student.create({
+        name: row.name.toString().trim(),
+        fatherName: row.fatherName.toString().trim(),
+        motherName: row.motherName.toString().trim(),
+        registrationNo,
+        class: studentClass,
+        medium,
+        stream: stream || "",
+        phone: row.phone ? row.phone.toString().trim() : "",
+      });
+
+      await Admission.create({
+        student: student._id,
+        academicSession: row.academicSession?.toString().trim(),
+        status: "approved",
+      });
+
+      created++;
+    }
+
+    res.status(201).json({
+      message: "Mass admission completed",
+      total: rows.length,
+      created,
+      skippedCount: skipped.length,
+      skipped, // send detailed info to frontend
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Error in mass admission",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+/* ================= RESULTS ================= */
+
+export const massResults = async (req, res) => {
+  try {
+    const {
+      academicSession,
+      examName,
+      class: resultClass,
+      maxMarksPerSubject,
+      stream 
+    } = req.body;
+
+    if (!academicSession || !examName || !resultClass || !maxMarksPerSubject) {
+      return res.status(400).json({
+        success: false,
+        message: "Academic Session, Exam Name, Class and Max Marks are required",
+      });
+    }
+
+    if (!req.file?.buffer) {
+      return res.status(400).json({ success: false, message: "Excel file is required" });
+    }
+
+    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+    let created = 0;
+    const skipped = [];
+
+    for (const [index, rawRow] of rows.entries()) {
+      const rowNum = index + 2;
+      
+      // 1. CLEAN THE ROW KEYS 
+      // This handles "Registration No", "registrationno", "  registrationNo  " etc.
+      const row = {};
+      Object.keys(rawRow).forEach(key => {
+        const cleanKey = key.toString().trim().toLowerCase();
+        row[cleanKey] = rawRow[key];
+      });
+
+      // Find the registration number using the cleaned key
+      const registrationNo = row["registrationno"]?.toString().trim();
+
+      if (!registrationNo) {
+        skipped.push({ row: rowNum, registrationNo: "", reason: "Registration number missing or header 'registrationNo' not found" });
+        continue;
+      }
+
+      // 2. Validate Student Existence
+      const studentExists = await Student.findOne({ registrationNo });
+      if (!studentExists) {
+        skipped.push({ row: rowNum, registrationNo, reason: "Student not found in database" });
+        continue;
+      }
+
+      // 3. Prevent Duplicate Results
+      const duplicate = await Result.findOne({
+        registrationNo,
+        academicSession,
+        examName,
+        class: resultClass
+      });
+      if (duplicate) {
+        skipped.push({ row: rowNum, registrationNo, reason: "Result already exists for this exam" });
+        continue;
+      }
+
+      // 4. Process Marks
+      const marks = [];
+      let invalidMark = false;
+      let exceededMark = false;
+      let errorReason = "";
+
+      // List of keys to ignore (metadata/identifiers)
+      const ignoreKeys = ["registrationno", "registration no", "__rownumber", "name", "total", "rank"];
+
+      // Iterate through keys in the CLEANED row
+      for (const key of Object.keys(row)) {
+        if (ignoreKeys.includes(key)) continue;
+        
+        const val = row[key];
+        if (val === "" || val === null || val === undefined) continue;
+
+        // Check if the mark is a valid number
+        const numericMark = Number(val);
+        if (isNaN(numericMark)) {
+          invalidMark = true;
+          errorReason = `Non-numeric mark found in column: ${key}`;
+          break;
+        }
+
+        if (numericMark > Number(maxMarksPerSubject)) {
+          exceededMark = true;
+          errorReason = `Mark in column '${key}' (${numericMark}) exceeds Max Marks (${maxMarksPerSubject})`;
+          break;
+        }
+
+        marks.push({
+          subject: key, // Use the key as the subject name
+          marksObtained: numericMark,
+        });
+      }
+
+      if (invalidMark || exceededMark) {
+        skipped.push({ row: rowNum, registrationNo, reason: errorReason });
+        continue;
+      }
+
+      if (marks.length === 0) {
+        skipped.push({ row: rowNum, registrationNo, reason: "No subject marks found in this row" });
+        continue;
+      }
+
+      // 5. Create Result
+      await Result.create({
+        registrationNo,
+        academicSession,
+        class: resultClass,
+        stream: stream || "",
+        examName,
+        marks,
+        maxMarksPerSubject: Number(maxMarksPerSubject),
+      });
+
+      created++;
+    }
+
+    // 6. Re-calculate Ranks
+    if (created > 0) {
+      await calculateClassRanks({
+        academicSession,
+        examName,
+        resultClass,
+      });
+    }
+
+    res.status(201).json({
+      success: true,
+      message: `Successfully processed ${created} results`,
+      totalRows: rows.length,
+      created,
+      skippedCount: skipped.length,
+      skippedDetails: skipped,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server error during mass upload",
+      error: error.message,
+    });
+  }
+};
+
+export const createResult = async (req, res) => {
+  try {
+    const {
+      registrationNo,
+      academicSession,
+      class: resultClass,
+      stream,
+      examName,
+      marks,
+      maxMarksPerSubject,
+    } = req.body;
+
+    // 1. Validation
+    if (!registrationNo || !academicSession || !resultClass || !examName || !marks?.length || !maxMarksPerSubject) {
+      return res.status(400).json({success: false, message: "All required fields must be provided" });
+    }
+
+    const studentExists = await Student.exists({ registrationNo });
+    if (!studentExists) {
       return res.status(404).json({ success: false, message: "Student not found" });
     }
 
-    const payment = student.payments.id(paymentId);
-    if (!payment) {
-      return res.status(404).json({ success: false, message: "Payment not found" });
+    // 2. Duplicate Check
+    const existing = await Result.findOne({
+      registrationNo,
+      academicSession,
+      examName,
+      class: resultClass,
+    });
+
+    if (existing) {
+      return res.status(400).json({ success: false, message: "Result already exists for this exam" });
     }
 
-    res.status(200).json({ success: true, payment });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to retrieve payment details", error: err.message });
+    // 3. Mark Range Validation
+    const hasExceeded = marks.some(m => Number(m.marksObtained) > Number(maxMarksPerSubject));
+    if (hasExceeded) {
+      return res.status(400).json({ success: false, message: `Marks cannot exceed max marks (${maxMarksPerSubject})` });
+    }
+
+    // 4. Create Result (Rank is initially null/0, let the calculator handle it)
+    const result = await Result.create({
+      registrationNo,
+      academicSession,
+      class: resultClass,
+      stream: stream || "",
+      examName,
+      marks,
+      maxMarksPerSubject: Number(maxMarksPerSubject),
+    });
+
+    // 5. Re-calculate Ranks
+    await calculateClassRanks({
+      academicSession,
+      examName,
+      resultClass,
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Result created successfully",
+      result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error creating result",
+      error: error.message,
+    });
   }
 };
 
-// Add endpoint for fetching settings (used by StudentDetails.jsx)
-export const getSettings = async (req, res) => {
+
+
+// Get all results with student details
+export const getAllResults = async (req, res) => {
   try {
-    const settings = await Settings.findOne();
-    if (!settings) {
-      const newSettings = new Settings();
-      await newSettings.save();
-      return res.status(200).json({ success: true, admitCardConfig: newSettings.admitCardConfig });
-    }
-    res.status(200).json({ success: true, admitCardConfig: settings.admitCardConfig });
-  } catch (err) {
-    console.error("Error in getSettings:", err);
-    res.status(500).json({ success: false, message: "Failed to fetch settings", error: err.message });
+    const results = await Result.find().sort({ createdAt: -1 }).lean();
+
+    // Map through results and attach student details based on registrationNo
+    const resultsWithStudentDetails = await Promise.all(
+      results.map(async (result) => {
+        const student = await Student.findOne({ 
+          registrationNo: result.registrationNo 
+        }).select("-password"); // Exclude sensitive info if applicable
+        
+        return {
+          ...result,
+          studentDetails: student || null,
+        };
+      })
+    );
+
+    res.status(200).json(resultsWithStudentDetails);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching results",
+      error: error.message,
+    });
   }
 };
 
 
+
+// Fetch a specific result for a student (Public access)
+export const getSpecificResult = async (req, res) => {
+  try {
+    const { registrationNo, examName, academicSession } = req.body;
+
+    // Use findOne because we want a specific result for a specific exam/session
+    const result = await Result.findOne({
+      registrationNo: registrationNo.trim(),
+      examName,
+      academicSession
+    }).lean();
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: "No result found for these details." });
+    }
+
+    // Optionally attach student details
+    const student = await Student.findOne({ registrationNo: result.registrationNo }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      result: { ...result, studentDetails: student }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Update result
+export const updateResult = async (req, res) => {
+  try {
+    const result = await Result.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Result not found" });
+    }
+    await calculateClassRanks({
+        academicSession: result.academicSession,
+        examName: result.examName,
+        resultClass: result.class
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Result updated and ranks recalculated",
+      result
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Error updating result",
+      error: error.message,
+    });
+  }
+};
+
+// Delete result
+export const deleteResult = async (req, res) => {
+  try {
+    const result = await Result.findByIdAndDelete(req.params.id);
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Result not found" });
+    }
+
+    // Recalculate ranks after deletion so the remaining students shift up
+    await calculateClassRanks({
+        academicSession: result.academicSession,
+        examName: result.examName,
+        resultClass: result.class
+    });
+
+    res.status(200).json({ 
+      success: true, 
+      message: "Result deleted and ranks updated" 
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error deleting result",
+      error: error.message,
+    });
+  }
+};

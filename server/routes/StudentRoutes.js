@@ -1,40 +1,43 @@
 import express from "express";
+import { excelUpload } from "../config/multer.js";
 import {
   getAllStudents,
   getStudentById,
-  massAddStudents,
   updateStudent,
   deleteStudent,
-  createStudent,
-  updateMonthlyDuesForClass,
-  updateHostelDues,
-  addPayment,
-  removeHostelStatus,
-  createPaymentOrder,
-  verifyPayment,
-  updateAdmissionFees,
-  getPaymentDetails,
+  createAdmission,
+  massAdmission,
+  createResult,
+  massResults,
+  getAllResults,
+  updateResult,
+  deleteResult,
+  getSpecificResult,
 } from "../controller/StudentController.js";
 
-const StudentRouter = express.Router();
+const studentRouter = express.Router();
 
-StudentRouter.post("/create-single", createStudent);
-StudentRouter.post("/mass-upload", massAddStudents);
+/* ================= STUDENTS ================= */
+studentRouter.get("/list", getAllStudents); // Changed from "/" to avoid conflicts with other root routes
+studentRouter.get("/single/:id", getStudentById);
+studentRouter.put("/update/:id", updateStudent);
+studentRouter.delete("/delete/:id", deleteStudent);
 
-StudentRouter.get("/", getAllStudents);
-StudentRouter.get("/:id", getStudentById);
+/* ================= ADMISSIONS ================= */
 
-StudentRouter.put("/:id", updateStudent);
-StudentRouter.delete("/:id", deleteStudent);
+studentRouter.post("/admission", createAdmission);
+studentRouter.post("/admission/mass", excelUpload.single("file"), massAdmission);
 
-StudentRouter.post("/update-monthly-dues", updateMonthlyDuesForClass);
-StudentRouter.post("/update-hostel-dues", updateHostelDues);
-StudentRouter.post("/update-admission-fees", updateAdmissionFees);
-StudentRouter.post("/:id/payments", addPayment);
-StudentRouter.put("/:id/hostel/remove", removeHostelStatus);
+/* ================= RESULTS ================= */
 
-StudentRouter.post("/:id/payment", createPaymentOrder);
-StudentRouter.post("/:id/payment/verify", verifyPayment);
-StudentRouter.get("/:id/payments/:paymentId", getPaymentDetails);
+// 1. Static/Specific POST routes first
+studentRouter.post("/result/fetch", getSpecificResult); // Public search for student result
+studentRouter.post("/result/mass", excelUpload.single("file"), massResults); // Admin mass upload
+studentRouter.post("/result", createResult); // Admin single create
 
-export default StudentRouter;
+// 2. Collection GET routes
+studentRouter.get("/results", getAllResults); // Admin fetch all results
+studentRouter.put("/result/:id", updateResult);
+studentRouter.delete("/result/:id", deleteResult);
+
+export default studentRouter;

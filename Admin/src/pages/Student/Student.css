@@ -1,15 +1,11 @@
-/* StudentList.css - Dark Bluish Theme */
-
 /* Container */
 .admin-student-list-container {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   border-radius: 20px;
-  width: 100%;
   max-width: 1200px;
   margin: 20px auto;
   padding: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
-              0 0 0 1px rgba(148, 163, 184, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   border: 1px solid rgba(51, 65, 85, 0.3);
 }
 
@@ -18,7 +14,7 @@
   font-size: 24px;
   font-weight: 700;
   color: #f1f5f9;
-  margin: 0 0 24px 0;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -28,71 +24,61 @@
   content: '';
   width: 4px;
   height: 24px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   border-radius: 2px;
 }
 
-/* Add Student Action */
+/* Action buttons */
 .add-student-action {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
   margin-bottom: 24px;
+  flex-wrap: wrap;
 }
 
 .naa-add-student-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  border: none;
+  padding: 12px 22px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
+  border: none;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  color: white;
 }
 
-.naa-add-student-btn:hover {
+/* Primary: Student */
+.naa-add-student-btn.primary {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.naa-add-student-btn.primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
-.naa-add-student-btn svg {
-  width: 20px;
-  height: 20px;
+/* Secondary: Result */
+.naa-add-student-btn.secondary {
+  background: linear-gradient(135deg, #16a34a, #15803d);
 }
 
-/* Responsive Design */
+.naa-add-student-btn.secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .admin-student-list-container {
-    margin: 10px;
     padding: 20px;
   }
 
-  .admin-student-list-container h2 {
-    font-size: 20px;
+  .add-student-action {
+    justify-content: stretch;
   }
 
   .naa-add-student-btn {
-    padding: 10px 16px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .admin-student-list-container {
-    margin: 5px;
-    padding: 16px;
-  }
-
-  .admin-student-list-container h2 {
-    font-size: 18px;
-  }
-
-  .naa-add-student-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    width: 100%;
   }
 }

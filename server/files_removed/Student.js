@@ -16,7 +16,6 @@ const paymentSchema = new mongoose.Schema({
   status: { type: String, default: "pending" },
 });
 
-// Result Schema (unchanged)
 const resultSchema = new mongoose.Schema({
   examName: { type: String, required: true },
   academicSession: { type: String, required: true },

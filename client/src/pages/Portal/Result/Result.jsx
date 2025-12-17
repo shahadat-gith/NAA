@@ -1,7 +1,8 @@
-import React, { useContext, useState,useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AppContext } from '../../../context/AppContext';
+import { EXAM_OPTIONS, SESSION_OPTIONS } from './academicOptions'; 
 import './Result.css';
 
 const Result = () => {
@@ -12,26 +13,12 @@ const Result = () => {
     const [isResultChecked, setIsResultChecked] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    
     const navigate = useNavigate();
-    const { type } = useParams();
     const { backendUrl } = useContext(AppContext);
 
-    const examOptions = [
-        'Half Yearly Examination',
-        'Annual Examination',
-        'Unit Test 1',
-        'Unit Test 2',
-        'Unit Test 3',
-        'Unit Test 4',
-    ];
-
-    const sessionOptions = [
-        '2023-2024',
-        '2024-2025',
-        '2025-2026',
-        '2026-2027',
-        '2027-2028',
-    ];
+    const examOptions = EXAM_OPTIONS;
+    const sessionOptions = SESSION_OPTIONS;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,17 +34,17 @@ const Result = () => {
         }
 
         try {
-            const response = await axios.post(`${backendUrl}/api/result/get-result`, {
-                registrationNo,
+            const response = await axios.post(`${backendUrl}/api/student/result/fetch`, {
+                registrationNo: registrationNo.trim(),
                 examName,
                 academicSession,
             });
 
             if (response.data.success) {
-                setResultData(response.data.data);
+                setResultData(response.data.result);
                 setIsResultChecked(true);
             } else {
-                setError(response.data.message || 'Failed to fetch result');
+                setError(response.data.message || 'Result not found');
                 setIsResultChecked(true);
             }
         } catch (err) {
@@ -70,7 +57,6 @@ const Result = () => {
             setLoading(false);
         }
     };
-
 
     useEffect(() => {
         if (resultData) {
@@ -98,7 +84,7 @@ const Result = () => {
                                 id="registrationNo"
                                 type="text"
                                 className="form-control"
-                                placeholder="e.g., NAA-25-12-001-A"
+                                placeholder="e.g., NAA2511001A"
                                 value={registrationNo}
                                 onChange={(e) => setRegistrationNo(e.target.value)}
                                 disabled={loading}

@@ -2,10 +2,8 @@ import React, { useContext } from 'react';
 import Header from '../../components/Header/Header';
 import { Link } from 'react-router-dom';
 import './Portal.css';
-import { AppContext } from '../../context/AppContext';
 
 const Portal = () => {
-  const { adminToken } = useContext(AppContext);
 
   return (
     <div>
@@ -15,18 +13,6 @@ const Portal = () => {
           <h2>Student Portal</h2>
         </div>
         <div className="portal-content">
-          {adminToken && (
-            <div className="portal-section">
-              <div className="portal-section-title">
-                <h3>Admin Options</h3>
-              </div>
-              <div className="portal-section-options">
-                <ul className="portal-options-list">
-                  {/* Admin options can be added here if needed */}
-                </ul>
-              </div>
-            </div>
-          )}
           <div className="portal-left">
             <div className="portal-left-title">
               <h3>Payment Options</h3>
@@ -73,9 +59,9 @@ const Portal = () => {
                   </Link>
                 </li>
                 <li className="portal-options-list-item">
-                  <Link to="/portal/services/id-card" className="portal-options-list-item-link">
+                  <Link to="/portal/services/admission" className="portal-options-list-item-link">
                     <i className="fa-solid fa-id-card-clip portal-icon id-icon"></i>
-                    <span>ID Card</span>
+                    <span>Admission</span>
                   </Link>
                 </li>
               </ul>
