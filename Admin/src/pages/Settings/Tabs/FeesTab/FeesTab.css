@@ -1,0 +1,33 @@
+/* ================= FeesTab.css ================= */
+
+.ft-container {
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ft-empty-state {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.ft-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.ft-empty-state h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #f8fafc;
+  margin: 0 0 12px 0;
+}
+
+.ft-empty-state p {
+  font-size: 15px;
+  color: rgba(148, 163, 184, 0.8);
+  margin: 0;
+}

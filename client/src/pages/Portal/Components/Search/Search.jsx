@@ -3,6 +3,7 @@ import './Search.css';
 import SearchResults from '../SearchResults/SearchResults';
 import { AppContext } from '../../../../context/AppContext';
 import { toast } from "react-hot-toast";
+import axios from 'axios';
 
 const Search = ({ type = "monthly" }) => {
   const { backendUrl, adminToken } = useContext(AppContext);
@@ -12,42 +13,44 @@ const Search = ({ type = "monthly" }) => {
   const [isSearched, setIsSearched] = useState(false)
   const [error, setError] = useState('');
 
-  const handleSearch = async () => {
-    const trimmedTerm = query.trim();
-    if (!trimmedTerm) {
-      setError("Please enter a student name");
-      toast.error("Please enter a student name");
-      return;
+ const handleSearch = async () => {
+  const trimmedTerm = query.trim();
+
+  if (!trimmedTerm) {
+    setError("Please enter a student name");
+    toast.error("Please enter a student name");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+  setStudents([]);
+  setIsSearched(true);
+
+  try {
+    const res = await axios.post(
+      `${backendUrl}/api/student/search`,
+      { name: trimmedTerm },
+    );
+
+    if (!res.data.success) {
+      throw new Error(res.data.message || "No students found");
     }
 
-    setLoading(true);
-    setError('');
+    setStudents(res.data.students || []);
+  } catch (err) {
+    const message =
+      err.response?.data?.message ||
+      err.message ||
+      "Something went wrong";
+
+    setError(message);
+    toast.error(message);
     setStudents([]);
-
-    try {
-      setIsSearched(true)
-      const url = `${backendUrl}/api/students?name=${encodeURIComponent(trimmedTerm)}`;
-      const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${adminToken}`,
-        },
-      });
-      const data = await response.json();
-      console.log(data)
-
-      if (!response.ok) throw new Error(data.message || 'Search failed');
-      if (!data.success) throw new Error(data.message || 'No students found');
-
-      setStudents(data.students || []);
-    } catch (err) {
-      setError(err.message || 'Something went wrong');
-      toast.error(err.message || 'Something went wrong');
-      setStudents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="searchbar-container">

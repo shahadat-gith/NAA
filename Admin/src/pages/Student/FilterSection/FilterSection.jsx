@@ -1,9 +1,9 @@
 import React from "react";
 import * as XLSX from "xlsx";
 import { toast } from "react-hot-toast";
-import generateBulkAdmitCards from "../utils/generateBulkAdmitCards";
+import generateBulkAdmitCards from "../../../utils/generateBulkAdmitCards";
 import "./FilterSection.css";
-import { formatClassName } from "../utils/formatclass";
+import { formatClassName } from "../../../utils/formatclass";
 
 const classOptions = {
   english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],

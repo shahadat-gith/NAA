@@ -23,6 +23,7 @@ const resultSchema = new mongoose.Schema(
             required: true,
             min: 0,
         },
+        isDueCleared: { type: Boolean, default: false },
     },
     { timestamps: true }
 );

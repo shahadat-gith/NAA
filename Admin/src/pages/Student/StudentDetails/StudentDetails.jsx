@@ -1,10 +1,9 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { toast } from "react-hot-toast";
 import { AdminContext } from "../../../context/AdminContext";
 import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
-import { formatClassName } from "../utils/formatclass";
+import { formatClassName } from "../../../utils/formatclass";
 
 const StudentDetails = () => {
   const { state } = useLocation();

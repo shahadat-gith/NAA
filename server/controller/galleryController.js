@@ -1,5 +1,5 @@
 import cloudinary from '../config/cloudinary.js';
-import Image from '../models/gallery.js';
+import Image from '../models/Academic/gallery.js';
 
 export const uploadImage = async (req, res) => {
   try {

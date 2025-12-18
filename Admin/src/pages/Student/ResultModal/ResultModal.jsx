@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../context/AdminContext";
 import "./ResultModal.css";
-import { CLASS_OPTIONS, STREAM_OPTIONS, EXAM_OPTIONS, SESSION_OPTIONS } from "../utils/academicOptions";
+import { CLASS_OPTIONS, STREAM_OPTIONS, EXAM_OPTIONS, SESSION_OPTIONS } from "../../../utils/academicOptions";
 
 const ResultModal = ({ isOpen, onClose }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { formatClassName } from "../utils/formatclass";
+import { formatClassName } from "../../../utils/formatclass"; 
 import "./StudentTable.css";
 
 const StudentTable = ({

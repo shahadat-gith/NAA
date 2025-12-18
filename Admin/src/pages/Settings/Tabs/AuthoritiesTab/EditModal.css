@@ -1,0 +1,181 @@
+/* ================= Overlay ================= */
+.em-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+/* ================= Modal ================= */
+.em-modal-content {
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* ================= Header ================= */
+.em-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.em-modal-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.em-modal-title i {
+  color: #3b82f6;
+}
+
+.em-modal-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  cursor: pointer;
+}
+
+/* ================= Body ================= */
+.em-modal-body {
+  padding: 28px 32px;
+}
+
+.em-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.em-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.em-form-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.em-form-input,
+.em-file-input {
+  padding: 12px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.em-file-input {
+  cursor: pointer;
+}
+
+.em-form-input:focus,
+.em-file-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+/* ================= Footer ================= */
+.em-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 32px;
+  border-top: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.em-btn-cancel {
+  background: rgba(71, 85, 105, 0.3);
+  color: #cbd5e1;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+}
+
+.em-btn-save {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 768px) {
+  .em-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ================= Hidden Native Input ================= */
+.em-hidden-file {
+  display: none;
+}
+
+/* ================= Upload Box ================= */
+.em-upload-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px dashed rgba(59, 130, 246, 0.4);
+  border-radius: 12px;
+  cursor: pointer;
+  color: #cbd5e1;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.em-upload-box i {
+  color: #3b82f6;
+  font-size: 16px;
+}
+
+.em-upload-box:hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+
+.em-upload-box span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================= Keep Existing Layout ================= */
+.em-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .em-form-row {
+    grid-template-columns: 1fr;
+  }
+}

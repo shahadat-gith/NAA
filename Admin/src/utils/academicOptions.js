@@ -21,3 +21,32 @@ export const SESSION_OPTIONS = [
   "2025-2026",
   "2026-2027",
 ];
+
+
+export const SUBJECT_OPTIONS = [
+  "English",
+  "General Science",
+  "Mathematics",
+  "Drawing/Handwriting",
+  "Assamese",
+  "GK",
+  "EVS",
+  "Social Studies",
+  "Arabic",
+  "Hindi",
+  "Computer",
+  "Drawing",
+  "Advance Mathematics",
+  "Geography",
+  "Garments Design",
+  "Physics",
+  "Chemistry",
+  "Biology",
+  "History",
+  "Advance Assamese",
+  "Alternative English",
+  "Education",
+  "Political Science",
+  "Retail Management",
+];
+

@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
-import principalSignature from "/principal_sign.png"; // Adjust path
-import examIcSignature from "/exam_ic_sign.png"; // Adjust path
+import principalSignature from "/principal_sign.png";
+import examIcSignature from "/exam_ic_sign.png"; 
 
 // Helper function to capitalize words
 const capitalizeWords = (str) => {

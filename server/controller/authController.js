@@ -1,4 +1,4 @@
-import { teacherModel } from "../models/teacher.js";
+import { teacherModel } from "../models/Academic/teacher.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js";
@@ -36,16 +36,38 @@ export const teacherLogin = async (req, res) => {
 // Admin Login
 export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
-    return res.json({ success: false, message: "All fields are required!" });
+    return res.json({
+      success: false,
+      message: "All fields are required!",
+    });
   }
 
-  if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-    const token = jwt.sign({ id: "admin", role: "admin" }, process.env.JWT_SECRET, { expiresIn: "365d" });
-    return res.json({ success: true, token, message: "You have successfully logged in!" });
-  } else {
-    return res.json({ success: false, message: "Wrong email or password!" });
+  if (
+    email === process.env.ADMIN_EMAIL &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    const token = jwt.sign(
+      {
+        email: email,      
+        role: "naa-admin",        
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "365d" }
+    );
+
+    return res.json({
+      success: true,
+      token,
+      message: "You have successfully logged in!",
+    });
   }
+
+  return res.json({
+    success: false,
+    message: "Wrong email or password!",
+  });
 };
 
 // Fetch Authenticated Teacher Profile

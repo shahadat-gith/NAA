@@ -183,3 +183,45 @@
     font-size: 1.125rem;
   }
 }
+
+
+
+.portal-options-list-item {
+  position: relative;
+}
+
+/* Status badge */
+.portal-status-badge {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* Available */
+.status-available {
+  background: #e6f4ea;
+  color: #137333;
+  border: 1px solid #b7e1c1;
+}
+
+/* Not available */
+.status-unavailable {
+  background: #fbeaea;
+  color: #b3261e;
+  border: 1px solid #f2b8b5;
+}
+
+/* Disabled card */
+.portal-disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.portal-options-list-item-link.disabled {
+  pointer-events: none;
+}
+

@@ -1,4 +1,4 @@
-import Achievers from "../models/achievers.js";
+import Achievers from "../models/Academic/achievers.js";
 import cloudinary from "../config/cloudinary.js";
 import mongoose from "mongoose";
 

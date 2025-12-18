@@ -26,7 +26,7 @@ const Student = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get(`${backendUrl}/api/student`, {
+      const res = await axios.get(`${backendUrl}/api/student/list`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
       setStudents(res.data);

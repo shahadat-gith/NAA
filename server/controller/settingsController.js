@@ -1,169 +1,109 @@
-import Settings from "../models/Settings.js";
+import ServiceSettings from "../models/Settings/services.js";
+import FeesSettings from "../models/Settings/fees.js";
+import AdmitCardSettings from "../models/Settings/admitcard.js";
 
-// Add console logging for debugging
-const logError = (message, error) => {
-  console.error(`${message}:`, error);
-};
+
 
 export const getSettings = async (req, res) => {
   try {
-    let settings = await Settings.findOne();
-    if (!settings) {
-      settings = new Settings();
-      await settings.save();
+
+    const {type} = req.params;
+
+    let data = null;
+
+    const serviceSettings = await ServiceSettings.findOne({});
+    const feesSettings = await FeesSettings.findOne({});
+    const admitCardSettings = await AdmitCardSettings.find({});
+    if (type === "services") {
+      data = serviceSettings;
+    } else if (type === "fees") {
+      data = feesSettings;
+    } else if (type === "admitcard") {
+      data = admitCardSettings;
+    } else {
+      return res.status(400).json({ message: "Invalid settings type" });
     }
-    res.status(200).json({ success: true, data: settings });
+    res.status(200).json({success:true, data });
+
   } catch (error) {
-    logError("Error in getSettings", error);
-    res.status(500).json({ success: false, message: "Error fetching settings", error: error.message });
+
+    res.status(500).json({success:false, message: "Server Error", error: error.message });
+
   }
 };
 
-export const updateSettings = async (req, res) => {
+export const toggleServiceSetting = async (req, res) => {
   try {
-    const { hostelFee, classFees, admitCardConfig } = req.body;
+    const { setting } = req.params;
+    const allowedSettings = [
+      "feeMonthly",
+      "feeAdmission",
+      "feeHostel",
+      "result",
+      "admitCard",
+      "admission",
+    ];
 
-    let settings = await Settings.findOne();
-    if (!settings) {
-      settings = new Settings();
+    if (!allowedSettings.includes(setting)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid service setting",
+      });
+    }
+    let serviceSettings = await ServiceSettings.findOne();
+    if (!serviceSettings) {
+      serviceSettings = await ServiceSettings.create({});
     }
 
-    // Validate and update hostelFee
-    if (hostelFee !== undefined) {
-      if (typeof hostelFee !== "string" || !/^\d+(\.\d+)?$/.test(hostelFee) || Number(hostelFee) < 0) {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Invalid hostel fee: must be a string representing a non-negative number" 
-        });
-      }
-      settings.hostelFee = hostelFee;
-    }
+    serviceSettings[setting] = !serviceSettings[setting];
+    await serviceSettings.save();
 
-    // Validate and update classFees
-    if (classFees) {
-      // Validate English medium fees
-      if (classFees.english) {
-        for (const className in classFees.english) {
-          const fee = classFees.english[className];
-          if (typeof fee !== "string" || !/^\d+(\.\d+)?$/.test(fee) || Number(fee) < 0) {
-            return res.status(400).json({ 
-              success: false, 
-              message: `Invalid fee for English ${className}: must be a string representing a non-negative number` 
-            });
-          }
-          settings.classFees.english[className] = fee;
-        }
-      }
-
-      // Validate Assamese medium fees
-      if (classFees.assamese) {
-        for (const className in classFees.assamese) {
-          const fee = classFees.assamese[className];
-          if (typeof fee === "object") {
-            if (
-              typeof fee.science !== "string" || !/^\d+(\.\d+)?$/.test(fee.science) || Number(fee.science) < 0 ||
-              typeof fee.arts !== "string" || !/^\d+(\.\d+)?$/.test(fee.arts) || Number(fee.arts) < 0
-            ) {
-              return res.status(400).json({ 
-                success: false, 
-                message: `Invalid fee for Assamese ${className}: science and arts must be strings representing non-negative numbers` 
-              });
-            }
-            settings.classFees.assamese[className] = {
-              science: fee.science,
-              arts: fee.arts,
-            };
-          } else {
-            if (typeof fee !== "string" || !/^\d+(\.\d+)?$/.test(fee) || Number(fee) < 0) {
-              return res.status(400).json({ 
-                success: false, 
-                message: `Invalid fee for Assamese ${className}: must be a string representing a non-negative number` 
-              });
-            }
-            settings.classFees.assamese[className] = fee;
-          }
-        }
-      }
-    }
-
-    // Validate and update admitCardConfig
-    if (admitCardConfig) {
-      console.log("Processing admitCardConfig:", admitCardConfig);
-      if (typeof admitCardConfig.isEnabled !== "boolean") {
-        return res.status(400).json({ 
-          success: false, 
-          message: "Invalid isEnabled: must be a boolean" 
-        });
-      }
-      settings.admitCardConfig = {
-        isEnabled: admitCardConfig.isEnabled !== undefined ? admitCardConfig.isEnabled : settings.admitCardConfig.isEnabled,
-        examName: admitCardConfig.examName !== undefined ? admitCardConfig.examName : settings.admitCardConfig.examName,
-        examDate: admitCardConfig.examDate !== undefined ? admitCardConfig.examDate : settings.admitCardConfig.examDate,
-        examCenter: admitCardConfig.examCenter !== undefined ? admitCardConfig.examCenter : settings.admitCardConfig.examCenter,
-      };
-    }
-
-    settings.lastUpdated = new Date();
-    await settings.save();
-
-    res.status(200).json({ success: true, message: "Settings updated successfully", data: settings });
+    return res.status(200).json({
+      success: true,
+      message: "Service setting updated",
+      data: serviceSettings,
+    });
   } catch (error) {
-    logError("Error in updateSettings", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating settings", 
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
       error: error.message,
-      stack: error.stack 
     });
   }
 };
 
-export const updateHostelFee = async (req, res) => {
+
+
+export const updateAdmitCardSettings = async (req, res) => {
   try {
-    const { hostelFee } = req.body;
-    if (hostelFee === undefined || typeof hostelFee !== "string" || !/^\d+(\.\d+)?$/.test(hostelFee) || Number(hostelFee) < 0) {
-      return res.status(400).json({ success: false, message: "Invalid hostel fee: must be a string representing a non-negative number" });
-    }
-
-    let settings = await Settings.findOne();
-    if (!settings) {
-      settings = new Settings({ hostelFee });
-    } else {
-      settings.hostelFee = hostelFee;
-      settings.lastUpdated = new Date();
-    }
-    await settings.save();
-
-    res.status(200).json({ success: true, message: "Hostel fee updated successfully", data: settings });
+    const { class: classNum, stream,medium, examCenter, exams } = req.body;
+    let admitCardSettings = await AdmitCardSettings.findOne({ class: classNum, stream: stream || "" });
+    if (!admitCardSettings) {
+      admitCardSettings = new AdmitCardSettings({ class: classNum, stream: stream || "" });
+    } 
+    admitCardSettings.medium = medium || "";
+    admitCardSettings.examCenter = examCenter || "";
+    admitCardSettings.exams = exams || [];
+    await admitCardSettings.save();
+    res.status(200).json({ success:true, message: "Admit card settings updated", data: admitCardSettings });
   } catch (error) {
-    logError("Error in updateHostelFee", error);
-    res.status(500).json({ success: false, message: "Error updating hostel fee", error: error.message });
+    res.status(500).json({ success:false, message: "Server Error", error: error.message });
   }
 };
 
-export const updateAdmitCardConfig = async (req, res) => {
-  const { isEnabled, examName, examDate, examCenter } = req.body;
 
+export const deleteAdmitCardSettings = async (req, res) => {
   try {
-    let settings = await Settings.findOne();
-    if (!settings) {
-      settings = new Settings({
-        admitCardConfig: { isEnabled, examName, examDate, examCenter },
-      });
-    } else {
-      settings.admitCardConfig = {
-        isEnabled: isEnabled !== undefined ? isEnabled : settings.admitCardConfig.isEnabled,
-        examName: examName !== undefined ? examName : settings.admitCardConfig.examName,
-        examDate: examDate !== undefined ? examDate : settings.admitCardConfig.examDate,
-        examCenter: examCenter !== undefined ? examCenter : settings.admitCardConfig.examCenter,
-      };
-      settings.lastUpdated = new Date();
+    const { id } = req.params;
+    const admitCardSettings = await AdmitCardSettings.findById(id);
+    if (!admitCardSettings) {
+      return res.status(404).json({ success:false, message: "Admit card settings not found" });
     }
-    await settings.save();
-
-    res.status(200).json({ success: true, message: "Admit card configuration updated", data: settings });
+    await AdmitCardSettings.findByIdAndDelete(id);
+    res.status(200).json({ success:true, message: "Admit card settings deleted" });
   } catch (error) {
-    logError("Error in updateAdmitCardConfig", error);
-    res.status(500).json({ success: false, message: "Error updating admit card config", error: error.message });
+    res.status(500).json({ success:false, message: "Server Error", error: error.message });
   }
 };
+
+

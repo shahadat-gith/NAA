@@ -8,7 +8,7 @@ import teacherRouter from "./routes/teacherRoutes.js";
 import settingsRouter from "./routes/settingsRouter.js";
 import galleryRouter from "./routes/galleryRoutes.js";
 import achieversRouter from "./routes/achieversRoute.js";
-import studentRouter from "./routes/StudentRoutes.js";
+import studentRouter from "./routes/studentRoutes.js";
 
 
 const app = express();
