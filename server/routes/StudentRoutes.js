@@ -20,7 +20,7 @@ import {
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
 
 
-export const studentRouter = express.Router();
+const studentRouter = express.Router();
 
 /* ================= STUDENTS ================= */
 studentRouter.get("/list", adminAuthMiddleware, getAllStudents);
@@ -46,3 +46,4 @@ studentRouter.get("/results", adminAuthMiddleware, getAllResults); // Admin fetc
 studentRouter.put("/result/:id", adminAuthMiddleware, updateResult);
 studentRouter.delete("/result/:id", adminAuthMiddleware, deleteResult);
 
+export default studentRouter;
