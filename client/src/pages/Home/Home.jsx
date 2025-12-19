@@ -4,7 +4,6 @@ import Curriculum from '../../components/Curriculum/Curriculum'
 import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs'
 import MessageSection from '../../components/MessageSection/MessageSection'
 import TeachersSection from '../../components/TeachersSection/TeachersSection'
-import TestimonialsSection from '../../components/TestimonialSection/TestimonialsSection'
 import SalientFeatures from '../../components/SalientFeatures/SalientFeatures'
 import Hero from '../../components/Hero/Hero'
 
@@ -18,8 +17,6 @@ const Home = () => {
       <SalientFeatures/>
       <Curriculum/>
       <WhyChooseUs/>
-      
-      {/* <TestimonialsSection/> */}
     </div>
   )
 }
