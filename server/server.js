@@ -3,12 +3,12 @@ import cors from "cors";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import mongoDBConnection from "./config/db.js";
-import { userRouter } from "./routes/authRoutes.js";
-import teacherRouter from "./routes/teacherRoutes.js";
-import settingsRouter from "./routes/settingsRouter.js";
-import galleryRouter from "./routes/galleryRoutes.js";
-import achieversRouter from "./routes/achieversRoute.js";
-import studentRouter from "./routes/studentRoutes.js";
+import { userRouter } from "./routes/auth.routes.js";
+import teacherRouter from "./routes/teacher.routes.js";
+import settingsRouter from "./routes/setting.routes.js";
+import galleryRouter from "./routes/gallery.routes.js";
+import achieversRouter from "./routes/achiever.routes.js";
+import studentRouter from "./routes/student.routes.js";
 
 
 const app = express();
