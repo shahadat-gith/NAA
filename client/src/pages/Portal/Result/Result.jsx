@@ -13,6 +13,8 @@ const Result = () => {
     const [isResultChecked, setIsResultChecked] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [principal, setPrincipal] = useState({})
+
     
     const navigate = useNavigate();
     const { backendUrl } = useContext(AppContext);
@@ -43,6 +45,7 @@ const Result = () => {
             if (response.data.success) {
                 setResultData(response.data.result);
                 setIsResultChecked(true);
+                setPrincipal(response.data.principal)
             } else {
                 setError(response.data.message || 'Result not found');
                 setIsResultChecked(true);
@@ -60,7 +63,7 @@ const Result = () => {
 
     useEffect(() => {
         if (resultData) {
-            navigate("download", { state: { resultData } });
+            navigate("download", { state: { resultData, principal } });
         }
     }, [resultData, navigate]);
 

@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import XLSX from "xlsx";
 import Student from "../models/Student/student.js";
 import Result from "../models/Student/result.js";
+import authorityModel from "../models/Academic/authorities.js"
 import { processResultRow, validateAndPrepareResult, calculateClassRanks } from "../utils/utility.js";
 
 
@@ -208,9 +209,11 @@ export const getSpecificResult = async (req, res) => {
     // Optionally attach student details
     const student = await Student.findOne({ registrationNo: result.registrationNo }).select("-password");
 
+    const principal = await authorityModel.findOne({role: 'Principal'}).select('name signature');
+
     res.status(200).json({
       success: true,
-      result: { ...result, studentDetails: student }
+      result: { ...result, studentDetails: student, principal }
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

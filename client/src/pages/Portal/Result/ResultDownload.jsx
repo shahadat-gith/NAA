@@ -9,6 +9,7 @@ const ResultDownload = () => {
   
   // Based on your backend: response.data.data is passed as state.resultData
   const resultData = state?.resultData;
+  const principal = state?.principal;
 
   // Safety check: if someone navigates here directly without data
   if (!resultData) {
@@ -29,7 +30,7 @@ const ResultDownload = () => {
   const percentage = ((totalMarksObtained / maxPossibleMarks) * 100).toFixed(2);
 
   const handleDownload = () => {
-    generateResultPDF(resultData);
+    generateResultPDF(resultData, principal);
   };
 
   return (
