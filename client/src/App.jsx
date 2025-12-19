@@ -23,13 +23,13 @@ import Login from "./components/Login/Login";
 
 /* ===== Portal Pages ===== */
 import Portal from "./pages/Portal/Portal";
-import Services from "./pages/Portal/Services";
 import ResultDownload from "./pages/Portal/Result/ResultDownload";
 import StudentDetails from "./pages/Portal/StudentDetails/StudentDetails";
 import Search from "./pages/Portal/Search/Search";
 
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
+import Result from "./pages/Portal/Result/Result";
 
 const App = () => {
   const location = useLocation();
@@ -69,9 +69,9 @@ const App = () => {
           <Route path="/portal" element={<Portal />} />
           <Route path="/portal/search" element={<Search />} />
           <Route path="/portal/student/:id" element={<StudentDetails />} />
-          <Route path="/portal/services/:type" element={<Services />} />
+          <Route path="/portal/result" element={<Result />} />
           <Route
-            path="/portal/services/result/download"
+            path="/portal/result/download"
             element={<ResultDownload />}
           />
 

@@ -5,6 +5,7 @@ import { AppContext } from '../../../context/AppContext';
 import { EXAM_OPTIONS, SESSION_OPTIONS } from './academicOptions'; 
 import './Result.css';
 
+
 const Result = () => {
     const [registrationNo, setRegistrationNo] = useState('');
     const [examName, setExamName] = useState('');
@@ -46,6 +47,7 @@ const Result = () => {
                 setResultData(response.data.result);
                 setIsResultChecked(true);
                 setPrincipal(response.data.principal)
+                console.log(response.data)
             } else {
                 setError(response.data.message || 'Result not found');
                 setIsResultChecked(true);

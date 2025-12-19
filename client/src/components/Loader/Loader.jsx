@@ -1,19 +1,20 @@
-import React from 'react';
-import './Loader.css';
-import HashLoader from 'react-spinners/HashLoader';
+// Loader.jsx
+import React from "react";
+import "./Loader.css";
+import logo from "/NAA_LOGO.png";
 
-const Loader = ({ text = "loading..." }) => {
+const Loader = ({ text = "Loading..." }) => {
   return (
-    <div className='loader-container'>
-      <div className="loader-content">
-        <HashLoader
-          color="#e94560"
-          size={50}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-        {text && <p className="loader-text">{text}</p>}
+    <div className="loader-container">
+      <div className="loader-wrapper">
+        {/* Circular Spinner */}
+        <div className="loader-spinner"></div>
+
+        {/* Fixed Logo */}
+        <img src={logo} alt="NAA Logo" className="loader-logo" />
       </div>
+
+      <p className="loader-text">{text}</p>
     </div>
   );
 };

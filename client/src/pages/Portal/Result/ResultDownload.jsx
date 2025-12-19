@@ -11,6 +11,7 @@ const ResultDownload = () => {
   const resultData = state?.resultData;
   const principal = state?.principal;
 
+
   // Safety check: if someone navigates here directly without data
   if (!resultData) {
     return (

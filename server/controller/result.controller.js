@@ -213,7 +213,8 @@ export const getSpecificResult = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      result: { ...result, studentDetails: student, principal }
+      result: { ...result, studentDetails: student },
+      principal
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

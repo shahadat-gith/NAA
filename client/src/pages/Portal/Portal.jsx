@@ -37,42 +37,47 @@ const Portal = () => {
   };
 
   /* ===== OPTION RENDERER ===== */
-  const renderOption = ({ type, icon, label, disabled }) => {
-    const statusText = disabled ? "Not available" : "Available";
+ const renderOption = ({ type, icon, label, disabled }) => {
+  const statusText = disabled ? "Not available" : "Available";
 
-    return (
-      <li
-        className={`portal-options-list-item ${
-          disabled ? "portal-disabled" : "portal-available"
+  // decide route based on type
+  const redirectPath =
+    type === "result" ? "/portal/result" : "/portal/search";
+
+  return (
+    <li
+      className={`portal-options-list-item ${
+        disabled ? "portal-disabled" : "portal-available"
+      }`}
+    >
+      {/* STATUS BADGE */}
+      <span
+        className={`portal-status-badge ${
+          disabled ? "status-unavailable" : "status-available"
         }`}
       >
-        {/* STATUS BADGE */}
-        <span
-          className={`portal-status-badge ${
-            disabled ? "status-unavailable" : "status-available"
-          }`}
-        >
-          {statusText}
-        </span>
+        {statusText}
+      </span>
 
-        {disabled ? (
-          <div className="portal-options-list-item-link disabled">
-            <i className={`portal-icon ${icon}`}></i>
-            <span>{label}</span>
-          </div>
-        ) : (
-          <Link
-            to="/portal/search"
-            state={{ type }}
-            className="portal-options-list-item-link"
-          >
-            <i className={`portal-icon ${icon}`}></i>
-            <span>{label}</span>
-          </Link>
-        )}
-      </li>
-    );
-  };
+      {disabled ? (
+        <div className="portal-options-list-item-link disabled">
+          <i className={`portal-icon ${icon}`}></i>
+          <span>{label}</span>
+        </div>
+      ) : (
+        <Link
+          to={redirectPath}
+          state={type === "result" ? undefined : { type }}
+          className="portal-options-list-item-link"
+        >
+          <i className={`portal-icon ${icon}`}></i>
+          <span>{label}</span>
+        </Link>
+      )}
+    </li>
+  );
+};
+
 
   return (
     <div className="portal-page">
