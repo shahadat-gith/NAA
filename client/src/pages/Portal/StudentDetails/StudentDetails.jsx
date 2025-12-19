@@ -17,13 +17,14 @@ const StudentDetails = () => {
   const [principal, setPrincipal] = useState(null);
   const [examIncharge, setExamIncharge] = useState(null);
   const [admitCard, setAdmitCard] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchStudentDetails();
   }, []);
 
   const fetchStudentDetails = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(
         `${backendUrl}/api/student/single/${id}?type=${type}`);
@@ -48,21 +49,20 @@ const StudentDetails = () => {
   };
 
   if (!state) return <Navigate to="/portal" />;
+  if(loading) return <Loader text="Loading student details..." />
   
 
   return (
     <div className="student-details-container">
-      {loading && <Loader text="Loading student details..." />}
       <div className="student-card">
         <h2>Student Details</h2>
-
         <div className="student-grid">
-          <div><span>Name</span><p>{student.name}</p></div>
-          <div><span>Registration No</span><p>{student.registrationNo}</p></div>
-          <div><span>Class</span><p>{student.class}</p></div>
-          <div><span>Medium</span><p>{student.medium}</p></div>
-          <div><span>Father's Name</span><p>{student.fatherName}</p></div>
-          <div><span>Mother's Name</span><p>{student.motherName}</p></div>
+          <div><span>Name</span><p>{student?.name}</p></div>
+          <div><span>Registration No</span><p>{student?.registrationNo}</p></div>
+          <div><span>Class</span><p>{student?.class}</p></div>
+          <div><span>Medium</span><p>{student?.medium}</p></div>
+          <div><span>Father's Name</span><p>{student?.fatherName}</p></div>
+          <div><span>Mother's Name</span><p>{student?.motherName}</p></div>
         </div>
 
         {type === "admit-card" && admitCard && (
