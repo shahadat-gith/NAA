@@ -3,6 +3,8 @@ import XLSX from "xlsx";
 import Student from "../models/Student/student.js";
 import Admission from "../models/Student/admission.js";
 import Result from "../models/Student/result.js";
+import { authorityModel } from "../models/Academic/authorities.js";
+import AdmitCardSettings from "../models/Settings/admitcard.js";
 import { normalizeKey } from "../utils/utility.js";
 
 
@@ -15,16 +17,73 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
-// Get student by ID
+
+
+// Get student by ID (with admit card support)
 export const getStudentById = async (req, res) => {
   try {
+    const { type } = req.query;
+
+    // 1️⃣ Fetch student
     const student = await Student.findById(req.params.id);
-    if (!student) return res.status(404).json({ message: "Student not found" });
-    res.status(200).json(student);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    let principal = null;
+    let examIncharge = null;
+    let admitCard = null;
+
+    // 2️⃣ If admit-card flow
+    if (type === "admit-card") {
+      // Authorities
+      const [p, e] = await Promise.all([
+        authorityModel.findOne({
+          role: { $regex: "^principal$", $options: "i" },
+        }),
+        authorityModel.findOne({
+          role: { $regex: "^exam ic$", $options: "i" },
+        }),
+      ]);
+
+      principal = p;
+      examIncharge = e;
+
+      // 3️⃣ Fetch admit card schedule based on student
+      admitCard = await AdmitCardSettings.findOne({
+        class: student.class,
+        medium: student.medium,
+        stream: student.stream || "",
+      });
+    }
+
+    // 4️⃣ Build response
+    const response = {
+      success: true,
+      student,
+    };
+
+    if (type === "admit-card") {
+      response.principal = principal;
+      response.examIncharge = examIncharge;
+      response.admitCard = admitCard; 
+    }
+
+    return res.status(200).json(response);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching student", error: error.message });
+    console.error("getStudentById error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching student details",
+      error: error.message,
+    });
   }
 };
+
 
 // Update student
 export const updateStudent = async (req, res) => {
@@ -214,9 +273,10 @@ export const SearchStudentsByName = async (req, res) => {
       });
     }
 
+    // Search students (case-insensitive)
     const students = await Student.find({
       name: { $regex: name.trim(), $options: "i" },
-    }).sort({ name: 1 }); // optional: alphabetical order
+    }).sort({ name: 1 });
 
     if (students.length === 0) {
       return res.status(404).json({
@@ -226,7 +286,7 @@ export const SearchStudentsByName = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Students fetched successfully",
       students,
@@ -234,7 +294,7 @@ export const SearchStudentsByName = async (req, res) => {
   } catch (error) {
     console.error("SearchStudentsByName error:", error);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error searching students",
       error: error.message,

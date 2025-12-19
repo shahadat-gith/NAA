@@ -17,7 +17,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, rgba(240, 248, 255, 0.9), rgba(255, 255, 255, 0.7));
+    background: #dcc8cc;
     height: 160px;
     width: 280px;
     border-radius: 12px;

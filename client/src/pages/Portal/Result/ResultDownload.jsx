@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ResultDownload.css';
-import { generateResultPDF } from '../Utils/generateResultPDF'; 
+import { generateResultPDF } from '../../../Utils/generateResultPDF'; 
 
 const ResultDownload = () => {
   const { state } = useLocation();

@@ -31,13 +31,13 @@ const Portal = () => {
     }
   };
 
-  if (loading || !serviceSettings) {
-    return <Loader/>
-  }
+  const isDisabled = (key) => {
+    if (!serviceSettings) return true;
+    return serviceSettings[key] === false;
+  };
 
-  const isDisabled = (key) => serviceSettings[key] === false;
-
-  const renderOption = ({ to, icon, label, disabled }) => {
+  /* ===== OPTION RENDERER ===== */
+  const renderOption = ({ type, icon, label, disabled }) => {
     const statusText = disabled ? "Not available" : "Available";
 
     return (
@@ -61,7 +61,11 @@ const Portal = () => {
             <span>{label}</span>
           </div>
         ) : (
-          <Link to={to} className="portal-options-list-item-link">
+          <Link
+            to="/portal/search"
+            state={{ type }}
+            className="portal-options-list-item-link"
+          >
             <i className={`portal-icon ${icon}`}></i>
             <span>{label}</span>
           </Link>
@@ -71,19 +75,24 @@ const Portal = () => {
   };
 
   return (
-    <div>
+    <div className="portal-page">
       <Header
         title="Student Portal"
         tagline="Access all your student services in one place"
       />
 
-      <div className="portal-container">
+      <div className="portal-container portal-content-wrapper">
+        {/* CONTENT LOADER */}
+        {(loading || !serviceSettings) && (
+          <Loader text="Loading portal..." />
+        )}
+
         <div className="portal-title">
           <h2>Student Portal</h2>
         </div>
 
         <div className="portal-content">
-          {/* PAYMENT OPTIONS */}
+          {/* ===== PAYMENT OPTIONS ===== */}
           <div className="portal-left">
             <div className="portal-left-title">
               <h3>Payment Options</h3>
@@ -91,21 +100,21 @@ const Portal = () => {
 
             <ul className="portal-options-list">
               {renderOption({
-                to: "/portal/fee/monthly",
+                type: "monthly",
                 icon: "fas fa-money-bill-wave payment-icon",
                 label: "Monthly Fee Payment",
                 disabled: isDisabled("feeMonthly"),
               })}
 
               {renderOption({
-                to: "/portal/fee/admission",
+                type: "admission",
                 icon: "fas fa-user-graduate admission-icon",
                 label: "Admission Fee Payment",
                 disabled: isDisabled("feeAdmission"),
               })}
 
               {renderOption({
-                to: "/portal/fee/hostel",
+                type: "hostel",
                 icon: "fas fa-bed hostel-icon",
                 label: "Hostel Fee Payment",
                 disabled: isDisabled("feeHostel"),
@@ -113,7 +122,7 @@ const Portal = () => {
             </ul>
           </div>
 
-          {/* SERVICES */}
+          {/* ===== SERVICES ===== */}
           <div className="portal-right">
             <div className="portal-right-title">
               <h3>Services</h3>
@@ -121,21 +130,21 @@ const Portal = () => {
 
             <ul className="portal-right-options-list">
               {renderOption({
-                to: "/portal/services/result",
+                type: "result",
                 icon: "fas fa-chart-bar result-icon",
                 label: "Result Check",
                 disabled: isDisabled("result"),
               })}
 
               {renderOption({
-                to: "/portal/services/admit-card",
+                type: "admit-card",
                 icon: "fas fa-id-card admit-icon",
                 label: "Admit Card",
                 disabled: isDisabled("admitCard"),
               })}
 
               {renderOption({
-                to: "/portal/services/admission",
+                type: "admission",
                 icon: "fa-solid fa-id-card-clip id-icon",
                 label: "Admission",
                 disabled: isDisabled("admission"),
