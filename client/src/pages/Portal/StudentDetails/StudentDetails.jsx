@@ -48,10 +48,11 @@ const StudentDetails = () => {
   };
 
   if (!state) return <Navigate to="/portal" />;
-  if (loading) return <Loader text="Loading student details..." />;
+  
 
   return (
     <div className="student-details-container">
+      {loading && <Loader text="Loading student details..." />}
       <div className="student-card">
         <h2>Student Details</h2>
 
