@@ -15,7 +15,7 @@ import {
   getAttendanceHistory,
   updateProfilePicture,
   UpdateDueBalance,
-} from "../controller/teacherController.js";
+} from "../controller/teacher.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 const teacherRouter = express.Router();

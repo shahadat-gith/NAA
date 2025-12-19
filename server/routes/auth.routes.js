@@ -1,5 +1,5 @@
 import express from "express";
-import { adminLogin, teacherLogin, getTeacherProfile, forgotPasswordTeacher } from "../controller/authController.js";
+import { adminLogin, teacherLogin, getTeacherProfile, forgotPasswordTeacher } from "../controller/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
 
 export const userRouter = express.Router();

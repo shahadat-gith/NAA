@@ -1,7 +1,7 @@
 import express from "express";
-import { deleteAdmitCardSettings, getSettings, toggleServiceSetting, updateAdmitCardSettings } from "../controller/settingsController.js";
+import { deleteAdmitCardSettings, getSettings, toggleServiceSetting, updateAdmitCardSettings } from "../controller/setting.controller.js";
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
-import { getAllAuthorities, updateAuthority } from "../controller/authorityController.js";
+import { getAllAuthorities, updateAuthority } from "../controller/authority.controller.js";
 import { upload } from "../config/multer.js";
 
 

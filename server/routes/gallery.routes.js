@@ -1,7 +1,6 @@
 import express from 'express';
-import multer from 'multer';
 import { upload } from '../config/multer.js';
-import { uploadImage, getImages, deleteImage } from '../controller/galleryController.js';
+import { uploadImage, getImages, deleteImage } from '../controller/gallery.controller.js';
 
 const galleryRouter = express.Router();
 

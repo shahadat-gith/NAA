@@ -8,14 +8,14 @@ import {
     updateStudent
 }
 
-    from "../controller/studentController.js";
+    from "../controller/student.controller.js";
 
 import {
     createResult, deleteResult,
     getAllResults, getSpecificResult,
     massResults, updateResult
 }
-    from "../controller/resultController.js";
+    from "../controller/result.controller.js";
 
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
 

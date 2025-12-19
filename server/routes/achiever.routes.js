@@ -1,6 +1,5 @@
 import express from 'express';
-import { addAchieversDetails, getAchievers, deleteAchiever, updateAchiever } from '../controller/achieversController.js';
-import multer from 'multer';
+import { addAchieversDetails, getAchievers, deleteAchiever, updateAchiever } from '../controller/achiever.controller.js';
 import { authMiddleware } from '../middleware/auth.js';
 import { upload } from '../config/multer.js';
 
