@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import XLSX from "xlsx";
 import Student from "../models/Student/student.js";
 import Result from "../models/Student/result.js";
-import authorityModel from "../models/Academic/authorities.js"
+import { authorityModel } from "../models/Academic/authorities.js";
 import { processResultRow, validateAndPrepareResult, calculateClassRanks } from "../utils/utility.js";
 
 
