@@ -5,7 +5,7 @@ import { AdminContext } from "../../../../context/AdminContext";
 import { formatClassName } from "../../../../utils/formatclass";
 import ExamModal from "./ExamModal";
 import ExamRoutineModal from "./ExamRoutineModal";
-import "./AdmitCardTab.css";
+import "./AdmitcardTab.css";
 
 const AdmitCardTab = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
