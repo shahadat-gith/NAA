@@ -1,45 +1,52 @@
 import { createContext, useEffect, useState } from "react";
-import axios from "axios"
+import axios from "axios";
+
 export const AppContext = createContext();
 
 export const AppContextProvider = (props) => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
-    const adminUrl = import.meta.env.VITE_ADMIN_URL;
-    const [teachers, setTeachers] = useState([]);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const adminUrl = import.meta.env.VITE_ADMIN_URL;
 
-    const getAllTeachers = async () => {
-        try {
-            const { data } = await axios.get(`${backendUrl}/api/teacher/all-teachers`);
+  const [teachers, setTeachers] = useState([]);
+  const [authorities, setAuthorities] = useState([]);
+  const [heroImages, setHeroImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-            if (data.success) {
-                setTeachers(data.teachers);
-            } else {
-                console.error("Error fetching teachers data!");
-            }
-        } catch (error) {
-            console.error("API Error:", error.message);
-        }
-    };
+  const fetchHomeData = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${backendUrl}/api/home-data`);
 
-    const value = {
-        backendUrl,
-        teachers,
-        getAllTeachers,
-        setTeachers,
-        adminUrl
+      if (res.data.success) {
+        const { teachers, authorities, heroImages } = res.data.data;
+
+        setTeachers(teachers || []);
+        setAuthorities(authorities || []);
+        setHeroImages(heroImages || []);
+      }
+    } catch (error) {
+      console.error("Error fetching home data:", error);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    useEffect(() => {
-       
-        getAllTeachers();
-        
-    }, [backendUrl]); 
+  useEffect(() => {
+    fetchHomeData();
+  }, [backendUrl]);
 
-  
+  const value = {
+    backendUrl,
+    adminUrl,
+    teachers,
+    authorities,
+    heroImages,
+    loading,
+  };
 
-    return (
-        <AppContext.Provider value={value}>
-            {props.children}
-        </AppContext.Provider>
-    );
+  return (
+    <AppContext.Provider value={value}>
+      {props.children}
+    </AppContext.Provider>
+  );
 };

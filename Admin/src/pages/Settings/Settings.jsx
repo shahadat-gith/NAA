@@ -4,6 +4,7 @@ import ServiceTab from "./Tabs/ServiceTab/ServiceTab";
 import FeesTab from "./Tabs/FeesTab/FeesTab";
 import AdmitCardTab from "./Tabs/AdmitcardTab/AdmitcardTab";
 import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
+import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
 
 const Settings = () => {
   const tabs = [
@@ -28,6 +29,11 @@ const Settings = () => {
       label: "authorities",
       icon: "fa-solid fa-person",
     },
+    {
+      id: "BannerImages",
+      label: "Banner Images",
+      icon: "fa-solid fa-image",
+    },
   ];
 
   const [activeTab, setActiveTab] = useState("services");
@@ -42,6 +48,8 @@ const Settings = () => {
         return <AdmitCardTab />;
       case "authorities":
         return <Authoritiestab />;
+      case "BannerImages":
+        return <BannerImagesTab />;
       default:
         return null;
     }

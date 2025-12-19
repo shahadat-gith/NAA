@@ -9,6 +9,9 @@ import settingsRouter from "./routes/setting.routes.js";
 import galleryRouter from "./routes/gallery.routes.js";
 import achieversRouter from "./routes/achiever.routes.js";
 import studentRouter from "./routes/student.routes.js";
+import HeroImage from "./models/Settings/heroImages.js"
+import { authorityModel } from "./models/Academic/authorities.js";
+import { teacherModel } from "./models/Academic/teacher.js";
 
 
 const app = express();
@@ -28,6 +31,25 @@ app.use("/api/settings",settingsRouter)
 app.use("/api/gallery", galleryRouter)
 app.use("/api/achievers", achieversRouter)
 app.use("/api/student", studentRouter)
+
+
+
+app.get("/api/home-data", async (req, res) => {
+    try {
+        const heroImages = await HeroImage.find({});
+
+        const authorities = await authorityModel.find({
+            role: { $in: ["Principal", "Managing Director"] }
+        }); 
+
+        const teachers = await teacherModel.find({}).select("name email contact degree experience image subjectClassMappings");
+
+        res.status(200).json({ success: true, data: { heroImages, authorities, teachers } });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Failed to fetch hero images", error: error.message });
+    }
+});
+
 
 app.get("/", (req, res) => res.status(200).json({ message: "API is working!" }));
 

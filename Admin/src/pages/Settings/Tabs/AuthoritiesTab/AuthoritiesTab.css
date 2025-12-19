@@ -2,13 +2,9 @@
 
 .auth-container {
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    #0f172a 0%,
-    #1e293b 50%,
-    #0f172a 100%
-  );
+  background:#0f172a ;
   padding: 24px;
+  border-radius: 15px;
 }
 
 .auth-header {

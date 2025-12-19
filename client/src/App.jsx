@@ -4,6 +4,7 @@ import Navbar from './components/Navbar/Navbar';
 import { ToastContainer } from 'react-toastify';
 import { Toaster } from 'react-hot-toast';
 import 'react-toastify/dist/ReactToastify.css';
+import PageStartLoader from './components/PageStartLoader/PageStartLoader';
 
 // Public Pages
 import Home from './pages/Home/Home';
@@ -27,6 +28,8 @@ import PageNotFound from './components/404/PageNotFound';
 import Gallery from './pages/Gallery/Gallery';
 import StudentDetails from './pages/Portal/StudentDetails/StudentDetails';
 import Search from './pages/Portal/Search/Search';
+import { useContext } from 'react';
+import { AppContext } from './context/AppContext';
 
 const App = () => {
   const location = useLocation();
@@ -34,6 +37,11 @@ const App = () => {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  const {loading} = useContext(AppContext)
+
+  if(loading){
+    return <PageStartLoader/>
+  }
 
   return (
     <div>

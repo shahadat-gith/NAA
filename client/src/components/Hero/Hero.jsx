@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './Hero.css';
-import { heroImages } from '../../assets/images'; // Adjust the path to match your file structure
+import React, { useState, useEffect, useRef, useContext } from "react";
+import "./Hero.css";
+import { AppContext } from "../../context/AppContext";
 
 const Hero = () => {
+  const { heroImages } = useContext(AppContext);
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
 
-  // Transform heroImages object into slides array
-  const slides = Object.keys(heroImages).map((key, index) => ({
-    src: heroImages[key],
-  }));
-
-  const totalSlides = slides.length;
+  const totalSlides = heroImages.length;
 
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -21,39 +18,50 @@ const Hero = () => {
     }
   };
 
+  /* ================= AUTO SLIDE ================= */
   useEffect(() => {
-    const autoSlide = () => {
+    if (totalSlides === 0) return;
+
+    const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % totalSlides);
-    };
+    }, 3000);
 
-    const interval = setInterval(autoSlide, 3000);
-
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [totalSlides]);
 
+  /* ================= MOVE SLIDE ================= */
   useEffect(() => {
+    if (totalSlides === 0) return;
     goToSlide(currentSlide);
-  }, [currentSlide]);
+  }, [currentSlide, totalSlides]);
+
+  if (totalSlides === 0) {
+    return null; 
+  }
 
   return (
     <div className="hero-container">
       <div className="slider-wrapper">
         <div ref={sliderRef} className="slider">
-          {slides.map((slide, index) => (
-            <div key={index} className="slide">
+          {heroImages.map((img, index) => (
+            <div key={img._id} className="slide">
               <img
-                src={slide.src}
+                src={img.url}
+                alt={`Hero ${index + 1}`}
                 className="slide-image"
+                loading={index === 0 ? "eager" : "lazy"}
               />
             </div>
           ))}
         </div>
       </div>
+
+      {/* DOT INDICATORS */}
       <div className="dot-indicators">
-        {slides.map((_, index) => (
+        {heroImages.map((_, index) => (
           <span
             key={index}
-            className={`dot ${currentSlide === index ? 'active' : ''}`}
+            className={`dot ${currentSlide === index ? "active" : ""}`}
             onClick={() => goToSlide(index)}
           ></span>
         ))}

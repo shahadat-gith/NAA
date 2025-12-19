@@ -1,0 +1,134 @@
+/* ================= Overlay ================= */
+.banner-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* ================= Modal Box ================= */
+.banner-modal {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.95),
+    rgba(15, 23, 42, 0.95)
+  );
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  animation: scaleIn 0.25s ease;
+}
+
+/* ================= Title ================= */
+.banner-modal h3 {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* ================= Image Preview ================= */
+.banner-preview {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  border: 2px solid rgba(51, 65, 85, 0.6);
+}
+
+/* ================= File Input ================= */
+.banner-modal input[type="file"] {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px dashed rgba(59, 130, 246, 0.6);
+  color: #cbd5f5;
+  padding: 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.banner-modal input[type="file"]::file-selector-button {
+  background: rgba(59, 130, 246, 0.25);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #60a5fa;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* ================= Actions ================= */
+.banner-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.banner-modal-actions button {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Cancel */
+.banner-modal-actions .cancel-btn {
+  background: rgba(51, 65, 85, 0.6);
+  color: #cbd5f5;
+}
+
+.banner-modal-actions .cancel-btn:hover {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+/* Save */
+.banner-modal-actions button:not(.cancel-btn) {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+}
+
+.banner-modal-actions button:not(.cancel-btn):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.banner-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ================= Animation ================= */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 480px) {
+  .banner-modal {
+    margin: 16px;
+    padding: 20px;
+  }
+
+  .banner-preview {
+    height: 150px;
+  }
+}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
 
 const TeachersSection = () => {
-  const { teachers, backendUrl } = useContext(AppContext);
+  const { teachers } = useContext(AppContext);
 
   // Sort teachers by experience (descending) and take top 4
   const topTeachers = [...teachers]
