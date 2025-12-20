@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import Header from "../../components/Header/Header";
+import { Helmet } from "react-helmet-async";
 
 const Contact = () => {
   const navigate = useNavigate()
@@ -26,7 +27,7 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   
+
 
   };
 
@@ -39,6 +40,15 @@ const Contact = () => {
 
   return (
     <div className="contact-page">
+
+      <Helmet>
+        <title>Contact Us | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Contact Nashib Ali Academy for admissions, enquiries and academic information."
+        />
+      </Helmet>
+
       {/* Header Section */}
       <section className="contact-header">
         <Header

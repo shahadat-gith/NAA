@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
 import Header from '../../components/Header/Header';
+import { Helmet } from 'react-helmet-async';
 
 const About = () => {
   const faqs = [
@@ -75,6 +76,14 @@ const About = () => {
 
   return (
     <div className="about-page">
+      <Helmet>
+        <title>About Us | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Learn about Nashib Ali Academy, our vision, mission, values and commitment to quality education."
+        />
+      </Helmet>
+
       <Header
         title="About Nashib Ali Academy"
         tagline="A Legacy of Excellence in Education"

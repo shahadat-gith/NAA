@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header";
 import { AppContext } from '../../context/AppContext';
 import axios from "axios";
 import user from '/user.jpg'
+import { Helmet } from "react-helmet-async";
 
 const Academics = () => {
   const { backendUrl } = useContext(AppContext);
@@ -30,10 +31,10 @@ const Academics = () => {
   }, [backendUrl]);
 
   const openImagePopup = (imageUrl) => {
-    if(!imageUrl){
+    if (!imageUrl) {
       return
     }
-    
+
     setSelectedImage(imageUrl);
     document.body.style.overflow = 'hidden';
   };
@@ -45,6 +46,14 @@ const Academics = () => {
 
   return (
     <div className="academics-page">
+      <Helmet>
+        <title>Academics | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Explore academic programs, curriculum and learning environment at Nashib Ali Academy."
+        />
+      </Helmet>
+
       <section className="academics-header">
         <Header title={"Academics 2025"} tagline={"Empowering Excellence in Education"} />
       </section>
@@ -77,7 +86,7 @@ const Academics = () => {
                             className="achiever-image"
                           />
                         ) : (
-                           <img
+                          <img
                             src={user}
                             className="achiever-image"
                           />
