@@ -12,7 +12,8 @@ import studentRouter from "./routes/student.routes.js";
 import HeroImage from "./models/Settings/heroImages.js"
 import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
-
+import Image from "./models/Academic/gallery.js"
+import ServiceSettings from "./models/Settings/services.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -44,7 +45,10 @@ app.get("/api/home-data", async (req, res) => {
 
         const teachers = await teacherModel.find({}).select("name email contact degree experience image subjectClassMappings");
 
-        res.status(200).json({ success: true, data: { heroImages, authorities, teachers } });
+        const galleryImages = await Image.find({});
+        const serviceSettings = await ServiceSettings.findOne({});
+
+        res.status(200).json({ success: true, data: { heroImages, authorities, teachers, galleryImages, serviceSettings } });
     } catch (error) {
         res.status(500).json({ success: false, message: "Failed to fetch hero images", error: error.message });
     }

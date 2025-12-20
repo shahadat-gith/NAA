@@ -6,10 +6,11 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const adminUrl = import.meta.env.VITE_ADMIN_URL;
-
   const [teachers, setTeachers] = useState([]);
   const [authorities, setAuthorities] = useState([]);
   const [heroImages, setHeroImages] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+ const [serviceSettings, setServiceSettings] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const fetchHomeData = async () => {
@@ -18,11 +19,13 @@ export const AppContextProvider = (props) => {
       const res = await axios.get(`${backendUrl}/api/home-data`);
 
       if (res.data.success) {
-        const { teachers, authorities, heroImages } = res.data.data;
+        const { teachers, authorities, heroImages,galleryImages, serviceSettings } = res.data.data;
 
         setTeachers(teachers || []);
         setAuthorities(authorities || []);
         setHeroImages(heroImages || []);
+        setGalleryImages(galleryImages || [])
+        setServiceSettings(serviceSettings || [])
       }
     } catch (error) {
       console.error("Error fetching home data:", error);
@@ -41,6 +44,8 @@ export const AppContextProvider = (props) => {
     teachers,
     authorities,
     heroImages,
+    galleryImages,
+    serviceSettings,
     loading,
   };
 

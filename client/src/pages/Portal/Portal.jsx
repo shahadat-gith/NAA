@@ -1,36 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import Header from "../../components/Header/Header";
 import { Link } from "react-router-dom";
 import "./Portal.css";
 import { AppContext } from "../../context/AppContext";
-import axios from "axios";
-import toast from "react-hot-toast";
-import Loader from "../../components/Loader/Loader";
 import { Helmet } from "react-helmet-async";
 
 const Portal = () => {
-  const { backendUrl } = useContext(AppContext);
-
-  const [loading, setLoading] = useState(false);
-  const [serviceSettings, setServiceSettings] = useState(null);
-
-  useEffect(() => {
-    fetchServiceSettings();
-  }, []);
-
-  const fetchServiceSettings = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(`${backendUrl}/api/settings/services`);
-      if (res.data.success) {
-        setServiceSettings(res.data.data);
-      }
-    } catch (error) {
-      toast.error("Failed to load service settings");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {serviceSettings} = useContext(AppContext);
 
   const isDisabled = (key) => {
     if (!serviceSettings) return true;
@@ -89,11 +65,6 @@ const Portal = () => {
       />
 
       <div className="portal-container portal-content-wrapper">
-        {/* CONTENT LOADER */}
-        {(loading || !serviceSettings) && (
-          <Loader text="Loading portal..." />
-        )}
-
         <div className="portal-title">
           <h2>Student Portal</h2>
         </div>
