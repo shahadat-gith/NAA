@@ -1,6 +1,5 @@
-import React from 'react'
-import Header from '../../components/Header/Header'
-import Curriculum from '../../components/Curriculum/Curriculum'
+
+import Curriculum from '../Curriculum/Curriculum'
 import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs'
 import MessageSection from '../../components/MessageSection/MessageSection'
 import TeachersSection from '../../components/TeachersSection/TeachersSection'
