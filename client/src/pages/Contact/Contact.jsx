@@ -1,8 +1,6 @@
 import React, { useContext, useState } from "react";
 import "./Contact.css";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import axios from "axios";
 import { AppContext } from "../../context/AppContext";
 import Header from "../../components/Header/Header";
 import { Helmet } from "react-helmet-async";

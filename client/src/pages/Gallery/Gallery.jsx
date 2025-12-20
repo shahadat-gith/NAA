@@ -3,6 +3,7 @@ import './Gallery.css';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { AppContext } from '../../context/AppContext';
+import { Helmet } from 'react-helmet-async';
 
 const Gallery = () => {
   const { backendUrl } = useContext(AppContext);
@@ -92,6 +93,13 @@ const Gallery = () => {
 
   return (
     <div className="gallery-container">
+      <Helmet>
+        <title>Gallery | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Explore photos and highlights of academic activities, events, classrooms and student life at Nashib Ali Academy in Barpeta, Assam."
+        />
+      </Helmet>
       <div className="gallery-header">
         <h1 className="gallery-title">School Gallery</h1>
         <p className="gallery-subtitle">

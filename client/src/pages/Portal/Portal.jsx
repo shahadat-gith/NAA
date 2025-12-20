@@ -6,6 +6,7 @@ import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
+import { Helmet } from "react-helmet-async";
 
 const Portal = () => {
   const { backendUrl } = useContext(AppContext);
@@ -37,50 +38,51 @@ const Portal = () => {
   };
 
   /* ===== OPTION RENDERER ===== */
- const renderOption = ({ type, icon, label, disabled }) => {
-  const statusText = disabled ? "Not available" : "Available";
+  const renderOption = ({ type, icon, label, disabled }) => {
+    const statusText = disabled ? "Not available" : "Available";
 
-  // decide route based on type
-  const redirectPath =
-    type === "result" ? "/portal/result" : "/portal/search";
+    // decide route based on type
+    const redirectPath =
+      type === "result" ? "/portal/result" : "/portal/search";
 
-  return (
-    <li
-      className={`portal-options-list-item ${
-        disabled ? "portal-disabled" : "portal-available"
-      }`}
-    >
-      {/* STATUS BADGE */}
-      <span
-        className={`portal-status-badge ${
-          disabled ? "status-unavailable" : "status-available"
-        }`}
+    return (
+      <li
+        className={`portal-options-list-item ${disabled ? "portal-disabled" : "portal-available"
+          }`}
       >
-        {statusText}
-      </span>
-
-      {disabled ? (
-        <div className="portal-options-list-item-link disabled">
-          <i className={`portal-icon ${icon}`}></i>
-          <span>{label}</span>
-        </div>
-      ) : (
-        <Link
-          to={redirectPath}
-          state={type === "result" ? undefined : { type }}
-          className="portal-options-list-item-link"
+        {/* STATUS BADGE */}
+        <span
+          className={`portal-status-badge ${disabled ? "status-unavailable" : "status-available"
+            }`}
         >
-          <i className={`portal-icon ${icon}`}></i>
-          <span>{label}</span>
-        </Link>
-      )}
-    </li>
-  );
-};
+          {statusText}
+        </span>
+
+        {disabled ? (
+          <div className="portal-options-list-item-link disabled">
+            <i className={`portal-icon ${icon}`}></i>
+            <span>{label}</span>
+          </div>
+        ) : (
+          <Link
+            to={redirectPath}
+            state={type === "result" ? undefined : { type }}
+            className="portal-options-list-item-link"
+          >
+            <i className={`portal-icon ${icon}`}></i>
+            <span>{label}</span>
+          </Link>
+        )}
+      </li>
+    );
+  };
 
 
   return (
     <div className="portal-page">
+      <Helmet>
+        <title>Student Portal | Nashib Ali Academy</title>
+      </Helmet>
       <Header
         title="Student Portal"
         tagline="Access all your student services in one place"
