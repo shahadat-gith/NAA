@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import './TeachersSection.css';
 import { Link } from 'react-router-dom';
-import { AppContext } from '../../context/AppContext';
+import { AppContext } from '../../../../context/AppContext';
 
 const TeachersSection = () => {
   const { teachers } = useContext(AppContext);

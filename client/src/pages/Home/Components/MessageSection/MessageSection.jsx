@@ -1,7 +1,7 @@
 // MessageSection.jsx
 import React, { useContext } from "react";
 import "./MessageSection.css";
-import { AppContext } from "../../context/AppContext";
+import { AppContext } from "../../../../context/AppContext";
 
 const MessageSection = () => {
   const { authorities } = useContext(AppContext);
@@ -43,7 +43,7 @@ const MessageSection = () => {
         {director && (
           <div className="message-item director-message">
             <div className="message-photo">
-              <img src={director.image?.url} alt="Director" />
+              <img src={director.image?.url} alt="Director"/>
             </div>
             <div className="message-content">
               <h2 className="message-title">Message from Our Director</h2>

@@ -12,6 +12,7 @@ export const AppContextProvider = (props) => {
   const [galleryImages, setGalleryImages] = useState([]);
  const [serviceSettings, setServiceSettings] = useState(null);
   const [loading, setLoading] = useState(false);
+ 
 
   const fetchHomeData = async () => {
     setLoading(true);

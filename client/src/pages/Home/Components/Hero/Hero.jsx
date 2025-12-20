@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./Hero.css";
-import { AppContext } from "../../context/AppContext";
+import { AppContext } from "../../../../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
-  const { heroImages } = useContext(AppContext);
+  const { heroImages, serviceSettings} = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
@@ -35,12 +37,11 @@ const Hero = () => {
     goToSlide(currentSlide);
   }, [currentSlide, totalSlides]);
 
-  if (totalSlides === 0) {
-    return null; 
-  }
+  if (totalSlides === 0) return null;
 
   return (
     <div className="hero-container">
+      {/* ================= SLIDER ================= */}
       <div className="slider-wrapper">
         <div ref={sliderRef} className="slider">
           {heroImages.map((img, index) => (
@@ -56,14 +57,35 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* DOT INDICATORS */}
+      {/* ================= ADMISSION NOTICE ================= */}
+      {serviceSettings?.admission && (
+        <div
+          className="admission-notice"
+          onClick={() => navigate("/admission")}
+        >
+          <div className="admission-track">
+            <span className="admission-text">
+              📢 Admission is going on for the current academic session —{" "}
+              <span className="admission-cta">Click here to apply now</span>
+            </span>
+
+            <span className="admission-text">
+              📢 Admission is going on for the current academic session —{" "}
+              <span className="admission-cta">Click here to apply now</span>
+            </span>
+
+          </div>
+        </div>
+      )}
+
+      {/* ================= DOTS ================= */}
       <div className="dot-indicators">
         {heroImages.map((_, index) => (
           <span
             key={index}
             className={`dot ${currentSlide === index ? "active" : ""}`}
             onClick={() => goToSlide(index)}
-          ></span>
+          />
         ))}
       </div>
     </div>

@@ -1,0 +1,140 @@
+/* ===============================
+   MESSAGE SECTION
+   =============================== */
+.message-section {
+  padding: 5rem 2rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e6e6e6 100%);
+}
+
+/* ===============================
+   CONTAINER
+   =============================== */
+.message-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ===============================
+   SINGLE CARD
+   =============================== */
+.message-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* Principal: IMAGE | MESSAGE */
+.principal-message {
+  flex-direction: row;
+  animation-delay: 0.2s;
+}
+
+/* Director / MD: MESSAGE | IMAGE */
+.director-message {
+  flex-direction: row-reverse;
+  animation-delay: 0.4s;
+}
+
+/* ===============================
+   IMAGE
+   =============================== */
+.message-photo {
+  flex: 0 0 260px;
+  height: 180px;
+  overflow: hidden;
+}
+
+.message-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ===============================
+   CONTENT
+   =============================== */
+.message-content {
+  flex: 1;
+}
+
+/* ===============================
+   TEXT
+   =============================== */
+.message-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.6rem;
+  text-transform: uppercase;
+}
+
+
+
+.message-subtitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #e94560;
+  margin-bottom: 1rem;
+}
+
+.message-text {
+  font-size: 0.98rem;
+  color: #555;
+  line-height: 1.7;
+}
+
+/* ===============================
+   ANIMATION
+   =============================== */
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 768px) {
+  .message-item {
+    flex-direction: column !important;
+    text-align: center;
+  }
+
+  .message-photo {
+    width: 100%;
+    height: auto;
+  }
+
+ 
+}
+
+@media (max-width: 480px) {
+  .message-photo {
+    height: auto;
+  }
+
+  .message-title {
+    font-size: 1.4rem;
+  }
+
+  .message-subtitle {
+    font-size: 1.15rem;
+  }
+
+  .message-text {
+    font-size: 0.95rem;
+  }
+}

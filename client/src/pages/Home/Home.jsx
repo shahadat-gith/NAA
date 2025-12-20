@@ -1,11 +1,11 @@
 
-import Curriculum from '../Curriculum/Curriculum'
-import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs'
-import MessageSection from '../../components/MessageSection/MessageSection'
-import TeachersSection from '../../components/TeachersSection/TeachersSection'
-import SalientFeatures from '../../components/SalientFeatures/SalientFeatures'
-import Hero from '../../components/Hero/Hero'
 import { Helmet } from "react-helmet-async";
+import Hero from "./Components/Hero/Hero";
+import MessageSection from "./Components/MessageSection/MessageSection";
+import TeachersSection from "./Components/TeachersSection/TeachersSection";
+import SalientFeatures from "./Components/SalientFeatures/SalientFeatures";
+import Curriculum from "./Components/Curriculum/Curriculum";
+import WhyChooseUs from "./Components/WhyChooseUs/WhyChooseUs";
 
 const Home = () => {
   return (

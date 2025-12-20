@@ -1,0 +1,99 @@
+/* ===============================
+   ADMIN LOGIN PAGE
+   =============================== */
+
+.admin-login {
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #0f172a, #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* Login Card */
+.admin-login form {
+  width: 100%;
+  max-width: 380px;
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 36px 32px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Heading */
+.admin-login h2 {
+  color: #f8fafc;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 0.4px;
+}
+
+/* Inputs */
+.admin-login input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+/* Placeholder */
+.admin-login input::placeholder {
+  color: #94a3b8;
+}
+
+/* Focus state */
+.admin-login input:focus {
+  border-color: #e94560;
+  box-shadow: 0 0 0 2px rgba(233, 69, 96, 0.25);
+}
+
+/* Submit Button */
+.admin-login button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #e94560;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.admin-login button:hover {
+  background: #d63b55;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(233, 69, 96, 0.35);
+}
+
+/* Disabled */
+.admin-login button:disabled {
+  background: #7f1d2d;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+  opacity: 0.8;
+}
+
+/* Small screens */
+@media (max-width: 420px) {
+  .admin-login form {
+    padding: 28px 22px;
+  }
+}

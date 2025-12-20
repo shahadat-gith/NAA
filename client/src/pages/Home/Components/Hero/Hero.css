@@ -83,3 +83,62 @@
     height: 8px;
   }
 }
+
+
+/* ===============================
+   ADMISSION NOTICE BAR
+   =============================== */
+.admission-notice {
+  width: 100%;
+  background: #e94560;
+  overflow: hidden;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.admission-track {
+  display: inline-flex;
+  align-items: center;
+  animation: admission-scroll 18s linear infinite;
+}
+
+.admission-text {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.6rem 2rem;
+}
+
+/* Pause animation on hover */
+.admission-notice:hover .admission-track {
+  animation-play-state: paused;
+}
+
+/* ===============================
+   ANIMATION
+   =============================== */
+@keyframes admission-scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .admission-text {
+    font-size: 0.85rem;
+    padding: 0.5rem 1.5rem;
+  }
+}
+
+
+
+.admission-cta {
+  color: #3dff8e;
+  font-weight: 700;
+  text-decoration: underline;
+}
+

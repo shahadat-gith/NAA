@@ -3,7 +3,6 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import PageStartLoader from "./components/PageStartLoader/PageStartLoader";
-
 import { ToastContainer } from "react-toastify";
 import { Toaster } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,18 +17,17 @@ import Academics from "./pages/Academics/Academics";
 import Contact from "./pages/Contact/Contact";
 import Gallery from "./pages/Gallery/Gallery";
 import TeacherDetails from "./pages/Staff/TeacherDetails/TeacherDetails";
-import CurriculumDetails from "./pages/Curriculum/CurriculumDetails";
-import Login from "./components/Login/Login";
+import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
 /* ===== Portal Pages ===== */
 import Portal from "./pages/Portal/Portal";
-import ResultDownload from "./pages/Portal/Result/ResultDownload";
-import StudentDetails from "./pages/Portal/StudentDetails/StudentDetails";
 import Search from "./pages/Portal/Search/Search";
+import StudentDetails from "./pages/Portal/StudentDetails/StudentDetails";
+import Result from "./pages/Portal/Result/Result";
+import ResultDownload from "./pages/Portal/Result/ResultDownload";
 
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
-import Result from "./pages/Portal/Result/Result";
 
 const App = () => {
   const location = useLocation();
@@ -51,12 +49,11 @@ const App = () => {
       <ToastContainer />
       <Toaster position="top-center" />
 
-      {/* 🔑 MAIN CONTENT */}
+      {/*MAIN CONTENT */}
       <main className="app-content">
         <Routes>
           {/* Public */}
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
           <Route path="/about" element={<About />} />
           <Route path="/staffs" element={<Staff />} />
           <Route path="/staffs/teacher" element={<TeacherDetails />} />

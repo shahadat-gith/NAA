@@ -1,23 +1,7 @@
-import React, { useContext, useState } from "react";
 import "./Footer.css";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
-import { AppContext } from "../../context/AppContext";
 
 const Footer = () => {
-  const {backendUrl} = useContext(AppContext)
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleNewsletterSubmit = async (e) => {
-   
-  };
-
   return (
     <footer className="footer-premium">
       <div className="footer-container">
@@ -70,24 +54,6 @@ const Footer = () => {
               <span>nashibaliacademy.offl@gmail.com</span>
             </li>
           </ul>
-        </div>
-
-        <div className="footer-section">
-          <h4 className="footer-subtitle">Newsletter</h4>
-          <p className="footer-text">Stay updated with our latest news and events.</p>
-          <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="newsletter-input"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isSubmitting}
-            />
-            <button type="submit" className="newsletter-btn" disabled={isSubmitting}>
-              {isSubmitting ? "Subscribing..." : "Subscribe"}
-            </button>
-          </form>
         </div>
       </div>
 
