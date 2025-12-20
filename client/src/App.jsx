@@ -18,7 +18,7 @@ import Academics from "./pages/Academics/Academics";
 import Contact from "./pages/Contact/Contact";
 import Gallery from "./pages/Gallery/Gallery";
 import TeacherDetails from "./pages/Staff/TeacherDetails/TeacherDetails";
-import CurriculumDetails from "./components/Curriculum/CurriculumDetails";
+import CurriculumDetails from "./pages/Curriculum/CurriculumDetails";
 import Login from "./components/Login/Login";
 
 /* ===== Portal Pages ===== */

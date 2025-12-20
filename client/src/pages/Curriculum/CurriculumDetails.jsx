@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { curriculumDetailsData } from './curriculumData';
 import './CurriculumDetails.css';
-import Banner from '../Banner/Banner';
+import Banner from '../../components/Banner/Banner';
 import { curriculumImages } from '../../assets/images';
+import { Helmet } from 'react-helmet-async';
 
 const CurriculumDetails = () => {
   const [searchParams] = useSearchParams();
-  const type = searchParams.get('type') || 'kinder'; 
- 
+  const type = searchParams.get('type') || 'kinder';
+
   const details = curriculumDetailsData[type];
 
   // Map type to image; use 'higher' for 'higher-secondary'
@@ -20,6 +20,13 @@ const CurriculumDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Curriculum | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Explore the academic curriculum of Nashib Ali Academy, designed to support holistic learning and academic excellence for students in Barpeta, Assam."
+        />
+      </Helmet>
       <Banner image={bannerImage} />
       <section className="curriculum-details-section">
         {details ? (

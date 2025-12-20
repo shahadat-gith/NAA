@@ -7,6 +7,7 @@ import TeacherListItem from './Components/TeacherListItem';
 import SearchFilterBar from './Components/SearchFilterBar';
 import ResultsInfo from './Components/ResultsInfo';
 import './Staff.css';
+import { Helmet } from 'react-helmet-async';
 
 const Staff = () => {
   const { teachers } = useContext(AppContext);
@@ -85,6 +86,13 @@ const Staff = () => {
 
   return (
     <div className="staff-page">
+      <Helmet>
+        <title>Our Staff | Nashib Ali Academy</title>
+        <meta
+          name="description"
+          content="Meet the experienced and dedicated teaching staff of Nashib Ali Academy in Barpeta, Assam, committed to quality education and student development."
+        />
+      </Helmet>
       <Header
         title="Our Expert Educators"
         tagline="Meet the dedicated professionals shaping tomorrow's leaders"
@@ -94,20 +102,20 @@ const Staff = () => {
           <div className="directory-header">
             <h2 className="section-title">Staff Directory</h2>
             <div className="view-toggle">
-               <button
+              <button
                 className={`view-toggle-btn ${viewMode === 'list' ? 'active' : ''}`}
                 onClick={() => setViewMode('list')}
               >
                 <i className="fas fa-list"></i> List
               </button>
-              
+
               <button
                 className={`view-toggle-btn ${viewMode === 'grid' ? 'active' : ''}`}
                 onClick={() => setViewMode('grid')}
               >
                 <i className="fas fa-th"></i> Grid
               </button>
-             
+
             </div>
           </div>
 
