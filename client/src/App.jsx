@@ -25,9 +25,12 @@ import Search from "./pages/Portal/Search/Search";
 import StudentDetails from "./pages/Portal/StudentDetails/StudentDetails";
 import Result from "./pages/Portal/Result/Result";
 import ResultDownload from "./pages/Portal/Result/ResultDownload";
+import Admission from "./pages/Portal/Admission/Admission";
+import Payment from "./pages/Portal/Payment/Payment";
 
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
+import PaymentSuccess from "./pages/Portal/PaymentSuccess/PaymentSuccess";
 
 const App = () => {
   const location = useLocation();
@@ -67,10 +70,10 @@ const App = () => {
           <Route path="/portal/search" element={<Search />} />
           <Route path="/portal/student/:id" element={<StudentDetails />} />
           <Route path="/portal/result" element={<Result />} />
-          <Route
-            path="/portal/result/download"
-            element={<ResultDownload />}
-          />
+          <Route path="/portal/result/download" element={<ResultDownload />}/>
+          <Route path="/portal/admission" element={<Admission/>}/>
+          <Route path="/portal/payment" element={<Payment/>}/>
+          <Route path="/portal/payment-success" element={<PaymentSuccess/>}/>
 
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />

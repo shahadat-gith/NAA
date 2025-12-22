@@ -1,30 +1,47 @@
-/* Loader.css */
-.loader-container-admin{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ================= OVERLAY ================= */
+
+.loader-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
 }
 
-.loader-content-admin {
+/* ================= BOX ================= */
+
+.loader-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
-  padding: 2rem 5rem;
-  border-radius: 28px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  gap: 14px;
+  padding: 22px 28px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.9);
 }
 
-.loader-text-admin{
-    margin-top: 5px;
-  font-size: 1rem;
-  color: #333;
-  font-weight: 500;
+/* ================= SPINNER ================= */
+
+.spinner {
+  width: 42px;
+  height: 42px;
+  border: 4px solid rgba(148, 163, 184, 0.25);
+  border-top: 4px solid #e94560; /* primary brand color */
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ================= TEXT ================= */
+
+.loader-text {
+  font-size: 14px;
+  color: #e2e8f0;
 }

@@ -1,18 +1,12 @@
-import React from 'react';
-import './Loader.css';
-import HashLoader from 'react-spinners/HashLoader';
+import React from "react";
+import "./Loader.css";
 
-const Loader = ({ text = "loading..." }) => {
+const Loader = ({ text = "Loading..." }) => {
   return (
-    <div className='loader-container-admin'>
-      <div className="loader-content-admin">
-        <HashLoader
-          color="#e94560"
-          size={50}
-          aria-label="Loading Spinner"
-          data-testid="loader"
-        />
-        {text && <div className="loader-text-admin">{text}</div>}
+    <div className="loader-overlay">
+      <div className="loader-box">
+        <div className="spinner"></div>
+        <span className="loader-text">{text}</span>
       </div>
     </div>
   );

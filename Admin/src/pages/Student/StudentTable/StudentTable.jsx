@@ -10,6 +10,11 @@ const StudentTable = ({
 }) => {
   const navigate = useNavigate();
 
+  // 🔐 HARD SAFETY: ensure array
+  const studentsArray = Array.isArray(filteredStudents)
+    ? filteredStudents
+    : [];
+
   const handleStudentClick = (student) => {
     setSelectedStudent(
       selectedStudent?._id === student._id ? null : student
@@ -18,7 +23,7 @@ const StudentTable = ({
 
   return (
     <div className="student-table">
-      {filteredStudents.length === 0 ? (
+      {studentsArray.length === 0 ? (
         <p>No students found.</p>
       ) : (
         <table>
@@ -33,7 +38,7 @@ const StudentTable = ({
             </tr>
           </thead>
           <tbody>
-            {filteredStudents.map((student, index) => (
+            {studentsArray.map((student, index) => (
               <tr
                 key={student._id}
                 onClick={() => {
@@ -69,5 +74,6 @@ const StudentTable = ({
     </div>
   );
 };
+
 
 export default StudentTable;

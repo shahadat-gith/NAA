@@ -14,6 +14,7 @@ import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js"
 import ServiceSettings from "./models/Settings/services.js";
+import paymentRouter from "./routes/payment.routes.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,6 +33,8 @@ app.use("/api/settings",settingsRouter)
 app.use("/api/gallery", galleryRouter)
 app.use("/api/achievers", achieversRouter)
 app.use("/api/student", studentRouter)
+
+app.use("/api/payment", paymentRouter);
 
 
 
@@ -58,3 +61,5 @@ app.get("/api/home-data", async (req, res) => {
 app.get("/", (req, res) => res.status(200).json({ message: "API is working!" }));
 
 app.listen(port, () => console.log(`Server working on http://localhost:${port}`));
+
+

@@ -1,4 +1,6 @@
-/* Container */
+/* =====================================================
+   ADMIN CONTAINER
+===================================================== */
 .admin-student-list-container {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   border-radius: 20px;
@@ -21,14 +23,16 @@
 }
 
 .admin-student-list-container h2::before {
-  content: '';
+  content: "";
   width: 4px;
   height: 24px;
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   border-radius: 2px;
 }
 
-/* Action buttons */
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
 .add-student-action {
   display: flex;
   justify-content: flex-end;
@@ -48,7 +52,6 @@
   color: white;
 }
 
-/* Primary: Student */
 .naa-add-student-btn.primary {
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
 }
@@ -58,7 +61,6 @@
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
 }
 
-/* Secondary: Result */
 .naa-add-student-btn.secondary {
   background: linear-gradient(135deg, #16a34a, #15803d);
 }
@@ -68,7 +70,139 @@
   box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
 }
 
-/* Responsive */
+/* =====================================================
+   SEARCH
+===================================================== */
+.fs-search-wrapper {
+  margin-bottom: 20px;
+}
+
+.fs-search-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  border-radius: 12px;
+  color: #f1f5f9;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.fs-search-input::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.fs-search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  background: rgba(30, 41, 59, 0.8);
+}
+
+/* =====================================================
+   FILTERS
+===================================================== */
+.fs-filters-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.fs-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fs-filter-group label {
+  font-weight: 600;
+  color: rgba(203, 213, 225, 0.9);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.fs-filter-group select {
+  padding: 14px 16px;
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  border-radius: 10px;
+  color: #f1f5f9;
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  transition: all 0.3s ease;
+}
+
+.fs-filter-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* =====================================================
+   FILTER ACTIONS
+===================================================== */
+.fs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(51, 65, 85, 0.3);
+  margin-bottom: 20px;
+}
+
+.fs-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.fs-export-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.fs-clear-btn {
+  background: linear-gradient(135deg, #64748b, #475569);
+}
+
+.fs-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.fs-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =====================================================
+   RESULT COUNT
+===================================================== */
+.fs-results-count {
+  padding: 12px 20px;
+  background: rgba(59, 130, 246, 0.1);
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.fs-results-count strong {
+  color: #3b82f6;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 @media (max-width: 768px) {
   .admin-student-list-container {
     padding: 20px;
@@ -80,5 +214,14 @@
 
   .naa-add-student-btn {
     width: 100%;
+  }
+
+  .fs-actions {
+    flex-direction: column;
+  }
+
+  .fs-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

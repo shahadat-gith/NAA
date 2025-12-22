@@ -2,10 +2,12 @@ import express from "express";
 import { excelUpload } from "../config/multer.js";
 
 import {
-    createAdmission, deleteStudent,
+    createNewStudentAdmission,
+    getAdmissionById,
+    getAdmissions,
     getAllStudents, getStudentById,
     massAdmission, SearchStudentsByName,
-    updateStudent
+    verifyAdmission
 }
 
     from "../controller/student.controller.js";
@@ -25,14 +27,15 @@ const studentRouter = express.Router();
 /* ================= STUDENTS ================= */
 studentRouter.get("/list", adminAuthMiddleware, getAllStudents);
 studentRouter.get("/single/:id", getStudentById);
-studentRouter.put("/update/:id", updateStudent);
-studentRouter.delete("/delete/:id", deleteStudent);
 studentRouter.post("/search", SearchStudentsByName);
 
 /* ================= ADMISSIONS ================= */
 
-studentRouter.post("/admission", createAdmission);
+studentRouter.post("/admission/new", createNewStudentAdmission);
 studentRouter.post("/admission/mass", adminAuthMiddleware, excelUpload.single("file"), massAdmission);
+studentRouter.get("/admissions", getAdmissions);
+studentRouter.get("/admission-data", getAdmissionById);
+studentRouter.post("/verify-admission", verifyAdmission);
 
 /* ================= RESULTS ================= */
 

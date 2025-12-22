@@ -1,50 +1,60 @@
 import mongoose from "mongoose";
 
+// Reusable structure for every class
+const FeeDetail = {
+  monthlyFee: { type: Number, default: 0 },
+  admissionFee: { type: Number, default: 0 },
+};
+
 const feesSettingsSchema = new mongoose.Schema(
   {
-    hostelFee: {
-      type: Number,
-      default: 0,
-    },
+    hostelFee: FeeDetail,
 
     classFees: {
-      /* ---------- COMMON (1–10) ---------- */
-      common: {
-        "1": { type: Number, default: 0 },
-        "2": { type: Number, default: 0 },
-        "3": { type: Number, default: 0 },
-        "4": { type: Number, default: 0 },
-        "5": { type: Number, default: 0 },
-        "6": { type: Number, default: 0 },
-        "7": { type: Number, default: 0 },
-        "8": { type: Number, default: 0 },
-        "9": { type: Number, default: 0 },
-        "10": { type: Number, default: 0 },
-      },
-
-      /* ---------- ENGLISH ---------- */
+      /* ---------- ENGLISH MEDIUM ---------- */
       english: {
-        nursery: { type: Number, default: 0 },
-        kg: { type: Number, default: 0 },
+        nursery: FeeDetail,
+        kg: FeeDetail,
+        "1": FeeDetail,
+        "2": FeeDetail,
+        "3": FeeDetail,
+        "4": FeeDetail,
+        "5": FeeDetail,
+        "6": FeeDetail,
+        "7": FeeDetail,
+        "8": FeeDetail,
+        "9": FeeDetail,
+        "10": FeeDetail,
       },
 
-      /* ---------- ASSAMESE ---------- */
+      /* ---------- ASSAMESE MEDIUM ---------- */
       assamese: {
-        ankur: { type: Number, default: 0 },
-        mukul: { type: Number, default: 0 },
-
+        ankur: FeeDetail,
+        mukul: FeeDetail,
+        "1": FeeDetail,
+        "2": FeeDetail,
+        "3": FeeDetail,
+        "4": FeeDetail,
+        "5": FeeDetail,
+        "6": FeeDetail,
+        "7": FeeDetail,
+        "8": FeeDetail,
+        "9": FeeDetail,
+        "10": FeeDetail,
+        
+        // Higher Secondary (Stream-based)
         "11": {
-          science: { type: Number, default: 0 },
-          arts: { type: Number, default: 0 },
+          science: FeeDetail,
+          arts: FeeDetail,
         },
-
         "12": {
-          science: { type: Number, default: 0 },
-          arts: { type: Number, default: 0 },
+          science: FeeDetail,
+          arts: FeeDetail,
         },
       },
     },
-  }
+  },
+  { timestamps: true }
 );
 
 export default mongoose.model("FeesSettings", feesSettingsSchema);

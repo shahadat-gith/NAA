@@ -1,5 +1,6 @@
 import Student from "../models/Student/student.js";
 import Result from "../models/Student/result.js";
+import FeesSettings from "../models/Settings/fees.js";
 
 export const normalizeKey = (key) =>
   key
@@ -300,3 +301,72 @@ export const calculateClassRanks = async ({ academicSession, examName, resultCla
   }
 };
 
+
+
+export const generateRegistrationNo = async () => {
+  let regNo;
+  let exists = true;
+
+  while (exists) {
+    regNo = `NAA-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`;
+    exists = await Student.exists({ registrationNo: regNo });
+  }
+
+  return regNo;
+};
+
+
+
+export const getAmountForClass = async (
+  studentClass,
+  medium,
+  type,              // "monthlyFee" | "admissionFee"
+  stream = null
+) => {
+  try {
+
+    const feesSettings = await FeesSettings.findOne().lean();
+    if (!feesSettings) {
+      throw new Error("Fees settings not found");
+    }
+
+    const { classFees } = feesSettings;
+
+    /* ---------- VALIDATE MEDIUM ---------- */
+    if (!classFees[medium]) {
+      throw new Error("Invalid medium");
+    }
+
+    let feeDetail;
+
+    /* ---------- HANDLE HIGHER SECONDARY ---------- */
+    if (studentClass === "11" || studentClass === "12") {
+      if (!stream) {
+        throw new Error("Stream is required for class 11 and 12");
+      }
+
+      feeDetail = classFees[medium]?.[studentClass]?.[stream];
+
+      if (!feeDetail) {
+        throw new Error("Invalid class or stream for higher secondary");
+      }
+    }
+    /* ---------- NORMAL CLASSES ---------- */
+    else {
+      feeDetail = classFees[medium]?.[studentClass];
+
+      if (!feeDetail) {
+        throw new Error("Invalid class for selected medium");
+      }
+    }
+
+    /* ---------- VALIDATE FEE TYPE ---------- */
+    if (!["monthlyFee", "admissionFee"].includes(type)) {
+      throw new Error("Invalid fee type");
+    }
+
+    return feeDetail[type] || 0;
+  } catch (error) {
+    throw error;
+  }
+};

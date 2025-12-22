@@ -1,58 +1,51 @@
 import mongoose from "mongoose";
 
+const addressSchema = new mongoose.Schema(
+  {
+    village: { type: String, trim: true },
+    postOffice: { type: String, trim: true },
+    policeStation: { type: String, trim: true },
+    district: { type: String, trim: true },
+    state: { type: String, trim: true },
+    pincode: { type: String, trim: true },
+  },
+  { _id: false } 
+);
+
 const studentSchema = new mongoose.Schema(
-    {
-        name: {
-            type: String,
-            required: true,
-            trim: true,
-        },
+  {
+    /* ================= BASIC ================= */
+    name: { type: String, required: true, trim: true },
 
-        fatherName: {
-            type: String,
-            trim: true,
-        },
+    class: { type: String, required: true },
+    stream: { type: String, default: "" },
+    medium: { type: String, required: true },
 
-        motherName: {
-            type: String,
-            trim: true,
-        },
+    /* ================= PERSONAL ================= */
+    fatherName: { type: String, trim: true },
+    motherName: { type: String, trim: true },
+    dob: { type: Date },
+    gender: { type: String, enum: ["male", "female", "other"] },
 
-        registrationNo: {
-            type: String,
-            required: true,
-            unique: true,
-            trim: true,
-        },
+    phone: { type: String, trim: true },
 
-        class: {
-            type: String,
-            required: true,
-        },
+    address: addressSchema, 
 
-        stream: {
-            type: String,
-            default: "",
-        },
+    aadhar: { type: String, trim: true },
 
-        medium: {
-            type: String,
-            required: true,
-        },
-
-
-        phone: {
-            type: String,
-            trim: true,
-        },
-        
-
-        isActive: {
-            type: Boolean,
-            default: true, // TC / pass-out
-        },
+    /* ================= ACADEMIC ================= */
+    registrationNo: {
+      type: String,
+      unique: true,
+      required: true, // generated once, admin-verified
+      trim: true,
     },
-    { timestamps: true }
+    isActive: {
+      type: Boolean,
+      default: true, // false = TC / pass-out
+    },
+  },
+  { timestamps: true }
 );
 
 export default mongoose.model("Student", studentSchema);

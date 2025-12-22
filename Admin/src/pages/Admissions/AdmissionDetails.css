@@ -1,0 +1,245 @@
+/* ================= PAGE ================= */
+
+.admission-details-page {
+  padding: 24px;
+  color: #e2e8f0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ================= HEADER ================= */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  font-size: 22px;
+  color: #f1f5f9;
+}
+
+/* ================= ACTION BUTTONS ================= */
+
+.admin-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Button Types */
+.action-btn.verify {
+  background: rgba(34, 197, 94, 0.25);
+  color: #22c55e;
+}
+
+.action-btn.assign {
+  background: rgba(59, 130, 246, 0.25);
+  color: #60a5fa;
+}
+
+.action-btn.delete {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.action-btn.back {
+  background: rgba(148, 163, 184, 0.25);
+  color: #cbd5e1;
+}
+
+.action-btn:hover {
+  opacity: 0.85;
+}
+
+/* ================= CARDS ================= */
+
+.details-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 22px;
+}
+
+.details-card h3 {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color: #93c5fd;
+}
+
+/* ================= GRID DETAILS ================= */
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.label {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.value {
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+/* ================= BADGES ================= */
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-transform: capitalize;
+  display: inline-block;
+}
+
+.badge.pending {
+  background: rgba(234, 179, 8, 0.25);
+  color: #facc15;
+}
+
+.badge.verified {
+  background: rgba(34, 197, 94, 0.25);
+  color: #22c55e;
+}
+
+.badge.rejected {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.badge.paid {
+  background: rgba(34, 197, 94, 0.25);
+  color: #22c55e;
+}
+
+.badge.unpaid {
+  background: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+/* ================= TABLES ================= */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.data-table th {
+  background: rgba(51, 65, 85, 0.6);
+  color: #f1f5f9;
+  font-size: 13px;
+  padding: 10px;
+  text-align: left;
+}
+
+.data-table td {
+  padding: 10px;
+  color: #cbd5e1;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.data-table tr:hover {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+/* ================= EMPTY / LOADING ================= */
+
+.empty-cell,
+.loading-text {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  padding: 14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-actions {
+    width: 100%;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ================= MODAL ================= */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(2, 6, 23, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: rgba(30, 41, 59, 0.95);
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.modal-box h3 {
+  margin-bottom: 14px;
+  color: #93c5fd;
+}
+
+.modal-label {
+  display: block;
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 6px;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  background: rgba(15, 23, 42, 0.8);
+  color: #f1f5f9;
+  margin-bottom: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+

@@ -8,6 +8,8 @@ const Sidebar = () => {
   const sidebarLinks = [
     { to: "/", icon: "fas fa-home", label: "Home" },
     { to: "/students", icon: "fas fa-list-ul", label: "Students" },
+    { to: "/admissions", icon: "fas fa-list-ul", label: "Admissions" },
+    { to: "/result", icon: "fas fa-list-ul", label: "Result" },
     { to: "/teachers", icon: "fas fa-user-tie", label: "Teachers" },
     // { to: "/hostel", icon: "fas fa-building", label: "Hostel Management" },
     { to: "/achievers", icon: "fa-solid fa-star", label: "Achievers" },

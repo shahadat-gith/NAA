@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 const dueSchema = new mongoose.Schema({
   student: {
     type: mongoose.Schema.Types.ObjectId,
@@ -5,10 +7,14 @@ const dueSchema = new mongoose.Schema({
     unique: true,
   },
 
-  monthlyDue: { type: Number, default: 0 },
-  hostelDue: { type: Number, default: 0 },
+  dueAmount: { type: Number, default: 0, min: 0 },
+  type: {
+    type: String,
+    enum: ["monthlyFee", "admissionFee"],
+    required: true,
+  },
+  month: { type: String }, // "Jan-2025" (only for monthly dues)
 
-  lastUpdated: { type: Date, default: Date.now },
 });
 
-export default mongoose.model("Due", dueSchema);
+export default mongoose.model("Dues", dueSchema);

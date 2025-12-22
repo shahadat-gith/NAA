@@ -1,181 +1,110 @@
-import mongoose from "mongoose";
 import XLSX from "xlsx";
+import mongoose from "mongoose";
 import Student from "../models/Student/student.js";
 import Admission from "../models/Student/admission.js";
-import Result from "../models/Student/result.js";
+import Dues from "../models/Student/dues.js";
+
 import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
-import { normalizeKey } from "../utils/utility.js";
+import { generateRegistrationNo, normalizeKey } from "../utils/utility.js";
+import { getAmountForClass } from "../utils/utility.js";
+import Payment from "../models/Student/payment.js";
 
 
-export const getAllStudents = async (req, res) => {
+export const createNewStudentAdmission = async (req, res) => {
   try {
-    const students = await Student.find().sort({ createdAt: -1 });
-    res.status(200).json(students);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching students", error: error.message });
-  }
-};
+    const {
+      name,
+      fatherName,
+      motherName,
+      phone,
+      aadhar,
+      address,
+      class: studentClass,
+      medium,
+      stream,
+      academicSession,
+    } = req.body;
 
-
-
-// Get student by ID (with admit card support)
-export const getStudentById = async (req, res) => {
-  try {
-    const { type } = req.query;
-
-    // 1️⃣ Fetch student
-    const student = await Student.findById(req.params.id);
-    if (!student) {
-      return res.status(404).json({
+    /* ================= VALIDATION ================= */
+    if (!name || !studentClass || !medium || !academicSession) {
+      return res.status(400).json({
         success: false,
-        message: "Student not found",
+        message: "Name, class, medium and academic session are required",
       });
     }
 
-    let principal = null;
-    let examIncharge = null;
-    let admitCard = null;
+    /* ================= GENERATE REGISTRATION NO ================= */
+    const registrationNo = await generateRegistrationNo();
 
-    // 2️⃣ If admit-card flow
-    if (type === "admit-card") {
-      // Authorities
-      const [p, e] = await Promise.all([
-        authorityModel.findOne({
-          role: { $regex: "^principal$", $options: "i" },
-        }),
-        authorityModel.findOne({
-          role: { $regex: "^exam ic$", $options: "i" },
-        }),
-      ]);
+    /* ================= CREATE STUDENT ================= */
+    const student = await Student.create({
+      name,
+      fatherName,
+      motherName,
+      phone,
+      aadhar,
+      address,
+      registrationNo,
+      class: studentClass,
+      medium,
+      stream: stream || "",
+      isActive: true,
+    });
 
-      principal = p;
-      examIncharge = e;
+    /* ================= CREATE ADMISSION ================= */
+    await Admission.create({
+      student: student._id,
+      academicSession,
+      status: "pending",
+      admissionType: "new",
+      isAdmissionFeePaid: false,
+    });
 
-      // 3️⃣ Fetch admit card schedule based on student
-      admitCard = await AdmitCardSettings.findOne({
-        class: student.class,
-        medium: student.medium,
-        stream: student.stream || "",
-      });
-    }
+    const admissionFeeAmount = await getAmountForClass(
+      studentClass,
+      medium,
+      "admissionFee",
+      stream
+    );
 
-    // 4️⃣ Build response
-    const response = {
+    /* ================= CREATE ADMISSION FEE DUE ================= */
+    await Dues.findOneAndUpdate(
+      { student: student._id, type: "admissionFee" },
+      {
+        student: student._id,
+        type: "admissionFee",
+        dueAmount: admissionFeeAmount, 
+      },
+      { upsert: true }
+    );
+
+    /* ================= RESPONSE ================= */
+    return res.status(201).json({
       success: true,
-      student,
-    };
+      message: "New student admission created successfully",
+      studentId: student._id,
+      registrationNo: student.registrationNo,
+    });
 
-    if (type === "admit-card") {
-      response.principal = principal;
-      response.examIncharge = examIncharge;
-      response.admitCard = admitCard; 
-    }
-
-    return res.status(200).json(response);
   } catch (error) {
-    console.error("getStudentById error:", error);
-
+    console.error("Admission error:", error);
     return res.status(500).json({
       success: false,
-      message: "Error fetching student details",
+      message: "Error creating new admission",
       error: error.message,
     });
   }
 };
 
 
-// Update student
-export const updateStudent = async (req, res) => {
-  try {
-    const student = await Student.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-
-    if (!student) return res.status(404).json({ message: "Student not found" });
-    res.status(200).json(student);
-  } catch (error) {
-    res.status(400).json({ message: "Error updating student", error: error.message });
-  }
-};
-
-// Delete student
-export const deleteStudent = async (req, res) => {
-  try {
-    const student = await Student.findByIdAndDelete(req.params.id);
-    if (!student) return res.status(404).json({ message: "Student not found" });
-
-    await Admission.deleteMany({ student: req.params.id });
-    await Result.deleteMany({ student: req.params.id });
-
-    res.status(200).json({ message: "Student deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Error deleting student", error: error.message });
-  }
-};
-
-
-
-/* ================= ADMISSION ================= */
-
-// Single admission
-export const createAdmission = async (req, res) => {
-  try {
-    const {
-      name,
-      fatherName,
-      motherName,
-      registrationNo,
-      class: studentClass,
-      stream,
-      medium,
-      phone,
-      academicSession,
-    } = req.body;
-
-    const exists = await Student.findOne({ registrationNo });
-    if (exists) {
-      return res.status(400).json({ message: "Student already exists" });
-    }
-
-    const student = await Student.create({
-      name,
-      fatherName,
-      motherName,
-      registrationNo,
-      class: studentClass,
-      stream,
-      medium,
-      phone,
-    });
-
-    const admission = await Admission.create({
-      student: student._id,
-      academicSession,
-      status: "applied",
-    });
-
-    res.status(201).json({
-      message: "Admission applied successfully",
-      student,
-      admission,
-    });
-  } catch (error) {
-    res.status(400).json({ message: "Error applying for admission", error: error.message });
-  }
-};
-
-
-// Mass admission via Excel (class-wise)
 export const massAdmission = async (req, res) => {
   try {
-    const { class: studentClass, medium, stream } = req.body;
+    const { academicSession, class: studentClass, medium, stream } = req.body;
 
-    if (!studentClass || !medium) {
+    if (!academicSession || !studentClass || !medium) {
       return res.status(400).json({
-        message: "Class and Medium are required for mass admission",
+        message: "Academic session, class and medium are required",
       });
     }
 
@@ -188,12 +117,10 @@ export const massAdmission = async (req, res) => {
     const rawRows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
     let created = 0;
+    let updated = 0;
     const skipped = [];
 
     for (const [index, rawRow] of rawRows.entries()) {
-      /* ============================
-         NORMALIZE HEADERS
-      ============================ */
       const row = {};
       Object.keys(rawRow).forEach((key) => {
         row[normalizeKey(key)] = rawRow[key];
@@ -201,60 +128,147 @@ export const massAdmission = async (req, res) => {
 
       const registrationNo = row.registrationno?.toString().trim();
 
-      if (
-        !registrationNo ||
-        !row.name ||
-        !row.fathername ||
-        !row.mothername
-      ) {
+      if (!registrationNo) {
         skipped.push({
           row: index + 2,
-          registrationNo: registrationNo || null,
-          reason: "Missing required fields",
+          reason: "Missing registration number",
         });
         continue;
       }
 
-      const exists = await Student.findOne({ registrationNo });
-      if (exists) {
-        skipped.push({
-          row: index + 2,
+      let student = await Student.findOne({ registrationNo });
+
+      /* ================= CREATE OR UPDATE STUDENT ================= */
+
+      if (!student) {
+        // 🆕 Create student (first-time feed)
+        student = await Student.create({
+          name: row.name?.toString().trim(),
+          fatherName: row.fathername?.toString().trim(),
+          motherName: row.mothername?.toString().trim(),
           registrationNo,
-          reason: "Student already exists",
+          dob: row.dob ? new Date(row.dob) : null,
+          aadhar: row.aadhar?.toString().trim(),
+          phone: row.phone?.toString().trim(),
+          address: row.address?.toString().trim(),
+          class: studentClass,
+          medium,
+          stream: stream || "",
+          academicSession,
+          admissionType: "new",
+          isActive: true,
         });
-        continue;
+
+        created++;
+      } else {
+        // 🔄 Update existing student
+        student.class = studentClass;
+        student.medium = medium;
+        student.stream = stream || "";
+        student.academicSession = academicSession;
+        student.admissionType = "existing";
+        await student.save();
+
+        updated++;
       }
 
-      const student = await Student.create({
-        name: row.name.toString().trim(),
-        fatherName: row.fathername.toString().trim(),
-        motherName: row.mothername.toString().trim(),
-        registrationNo,
-        class: studentClass,
-        medium,
-        stream: stream || "",
-        phone: row.phone ? row.phone.toString().trim() : "",
-      });
+      /* ================= ADMISSION HISTORY ================= */
 
-      await Admission.create({
+      const alreadyAdmitted = await Admission.findOne({
         student: student._id,
-        academicSession: row.academicsession?.toString().trim(),
-        status: "approved",
+        academicSession,
       });
 
-      created++;
+      if (!alreadyAdmitted) {
+        await Admission.create({
+          student: student._id,
+          academicSession,
+          status: "verified",
+        });
+      }
     }
 
     res.status(201).json({
-      message: "Mass admission completed",
+      success: true,
+      message: "Mass admission completed successfully",
       total: rawRows.length,
       created,
+      updated,
       skippedCount: skipped.length,
       skipped,
     });
   } catch (error) {
     res.status(400).json({
       message: "Error in mass admission",
+      error: error.message,
+    });
+  }
+};
+
+export const getStudentById = async (req, res) => {
+  try {
+    const { academicSession, type } = req.query;
+    const studentId = req.params.id;
+
+    /* ================= STUDENT ================= */
+    const student = await Student.findById(studentId);
+    if (!student || student.isActive === false) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found or inactive",
+      });
+    }
+
+    /* ================= ADMISSION ================= */
+    let admission = null;
+
+    if (academicSession) {
+      admission = await Admission.findOne({
+        student: student._id,
+        academicSession,
+      });
+    }
+
+    /* ================= DUES ================= */
+    const dues = await Dues.find({ student: student._id });
+
+    /* ================= OPTIONAL (ADMIT CARD) ================= */
+    let principal = null;
+    let examIncharge = null;
+    let admitCard = null;
+
+    if (type === "admit-card") {
+      const [p, e] = await Promise.all([
+        authorityModel.findOne({ role: /principal/i }),
+        authorityModel.findOne({ role: /exam ic/i }),
+      ]);
+
+      principal = p;
+      examIncharge = e;
+
+      admitCard = await AdmitCardSettings.findOne({
+        class: student.class,
+        medium: student.medium,
+        stream: student.stream || "",
+      });
+    }
+
+    /* ================= RESPONSE ================= */
+    return res.status(200).json({
+      success: true,
+      student,
+      admission,       // current admission (session-based)
+      dues,            // all dues (admission + monthly)
+      principal,
+      examIncharge,
+      admitCard,
+    });
+
+  } catch (error) {
+    console.error("getStudentById error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching student details",
       error: error.message,
     });
   }
@@ -273,31 +287,162 @@ export const SearchStudentsByName = async (req, res) => {
       });
     }
 
-    // Search students (case-insensitive)
     const students = await Student.find({
       name: { $regex: name.trim(), $options: "i" },
+      isActive: true,
     }).sort({ name: 1 });
 
-    if (students.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No students found",
-        students: [],
-      });
-    }
-
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Students fetched successfully",
+      count: students.length,
       students,
     });
   } catch (error) {
-    console.error("SearchStudentsByName error:", error);
-
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: "Error searching students",
       error: error.message,
     });
   }
 };
+
+
+export const getAllStudents = async (req, res) => {
+  try {
+    const students = await Student.find({ isActive: true })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: students.length,
+      students,
+    });
+  } catch (error) {
+    console.error("getAllStudents error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching students",
+      error: error.message,
+    });
+  }
+};
+
+
+
+export const getAdmissions = async (req, res) => {
+  try {
+    const admissions = await Admission.find({academicSession: req.query.academicSession})
+      .populate("student")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({success: true, count: admissions.length, admissions,});
+
+  }catch (error) {
+    console.error("getAdmissions error:", error);
+    res.status(500).json({success: false, message: "Error fetching admissions", error: error.message,});
+  }
+};
+
+
+
+
+export const getAdmissionById = async (req, res) => {
+  try {
+    const { id: admissionId } = req.query;
+
+    /* ---------- VALIDATE ID ---------- */
+    if (!admissionId || !mongoose.Types.ObjectId.isValid(admissionId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid admission ID",
+      });
+    }
+
+    /* ---------- FETCH ADMISSION ---------- */
+    const admission = await Admission.findById(admissionId)
+      .populate("student")
+      .lean();
+
+    if (!admission) {
+      return res.status(404).json({
+        success: false,
+        message: "Admission not found",
+      });
+    }
+
+    /* ---------- FETCH DUES & PAYMENTS ---------- */
+    const [dues, payments] = await Promise.all([
+      Dues.find({ student: admission.student._id }).lean(),
+      Payment.find({ student: admission.student._id }).lean(),
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      admission,
+      dues,
+      payments,
+    });
+
+  } catch (error) {
+    console.error("getAdmissionById error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching admission details",
+      error: error.message,
+    });
+  }
+};
+
+
+export const verifyAdmission = async (req, res) =>{
+  try {
+    const { admissionId, studentId, registrationNo } = req.body;
+
+    /* ---------- VALIDATE INPUTS ---------- */
+    if (!admissionId || !mongoose.Types.ObjectId.isValid(admissionId) || !studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid admission ID or student ID",
+      });
+    }
+    if (!registrationNo || !registrationNo.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Registration number is required",
+      });
+    }
+    /* ---------- FETCH ADMISSION ---------- */
+    const admission = await Admission.findById(admissionId);
+    if (!admission) {
+      return res.status(404).json({
+        success: false,
+        message: "Admission not found",
+      });
+    }
+    /* ---------- UPDATE ADMISSION & STUDENT ---------- */
+    admission.status = "verified";
+    await admission.save();
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+    student.registrationNo = registrationNo.trim();
+    await student.save();
+    /* ---------- RESPONSE ---------- */
+    return res.status(200).json({
+      success: true,
+      message: "Admission verified and registration number assigned successfully",
+    });
+  } catch (error) {
+    console.error("verifyAdmission error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error verifying admission",
+      error: error.message,
+    });
+  }
+}

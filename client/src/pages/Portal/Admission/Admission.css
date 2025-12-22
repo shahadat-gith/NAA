@@ -1,76 +1,363 @@
-/* ID Service Unavailable Notice Styles */
-.notice-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 28px 24px;
-  background-color: #f8f9fa;
-  border-left: 4px solid #e94560;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+/* ================= Admission Page ================= */
+
+.admission-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 3rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ================= Choice Modal ================= */
+
+.admission-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.admission-modal {
+  background: white;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 440px;
   text-align: center;
-  color: #333;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.4s ease;
 }
 
-.notice-icon {
-  width: 48px;
-  height: 48px;
-  margin: 0 auto 16px;
-  color: #f44336;
+.admission-modal h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
 }
 
-.notice-title {
-  margin: 0 0 16px 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
+.admission-modal p {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 2rem;
 }
 
-.notice-message {
-  font-size: 1.1rem;
-  margin: 0 0 12px 0;
-  font-weight: 500;
-  color: #555;
+/* ================= Modal Buttons ================= */
+
+.admission-modal-actions {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
 }
 
-.notice-instruction {
-  margin: 0 0 24px 0;
+.admission-btn {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
   font-size: 1rem;
-  line-height: 1.5;
-  color: #666;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.notice-support {
-  padding-top: 16px;
-  margin-top: 16px;
-  border-top: 1px solid #e0e0e0;
+.admission-btn.primary {
+  background: linear-gradient(135deg, #e94560 0%, #d32f4a 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+}
+
+.admission-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
+}
+
+.admission-btn.secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+.admission-btn.secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+}
+
+/* ================= Form Container ================= */
+
+.admission-form-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.5s ease;
+}
+
+.admission-form-container h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.admission-form-container h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #e94560, #d32f4a);
+  margin: 1rem auto 2.5rem;
+  border-radius: 2px;
+}
+
+/* ================= Form Fields ================= */
+
+.admission-form {
+  width: 100%;
+}
+
+.form-grid,
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field label {
   font-size: 0.9rem;
-  color: #777;
+  font-weight: 600;
+  color: #34495e;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
 }
 
-.notice-link {
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: 0.95rem;
+  border: 2px solid #e0e6ed;
+  border-radius: 10px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #e94560;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1);
+}
+
+.form-field input::placeholder {
+  color: #95a5a6;
+  font-size: 0.9rem;
+}
+
+.form-field select {
+  cursor: pointer;
+  color: #2c3e50;
+}
+
+.form-field select option {
+  padding: 0.5rem;
+}
+
+/* ================= Address Section ================= */
+
+.address-title {
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.address-title::before {
+  content: "";
   display: inline-block;
-  margin-left: 8px;
-  color: #1976d2;
-  text-decoration: none;
+  width: 4px;
+  height: 28px;
+  background: linear-gradient(180deg, #e94560, #d32f4a);
+  border-radius: 2px;
 }
 
-.notice-link:hover {
-  text-decoration: underline;
-  color: #0d47a1;
+/* ================= Submit Button ================= */
+
+.admission-submit-btn {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.1rem 2rem;
+  background: linear-gradient(135deg, #e94560 0%, #d32f4a 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
 }
 
-@media (max-width: 600px) {
-  .notice-container {
-    margin: 20px 16px;
-    padding: 20px 16px;
+.admission-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(233, 69, 96, 0.6);
+}
+
+.admission-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================= Success Modal ================= */
+
+.admission-modal.success {
+  max-width: 500px;
+}
+
+.registration-box {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px dashed #e94560;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.registration-box strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.registration-box span {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 1.8rem;
+  color: #e94560;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-family: monospace;
+}
+
+/* ================= Animations ================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .notice-icon {
-    width: 40px;
-    height: 40px;
+  to {
+    opacity: 1;
   }
-  
-  .notice-title {
-    font-size: 1.3rem;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= Responsive Design ================= */
+
+@media (max-width: 768px) {
+  .admission-page {
+    padding: 2rem 1rem;
+  }
+
+  .admission-form-container {
+    padding: 2rem 1.5rem;
+  }
+
+  .admission-form-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .form-grid,
+  .address-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .address-title {
+    font-size: 1.2rem;
+  }
+
+  .admission-modal {
+    padding: 2rem 1.5rem;
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admission-form-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .admission-form-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-field label {
+    font-size: 0.85rem;
+  }
+
+  .form-field input,
+  .form-field select {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  .admission-submit-btn {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .registration-box span {
+    font-size: 1.5rem;
   }
 }

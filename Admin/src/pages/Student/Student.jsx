@@ -1,36 +1,41 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import * as XLSX from "xlsx";
+import { toast } from "react-hot-toast";
+
 import { AdminContext } from "../../context/AdminContext";
-import FilterSection from "./FilterSection/FilterSection";
 import StudentTable from "./StudentTable/StudentTable";
 import StudentModal from "./StudentModal/StudentModal";
-import ResultModal from "./ResultModal/ResultModal";
+
+import { formatClassName } from "../../utils/formatclass";
+import { CLASS_OPTIONS } from "../../utils/academicOptions";
 import "./Student.css";
 
 const Student = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
+  /* ================= STATE ================= */
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
 
   const [studentModalOpen, setStudentModalOpen] = useState(false);
-  const [resultModalOpen, setResultModalOpen] = useState(false);
 
+  /* ================= FETCH STUDENTS ================= */
   const fetchStudents = async () => {
     try {
       const res = await axios.get(`${backendUrl}/api/student/list`, {
         headers: { Authorization: `Bearer ${adminToken}` },
       });
-      setStudents(res.data);
-      setFilteredStudents(res.data);
+
+      const list = res.data?.students || [];
+      setStudents(list);
+      setFilteredStudents(list);
     } catch (error) {
       console.error("Error fetching students:", error);
     }
@@ -40,43 +45,194 @@ const Student = () => {
     if (backendUrl && adminToken) fetchStudents();
   }, [backendUrl, adminToken]);
 
+  /* ================= FILTER LOGIC ================= */
   useEffect(() => {
     let filtered = [...students];
-    if (searchTerm) filtered = filtered.filter(s => s.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    if (mediumFilter) filtered = filtered.filter(s => s.medium === mediumFilter);
-    if (classFilter) filtered = filtered.filter(s => s.class === classFilter);
-    if (streamFilter && mediumFilter === "assamese" && ["11", "12"].includes(classFilter)) {
-      filtered = filtered.filter(s => s.stream === streamFilter);
+
+    if (searchTerm) {
+      filtered = filtered.filter((s) =>
+        s.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
+
+    if (mediumFilter) {
+      filtered = filtered.filter((s) => s.medium === mediumFilter);
+    }
+
+    if (classFilter) {
+      filtered = filtered.filter((s) => s.class === classFilter);
+    }
+
+    if (
+      streamFilter &&
+      mediumFilter === "assamese" &&
+      ["11", "12"].includes(classFilter)
+    ) {
+      filtered = filtered.filter((s) => s.stream === streamFilter);
+    }
+
     setFilteredStudents(filtered);
-    setCurrentPage(1);
   }, [searchTerm, mediumFilter, classFilter, streamFilter, students]);
+
+  /* ================= EXPORT ================= */
+  const exportToExcel = () => {
+    if (!filteredStudents.length) {
+      toast.error("No students to export");
+      return;
+    }
+
+    const data = filteredStudents.map((s) => ({
+      Name: s.name,
+      Class: formatClassName(s.class),
+      Medium: s.medium,
+      Stream: s.stream || "-",
+      "Registration No": s.registrationNo || "-",
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+
+    const date = new Date().toISOString().slice(0, 10);
+    XLSX.writeFile(wb, `Student_List_${date}.xlsx`);
+  };
+
+  /* ================= CLEAR FILTERS ================= */
+  const clearFilters = () => {
+    setSearchTerm("");
+    setMediumFilter("");
+    setClassFilter("");
+    setStreamFilter("");
+    setSelectedStudent(null);
+    setFilteredStudents(students);
+  };
 
   return (
     <div className="admin-student-list-container">
       <h2>Student List</h2>
+
+      {/* ===== ACTION BUTTONS ===== */}
       <div className="add-student-action">
-        <button className="naa-add-student-btn primary" onClick={() => setStudentModalOpen(true)}>Add New Student(s)</button>
-        <button className="naa-add-student-btn secondary" onClick={() => setResultModalOpen(true)}>Upload Result(s)</button>
+        <button
+          className="naa-add-student-btn primary"
+          onClick={() => setStudentModalOpen(true)}
+        >
+          Mass Admission
+        </button>
       </div>
 
-      <FilterSection
-        searchTerm={searchTerm} setSearchTerm={setSearchTerm}
-        mediumFilter={mediumFilter} setMediumFilter={setMediumFilter}
-        classFilter={classFilter} setClassFilter={setClassFilter}
-        streamFilter={streamFilter} setStreamFilter={setStreamFilter}
-        filteredStudents={filteredStudents} fetchStudents={fetchStudents}
-        setSelectedStudent={setSelectedStudent} backendUrl={backendUrl} adminToken={adminToken}
-      />
+      {/* ===== SEARCH ===== */}
+      <div className="fs-search-wrapper">
+        <input
+          type="text"
+          className="fs-search-input"
+          placeholder="Search by student name..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
+      {/* ===== FILTERS ===== */}
+      <div className="fs-filters-row">
+        {/* Medium */}
+        <div className="fs-filter-group">
+          <label>Medium</label>
+          <select
+            value={mediumFilter}
+            onChange={(e) => {
+              setMediumFilter(e.target.value);
+              setClassFilter("");
+              setStreamFilter("");
+            }}
+          >
+            <option value="">All Mediums</option>
+            <option value="english">English</option>
+            <option value="assamese">Assamese</option>
+          </select>
+        </div>
+
+        {/* Class */}
+        {mediumFilter && (
+          <div className="fs-filter-group">
+            <label>Class</label>
+            <select
+              value={classFilter}
+              onChange={(e) => {
+                setClassFilter(e.target.value);
+                setStreamFilter("");
+              }}
+            >
+              <option value="">All Classes</option>
+              {CLASS_OPTIONS[mediumFilter].map((cls) => (
+                <option key={cls} value={cls}>
+                  {formatClassName(cls)}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Stream */}
+        {mediumFilter === "assamese" &&
+          ["11", "12"].includes(classFilter) && (
+            <div className="fs-filter-group">
+              <label>Stream</label>
+              <select
+                value={streamFilter}
+                onChange={(e) => setStreamFilter(e.target.value)}
+              >
+                <option value="">All Streams</option>
+                <option value="science">Science</option>
+                <option value="arts">Arts</option>
+              </select>
+            </div>
+          )}
+      </div>
+
+      {/* ===== FILTER ACTIONS ===== */}
+      <div className="fs-actions">
+        <button
+          className="fs-btn fs-export-btn"
+          onClick={exportToExcel}
+          disabled={!filteredStudents.length}
+        >
+          📊 Export to Excel
+        </button>
+
+        <button
+          className="fs-btn fs-clear-btn"
+          onClick={clearFilters}
+          disabled={
+            !searchTerm && !mediumFilter && !classFilter && !streamFilter
+          }
+        >
+          ✕ Clear Filters
+        </button>
+      </div>
+
+      {/* ===== COUNT ===== */}
+      {filteredStudents.length > 0 && (
+        <div className="fs-results-count">
+          Showing <strong>{filteredStudents.length}</strong> student
+          {filteredStudents.length !== 1 ? "s" : ""}
+        </div>
+      )}
+
+      {/* ===== TABLE ===== */}
       <StudentTable
         filteredStudents={filteredStudents}
-        currentPage={currentPage} setCurrentPage={setCurrentPage}
-        selectedStudent={selectedStudent} setSelectedStudent={setSelectedStudent}
+        selectedStudent={selectedStudent}
+        setSelectedStudent={setSelectedStudent}
       />
 
-      <StudentModal isOpen={studentModalOpen} onClose={() => { setStudentModalOpen(false); fetchStudents(); }} />
-      <ResultModal isOpen={resultModalOpen} onClose={() => setResultModalOpen(false)} />
+      {/* ===== MODAL ===== */}
+      <StudentModal
+        isOpen={studentModalOpen}
+        onClose={() => {
+          setStudentModalOpen(false);
+          fetchStudents();
+        }}
+      />
     </div>
   );
 };

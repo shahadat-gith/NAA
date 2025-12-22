@@ -75,7 +75,6 @@ export const toggleServiceSetting = async (req, res) => {
 };
 
 
-
 export const updateAdmitCardSettings = async (req, res) => {
   try {
     const { class: classNum, stream,medium, examCenter, exams } = req.body;
@@ -109,8 +108,6 @@ export const deleteAdmitCardSettings = async (req, res) => {
 };
 
 
-
-//system images
 
 export const getHeroImages = async (req, res) => {
   try {

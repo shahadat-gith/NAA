@@ -388,3 +388,37 @@
     width: 100%;
   }
 }
+
+
+.sm-skipped-section {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #334155;
+}
+
+.sm-skipped-section h4 {
+  color: #f87171;
+  margin-bottom: 10px;
+}
+
+.sm-skipped-list {
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sm-skipped-item {
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid #ef4444;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.sm-skipped-reason {
+  color: #fca5a5;
+  margin-top: 4px;
+}

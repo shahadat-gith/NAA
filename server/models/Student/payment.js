@@ -1,36 +1,48 @@
+import mongoose from "mongoose";
+
 const paymentSchema = new mongoose.Schema(
   {
     student: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Student",
       required: true,
+      index: true,
     },
 
-    amount: { type: Number, required: true, min: 0 },
-
-    paymentType: {
-      type: String,
-      enum: [
-        "admission",
-        "monthly",
-        "hostel_monthly",
-        "hostel_admission",
-      ],
+    academicSession: {
+      type: String, // "2025-2026"
       required: true,
+      index: true,
     },
 
-    month: { type: String }, // "Jan-2025" (only for monthly)
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    feeType: {
+      type: String,
+      enum: ["admissionFee", "monthlyFee"],
+      required: true,
+      index: true,
+    },
+
+    month: {
+      type: String, // "Jan-2025"
+      default: null,
+    },
 
     paymentMode: {
       type: String,
       enum: ["cash", "upi", "bank", "online"],
-      default: "cash",
+      default: "online",
     },
 
-    transactionId: String,
-    orderId: String,
-    paymentId: String,
-    signature: String,
+    /* Razorpay */
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
+    razorpaySignature: String,
 
     status: {
       type: String,
@@ -40,5 +52,6 @@ const paymentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 
 export default mongoose.model("Payment", paymentSchema);
