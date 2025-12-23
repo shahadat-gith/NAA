@@ -21,20 +21,21 @@ const StudentDetails = () => {
 
   useEffect(() => {
     fetchStudentDetails();
+    // eslint-disable-next-line
   }, []);
 
   const fetchStudentDetails = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(
-        `${backendUrl}/api/student/single/${id}?type=${type}`);
+        `${backendUrl}/api/student/single/${id}?type=${type}`
+      );
 
       if (!res.data.success) {
         throw new Error("Failed to load student details");
       }
 
       setStudent(res.data.student);
-      console.log(res.data)
 
       if (type === "admit-card") {
         setPrincipal(res.data.principal || null);
@@ -49,36 +50,87 @@ const StudentDetails = () => {
   };
 
   if (!state) return <Navigate to="/portal" />;
-  if(loading) return <Loader text="Loading student details..." />
-  
+  if (loading) return <Loader text="Loading student details..." />;
+
+  if (!student) {
+    return <div className="loading-text">Student not found</div>;
+  }
 
   return (
     <div className="student-details-container">
       <div className="student-card">
         <h2>Student Details</h2>
+
+        {/* ================= BASIC DETAILS ================= */}
         <div className="student-grid">
-          <div><span>Name</span><p>{student?.name}</p></div>
-          <div><span>Registration No</span><p>{student?.registrationNo}</p></div>
-          <div><span>Class</span><p>{student?.class}</p></div>
-          <div><span>Medium</span><p>{student?.medium}</p></div>
-          <div><span>Father's Name</span><p>{student?.fatherName}</p></div>
-          <div><span>Mother's Name</span><p>{student?.motherName}</p></div>
+          <div>
+            <span>Name</span>
+            <p>{student.name}</p>
+          </div>
+
+          <div>
+            <span>Registration No</span>
+            <p>{student.registrationNo}</p>
+          </div>
+
+          <div>
+            <span>Class</span>
+            <p>{student.class}</p>
+          </div>
+
+          <div>
+            <span>Medium</span>
+            <p>{student.medium}</p>
+          </div>
+
+          {student.stream && (
+            <div>
+              <span>Stream</span>
+              <p>{student.stream}</p>
+            </div>
+          )}
+
+          <div>
+            <span>Father's Name</span>
+            <p>{student.fatherName}</p>
+          </div>
+
+          <div>
+            <span>Mother's Name</span>
+            <p>{student.motherName}</p>
+          </div>
         </div>
 
-        {type === "admit-card" && admitCard && (
-          <button
-            className="download-btn"
-            onClick={() =>
-              generateAdmitCard(
-                student,
-                admitCard,
-                principal,
-                examIncharge
+        {/* ================= ADMIT CARD SECTION ================= */}
+        {type === "admit-card" && (
+          <div className="admitcard-section">
+            {student.canDownloadAdmitCard ? (
+              admitCard ? (
+                <button
+                  className="download-btn"
+                  onClick={() =>
+                    generateAdmitCard(
+                      student,
+                      admitCard,
+                      principal,
+                      examIncharge
+                    )
+                  }
+                >
+                  Download Admit Card
+                </button>
+              ) : (
+                <p className="info-text">
+                  Admit card is not available yet.
+                </p>
               )
-            }
-          >
-            Download Admit Card
-          </button>
+            ) : (
+              <p className="blocked-text">
+                ⚠️ Admit card download is disabled.  
+                Please contact the school Principal.
+              </p>
+            )}
+          </div>
         )}
       </div>
     </div>

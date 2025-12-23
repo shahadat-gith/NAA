@@ -13,7 +13,7 @@ const dueSchema = new mongoose.Schema({
     enum: ["monthlyFee", "admissionFee"],
     required: true,
   },
-  month: { type: String }, // "Jan-2025" (only for monthly dues)
+  month: { type: String }, 
 
 });
 

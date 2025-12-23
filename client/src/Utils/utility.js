@@ -56,7 +56,6 @@ export const SUBJECT_OPTIONS = [
 ];
 
 
-
 export const generateAcademicSessions = (years = 5) => {
   const currentYear = new Date().getFullYear();
   const startYear = currentYear - 1;  // Start from the previous year
@@ -71,6 +70,64 @@ export const generateAcademicSessions = (years = 5) => {
 
 // usage
 export const SESSION_OPTIONS = generateAcademicSessions(5);
+
+export const FORM_FIELDS = [
+  { label: "Student Name", name: "name", type: "text", isRequired: true },
+  { label: "Father's Name", name: "fatherName", type: "text", isRequired: true },
+  { label: "Mother's Name", name: "motherName", type: "text", isRequired: true },
+  { label: "Date of Birth", name: "dob", type: "date", isRequired: true },
+
+  {
+    label: "Gender",
+    name: "gender",
+    type: "select",
+    isRequired: true,
+    options: [
+      { label: "Male", value: "male" },
+      { label: "Female", value: "female" },
+      { label: "Other", value: "other" },
+    ],
+  },
+
+  { label: "Phone", name: "phone", type: "text", isRequired: true },
+  { label: "Aadhar", name: "aadhar", type: "text", isRequired: true },
+  { label: "PAN", name: "pan", type: "text", isRequired: true },
+
+  {
+    label: "Academic Session",
+    name: "academicSession",
+    type: "select",
+    isRequired: true,
+    options: SESSION_OPTIONS.map((s) => ({
+      label: s,
+      value: s,
+    })),
+  },
+
+  {
+    label: "Medium",
+    name: "medium",
+    type: "select",
+    isRequired: true,
+    options: [
+      { label: "English", value: "english" },
+      { label: "Assamese", value: "assamese" },
+    ],
+  },
+];
+
+export const ADDRESS_FIELDS = [
+  { label: "Village", name: "village", isRequired: true },
+  { label: "Post Office", name: "postOffice", isRequired: true },
+  { label: "Police Station", name: "policeStation", isRequired: true },
+  { label: "District", name: "district", isRequired: true },
+  { label: "State", name: "state", isRequired: true },
+  { label: "Pincode", name: "pincode", isRequired: true },
+];
+
+
+
+
 
 export const getCurrentAcademicSession = (startMonth = 4) => { // 4 = April (1-based)
   const today = new Date();

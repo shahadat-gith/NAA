@@ -23,12 +23,6 @@ const admissionSchema = new mongoose.Schema({
     required: true,
   },
 
-
-  isAdmissionFeePaid: {
-    type: Boolean,
-    default: false,
-  },
-
   status: {
     type: String,
     enum: ["pending", "verified", "rejected"],

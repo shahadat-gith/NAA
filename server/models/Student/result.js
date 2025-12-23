@@ -23,9 +23,7 @@ const resultSchema = new mongoose.Schema(
             required: true,
             min: 0,
         },
-        isDueCleared: { type: Boolean, default: false },
-    },
-    { timestamps: true }
+    }
 );
 
 export default mongoose.model("Result", resultSchema);

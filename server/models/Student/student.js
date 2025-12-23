@@ -32,6 +32,7 @@ const studentSchema = new mongoose.Schema(
     address: addressSchema, 
 
     aadhar: { type: String, trim: true },
+    pan: { type: String, trim: true },
 
     /* ================= ACADEMIC ================= */
     registrationNo: {
@@ -42,10 +43,21 @@ const studentSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
-      default: true, // false = TC / pass-out
+      default: true,
     },
-  },
-  { timestamps: true }
+
+    canDownloadAdmitCard: {
+      type: Boolean,
+      default: true,
+    },
+    canSeeResults: {
+      type: Boolean,
+      default: true,
+    },
+  }
 );
+
+// Student schema
+studentSchema.index({name: 1, class: 1, medium: 1, registrationNo: 1 });
 
 export default mongoose.model("Student", studentSchema);

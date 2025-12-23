@@ -23,8 +23,14 @@ const MessageSection = () => {
         {principal && (
           <div className="message-item principal-message">
             <div className="message-photo">
-              <img src={principal.image?.url} alt="Principal" />
+              <img
+                src={principal.image?.url}
+                alt="Principal"
+                className="message-img"
+              />
             </div>
+
+
             <div className="message-content">
               <h2 className="message-title">Message from Our Principal</h2>
               <h3 className="message-subtitle">{principal.name}</h3>
@@ -43,8 +49,13 @@ const MessageSection = () => {
         {director && (
           <div className="message-item director-message">
             <div className="message-photo">
-              <img src={director.image?.url} alt="Director"/>
+              <img
+                src={director.image?.url}
+                alt="Principal"
+                className="message-img"
+              />
             </div>
+
             <div className="message-content">
               <h2 className="message-title">Message from Our Director</h2>
               <h3 className="message-subtitle">{director.name}</h3>
