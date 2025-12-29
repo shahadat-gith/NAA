@@ -7,7 +7,6 @@ import { formatClassName } from "../../../utils/formatclass";
 import {
   CLASS_OPTIONS,
   STREAM_OPTIONS,
-  SESSION_OPTIONS,
 } from "../../../utils/academicOptions";
 
 const StudentModal = ({ isOpen, onClose }) => {
@@ -19,9 +18,6 @@ const StudentModal = ({ isOpen, onClose }) => {
   const [massMedium, setMassMedium] = useState("");
   const [massClass, setMassClass] = useState("");
   const [massStream, setMassStream] = useState("");
-  const [academicSession, setAcademicSession] = useState("");
-
-  const [skippedStudents, setSkippedStudents] = useState([]);
 
   const fileInputRef = useRef(null);
 
@@ -29,9 +25,7 @@ const StudentModal = ({ isOpen, onClose }) => {
     setMassMedium("");
     setMassClass("");
     setMassStream("");
-    setAcademicSession("");
     setFile(null);
-    setSkippedStudents([]);
     if (fileInputRef.current) fileInputRef.current.value = "";
     setLoading(false);
   };
@@ -58,16 +52,16 @@ const StudentModal = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     if (!file) return toast.error("Please upload an Excel file");
-    if (!academicSession)
-      return toast.error("Please select academic session");
+    if (!massMedium || !massClass)
+      return toast.error("Please select medium and class");
 
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("file", file);
       formData.append("class", massClass);
       formData.append("medium", massMedium);
-      formData.append("academicSession", academicSession);
       if (massStream) formData.append("stream", massStream);
 
       const res = await axios.post(
@@ -81,18 +75,9 @@ const StudentModal = ({ isOpen, onClose }) => {
       );
 
       if (res.data.success) {
-        const { created, updated, skippedCount, skipped } = res.data;
-
         toast.success(
-          `Created: ${created}, Updated: ${updated}, Skipped: ${skippedCount}`
+          `Students migrated successfully (${res.data.total})`
         );
-
-        if (skippedCount > 0) {
-          toast.error("Some students were skipped. See details below.");
-          setSkippedStudents(skipped);
-          return; // keep modal open to show details
-        }
-
         handleClose();
       }
     } catch (error) {
@@ -118,20 +103,6 @@ const StudentModal = ({ isOpen, onClose }) => {
         </div>
 
         <form className="sm-form" onSubmit={handleMassAdmission}>
-          {/* Academic Session */}
-          <select
-            value={academicSession}
-            onChange={(e) => setAcademicSession(e.target.value)}
-            required
-          >
-            <option value="">Select Academic Session</option>
-            {SESSION_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-
           {/* Medium */}
           <select
             value={massMedium}
@@ -196,30 +167,6 @@ const StudentModal = ({ isOpen, onClose }) => {
             {loading ? "Uploading..." : "Upload Students"}
           </button>
         </form>
-
-        {/* ================= SKIPPED STUDENTS ================= */}
-        {skippedStudents.length > 0 && (
-          <div className="sm-skipped-section">
-            <h4>Skipped Students</h4>
-            <div className="sm-skipped-list">
-              {skippedStudents.map((s, idx) => (
-                <div key={idx} className="sm-skipped-item">
-                  <div>
-                    <strong>Row:</strong> {s.row}
-                  </div>
-                  {s.registrationNo && (
-                    <div>
-                      <strong>Reg No:</strong> {s.registrationNo}
-                    </div>
-                  )}
-                  <div className="sm-skipped-reason">
-                    {s.reason}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

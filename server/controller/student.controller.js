@@ -4,7 +4,7 @@ import Student from "../models/Student/student.js";
 import Admission from "../models/Student/admission.js";
 import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
-import { generateRegistrationNo, normalizeKey } from "../utils/utility.js";
+import { generateRegistrationNo, getRegistrationNo } from "../utils/utility.js";
 
 
 
@@ -160,6 +160,35 @@ export const getStudentById = async (req, res) => {
   }
 };
 
+export const deleteStudent = async (req, res)=>{
+  try {
+    const {id} = req.params;
+    if(!id || !mongoose.Types.ObjectId.isValid(id)){
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
+    }
+    const student = await Student.findByIdAndDelete(id);
+    if(!student){
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Student deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting student",
+      error: error.message,
+    });
+  }
+}
+
 
 export const SearchStudentsByName = async (req, res) => {
   try {
@@ -304,108 +333,86 @@ export const verifyAdmission = async (req, res) => {
 
 
 
+
+
+/* ================= HELPERS ================= */
+const setNestedValue = (obj, path, value) => {
+  const keys = path.split(".");
+  let current = obj;
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    if (i === keys.length - 1) {
+      current[key] = value;
+    } else {
+      current[key] = current[key] || {};
+      current = current[key];
+    }
+  }
+};
+
+/* ================= MASS ADMISSION ================= */
 export const massAdmission = async (req, res) => {
   try {
-    const { academicSession, class: studentClass, medium, stream } = req.body;
-
-    if (!academicSession || !studentClass || !medium) {
-      return res.status(400).json({
-        success: false,
-        message: "Academic session, class and medium are required",
-      });
-    }
-
-    if (!req.file?.buffer) {
-      return res.status(400).json({
-        success: false,
-        message: "Excel file is required",
-      });
-    }
+    const { class: studentClass, medium, stream = "" } = req.body;
 
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rawRows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
-    let created = 0;
-    let updated = 0;
-    const skipped = [];
+    const students = [];
+    let rollNo = 1; // starts from 001
 
-    for (const [index, rawRow] of rawRows.entries()) {
-      const row = {};
-      Object.keys(rawRow).forEach((key) => {
-        row[normalizeKey(key)] = rawRow[key];
+    for (const rawRow of rows) {
+      const student = {};
+
+      // Dynamic Excel → Schema mapping
+      for (const [key, value] of Object.entries(rawRow)) {
+        if (!value) continue;
+
+        const finalValue =
+          typeof value === "string" ? value.trim() : value;
+
+        if (key.includes(".")) {
+          setNestedValue(student, key, finalValue);
+        } else {
+          student[key] = finalValue;
+        }
+      }
+
+      // Force controlled fields
+      student.class = studentClass;
+      student.medium = medium;
+      student.stream = stream;
+      student.isActive = true;
+      
+      // Auto-generate registration number
+      student.registrationNo = getRegistrationNo({
+        studentClass,
+        medium,
+        rollNo,
       });
 
-      const registrationNo = row.registrationno?.toString().trim();
+      rollNo++;
 
-      if (!registrationNo) {
-        skipped.push({
-          row: index + 2,
-          reason: "Missing registration number",
-        });
-        continue;
-      }
-
-      let student = await Student.findOne({ registrationNo });
-
-      /* ---------- CREATE OR UPDATE STUDENT ---------- */
-
-      if (!student) {
-        student = await Student.create({
-          name: row.name?.toString().trim(),
-          fatherName: row.fathername?.toString().trim(),
-          motherName: row.mothername?.toString().trim(),
-          registrationNo,
-          dob: row.dob ? new Date(row.dob) : null,
-          aadhar: row.aadhar?.toString().trim(),
-          phone: row.phone?.toString().trim(),
-          class: studentClass,
-          medium,
-          stream: stream || "",
-          isActive: true,
-        });
-
-        created++;
-      } else {
-        student.class = studentClass;
-        student.medium = medium;
-        student.stream = stream || "";
-        await student.save();
-
-        updated++;
-      }
-
-      /* ---------- ADMISSION HISTORY ---------- */
-      const alreadyAdmitted = await Admission.findOne({
-        student: student._id,
-        academicSession,
-      });
-
-      if (!alreadyAdmitted) {
-        await Admission.create({
-          student: student._id,
-          academicSession,
-          status: "verified",
-        });
-      }
+      students.push(student);
     }
+
+    // Bulk insert (single DB call)
+    await Student.insertMany(students);
 
     return res.status(201).json({
       success: true,
-      message: "Mass admission completed successfully",
-      total: rawRows.length,
-      created,
-      updated,
-      skippedCount: skipped.length,
-      skipped,
+      message: "Students migrated successfully",
+      total: students.length,
     });
-
   } catch (error) {
     console.error("Mass admission error:", error);
     return res.status(500).json({
       success: false,
-      message: "Error in mass admission",
+      message: "Migration failed",
       error: error.message,
     });
   }
 };
+

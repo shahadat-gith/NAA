@@ -75,13 +75,13 @@ const DeleteConfirmPopup = ({
 
         {/* Content */}
         <div className="naa-delete-modal-content">
-          <p>
+          <div>
             Are you sure you want to delete{" "}
             <strong>{student.name}</strong>?
-          </p>
-          <p className="naa-delete-warning-text">
+          </div>
+          <div className="naa-delete-warning-text">
             This action cannot be undone.
-          </p>
+          </div>
 
           <div className="naa-form-actions">
             <button

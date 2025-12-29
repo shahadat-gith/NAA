@@ -315,6 +315,48 @@ export const generateRegistrationNo = async () => {
   return regNo;
 };
 
+const CLASS_OPTIONS = {
+  english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  assamese: ["ankur", "mukul", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"],
+};
+
+
+export const getRegistrationNo = ({
+  studentClass,
+  medium,
+  rollNo,
+}) => {
+  const PREFIX = "NAA25";
+
+  // Normalize
+  const normalizedClass = studentClass.toString().toLowerCase();
+  const normalizedMedium = medium.toLowerCase();
+
+  // Medium code
+  const mediumCode = normalizedMedium === "english" ? "E" : "A";
+
+  // Get class list based on medium
+  const classList = CLASS_OPTIONS[normalizedMedium];
+
+  if (!classList) {
+    throw new Error("Invalid medium");
+  }
+
+  const classIndex = classList.indexOf(normalizedClass);
+
+  if (classIndex === -1) {
+    throw new Error("Invalid class for selected medium");
+  }
+
+  // Class code (00, 01, 02 ...)
+  const classCode = String(classIndex).padStart(2, "0");
+
+  // Roll number (001, 002 ...)
+  const rollCode = String(rollNo).padStart(3, "0");
+
+  return `${PREFIX}${classCode}${rollCode}${mediumCode}`;
+};
+
 
 
 export const getAmountForClass = async (

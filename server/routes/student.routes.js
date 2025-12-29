@@ -3,6 +3,7 @@ import { excelUpload } from "../config/multer.js";
 
 import {
     createNewStudentAdmission,
+    deleteStudent,
     getAdmissionById,
     getAdmissions,
     getAllStudents, getStudentById,
@@ -28,6 +29,7 @@ const studentRouter = express.Router();
 studentRouter.get("/list", adminAuthMiddleware, getAllStudents);
 studentRouter.get("/single/:id", getStudentById);
 studentRouter.post("/search", SearchStudentsByName);
+studentRouter.delete("/:id", adminAuthMiddleware, deleteStudent)
 
 /* ================= ADMISSIONS ================= */
 

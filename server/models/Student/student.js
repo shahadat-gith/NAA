@@ -24,7 +24,7 @@ const studentSchema = new mongoose.Schema(
     /* ================= PERSONAL ================= */
     fatherName: { type: String, trim: true },
     motherName: { type: String, trim: true },
-    dob: { type: Date },
+    dob: { type: String , trim: true },
     gender: { type: String, enum: ["male", "female", "other"] },
 
     phone: { type: String, trim: true },
@@ -32,7 +32,7 @@ const studentSchema = new mongoose.Schema(
     address: addressSchema, 
 
     aadhar: { type: String, trim: true },
-    pan: { type: String, trim: true },
+    pen: { type: String, trim: true },
 
     /* ================= ACADEMIC ================= */
     registrationNo: {

@@ -5,13 +5,14 @@ import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
 import { formatClassName } from "../../../utils/formatclass";
 
-const formatDate = (date) => {
-  if (!date) return "N/A";
-  return new Date(date).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+/* ================= HELPERS ================= */
+
+const formatAddress = (address) => {
+  if (!address) return "N/A";
+
+  const {village,postOffice,policeStation,district,state,pincode} = address;
+
+  return [village,postOffice,policeStation,district,state,pincode,].filter(Boolean).join(", ");
 };
 
 const StudentDetails = () => {
@@ -40,7 +41,12 @@ const StudentDetails = () => {
                 <td>Class</td>
                 <td>{formatClassName(student.class)}</td>
                 <td>Medium</td>
-                <td>{student.medium || "N/A"}</td>
+                <td>
+                  {student.medium
+                    ? student.medium.charAt(0).toUpperCase() +
+                      student.medium.slice(1)
+                    : "N/A"}
+                </td>
               </tr>
               <tr>
                 <td>Stream</td>
@@ -65,7 +71,7 @@ const StudentDetails = () => {
               </tr>
               <tr>
                 <td>Date of Birth</td>
-                <td>{formatDate(student.dob)}</td>
+                <td>{student.dob || "N/A"}</td>
                 <td>Gender</td>
                 <td>{student.gender || "N/A"}</td>
               </tr>
@@ -77,9 +83,13 @@ const StudentDetails = () => {
               </tr>
               <tr>
                 <td>Address</td>
-                <td>{student.address || "N/A"}</td>
+                <td colSpan="3">{formatAddress(student.address)}</td>
+              </tr>
+              <tr>
                 <td>Status</td>
-                <td>{student.isActive ? "Active" : "Inactive"}</td>
+                <td colSpan="3">
+                  {student.isActive ? "Active" : "Inactive"}
+                </td>
               </tr>
             </tbody>
           </table>
