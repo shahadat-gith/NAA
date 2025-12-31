@@ -15,6 +15,7 @@ import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js"
 import ServiceSettings from "./models/Settings/services.js";
 import paymentRouter from "./routes/payment.routes.js";
+import resultRouter from "./routes/result.routes.js";
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -33,7 +34,7 @@ app.use("/api/settings",settingsRouter)
 app.use("/api/gallery", galleryRouter)
 app.use("/api/achievers", achieversRouter)
 app.use("/api/student", studentRouter)
-
+app.use("/api/results", resultRouter);
 app.use("/api/payment", paymentRouter);
 
 

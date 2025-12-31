@@ -6,6 +6,7 @@ export const CLASS_OPTIONS = {
 
 
 export const STREAM_OPTIONS = ["science", "arts"];
+export const MEDIUM_OPTIONS = ["english", "assamese"];
 
 export const EXAM_OPTIONS = [
   "Half Yearly Examination",

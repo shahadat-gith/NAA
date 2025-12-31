@@ -195,6 +195,7 @@
   justify-content: center;
   min-width: 44px;
   height: 48px;
+  margin-top: 10px;
 }
 
 .subject-row-remove:hover {

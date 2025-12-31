@@ -3,32 +3,45 @@ import XLSX from "xlsx";
 import Student from "../models/Student/student.js";
 import Result from "../models/Student/result.js";
 import { authorityModel } from "../models/Academic/authorities.js";
-import { processResultRow, validateAndPrepareResult, calculateClassRanks } from "../utils/utility.js";
+import { processResultRow, validateAndPrepareResult, calculateClassRanks } from "../utils/result.js";
+import result from "../models/Student/result.js";
 
 
-export const massResults = async (req, res) => {
+
+export const uploadResults = async (req, res) => {
   try {
     const {
       academicSession,
       examName,
       class: resultClass,
-      maxMarksPerSubject,
+      medium,
       stream,
+      maxMarksPerSubject,
     } = req.body;
 
-    if (!academicSession || !examName || !resultClass || !maxMarksPerSubject) {
+    /* ---------- Validation ---------- */
+    if (
+      !academicSession ||
+      !examName ||
+      !resultClass ||
+      !medium ||
+      !maxMarksPerSubject
+    ) {
       return res.status(400).json({
         success: false,
-        message: "Academic Session, Exam Name, Class and Max Marks are required",
+        message:
+          "Academic Session, Exam Name, Class, Medium and Max Marks are required",
       });
     }
 
     if (!req.file?.buffer) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Excel file is required" });
+      return res.status(400).json({
+        success: false,
+        message: "Excel file is required",
+      });
     }
 
+    /* ---------- Read Excel ---------- */
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
@@ -36,19 +49,21 @@ export const massResults = async (req, res) => {
     let created = 0;
     const skipped = [];
 
+    /* ---------- Process Rows ---------- */
     for (const [index, rawRow] of rows.entries()) {
       const rowNum = index + 2;
 
       const result = await processResultRow({
         rawRow,
-        rowNum,
         academicSession,
         examName,
         resultClass,
+        medium,
+        stream,
         maxMarksPerSubject,
       });
 
-      if (!result.ok) {
+      if (!result.success) {
         skipped.push({
           row: rowNum,
           registrationNo: result.registrationNo,
@@ -60,26 +75,30 @@ export const massResults = async (req, res) => {
       await Result.create({
         registrationNo: result.data.registrationNo,
         academicSession,
-        class: resultClass,
-        stream: stream || "",
         examName,
+        class: resultClass,
+        medium,
+        stream: stream || "",
         marks: result.data.marks,
         maxMarksPerSubject: Number(maxMarksPerSubject),
-        isDueCleared: result.data.isDueCleared,
+        canSee: result.data.canSee,
       });
 
       created++;
     }
 
+    /* ---------- Rank Calculation ---------- */
     if (created > 0) {
       await calculateClassRanks({
         academicSession,
         examName,
         resultClass,
+        medium,
+        stream,
       });
     }
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: `Successfully processed ${created} results`,
       totalRows: rows.length,
@@ -88,7 +107,7 @@ export const massResults = async (req, res) => {
       skippedDetails: skipped,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Server error during mass upload",
       error: error.message,
@@ -97,16 +116,15 @@ export const massResults = async (req, res) => {
 };
 
 
-
-
 export const createResult = async (req, res) => {
   try {
     const {
       registrationNo,
       academicSession,
-      class: resultClass,
-      stream,
       examName,
+      class: resultClass,
+      medium,
+      stream,
       marks,
       maxMarksPerSubject,
     } = req.body;
@@ -116,11 +134,13 @@ export const createResult = async (req, res) => {
       academicSession,
       examName,
       resultClass,
+      medium,
+      stream,
       marks,
       maxMarksPerSubject,
     });
 
-    if (!validation.ok) {
+    if (!validation.success) {
       return res.status(400).json({
         success: false,
         message: validation.reason,
@@ -130,9 +150,10 @@ export const createResult = async (req, res) => {
     const result = await Result.create({
       registrationNo,
       academicSession,
-      class: resultClass,
-      stream: stream || "",
       examName,
+      class: resultClass,
+      medium,
+      stream: stream || "",
       marks,
       maxMarksPerSubject: Number(maxMarksPerSubject),
     });
@@ -141,15 +162,17 @@ export const createResult = async (req, res) => {
       academicSession,
       examName,
       resultClass,
+      medium,
+      stream,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       message: "Result created successfully",
       result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error creating result",
       error: error.message,
@@ -159,28 +182,48 @@ export const createResult = async (req, res) => {
 
 
 
-// Get all results with student details
+
 export const getAllResults = async (req, res) => {
   try {
-    const results = await Result.find().sort({ createdAt: -1 }).lean();
+    // Fetch all results
+    const results = await Result.find()
+      .sort({ createdAt: -1 })
+      .lean();
 
-    // Map through results and attach student details based on registrationNo
-    const resultsWithStudentDetails = await Promise.all(
-      results.map(async (result) => {
-        const student = await Student.findOne({ 
-          registrationNo: result.registrationNo 
-        }).select("-password"); // Exclude sensitive info if applicable
-        
-        return {
-          ...result,
-          studentDetails: student || null,
-        };
-      })
-    );
+    if (!results.length) {
+      return res.status(200).json({
+        success: true,
+        results: [],
+      });
+    }
 
-    res.status(200).json(resultsWithStudentDetails);
+    // Collect registration numbers
+    const registrationNos = results.map((r) => r.registrationNo);
+
+    // Fetch all related students in ONE query
+    const students = await Student.find({
+      registrationNo: { $in: registrationNos },
+    }).lean();
+
+    // Create map for fast lookup
+    const studentMap = {};
+    students.forEach((s) => {
+      studentMap[s.registrationNo] = s;
+    });
+
+    // Attach student details
+    const resultsWithStudentDetails = results.map((r) => ({
+      ...r,
+      studentDetails: studentMap[r.registrationNo] || null,
+    }));
+
+    return res.status(200).json({
+      success: true,
+      count: resultsWithStudentDetails.length,
+      results: resultsWithStudentDetails,
+    });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error fetching results",
       error: error.message,
@@ -189,37 +232,105 @@ export const getAllResults = async (req, res) => {
 };
 
 
-
-// Fetch a specific result for a student (Public access)
 export const getSpecificResult = async (req, res) => {
   try {
     const { registrationNo, examName, academicSession } = req.body;
 
-    // Use findOne because we want a specific result for a specific exam/session
+    if (!registrationNo || !examName || !academicSession) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Registration No, Exam Name and Academic Session are required",
+      });
+    }
+
     const result = await Result.findOne({
       registrationNo: registrationNo.trim(),
       examName,
-      academicSession
+      academicSession,
     }).lean();
 
     if (!result) {
-      return res.status(404).json({ success: false, message: "No result found for these details." });
+      return res.status(404).json({
+        success: false,
+        message: "No result found for these details",
+      });
     }
 
-    // Optionally attach student details
-    const student = await Student.findOne({ registrationNo: result.registrationNo }).select("-password");
+    // VISIBILITY CHECK
+    if (!result.canSee) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Please pay the fees to see the result. or contact principal.",
+      });
+    }
 
-    const principal = await authorityModel.findOne({role: 'Principal'}).select('name signature');
+    // Fetch student details
+    const student = await Student.findOne({
+      registrationNo: result.registrationNo,
+    }).select("-password");
+
+    // Fetch principal details
+    const principal = await authorityModel
+      .findOne({ role: "Principal" })
+      .select("name signature");
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        ...result,
+        studentDetails: student || null,
+      },
+      principal,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+export const updateResultVisibility = async (req, res) => {
+  try {
+    const { id, canSee } = req.body;
+
+    if (!id || typeof canSee !== "boolean") {
+      return res.status(400).json({
+        success: false,
+        message: "Result ID and canSee(boolean) are required",
+      });
+    }
+
+    const result = await Result.findByIdAndUpdate(
+      id,
+      { canSee },
+      { new: true }
+    );
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "Result not found",
+      });
+    }
 
     res.status(200).json({
       success: true,
-      result: { ...result, studentDetails: student },
-      principal
+      message: `Result visibility updated to ${canSee ? "VISIBLE" : "HIDDEN"}`,
+      result,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Error updating result visibility:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating visibility",
+    });
   }
 };
+
 // Update result
 export const updateResult = async (req, res) => {
   try {

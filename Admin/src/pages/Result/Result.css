@@ -1,0 +1,278 @@
+/* ================= Result Page ================= */
+
+.result-page {
+  padding: 20px;
+  background: #0f172a;
+  min-height: 100vh;
+  color: #e2e8f0;
+}
+
+/* ================= Header ================= */
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.result-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.45);
+}
+
+/* ================= Filter Bar ================= */
+
+.result-filters {
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.result-filters input,
+.result-filters select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  background: rgba(15, 23, 42, 0.7);
+  color: #e2e8f0;
+  font-size: 14px;
+  transition: all 0.25s ease;
+}
+
+.result-filters input::placeholder {
+  color: rgba(148, 163, 184, 0.6);
+}
+
+.result-filters input:focus,
+.result-filters select:focus {
+  outline: none;
+  border-color: #64748b;
+  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.25);
+}
+
+/* ================= Table ================= */
+
+.result-table-wrapper {
+  overflow-x: auto;
+  background: rgba(15, 23, 42, 0.6);
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.result-table th,
+.result-table td {
+  padding: 12px 14px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.result-table thead {
+  background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.result-table th {
+  font-weight: 600;
+  color: #f8fafc;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.result-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.result-table tbody tr:hover {
+  background: rgba(51, 65, 85, 0.25);
+}
+
+.result-table td {
+  border-bottom: 1px solid rgba(51, 65, 85, 0.25);
+}
+
+/* ================= Status ================= */
+
+.status-active {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.status-blocked {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* ================= Actions ================= */
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.btn-edit {
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #93c5fd;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-edit:hover {
+  background: rgba(59, 130, 246, 0.25);
+  transform: scale(1.05);
+}
+
+.btn-delete {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #fecaca;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: scale(1.05);
+}
+
+/* ================= Empty State ================= */
+
+.result-table td[colspan] {
+  padding: 40px;
+  font-size: 15px;
+  color: #94a3b8;
+}
+
+/* ================= Responsive ================= */
+
+@media (max-width: 1200px) {
+  .result-filters {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .result-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .result-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .btn-primary {
+    width: 100%;
+  }
+
+  .result-table {
+    min-width: 900px;
+  }
+}
+
+
+
+/* ================= Toggle Switch ================= */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: #475569;
+  transition: 0.3s;
+  border-radius: 999px;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.switch input:checked + .slider {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(22px);
+}
+
+.switch input:disabled + .slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+
+/* ================= Clear Filters Button ================= */
+
+.btn-clear-filters {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.12);
+  color: #fecaca;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-clear-filters:hover {
+  background: rgba(239, 68, 68, 0.22);
+  transform: translateY(-1px);
+}
+
+

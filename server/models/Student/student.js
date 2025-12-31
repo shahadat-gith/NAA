@@ -50,10 +50,6 @@ const studentSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    canSeeResults: {
-      type: Boolean,
-      default: true,
-    },
   }
 );
 

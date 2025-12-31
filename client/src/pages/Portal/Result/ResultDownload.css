@@ -4,6 +4,7 @@
   --primary-dark: #a9002d;
   --success-color: #28a745;
   --danger-color: #dc3545;
+  --grade-color: #4f46e5;
   --text-dark: #333333;
   --text-light: #666666;
   --border-radius: 8px;
@@ -13,6 +14,8 @@
   --background-color: #f7f9fc;
 }
 
+/* ================= PAGE ================= */
+
 .report-card-page {
   max-width: 1000px;
   margin: 2rem auto;
@@ -21,6 +24,8 @@
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
 }
+
+/* ================= HEADER ================= */
 
 .report-header {
   text-align: center;
@@ -32,20 +37,22 @@
 .report-header h2 {
   font-size: clamp(1.5rem, 5vw, 2rem);
   color: var(--primary-color);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   font-weight: 600;
 }
 
 .report-header h3 {
   font-size: clamp(1.2rem, 4vw, 1.5rem);
   color: var(--text-dark);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .report-header p {
   color: var(--text-light);
-  font-size: clamp(0.875rem, 3vw, 1rem);
+  font-size: clamp(0.85rem, 3vw, 1rem);
 }
+
+/* ================= STUDENT INFO ================= */
 
 .student-info {
   background-color: var(--primary-light);
@@ -58,21 +65,25 @@
 }
 
 .info-item {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .info-label {
   font-weight: 600;
   color: var(--text-dark);
   display: block;
-  margin-bottom: 0.25rem;
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  margin-bottom: 0.2rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .info-value {
   color: var(--text-dark);
-  font-size: clamp(0.875rem, 3vw, 1rem);
+  font-size: 0.95rem;
 }
+
+/* ================= MARKS ================= */
 
 .marks-section {
   margin-bottom: 1.5rem;
@@ -83,24 +94,34 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .marks-title {
-  font-size: clamp(1rem, 3.5vw, 1.25rem);
+  font-size: 1.15rem;
   font-weight: 600;
   color: var(--text-dark);
 }
 
+/* ================= PERFORMANCE SUMMARY ================= */
+
+.performance-res {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .total-marks,
-.percentage-badge {
-  padding: 0.5rem 0.75rem;
+.percentage-badge,
+.grade-badge {
+  padding: 0.45rem 0.75rem;
   border-radius: var(--border-radius);
   font-weight: 600;
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .total-marks {
@@ -113,33 +134,31 @@
   color: white;
 }
 
-.subjects-container {
-  overflow-x: auto;
+.grade-badge {
+  background-color: var(--grade-color);
+  color: white;
 }
+
+/* ================= TABLE ================= */
 
 .subjects-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 0.75rem;
-  display: table;
 }
 
 .subjects-table th,
 .subjects-table td {
-  padding: 0.5rem 0.75rem;
+  padding: 0.55rem 0.75rem;
   text-align: left;
   border-bottom: 1px solid var(--border-color);
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  font-size: 0.85rem;
 }
 
 .subjects-table th {
   background-color: #f8f9fa;
   font-weight: 600;
   color: var(--text-dark);
-}
-
-.subjects-table tr:last-child td {
-  border-bottom: none;
 }
 
 .subjects-table tr:nth-child(even) {
@@ -152,60 +171,40 @@
 
 .mark-total {
   color: var(--text-light);
-  font-size: clamp(0.7rem, 2vw, 0.75rem);
+  font-size: 0.75rem;
 }
 
-.subjects-list {
-  display: none;
-}
-
-.subject-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem;
-  border-bottom: 1px solid var(--border-color);
-  font-size: clamp(0.75rem, 2.5vw, 0.875rem);
-}
-
-.subject-item:last-child {
-  border-bottom: none;
-}
-
-.subject-name {
-  font-weight: 600;
-  color: var(--text-dark);
-}
-
-.subject-marks {
-  color: var(--text-dark);
-}
-
-.performance-res{
-  display: flex;
-  gap: 15px;
-}
+/* ================= ACTIONS ================= */
 
 .actions-container {
   display: flex;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
   justify-content: center;
-  flex-wrap: wrap;
+  margin-top: 1.5rem;
 }
 
-
 .res-download-btn {
-  background-color: #e94560;
+  background-color: var(--primary-color);
   color: white;
+  border: none;
   border-radius: 25px;
-  padding: 15px 20px;
+  padding: 14px 26px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .res-download-btn:hover {
   background-color: var(--primary-dark);
+  transform: translateY(-1px);
 }
 
+.res-download-btn:focus {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+}
 
+/* ================= ERROR ================= */
 
 .error-container {
   text-align: center;
@@ -217,16 +216,15 @@
 .error-container h2 {
   color: var(--danger-color);
   margin-bottom: 0.75rem;
-  font-size: clamp(1.25rem, 4vw, 1.5rem);
 }
 
 .error-container p {
   margin-bottom: 1.5rem;
   color: var(--text-light);
-  font-size: clamp(0.875rem, 3vw, 1rem);
 }
 
-/* Responsive styles */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
   .report-card-page {
     margin: 1rem;
@@ -234,64 +232,40 @@
   }
 
   .student-info {
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
-  .info-item{
-    margin-bottom: 0.2rem;
-    
-  }
-
 
   .marks-header {
     flex-direction: column;
     align-items: flex-start;
   }
-
-  .actions-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .action-btn {
-    max-width: none;
-  }
 }
 
 @media (max-width: 480px) {
   .report-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .report-header h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
-  .student-info,
-  .marks-section {
-    padding: 1rem;
+  .info-label {
+    font-size: 0.65rem;
   }
 
-  .info-item{
-    margin-bottom: 0;
+  .info-value {
+    font-size: 0.75rem;
   }
 
-  .info-label{
-    font-size: 10px;
-    margin-bottom: 0;
+  .performance-res {
+    gap: 6px;
   }
 
-  .info-value{
-    font-size: 10px;
-  }
-
- 
-  .subjects-list {
-    display: block;
-  }
-
-  .action-btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.875rem;
+  .total-marks,
+  .percentage-badge,
+  .grade-badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.6rem;
   }
 }
-
