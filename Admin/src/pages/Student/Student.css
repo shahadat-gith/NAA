@@ -225,3 +225,14 @@
     justify-content: center;
   }
 }
+
+
+.fs-idcard-btn {
+  background: #4b7bec;
+  color: #fff;
+}
+
+.fs-idcard-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}

@@ -47,18 +47,6 @@ const StudentTable = ({
                     state: { student },
                   });
                 }}
-                className={
-                  selectedStudent?._id === student._id ? "selected" : ""
-                }
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    handleStudentClick(student);
-                    navigate(`/students/${student._id}`, {
-                      state: { student },
-                    });
-                  }
-                }}
               >
                 <td>{index + 1}</td>
                 <td>{student.name}</td>

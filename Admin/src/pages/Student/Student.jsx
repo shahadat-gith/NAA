@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import * as XLSX from "xlsx";
-import { toast } from "react-hot-toast";
 
 import { AdminContext } from "../../context/AdminContext";
 import StudentTable from "./StudentTable/StudentTable";
@@ -9,6 +7,8 @@ import StudentModal from "./StudentModal/StudentModal";
 
 import { formatClassName } from "../../utils/formatclass";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
+import { exportToExcel } from "../../utils/utility";
+import { generateIdCards } from "../../utils/generateIdCards";
 import "./Student.css";
 
 const Student = () => {
@@ -74,28 +74,8 @@ const Student = () => {
     setFilteredStudents(filtered);
   }, [searchTerm, mediumFilter, classFilter, streamFilter, students]);
 
-  /* ================= EXPORT ================= */
-  const exportToExcel = () => {
-    if (!filteredStudents.length) {
-      toast.error("No students to export");
-      return;
-    }
 
-    const data = filteredStudents.map((s) => ({
-      Name: s.name,
-      Class: formatClassName(s.class),
-      Medium: s.medium,
-      Stream: s.stream || "-",
-      "Registration No": s.registrationNo || "-",
-    }));
 
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Students");
-
-    const date = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(wb, `Student_List_${date}.xlsx`);
-  };
 
   /* ================= CLEAR FILTERS ================= */
   const clearFilters = () => {
@@ -193,7 +173,7 @@ const Student = () => {
       <div className="fs-actions">
         <button
           className="fs-btn fs-export-btn"
-          onClick={exportToExcel}
+          onClick={() => exportToExcel(filteredStudents)}
           disabled={!filteredStudents.length}
         >
           📊 Export to Excel
@@ -208,6 +188,15 @@ const Student = () => {
         >
           ✕ Clear Filters
         </button>
+
+        <button
+          className="fs-btn fs-idcard-btn"
+          onClick={() => generateIdCards(filteredStudents, mediumFilter, classFilter)}
+          disabled={!mediumFilter || !classFilter || !filteredStudents.length}
+        >
+          🪪 Generate ID Cards
+        </button>
+
       </div>
 
       {/* ===== COUNT ===== */}
