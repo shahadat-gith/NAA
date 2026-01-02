@@ -1,5 +1,5 @@
-import { teacherModel } from "../../../../server/models/Academic/teacher.js";
-import bcrypt from "bcrypt";
+import { teacherModel } from "../models/Academic/teacher.js";
+import bcrypt from "bcryptjs";
 import transporter from "../config/nodemailer.js";
 import validator from "validator";
 import cloudinary from "../config/cloudinary.js";

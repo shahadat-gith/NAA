@@ -1,0 +1,53 @@
+service: naa-server
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+  stage: dev
+
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+    PORT: ${env:PORT}
+
+    # Database
+    MONGO_URI: ${env:MONGO_URI}
+
+    # Auth
+    JWT_SECRET: ${env:JWT_SECRET}
+
+    # Admin
+    ADMIN_EMAIL: ${env:ADMIN_EMAIL}
+    ADMIN_PASSWORD: ${env:ADMIN_PASSWORD}
+
+    # URLs
+    CLIENT_URL: ${env:CLIENT_URL}
+    ADMIN_URL: ${env:ADMIN_URL}
+
+    # Email (Brevo / SMTP)
+    SMTP_USER: ${env:SMTP_USER}
+    SMTP_PASSWORD: ${env:SMTP_PASSWORD}
+    SENDER_EMAIL: ${env:SENDER_EMAIL}
+
+    # Razorpay
+    RAZORPAY_API_KEY: ${env:RAZORPAY_API_KEY}
+    RAZORPAY_SECRET_KEY: ${env:RAZORPAY_SECRET_KEY}
+
+    # Cloudinary
+    CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
+    CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
+    CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
+
+functions:
+  api:
+    handler: src/handler.handler
+    events:
+      - httpApi: "*"
+
+plugins:
+  - serverless-offline
+
+package:
+  patterns:
+    - '!.env'
+
