@@ -2,7 +2,6 @@
 import { Helmet } from "react-helmet-async";
 import Hero from "./Components/Hero/Hero";
 import MessageSection from "./Components/MessageSection/MessageSection";
-import TeachersSection from "./Components/TeachersSection/TeachersSection";
 import SalientFeatures from "./Components/SalientFeatures/SalientFeatures";
 import Curriculum from "./Components/Curriculum/Curriculum";
 import WhyChooseUs from "./Components/WhyChooseUs/WhyChooseUs";
@@ -11,7 +10,7 @@ const Home = () => {
   return (
     <div>
       <Helmet>
-        <title>Nashib Ali Academy | Quality Education in Assam</title>
+        <title>Nashib Ali Academy | Quality Education in Barpeta, Assam</title>
         <meta
           name="description"
           content="Nashib Ali Academy is a reputed educational institution in Barpeta, Assam providing quality education with experienced teachers and modern facilities."
@@ -20,7 +19,6 @@ const Home = () => {
 
       <Hero />
       <MessageSection />
-      <TeachersSection />
       <SalientFeatures />
       <Curriculum />
       <WhyChooseUs />

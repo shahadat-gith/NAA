@@ -24,38 +24,50 @@ const app = express();
 
 /* ================= CORS CONFIG ================= */
 
-const allowedOrigins = [
-  process.env.ADMIN_URL,
-  process.env.CLIENT_URL
-];
+// const allowedOrigins = [
+//   process.env.ADMIN_URL,
+//   process.env.CLIENT_URL,
+// ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow server-to-server, Postman, curl
-    if (!origin) return callback(null, true);
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     // Allow server-to-server, Postman, curl
+//     if (!origin) return callback(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
+//     if (allowedOrigins.includes(origin)) {
+//       return callback(null, true);
+//     }
 
-    return callback(null, false); // ❌ DO NOT throw error
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: [
-    "Content-Type",
-    "Authorization",
-    "X-Requested-With",
-  ],
-};
+//     return callback(null, false); // ❌ DO NOT throw error
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: [
+//     "Content-Type",
+//     "Authorization",
+//     "X-Requested-With",
+//   ],
+// };
 
-/* ================= MIDDLEWARES ================= */
+// /* ================= MIDDLEWARES ================= */
 
-// IMPORTANT: order matters
-app.use(cors(corsOptions));
+// // IMPORTANT: order matters
+// app.use(cors(corsOptions));
 
-// 🔥 REQUIRED for browser preflight on AWS Lambda
-app.options("*", cors(corsOptions));
+// // 🔥 REQUIRED for browser preflight on AWS Lambda
+// app.options("*", cors(corsOptions));
+
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.options("*", cors());
+
 
 app.use(express.json());
 app.use(cookieParser());
