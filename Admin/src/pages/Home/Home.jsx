@@ -1,94 +1,64 @@
-// Home.jsx
-import React, { useContext } from "react";
 import "./Home.css";
-import toast from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
-import { TeacherContext } from "../../context/TeacherContext";
-import { AppContext } from "../../context/AppContext";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const { teacherCount } = useContext(TeacherContext);
-  const { pendingAdmissions, approvedAdmissions } = useContext(AppContext);
+  const hour = new Date().getHours();
+
+  let greeting = "Welcome";
+  if (hour < 12) {
+    greeting = "Good Morning";
+  } else if (hour < 17) {
+    greeting = "Good Afternoon";
+  } else {
+    greeting = "Good Evening";
+  }
 
   return (
     <div className="admin-dashboard-container">
-      <main className="admin-dashboard-content">
-        <section className="dashboard-stats-overview">
-          <h2>Dashboard Overview</h2>
-          <div className="dashboard-stats-cards">
-            {[
-              {
-                title: "Total Teachers",
-                value: teacherCount,
-                path: "/all-teachers",
-                color: "#3b82f6",
-                icon: "fas fa-chalkboard-teacher"
-              },
-              {
-                title: "Approved Admissions",
-                value: approvedAdmissions,
-                path: "/admin/admissions",
-                color: "#5CB338",
-                icon: "fas fa-check-circle"
-              },
-              {
-                title: "Pending Admissions",
-                value: pendingAdmissions,
-                path: "/admin/admissions",
-                color: "#f59e0b",
-                icon: "fas fa-hourglass-half"
-              },
-              // {
-              //   title: "Total Revenue",
-              //   value: "0",
-              //   path: "/admin/finance",
-              //   color: "#10b981",
-              //   icon: "fas fa-dollar-sign"
-              // }
-            ].map((stat, index) => (
-              <div key={index} className="dashboard-stat-card" style={{ '--card-color': stat.color }}>
-                <i className={`${stat.icon} dashboard-stat-icon`}></i>
-                <h3>{stat.title}</h3>
-                <p className="dashboard-stat-value" style={{ color: stat.color }}>{stat.value}</p>
-                <button
-                  className="dashboard-view-btn"
-                  onClick={() => navigate(stat.path)}
-                  style={{ backgroundColor: stat.color }}
-                >
-                  View Details
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
 
-        <section className="dashboard-quick-actions">
-          <h2>Quick Actions</h2>
-          <div className="dashboard-action-cards">
-            {[
-              { title: "Add New Teacher", path: "/add-teachers", icon: "fas fa-user-plus" },
-              { title: "Process Admission", path: "/admin/admission-form", icon: "fas fa-file-alt" },
-              { title: "Generate Reports", path: "/admin/reports", icon: "fas fa-chart-pie" }
-            ].map((action, index) => (
-              <div
-                key={index}
-                className="dashboard-action-card"
-                onClick={() => navigate(action.path)}
-              >
-                <i className={action.icon}></i>
-                <h3>{action.title}</h3>
-                <p>{action.title === "Add New Teacher" ?
-                   "Register a new teacher" :
-                   action.title === "Process Admission" ?
-                   "Handle new admissions" :
-                   "View academy analytics"}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
+      {/* Welcome Card */}
+      <div className="dashboard-card welcome-card">
+        <span className="greeting-badge">{greeting}</span>
+
+        <h1>
+          {greeting}, <span>Admin</span> 👋
+        </h1>
+
+        <p>
+          Welcome to the Nashib Ali Academy Admin Dashboard.
+          Manage students, teachers, academic results, and institutional
+          operations seamlessly from one place.
+        </p>
+      </div>
+
+      {/* About Section */}
+      <div className="dashboard-card">
+        <h2>About Nashib Ali Academy</h2>
+        <p>
+          Nashib Ali Academy is dedicated to delivering quality education with
+          a strong foundation in discipline, moral values, and academic
+          excellence. The institution strives to create a nurturing environment
+          for holistic student development.
+        </p>
+        <p>
+          Through experienced faculty, structured academic planning, and
+          transparent administration, the academy continues to shape
+          responsible and confident future leaders.
+        </p>
+      </div>
+
+      {/* Motivation Card */}
+      <div className="dashboard-card highlight-card">
+        <h2>Have a Productive Day</h2>
+        <p>
+          Your leadership ensures smooth academic operations and transparency.
+          Every decision you make contributes to the growth and success of our
+          students.
+        </p>
+        <p>
+          Let us continue working together towards excellence in education.
+        </p>
+      </div>
+
     </div>
   );
 };

@@ -143,7 +143,7 @@ const Result = () => {
     }
   };
 
-  if (loading) return <Loader />;
+  if (loading) return <Loader text="loading results..."/>;
 
   return (
     <div className="result-page">

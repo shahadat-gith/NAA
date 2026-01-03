@@ -1,36 +1,87 @@
-import React, { useContext, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AdminContext } from "../../../context/AdminContext";
 import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
-import { formatClassName } from "../../../utils/formatclass";
+import generateAdmitCard from "../../../utils/generateAdmitCard";
+import axios from "axios";
+import { formatAddress, formatClassName } from "../../../utils/utility";
 
-/* ================= HELPERS ================= */
-
-const formatAddress = (address) => {
-  if (!address) return "N/A";
-
-  const {village,postOffice,policeStation,district,state,pincode} = address;
-
-  return [village,postOffice,policeStation,district,state,pincode,].filter(Boolean).join(", ");
-};
 
 const StudentDetails = () => {
-  const { state } = useLocation();
-  const student = state?.student;
+  const { id: studentId } = useParams();
   const navigate = useNavigate();
   const { backendUrl, adminToken } = useContext(AdminContext);
+
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [student, setStudent] = useState(null);
+  const [principal, setPrincipal] = useState(null);
+  const [examIncharge, setExamIncharge] = useState(null);
+  const [admitCard, setAdmitCard] = useState(null);
+
+  /* ================= FETCH STUDENT ================= */
+
+  const fetchStudent = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get(
+        `${backendUrl}/api/student/single/${studentId}?type=admit-card`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setStudent(data.student);
+        setPrincipal(data.principal);
+        setExamIncharge(data.examIncharge);
+        setAdmitCard(data.admitCard);
+      }
+    } catch (error) {
+      console.error("Fetch student error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (studentId) fetchStudent();
+  }, [studentId]);
+
+  /* ================= ADMIT CARD ================= */
+
+  const handleAdmitCardDownload = () => {
+    if (!admitCard) {
+      toast.error("Admit card settings not found for this class/medium.");
+      return;
+    }
+
+    generateAdmitCard(student,admitCard,principal, examIncharge )
+
+  };
+
+  /* ================= LOADING / ERROR ================= */
+
+  if (loading) {
+    return <div className="naa-loading">Loading student details...</div>;
+  }
 
   if (!student) {
     return <div className="naa-error">Student not found</div>;
   }
 
+  /* ================= UI ================= */
+
   return (
     <div className="naa-student-details">
       <h3 className="naa-student-title">{student.name}</h3>
 
-      {/* ================= Details ================= */}
+      {/* ================= DETAILS ================= */}
       <div className="naa-details-container">
         {/* -------- Academic Information -------- */}
         <div className="naa-details-section">
@@ -41,12 +92,7 @@ const StudentDetails = () => {
                 <td>Class</td>
                 <td>{formatClassName(student.class)}</td>
                 <td>Medium</td>
-                <td>
-                  {student.medium
-                    ? student.medium.charAt(0).toUpperCase() +
-                      student.medium.slice(1)
-                    : "N/A"}
-                </td>
+                <td>{student.medium || "N/A"}</td>
               </tr>
               <tr>
                 <td>Stream</td>
@@ -96,9 +142,12 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      {/* ================= Actions ================= */}
+      {/* ================= ACTIONS ================= */}
       <div className="naa-action-buttons">
-        <button className="naa-admit-card-btn">
+        <button
+          className="naa-admit-card-btn"
+          onClick={handleAdmitCardDownload}
+        >
           Generate Admit Card
         </button>
 
@@ -110,7 +159,7 @@ const StudentDetails = () => {
         </button>
       </div>
 
-      {/* ================= Delete Confirmation ================= */}
+      {/* ================= DELETE CONFIRM ================= */}
       {showDeleteConfirm && (
         <DeleteConfirmPopup
           student={student}

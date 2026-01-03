@@ -5,11 +5,12 @@ import { AdminContext } from "../../context/AdminContext";
 import StudentTable from "./StudentTable/StudentTable";
 import StudentModal from "./StudentModal/StudentModal";
 
-import { formatClassName } from "../../utils/formatclass";
+import { formatClassName } from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
 import { exportToExcel } from "../../utils/utility";
 import { generateIdCards } from "../../utils/generateIdCards";
 import "./Student.css";
+import Loader from "../../components/Loader/Loader";
 
 const Student = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -23,11 +24,13 @@ const Student = () => {
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
+  const [loading, setLoading] = useState(false)
 
   const [studentModalOpen, setStudentModalOpen] = useState(false);
 
   /* ================= FETCH STUDENTS ================= */
   const fetchStudents = async () => {
+    setLoading(true)
     try {
       const res = await axios.get(`${backendUrl}/api/student/list`, {
         headers: { Authorization: `Bearer ${adminToken}` },
@@ -38,6 +41,8 @@ const Student = () => {
       setFilteredStudents(list);
     } catch (error) {
       console.error("Error fetching students:", error);
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -86,6 +91,8 @@ const Student = () => {
     setSelectedStudent(null);
     setFilteredStudents(students);
   };
+
+  if(loading) return <Loader text="loading students..."/>
 
   return (
     <div className="admin-student-list-container">

@@ -9,13 +9,10 @@ const Gallery = () => {
   const [galleryItems, setGalleryItems] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null); // null or public_id
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
   const [imageFiles, setImageFiles] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalImages, setTotalImages] = useState(0);
   const fileInputRef = useRef(null);
-  const imagesPerPage = 6;
 
   // Helper to extract public_id from URL
   const extractPublicId = (url) => {
@@ -30,25 +27,24 @@ const Gallery = () => {
     }
   };
 
-  // Fetch images
+  // Fetch all images
   const loadImages = async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${backendUrl}/api/gallery?page=${currentPage}&limit=${imagesPerPage}`,
+        `${backendUrl}/api/gallery`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
 
       const images = response.data.images.map((img, index) => ({
-        id: (currentPage - 1) * imagesPerPage + index + 1,
+        id: index + 1,
         src: img.url,
         public_id: extractPublicId(img.url),
       }));
 
       setGalleryItems(images);
-      setTotalImages(response.data.totalImages || 0);
       setIsLoading(false);
     } catch (error) {
       console.error('Fetch images error:', error);
@@ -57,10 +53,9 @@ const Gallery = () => {
     }
   };
 
-  // Fetch images on mount and when page changes
   useEffect(() => {
     loadImages();
-  }, [backendUrl, adminToken, currentPage]);
+  }, [backendUrl, adminToken]);
 
   // Modal for image preview
   const openModal = (image) => {
@@ -132,7 +127,7 @@ const Gallery = () => {
     });
 
     try {
-      const response = await toast.promise(
+      await toast.promise(
         axios.post(`${backendUrl}/api/gallery/upload`, formData, {
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -140,16 +135,14 @@ const Gallery = () => {
           },
         }),
         {
-          pending: 'Uploading images...',
+          loading: 'Uploading images...',
           success: 'Images uploaded successfully!',
           error: 'Failed to upload images.'
         }
       );
 
-      console.log('Upload API Response:', response.data);
       closeUploadModal();
-      setCurrentPage(1); // Reset to first page
-      await loadImages(); // Refresh gallery
+      await loadImages();
     } catch (error) {
       console.error('Error uploading images:', error);
       toast.error(error.response?.data?.message || 'Error uploading images: ' + error.message);
@@ -159,359 +152,192 @@ const Gallery = () => {
   // Handle image deletion
   const handleDelete = async (public_id) => {
     try {
-      const response = await toast.promise(
+      await toast.promise(
         axios.delete(`${backendUrl}/api/gallery/${public_id}`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         }),
         {
-          pending: 'Deleting image...',
+          loading: 'Deleting image...',
           success: 'Image deleted successfully!',
           error: 'Failed to delete image.'
         }
       );
 
-      if (response.status === 200) {
-        setCurrentPage(1); // Reset to first page
-        closeDeleteConfirm();
-        await loadImages(); // Refresh gallery
-      }
+      closeDeleteConfirm();
+      await loadImages();
     } catch (error) {
-      console.error('Delete image error:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-      });
+      console.error('Delete image error:', error);
       toast.error(error.response?.data?.message || 'Error deleting image: ' + error.message);
     }
   };
 
-  // Pagination calculations
-  const totalPages = Math.ceil(totalImages / imagesPerPage);
-  const startIdx = (currentPage - 1) * imagesPerPage + 1;
-  const endIdx = Math.min(currentPage * imagesPerPage, totalImages);
-  const currentImages = galleryItems;
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <div className="admin-content">
+    <div className="gallery-container">
       <div className="gallery-header">
-        <h1>Manage Gallery</h1>
-        <p className="gallery-subtitle">Total images: {totalImages}</p>
-        <button className="upload-btn" onClick={openUploadModal}>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#fff"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="17 8 12 3 7 8" />
-            <line x1="12" y1="3" x2="12" y2="15" />
-          </svg>
+        <div className="gallery-header-content">
+          <h1>Gallery Management</h1>
+          <p className="gallery-subtitle">Manage and organize your image collection</p>
+        </div>
+        <button className="gallery-upload-btn" onClick={openUploadModal}>
+          <i className="fas fa-upload"></i>
           Upload Images
         </button>
       </div>
 
-      <div className="gallery-grid">
-        {isLoading ? (
-          <div className="loader-container">
-            <div className="loader"></div>
-            <p>Loading images...</p>
+      <div className="gallery-stats">
+        <div className="gallery-stat-card">
+          <i className="fas fa-images"></i>
+          <div>
+            <span className="stat-value">{galleryItems.length}</span>
+            <span className="stat-label">Total Images</span>
           </div>
-        ) : galleryItems.length === 0 ? (
-          <p>No images available.</p>
-        ) : (
-          currentImages.map(item => (
-            <div key={item.id} className="gallery-item">
-              <div className="image-container">
+        </div>
+      </div>
+
+      {isLoading ? (
+        <div className="gallery-loader">
+          <div className="loader-spinner"></div>
+          <p>Loading images...</p>
+        </div>
+      ) : galleryItems.length === 0 ? (
+        <div className="gallery-empty">
+          <i className="fas fa-image"></i>
+          <h3>No Images Yet</h3>
+          <p>Start by uploading your first image</p>
+          <button className="gallery-upload-btn" onClick={openUploadModal}>
+            <i className="fas fa-upload"></i>
+            Upload Images
+          </button>
+        </div>
+      ) : (
+        <div className="gallery-grid">
+          {galleryItems.map(item => (
+            <div key={item.id} className="gallery-card">
+              <div className="gallery-image-wrapper">
                 <img
                   src={item.src.replace('/upload/', '/upload/w_400,h_300,q_auto,f_webp/')}
                   alt={`Image ${item.id}`}
                   className="gallery-image"
                 />
-              </div>
-              <div className="gallery-actions">
-                <button
-                  className="view-btn"
-                  onClick={() => openModal(item)}
-                  title="View Image"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                <div className="gallery-overlay">
+                  <button
+                    className="gallery-action-btn view-btn"
+                    onClick={() => openModal(item)}
+                    title="View Image"
                   >
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => openDeleteConfirm(item.public_id)}
-                  title="Delete Image"
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#fff"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    <i className="fas fa-eye"></i>
+                  </button>
+                  <button
+                    className="gallery-action-btn delete-btn"
+                    onClick={() => openDeleteConfirm(item.public_id)}
+                    title="Delete Image"
                   >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                    <line x1="10" y1="11" x2="10" y2="17" />
-                    <line x1="14" y1="11" x2="14" y2="17" />
-                  </svg>
-                </button>
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
-      <div className="gallery-footer">
-        {totalPages > 1 && (
-          <div className="pagination">
-            <button
-              className="prev-btn"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              title="Previous Page"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="15 18 9 12 15 6" />
-              </svg>
-            </button>
-
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index + 1}
-                className={`number-btn ${currentPage === index + 1 ? 'active' : ''}`}
-                onClick={() => handlePageChange(index + 1)}
-                title={`Page ${index + 1}`}
-              >
-                {index + 1}
-              </button>
-            ))}
-
-            <button
-              className="next-btn"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              title="Next Page"
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="9 18 15 12 9 6" />
-              </svg>
-            </button>
-          </div>
-        )}
-        {!isLoading && (
-          <div className="gallery-status">
-            {galleryItems.length > 0 ? (
-              <p>Showing {startIdx}-{endIdx} of {totalImages} images</p>
-            ) : (
-              <p>No images available.</p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Modal for image preview */}
+      {/* Image Preview Modal */}
       {selectedImage && (
-        <div className="modal-container" onClick={closeModal}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="modal-btn" onClick={closeModal} title="Close">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+        <div className="gallery-modal-overlay" onClick={closeModal}>
+          <div className="gallery-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="gallery-modal-close" onClick={closeModal}>
+              <i className="fas fa-times"></i>
             </button>
-            <div className="modal-image-container">
-              <img
-                src={selectedImage.src}
-                alt={`Image ${selectedImage.id}`}
-                className="modal-image"
-              />
-            </div>
+            <img
+              src={selectedImage.src}
+              alt={`Image ${selectedImage.id}`}
+              className="gallery-modal-image"
+            />
           </div>
         </div>
       )}
 
-      {/* Modal for image upload */}
+      {/* Upload Modal */}
       {showUploadModal && (
-        <div className="modal-container" onClick={closeUploadModal}>
-          <div className="modal-content upload-modal" onClick={e => e.stopPropagation()}>
-            <button className="modal-btn" onClick={closeUploadModal} title="Close">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+        <div className="gallery-modal-overlay" onClick={closeUploadModal}>
+          <div className="gallery-modal-content upload-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="gallery-modal-close" onClick={closeUploadModal}>
+              <i className="fas fa-times"></i>
             </button>
             <h2>Upload Images</h2>
-            <form onSubmit={handleUpload} className="image-upload-form">
-              <div className="form-group">
-                <label htmlFor="image-file">Select Images</label>
-                <div className="custom-file-upload">
-                  {imageFiles.length === 0 ? (
-                    <button type="button" onClick={triggerFileInput} className="upload-btn">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#fff"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                        <polyline points="17 8 12 3 7 8" />
-                        <line x1="12" y1="3" x2="12" y2="15" />
-                      </svg>
-                      Add Image
-                    </button>
-                  ) : (
-                    <button type="button" onClick={triggerFileInput} className="add-more-btn">
-                      +
-                    </button>
-                  )}
-                  <input
-                    type="file"
-                    id="image-file"
-                    ref={fileInputRef}
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    multiple
-                    style={{ display: 'none' }}
-                  />
-                </div>
-                {imageFiles.length > 0 && (
-                  <div className="image-preview-container">
+            <form onSubmit={handleUpload} className="gallery-upload-form">
+              <div className="gallery-form-group">
+                <input
+                  type="file"
+                  id="image-file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  multiple
+                  style={{ display: 'none' }}
+                />
+                
+                {imageFiles.length === 0 ? (
+                  <div className="gallery-dropzone" onClick={triggerFileInput}>
+                    <i className="fas fa-cloud-upload-alt"></i>
+                    <p>Click to select images</p>
+                    <span>or drag and drop</span>
+                  </div>
+                ) : (
+                  <div className="gallery-preview-container">
                     {imageFiles.map((file, index) => (
-                      <div key={index} className="image-preview">
+                      <div key={index} className="gallery-preview-item">
                         <img
                           src={URL.createObjectURL(file)}
                           alt={file.name}
-                          className="preview-image"
+                          className="gallery-preview-image"
                         />
-                        <span className="file-name">{file.name}</span>
                         <button
                           type="button"
-                          className="remove-image-btn"
+                          className="gallery-remove-btn"
                           onClick={() => removeImage(index)}
                         >
-                          <svg
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#fff"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          >
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                          </svg>
+                          <i className="fas fa-times"></i>
                         </button>
+                        <span className="gallery-filename">{file.name}</span>
                       </div>
                     ))}
+                    <div className="gallery-add-more" onClick={triggerFileInput}>
+                      <i className="fas fa-plus"></i>
+                    </div>
                   </div>
                 )}
               </div>
-              <button type="submit" className="premium-button">
-                Upload Images
-              </button>
+              
+              <div className="gallery-modal-actions">
+                <button type="button" className="gallery-cancel-btn" onClick={closeUploadModal}>
+                  Cancel
+                </button>
+                <button type="submit" className="gallery-submit-btn" disabled={imageFiles.length === 0}>
+                  <i className="fas fa-upload"></i>
+                  Upload {imageFiles.length > 0 && `(${imageFiles.length})`}
+                </button>
+              </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* Delete confirmation popup */}
+      {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
-        <div className="modal-container" onClick={closeDeleteConfirm}>
-          <div className="modal-content delete-confirm-modal" onClick={e => e.stopPropagation()}>
-            <button className="modal-btn" onClick={closeDeleteConfirm} title="Close">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fff"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+        <div className="gallery-modal-overlay" onClick={closeDeleteConfirm}>
+          <div className="gallery-modal-content delete-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="gallery-delete-icon">
+              <i className="fas fa-exclamation-triangle"></i>
+            </div>
             <h2>Confirm Deletion</h2>
             <p>Are you sure you want to delete this image? This action cannot be undone.</p>
-            <div className="delete-confirm-buttons">
-              <button
-                className="cancel-btn"
-                onClick={closeDeleteConfirm}
-              >
+            <div className="gallery-modal-actions">
+              <button className="gallery-cancel-btn" onClick={closeDeleteConfirm}>
                 Cancel
               </button>
-              <button
-                className="confirm-delete-btn"
-                onClick={() => handleDelete(showDeleteConfirm)}
-              >
+              <button className="gallery-delete-confirm-btn" onClick={() => handleDelete(showDeleteConfirm)}>
+                <i className="fas fa-trash"></i>
                 Delete
               </button>
             </div>

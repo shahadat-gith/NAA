@@ -47,26 +47,13 @@ export const uploadImage = async (req, res) => {
 
 export const getImages = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 6;
-    const skip = (page - 1) * limit;
-
-    const images = await Image.find()
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    const images = await Image.find().sort({ createdAt: -1 });
 
     const totalImages = await Image.countDocuments();
-    const hasMore = skip + images.length < totalImages;
 
     res.status(200).json({ 
       success: true, 
       images, 
-      hasMore,
-      page,
-      totalImages, // Ensure this is included
-      totalPages: Math.ceil(totalImages / limit),
     });
   } catch (error) {
     console.error('Fetch images error:', error);

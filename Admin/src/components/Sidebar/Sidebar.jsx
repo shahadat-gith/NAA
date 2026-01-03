@@ -5,17 +5,24 @@ import "./Sidebar.css";
 
 const Sidebar = () => {
 
-  const sidebarLinks = [
-    { to: "/", icon: "fas fa-home", label: "Home" },
-    { to: "/students", icon: "fas fa-list-ul", label: "Students" },
-    { to: "/admissions", icon: "fas fa-list-ul", label: "Admissions" },
-    { to: "/result", icon: "fas fa-list-ul", label: "Result" },
-    { to: "/teachers", icon: "fas fa-user-tie", label: "Teachers" },
-    // { to: "/hostel", icon: "fas fa-building", label: "Hostel Management" },
-    { to: "/achievers", icon: "fa-solid fa-star", label: "Achievers" },
-    { to: "/gallery", icon: "fa-solid fa-image", label: "Gallery" },
-    { to: "/settings", icon: "fas fa-cog", label: "Settings" },
-  ];
+const sidebarLinks = [
+  { to: "/", icon: "fas fa-home", label: "Home" },
+
+  // Student & Academic
+  { to: "/students", icon: "fas fa-user-graduate", label: "Students" },
+  { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
+  { to: "/result", icon: "fas fa-chart-line", label: "Result" },
+
+  // Staff
+  { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
+
+  // Achievements & Media
+  { to: "/achievers", icon: "fas fa-trophy", label: "Achievers" },
+  { to: "/gallery", icon: "fas fa-images", label: "Gallery" },
+
+  // System
+  { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
+];
 
   return (
     <div className="admin-sidebar">

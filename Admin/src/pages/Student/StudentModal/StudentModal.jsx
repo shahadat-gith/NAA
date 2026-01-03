@@ -3,11 +3,8 @@ import "./StudentModal.css";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { AdminContext } from "../../../context/AdminContext";
-import { formatClassName } from "../../../utils/formatclass";
-import {
-  CLASS_OPTIONS,
-  STREAM_OPTIONS,
-} from "../../../utils/academicOptions";
+import { formatClassName } from "../../../utils/utility";
+import { CLASS_OPTIONS,STREAM_OPTIONS} from "../../../utils/academicOptions";
 
 const StudentModal = ({ isOpen, onClose }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);

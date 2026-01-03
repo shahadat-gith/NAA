@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { formatClassName } from "../../../utils/formatclass"; 
+import { formatClassName } from "../../../utils/utility"; 
 import "./StudentTable.css";
 
 const StudentTable = ({
@@ -43,9 +43,7 @@ const StudentTable = ({
                 key={student._id}
                 onClick={() => {
                   handleStudentClick(student);
-                  navigate(`/students/${student._id}`, {
-                    state: { student },
-                  });
+                  navigate(`/students/${student._id}`);
                 }}
               >
                 <td>{index + 1}</td>
