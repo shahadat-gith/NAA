@@ -4,11 +4,14 @@ import axios from "axios";
 import { AdminContext } from "../../context/AdminContext";
 import StudentTable from "./StudentTable/StudentTable";
 import StudentModal from "./StudentModal/StudentModal";
+import SingleStudentAddModal from "./StudentModal/SingleStudentAddModal";
+import PromoteStudentsModal from "./StudentModal/PromoteStudentsModal";
 
-import { formatClassName } from "../../utils/utility";
+import { formatClassName} from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
-import { exportToExcel } from "../../utils/utility";
 import { generateIdCards } from "../../utils/generateIdCards";
+import { exportToExcel } from "../../utils/exportToExcel";
+
 import "./Student.css";
 import Loader from "../../components/Loader/Loader";
 
@@ -24,13 +27,15 @@ const Student = () => {
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const [studentModalOpen, setStudentModalOpen] = useState(false);
+  const [singleStudentModal, setSingleStudentModal] = useState(false);
+  const [promoteModalOpen, setPromoteModalOpen] = useState(false);
 
   /* ================= FETCH STUDENTS ================= */
   const fetchStudents = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const res = await axios.get(`${backendUrl}/api/student/list`, {
         headers: { Authorization: `Bearer ${adminToken}` },
@@ -41,8 +46,8 @@ const Student = () => {
       setFilteredStudents(list);
     } catch (error) {
       console.error("Error fetching students:", error);
-    }finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,8 +60,12 @@ const Student = () => {
     let filtered = [...students];
 
     if (searchTerm) {
-      filtered = filtered.filter((s) =>
-        s.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      const term = searchTerm.toLowerCase();
+
+      filtered = filtered.filter(
+        (s) =>
+          s.name?.toLowerCase().includes(term) ||
+          s.registrationNo?.toLowerCase().includes(term)
       );
     }
 
@@ -79,9 +88,6 @@ const Student = () => {
     setFilteredStudents(filtered);
   }, [searchTerm, mediumFilter, classFilter, streamFilter, students]);
 
-
-
-
   /* ================= CLEAR FILTERS ================= */
   const clearFilters = () => {
     setSearchTerm("");
@@ -92,7 +98,7 @@ const Student = () => {
     setFilteredStudents(students);
   };
 
-  if(loading) return <Loader text="loading students..."/>
+  if (loading) return <Loader text="Loading students..." />;
 
   return (
     <div className="admin-student-list-container">
@@ -101,10 +107,24 @@ const Student = () => {
       {/* ===== ACTION BUTTONS ===== */}
       <div className="add-student-action">
         <button
-          className="naa-add-student-btn primary"
+          className="naa-btn naa-btn-mass"
           onClick={() => setStudentModalOpen(true)}
         >
-          Mass Admission
+          Mass Addition
+        </button>
+
+        <button
+          className="naa-btn naa-btn-single"
+          onClick={() => setSingleStudentModal(true)}
+        >
+          Single Addition
+        </button>
+
+        <button
+          className="naa-btn naa-btn-promote"
+          onClick={() => setPromoteModalOpen(true)}
+        >
+          Promote Students
         </button>
       </div>
 
@@ -113,7 +133,7 @@ const Student = () => {
         <input
           type="text"
           className="fs-search-input"
-          placeholder="Search by student name..."
+          placeholder="Search by student name or Registration Number..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -198,12 +218,13 @@ const Student = () => {
 
         <button
           className="fs-btn fs-idcard-btn"
-          onClick={() => generateIdCards(filteredStudents, mediumFilter, classFilter)}
+          onClick={() =>
+            generateIdCards(filteredStudents, mediumFilter, classFilter)
+          }
           disabled={!mediumFilter || !classFilter || !filteredStudents.length}
         >
           🪪 Generate ID Cards
         </button>
-
       </div>
 
       {/* ===== COUNT ===== */}
@@ -221,13 +242,27 @@ const Student = () => {
         setSelectedStudent={setSelectedStudent}
       />
 
-      {/* ===== MODAL ===== */}
+      {/* ===== MODALS ===== */}
       <StudentModal
         isOpen={studentModalOpen}
         onClose={() => {
           setStudentModalOpen(false);
           fetchStudents();
         }}
+      />
+
+      <SingleStudentAddModal
+        isOpen={singleStudentModal}
+        onClose={() => {
+          setSingleStudentModal(false);
+          fetchStudents();
+        }}
+      />
+
+      <PromoteStudentsModal
+        isOpen={promoteModalOpen}
+        onClose={() => setPromoteModalOpen(false)}
+        fetchStudents={fetchStudents}
       />
     </div>
   );

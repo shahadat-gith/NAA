@@ -62,7 +62,7 @@ const StudentModal = ({ isOpen, onClose }) => {
       if (massStream) formData.append("stream", massStream);
 
       const res = await axios.post(
-        `${backendUrl}/api/student/admission/mass`,
+        `${backendUrl}/api/student/add/mass`,
         formData,
         {
           headers: {
@@ -73,7 +73,7 @@ const StudentModal = ({ isOpen, onClose }) => {
 
       if (res.data.success) {
         toast.success(
-          `Students migrated successfully (${res.data.total})`
+          `Students added successfully (${res.data.total})`
         );
         handleClose();
       }

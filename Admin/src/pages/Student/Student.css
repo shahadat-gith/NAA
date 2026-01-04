@@ -41,34 +41,77 @@
   flex-wrap: wrap;
 }
 
-.naa-add-student-btn {
+/* ================= Action Container ================= */
+
+.add-student-action {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* ================= Base Button ================= */
+
+.naa-btn {
   padding: 12px 22px;
-  border-radius: 8px;
-  border: none;
+  border-radius: 10px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: white;
+  border: none;
+  transition: all 0.25s ease;
+  color: #f8fafc;
+  letter-spacing: 0.3px;
 }
 
-.naa-add-student-btn.primary {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+/* ================= Mass Addition ================= */
+
+.naa-btn-mass {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.35);
 }
 
-.naa-add-student-btn.primary:hover {
+.naa-btn-mass:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 26px rgba(59, 130, 246, 0.5);
 }
 
-.naa-add-student-btn.secondary {
-  background: linear-gradient(135deg, #16a34a, #15803d);
+/* ================= Single Addition ================= */
+
+.naa-btn-single {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
 }
 
-.naa-add-student-btn.secondary:hover {
+.naa-btn-single:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+  box-shadow: 0 10px 26px rgba(34, 197, 94, 0.5);
 }
+
+/* ================= Promote Students (Action / Warning) ================= */
+
+.naa-btn-promote {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.35);
+}
+
+.naa-btn-promote:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(249, 115, 22, 0.5);
+}
+
+/* ================= Responsive ================= */
+
+@media (max-width: 768px) {
+  .add-student-action {
+    flex-direction: column;
+  }
+
+  .naa-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 
 /* =====================================================
    SEARCH

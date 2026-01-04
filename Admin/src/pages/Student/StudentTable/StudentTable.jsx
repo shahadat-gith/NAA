@@ -1,6 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { formatClassName } from "../../../utils/utility"; 
+import {
+  formatClassName,
+  capitalizeFirst,
+  capitalizeWords,
+} from "../../../utils/utility";
 import "./StudentTable.css";
 
 const StudentTable = ({
@@ -10,10 +14,16 @@ const StudentTable = ({
 }) => {
   const navigate = useNavigate();
 
-  // 🔐 HARD SAFETY: ensure array
   const studentsArray = Array.isArray(filteredStudents)
     ? filteredStudents
     : [];
+
+  // ✅ SORT BY REGISTRATION NUMBER
+  const sortedStudents = [...studentsArray].sort((a, b) => {
+    if (!a.registrationNo) return 1;
+    if (!b.registrationNo) return -1;
+    return a.registrationNo.localeCompare(b.registrationNo);
+  });
 
   const handleStudentClick = (student) => {
     setSelectedStudent(
@@ -23,22 +33,22 @@ const StudentTable = ({
 
   return (
     <div className="student-table">
-      {studentsArray.length === 0 ? (
+      {sortedStudents.length === 0 ? (
         <p>No students found.</p>
       ) : (
         <table>
           <thead>
             <tr>
               <th>S.No.</th>
+              <th>Registration No</th>
               <th>Name</th>
               <th>Class</th>
               <th>Medium</th>
               <th>Stream</th>
-              <th>Registration No</th>
             </tr>
           </thead>
           <tbody>
-            {studentsArray.map((student, index) => (
+            {sortedStudents.map((student, index) => (
               <tr
                 key={student._id}
                 onClick={() => {
@@ -47,11 +57,26 @@ const StudentTable = ({
                 }}
               >
                 <td>{index + 1}</td>
-                <td>{student.name}</td>
-                <td>{formatClassName(student.class)}</td>
-                <td>{student.medium}</td>
-                <td>{student.stream || "-"}</td>
+                   {/* REG NO */}
                 <td>{student.registrationNo || "-"}</td>
+
+                {/* NAME */}
+                <td>{capitalizeWords(student.name)}</td>
+
+                {/* CLASS */}
+                <td>{formatClassName(student.class)}</td>
+
+                {/* MEDIUM */}
+                <td>{capitalizeFirst(student.medium)}</td>
+
+                {/* STREAM */}
+                <td>
+                  {student.stream
+                    ? capitalizeFirst(student.stream)
+                    : "-"}
+                </td>
+
+             
               </tr>
             ))}
           </tbody>
@@ -60,6 +85,5 @@ const StudentTable = ({
     </div>
   );
 };
-
 
 export default StudentTable;

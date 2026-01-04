@@ -1,31 +1,4 @@
 
-  
-  import * as XLSX from "xlsx";
-  
-  /* ================= EXPORT ================= */
-  export const exportToExcel = (students) => {
-    if (!students.length) {
-      toast.error("No students to export");
-      return;
-    }
-
-    const data = students.map((s) => ({
-      Name: s.name,
-      Class: formatClassName(s.class),
-      Medium: s.medium,
-      Stream: s.stream || "-",
-      "Registration No": s.registrationNo || "-",
-    }));
-
-    const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Students");
-
-    const date = new Date().toISOString().slice(0, 10);
-    XLSX.writeFile(wb, `Student_List_${date}.xlsx`);
-  };
-
-
   export const formatDate = (date) => {
   if (!date) return "N/A";
 
@@ -67,5 +40,20 @@ export const formatClassName = (cls) => {
   if (/^\d+$/.test(cls)) return `Class ${cls}`;
   return cls.charAt(0).toUpperCase() + cls.slice(1);
 };
+
+
+export const capitalizeWords = (text = "") =>
+  text
+    .toLowerCase()
+    .split(" ")
+    .filter(Boolean)
+    .map(
+      (word) => word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+
+export const capitalizeFirst = (text = "") =>
+  text ? text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() : "-";
+
 
 

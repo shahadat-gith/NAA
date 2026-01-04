@@ -325,12 +325,14 @@ export const getRegistrationNo = ({
   studentClass,
   medium,
   rollNo,
+  stream = "",
 }) => {
   const PREFIX = "NAA25";
 
   // Normalize
   const normalizedClass = studentClass.toString().toLowerCase();
   const normalizedMedium = medium.toLowerCase();
+  const normalizedStream = stream.toLowerCase();
 
   // Medium code
   const mediumCode = normalizedMedium === "english" ? "E" : "A";
@@ -354,7 +356,17 @@ export const getRegistrationNo = ({
   // Roll number (001, 002 ...)
   const rollCode = String(rollNo).padStart(3, "0");
 
-  return `${PREFIX}${classCode}${rollCode}${mediumCode}`;
+  /* ================= STREAM LOGIC ================= */
+
+  let streamCode = "";
+
+  if (normalizedClass === "11" || normalizedClass === "12") {
+    if (normalizedStream === "arts") streamCode = "A";
+    else if (normalizedStream === "science") streamCode = "S";
+    else throw new Error("Invalid stream for class 11 or 12");
+  }
+
+  return `${PREFIX}${classCode}${rollCode}${mediumCode}${streamCode}`;
 };
 
 

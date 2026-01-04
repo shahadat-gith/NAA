@@ -16,7 +16,7 @@ export const createNewStudentAdmission = async (req, res) => {
       motherName,
       phone,
       aadhar,
-      pan,
+      pen,
       address,
       class: studentClass,
       medium,
@@ -25,10 +25,10 @@ export const createNewStudentAdmission = async (req, res) => {
     } = req.body;
 
     /* ---------- VALIDATION ---------- */
-    if (!name || !studentClass || !medium || !academicSession) {
+    if (!name || !fatherName || !motherName || !studentClass || !medium || !academicSession) {
       return res.status(400).json({
         success: false,
-        message: "Name, class, medium and academic session are required",
+        message: "Name, class, fathername ,mothername, medium and academic session are required",
       });
     }
 
@@ -42,7 +42,7 @@ export const createNewStudentAdmission = async (req, res) => {
       motherName,
       phone,
       aadhar,
-      pan,
+      pen,
       address,
       registrationNo,
       class: studentClass,
@@ -163,17 +163,17 @@ export const getStudentById = async (req, res) => {
 
 
 
-export const deleteStudent = async (req, res)=>{
+export const deleteStudent = async (req, res) => {
   try {
-    const {id} = req.params;
-    if(!id || !mongoose.Types.ObjectId.isValid(id)){
+    const { id } = req.params;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
         success: false,
         message: "Invalid student ID",
       });
     }
     const student = await Student.findByIdAndDelete(id);
-    if(!student){
+    if (!student) {
       return res.status(404).json({
         success: false,
         message: "Student not found",
@@ -293,7 +293,7 @@ export const getAdmissionById = async (req, res) => {
 
 export const verifyAdmission = async (req, res) => {
   try {
-    const { admissionId, status} = req.body;
+    const { admissionId, status } = req.body;
 
     if (!admissionId || !mongoose.Types.ObjectId.isValid(admissionId)) {
       return res.status(400).json({
@@ -310,11 +310,11 @@ export const verifyAdmission = async (req, res) => {
       });
     }
 
-    if(status === "verify"){
+    if (status === "verify") {
       admission.status = "verified";
     }
 
-    if(status === "reject"){
+    if (status === "reject") {
       admission.status = "rejected";
     }
     await admission.save();
@@ -355,7 +355,7 @@ const setNestedValue = (obj, path, value) => {
 };
 
 /* ================= MASS ADMISSION ================= */
-export const massAdmission = async (req, res) => {
+export const addMassStudents = async (req, res) => {
   try {
     const { class: studentClass, medium, stream = "" } = req.body;
 
@@ -374,7 +374,11 @@ export const massAdmission = async (req, res) => {
         if (!value) continue;
 
         const finalValue =
-          typeof value === "string" ? value.trim() : value;
+          typeof value === "string"
+            ? value.trim().toLowerCase()
+            : value;
+
+
 
         if (key.includes(".")) {
           setNestedValue(student, key, finalValue);
@@ -388,12 +392,13 @@ export const massAdmission = async (req, res) => {
       student.medium = medium;
       student.stream = stream;
       student.isActive = true;
-      
+
       // Auto-generate registration number
       student.registrationNo = getRegistrationNo({
         studentClass,
         medium,
         rollNo,
+        stream
       });
 
       rollNo++;
@@ -418,4 +423,169 @@ export const massAdmission = async (req, res) => {
     });
   }
 };
+
+
+const toLower = (value) =>
+  typeof value === "string" ? value.trim().toLowerCase() : value;
+
+
+export const addSingleStudent = async (req, res) => {
+  try {
+    const {
+      name,
+      fatherName,
+      motherName,
+      dob,
+      gender,
+      phone,
+      registrationNo,
+      aadhar,
+      pen,
+      class: studentClass,
+      medium,
+      stream,
+
+      // Address fields
+      village,
+      postOffice,
+      policeStation,
+      district,
+      state,
+      pincode,
+    } = req.body;
+
+    const student = await Student.create({
+      /* BASIC */
+      name: toLower(name),
+      class:studentClass,
+      medium: toLower(medium),
+      stream: toLower(stream) || "",
+
+      /* PERSONAL */
+      fatherName: toLower(fatherName),
+      motherName: toLower(motherName),
+      dob, 
+      gender: toLower(gender),
+      phone: phone?.trim(),
+
+      /* ACADEMIC */
+      registrationNo,
+      aadhar: aadhar?.trim(),
+      pen: pen?.trim(),
+
+      /* ADDRESS */
+      address: {
+        village: toLower(village),
+        postOffice: toLower(postOffice),
+        policeStation: toLower(policeStation),
+        district: toLower(district),
+        state: toLower(state),
+        pincode: pincode?.trim(),
+      },
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Student added successfully",
+    });
+  } catch (error) {
+    console.error("student adding error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error adding student",
+      error: error.message,
+    });
+  }
+};
+
+
+export const promoteStudents = async (req, res) => {
+  try {
+    const {
+      class: studentClass,
+      medium,
+      stream = "",
+      nextClass,
+    } = req.body;
+
+    if (!studentClass || !medium || !nextClass) {
+      return res.status(400).json({
+        success: false,
+        message: "class, medium and nextClass are required",
+      });
+    }
+
+    const normalizedClass = studentClass.toString().toLowerCase();
+    const normalizedNextClass = nextClass.toString().toLowerCase();
+    const normalizedMedium = medium.toLowerCase();
+    const normalizedStream = stream.toLowerCase();
+
+    /* ================= FILTER ================= */
+
+    const filter = {
+      class: normalizedClass,
+      medium: normalizedMedium,
+      isActive: true,
+    };
+
+    // Stream filter only for 11 / 12
+    if (["11", "12"].includes(normalizedClass)) {
+      if (!normalizedStream) {
+        return res.status(400).json({
+          success: false,
+          message: "Stream is required for class 11 and 12",
+        });
+      }
+      filter.stream = normalizedStream;
+    }
+
+    /* ================= UPDATE DATA ================= */
+
+    const updateData = {
+      class: normalizedNextClass,
+    };
+
+    // Class 10 → 11 : stream MUST be set
+    if (normalizedClass === "10" && normalizedNextClass === "11") {
+      if (!normalizedStream) {
+        return res.status(400).json({
+          success: false,
+          message: "Stream is required when promoting to class 11",
+        });
+      }
+      updateData.stream = normalizedStream;
+    }
+
+    // 11 → 12 : keep same stream
+    if (normalizedClass === "11" && normalizedNextClass === "12") {
+      updateData.stream = normalizedStream;
+    }
+
+    // Any other promotion → remove stream
+    if (!["11", "12"].includes(normalizedNextClass)) {
+      updateData.stream = "";
+    }
+
+    /* ================= PROMOTE ================= */
+
+    const result = await Student.updateMany(filter, {
+      $set: updateData,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Students promoted successfully",
+      promotedCount: result.modifiedCount,
+    });
+  } catch (error) {
+    console.error("student promotion error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error promoting students",
+      error: error.message,
+    });
+  }
+};
+
+
 
