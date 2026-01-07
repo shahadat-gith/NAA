@@ -4,7 +4,6 @@ import Student from "../models/Student/student.js";
 import Admission from "../models/Student/admission.js";
 import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
-import { generateRegistrationNo, getRegistrationNo } from "../utils/utility.js";
 
 
 
@@ -158,111 +157,128 @@ export const SearchStudentsByName = async (req, res) => {
 
 
 
-export const getAdmissions = async (req, res) => {
-  try {
-    const { academicSession } = req.query;
 
-    const admissions = await Admission.find({ academicSession })
-      .populate("student")
-      .sort({ createdAt: -1 });
-
-    return res.status(200).json({
-      success: true,
-      count: admissions.length,
-      admissions,
-    });
-
-  } catch (error) {
-    console.error("getAdmissions error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error fetching admissions",
-      error: error.message,
-    });
-  }
+const CLASS_OPTIONS = {
+  english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  assamese: [
+    "ankur",
+    "mukul",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ],
 };
 
 
 
+/* ================= REG NO GENERATOR ================= */
 
-/* ================= HELPERS ================= */
-const setNestedValue = (obj, path, value) => {
-  const keys = path.split(".");
-  let current = obj;
+const getRegistrationNo = ({
+  studentClass,
+  medium,
+  sequence,
+  stream = "",
+}) => {
+  const PREFIX = "NAA26";
 
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    if (i === keys.length - 1) {
-      current[key] = value;
-    } else {
-      current[key] = current[key] || {};
-      current = current[key];
-    }
+  const normalizedClass = studentClass.toString().toLowerCase();
+  const normalizedMedium = medium.toLowerCase();
+  const normalizedStream = stream.toLowerCase();
+
+  const mediumCode = normalizedMedium === "english" ? "E" : "A";
+
+  const classList = CLASS_OPTIONS[normalizedMedium];
+  if (!classList) throw new Error("Invalid medium");
+
+  const classIndex = classList.indexOf(normalizedClass);
+  if (classIndex === -1)
+    throw new Error("Invalid class for selected medium");
+
+  const classCode = String(classIndex).padStart(2, "0");
+  const seqCode = String(sequence).padStart(3, "0");
+
+  let streamCode = "";
+  if (normalizedClass === "11" || normalizedClass === "12") {
+    if (normalizedStream === "arts") streamCode = "A";
+    else if (normalizedStream === "science") streamCode = "S";
+    else throw new Error("Invalid stream for class 11 or 12");
   }
+
+  return `${PREFIX}${classCode}${seqCode}${mediumCode}${streamCode}`;
 };
 
-/* ================= MASS ADMISSION ================= */
+
 export const addMassStudents = async (req, res) => {
   try {
     const { class: studentClass, medium, stream = "" } = req.body;
 
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Excel file required" });
+    }
+
+    /* ---------- READ EXCEL ---------- */
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
-    const students = [];
-    let rollNo = 1;
-
-    for (const rawRow of rows) {
-      const student = {};
-
-      for (const [key, value] of Object.entries(rawRow)) {
-        if (value === "" || value === null || value === undefined) continue;
-
-        let finalValue = value;
-
-        // ✅ keep DOB exactly as in Excel
-        if (key !== "dob" && typeof value === "string") {
-          finalValue = value.trim().toLowerCase();
-        }
-
-        if (key.includes(".")) {
-          setNestedValue(student, key, finalValue);
-        } else {
-          student[key] = finalValue;
-        }
-      }
-
-      // Controlled fields
-      student.class = studentClass;
-      student.medium = medium;
-      student.stream = stream;
-      student.isActive = true;
-
-      // Registration No
-      student.registrationNo = getRegistrationNo({
-        studentClass,
-        medium,
-        rollNo,
-        stream,
-      });
-
-      rollNo++;
-      students.push(student);
+    if (!rows.length) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Excel file is empty" });
     }
 
+    /* ---------- PREPARE STUDENTS ---------- */
+    const students = rows.map((row, index) => {
+      const sequence = index + 1;
+
+      const registrationNo = getRegistrationNo({
+        studentClass,
+        medium,
+        stream,
+        sequence,
+      });
+
+      // 🔥 normalize row values (lowercase)
+      const normalizedRow = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [
+          key,
+          typeof value === "string" ? value.trim().toLowerCase() : value,
+        ])
+      );
+
+      return {
+        ...normalizedRow,
+        class: studentClass.toString().toLowerCase(),
+        medium: medium.toLowerCase(),
+        stream: stream.toLowerCase(),
+        registrationNo, 
+      };
+    });
+
+    /* ---------- INSERT ---------- */
     await Student.insertMany(students);
 
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
-      message: "Students migrated successfully",
+      message: "Students admitted successfully",
       total: students.length,
     });
   } catch (error) {
-    console.error("Mass admission error:", error);
-    return res.status(500).json({
+    console.error(error);
+    res.status(500).json({
       success: false,
-      message: "Migration failed",
+      message: "Mass Addition failed",
       error: error.message,
     });
   }

@@ -73,7 +73,7 @@ const StudentModal = ({ isOpen, onClose }) => {
 
       if (res.data.success) {
         toast.success(
-          `Students added successfully (${res.data.total})`
+          `${res.data.total} Students added successfully`
         );
         handleClose();
       }
