@@ -1,33 +1,41 @@
 import mongoose from "mongoose";
 
-const admissionSchema = new mongoose.Schema({
-  student: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
-    required: true,
+const addressSchema = new mongoose.Schema(
+  {
+    village: { type: String, trim: true },
+    postOffice: { type: String, trim: true },
+    policeStation: { type: String, trim: true },
+    district: { type: String, trim: true },
+    state: { type: String, trim: true },
+    pincode: { type: String, trim: true },
   },
+  { _id: false } 
+);
 
-  academicSession: {
-    type: String, // "2025-2026"
-    required: true,
-  },
+const admissionSchema = new mongoose.Schema(
+  {
+    /* ================= BASIC ================= */
+    name: { type: String, required: true, trim: true },
 
-  admissionDate: {
-    type: Date,
-    default: Date.now,
-  },
+    class: { type: String, required: true },
+    stream: { type: String, default: "" },
+    medium: { type: String, required: true },
 
-  admissionType: {
-    type: String,
-    enum: ["new", "existing"],
-    required: true,
-  },
+    /* ================= PERSONAL ================= */
+    fatherName: { type: String, trim: true },
+    motherName: { type: String, trim: true },
+    dob: { type: String , trim: true },
+    gender: { type: String, enum: ["male", "female", "other"] },
 
-  status: {
-    type: String,
-    enum: ["pending", "verified", "rejected"],
-    default: "pending",
-  },
-});
+    phone: { type: String, trim: true },
+
+    address: addressSchema, 
+    aadhar: { type: String, trim: true },
+    pen: { type: String, trim: true },
+  }, { timestamps: true }
+);
+
+
 
 export default mongoose.models.Admission || mongoose.model("Admission", admissionSchema);
+

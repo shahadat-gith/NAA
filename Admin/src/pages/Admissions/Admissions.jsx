@@ -9,20 +9,10 @@ const Admissions = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
   const navigate = useNavigate();
 
-  const academicSessions = [
-    "2024-2025",
-    "2025-2026",
-    "2026-2027",
-    "2027-2028",
-    "2028-2029",
-    "2029-2030",
-  ];
-
   const classOptions = ["", ...Array.from({ length: 12 }, (_, i) => String(i + 1))];
   const mediumOptions = ["", "english", "assamese"];
   const streamOptions = ["science", "arts"];
 
-  const [selectedSession, setSelectedSession] = useState("2025-2026");
   const [admissions, setAdmissions] = useState([]);
   const [filteredAdmissions, setFilteredAdmissions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -43,24 +33,24 @@ const Admissions = () => {
     });
   };
 
-  /* ================= FETCH ADMISSIONS ================= */
+  /* ================= FETCH ================= */
+
   const fetchAdmissions = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${backendUrl}/api/student/admissions`,
-        {
-          params: { academicSession: selectedSession },
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
-      );
+      const { data } = await axios.get(`${backendUrl}/api/admission/list`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
 
-      if (data.success) {
-        setAdmissions(data.admissions || []);
-        setFilteredAdmissions(data.admissions || []);
-      }
+      let admissionsData = [];
+      if (Array.isArray(data)) admissionsData = data;
+      else if (Array.isArray(data.admissions)) admissionsData = data.admissions;
+      else if (Array.isArray(data.data)) admissionsData = data.data;
+
+      setAdmissions(admissionsData);
+      setFilteredAdmissions(admissionsData);
     } catch (error) {
       console.error(error);
     } finally {
@@ -68,31 +58,48 @@ const Admissions = () => {
     }
   };
 
-  /* ================= APPLY FILTERS ================= */
+  /* ================= DELETE ================= */
+
+  const handleDelete = async (id) => {
+    if (!confirm("Are you sure you want to delete this admission?")) return;
+
+    try {
+      setLoading(true);
+      const { data } = await axios.delete(`${backendUrl}/api/admission/${id}`, {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+      alert(data.message || "Admission deleted");
+      fetchAdmissions();
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Error deleting admission");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= FILTER ================= */
+
   useEffect(() => {
     let result = [...admissions];
 
     if (filters.class) {
       result = result.filter(
-        (a) => a.student?.class === filters.class
+        (a) => String(a.class) === String(filters.class)
       );
     }
 
     if (filters.medium) {
-      result = result.filter(
-        (a) => a.student?.medium === filters.medium
-      );
+      result = result.filter((a) => a.medium === filters.medium);
     }
 
     if (filters.stream) {
-      result = result.filter(
-        (a) => a.student?.stream === filters.stream
-      );
+      result = result.filter((a) => a.stream === filters.stream);
     }
 
     if (filters.status) {
       result = result.filter(
-        (a) => a.status === filters.status
+        (a) => (a.status || "pending") === filters.status
       );
     }
 
@@ -101,7 +108,7 @@ const Admissions = () => {
 
   useEffect(() => {
     fetchAdmissions();
-  }, [selectedSession]);
+  }, []);
 
   return (
     <div className="admissions-page">
@@ -109,18 +116,6 @@ const Admissions = () => {
 
       {/* ================= FILTERS ================= */}
       <div className="admissions-filter">
-        <label>Session</label>
-        <select
-          value={selectedSession}
-          onChange={(e) => setSelectedSession(e.target.value)}
-        >
-          {academicSessions.map((session) => (
-            <option key={session} value={session}>
-              {session}
-            </option>
-          ))}
-        </select>
-
         <label>Class</label>
         <select
           value={filters.class}
@@ -196,12 +191,10 @@ const Admissions = () => {
           <thead>
             <tr>
               <th>#</th>
-              <th>Reg. No</th>
               <th>Name</th>
               <th>Class</th>
               <th>Medium</th>
               <th>Stream</th>
-              <th>Status</th>
               <th>Date</th>
               <th>Action</th>
             </tr>
@@ -209,40 +202,49 @@ const Admissions = () => {
           <tbody>
             {filteredAdmissions.length === 0 ? (
               <tr>
-                <td colSpan="9">No admissions found</td>
+                <td colSpan="7">No admissions found</td>
               </tr>
             ) : (
-              filteredAdmissions.map((adm, index) => (
-                <tr key={adm._id}>
-                  <td>{index + 1}</td>
-                  <td>{adm.student?.registrationNo || "—"}</td>
-                  <td>{adm.student?.name}</td>
-                  <td>{adm.student?.class}</td>
-                  <td>{adm.student?.medium}</td>
-                  <td>{adm.student?.stream || "-"}</td>
-                  <td>
-                    <span className={`status ${adm.status}`}>
-                      {adm.status}
-                    </span>
-                  </td>
-                  <td>
-                    {new Date(adm?.admissionDate).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })
-                    }
-                  </td>
-                  <td>
-                    <button
-                      className="view-btn"
-                      onClick={() => navigate(`/admissions/${adm._id}`)}
-                    >
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))
+              filteredAdmissions.map((adm, index) => {
+                const date = adm.createdAt
+                  ? new Date(adm.createdAt)
+                  : null;
+
+                return (
+                  <tr key={adm._id}>
+                    <td>{index + 1}</td>
+                    <td>{adm.name}</td>
+                    <td>{adm.class}</td>
+                    <td>{adm.medium}</td>
+                    <td>{adm.stream || "-"}</td>
+                    <td>
+                      {date
+                        ? date.toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "—"}
+                    </td>
+                    <td className="action-cell">
+                      <button
+                        className="view-btn"
+                        onClick={() =>
+                          navigate(`/admissions/${adm._id}`)
+                        }
+                      >
+                        View
+                      </button>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(adm._id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>

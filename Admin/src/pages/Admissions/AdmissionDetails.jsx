@@ -5,6 +5,7 @@ import { AdminContext } from "../../context/AdminContext";
 import toast from "react-hot-toast";
 import "./AdmissionDetails.css";
 import Loader from "../../components/Loader/Loader";
+import VerifyAdmissionModal from "./VerifyAdmissionModal";
 
 const AdmissionDetails = () => {
   const { id } = useParams();
@@ -14,32 +15,28 @@ const AdmissionDetails = () => {
   const [loading, setLoading] = useState(false);
   const [admission, setAdmission] = useState(null);
 
-  /* ===== MODAL STATE ===== */
+  /* ===== VERIFY MODAL ===== */
   const [showVerifyModal, setShowVerifyModal] = useState(false);
-  const [registrationNo, setRegistrationNo] = useState("");
 
   useEffect(() => {
     fetchAdmissionDetails();
     // eslint-disable-next-line
   }, []);
 
+  /* ================= FETCH ADMISSION ================= */
   const fetchAdmissionDetails = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `${backendUrl}/api/student/admission-data`,
-        {
-          params: { id },
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
+      const res = await axios.get(
+        `${backendUrl}/api/admission/single/${id}`,
+        { headers: { Authorization: `Bearer ${adminToken}` } }
       );
 
-      if (!data.success) {
-        toast.error("Failed to load admission details");
-        return;
+      if (res.data?.success) {
+        setAdmission(res.data.admission);
+      } else {
+        toast.error("Admission not found");
       }
-
-      setAdmission(data.admission);
     } catch (error) {
       console.error(error);
       toast.error("Error fetching admission details");
@@ -48,62 +45,14 @@ const AdmissionDetails = () => {
     }
   };
 
-  /* ===== VERIFY + ASSIGN REG NO ===== */
-  const handleVerifySubmit = async () => {
-    if (!registrationNo.trim()) {
-      toast.error("Registration number is required");
-      return;
-    }
 
-    try {
-      setLoading(true);
 
-      const { data } = await axios.post(
-        `${backendUrl}/api/student/verify-admission`,
-        {
-          admissionId: id,
-          studentId: admission.student._id || admission.student,
-          registrationNo,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
-      );
-
-      if (!data.success) {
-        toast.error(data.message || "Failed to verify admission");
-        return;
-      }
-
-      toast.success("Admission verified successfully");
-      await fetchAdmissionDetails();
-      setShowVerifyModal(false);
-      setRegistrationNo("");
-    } catch (error) {
-      console.error(error);
-      toast.error(
-        error.response?.data?.message || "Error verifying admission"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
-    return <Loader text="Fetching admission details..." />;
-  }
-
-  if (!admission) {
-    return <div className="loading-text">No admission found</div>;
-  }
-
-  const { student } = admission;
+  if (loading) return <Loader text="Fetching admission details..." />;
+  if (!admission) return <div className="loading-text">No admission found</div>;
 
   return (
     <div className="admission-details-page">
-      {/* ================= HEADER & ACTIONS ================= */}
+      {/* ================= HEADER ================= */}
       <div className="page-header">
         <h2>Admission Details</h2>
 
@@ -112,16 +61,7 @@ const AdmissionDetails = () => {
             className="action-btn verify"
             onClick={() => setShowVerifyModal(true)}
           >
-            {admission.status !== "verified"
-              ? "Verify Admission"
-              : "Update Reg No"}
-          </button>
-
-          <button
-            className="action-btn delete"
-            onClick={() => toast("deleteAdmission() called")}
-          >
-            Delete Admission
+            Verify Admission
           </button>
 
           <button
@@ -137,84 +77,46 @@ const AdmissionDetails = () => {
       <div className="details-card">
         <h3>Student Information</h3>
         <div className="details-grid">
-          <div>
-            <span className="label">Name</span>
-            <span className="value">{student.name}</span>
-          </div>
-          <div>
-            <span className="label">Registration No</span>
-            <span className="value">{student.registrationNo || "—"}</span>
-          </div>
-          <div>
-            <span className="label">Class</span>
-            <span className="value">{student.class}</span>
-          </div>
-          <div>
-            <span className="label">Medium</span>
-            <span className="value">{student.medium}</span>
-          </div>
-          {student.stream && (
-            <div>
-              <span className="label">Stream</span>
-              <span className="value">{student.stream}</span>
-            </div>
-          )}
+          <div><span className="label">Name</span><span className="value">{admission.name || "N/A"}</span></div>
+          <div><span className="label">Father Name</span><span className="value">{admission.fatherName || "N/A"}</span></div>
+          <div><span className="label">Mother Name</span><span className="value">{admission.motherName || "N/A"}</span></div>
+          <div><span className="label">DOB</span><span className="value">{admission.dob || "N/A"}</span></div>
+          <div><span className="label">Gender</span><span className="value">{admission.gender || "N/A"}</span></div>
+          <div><span className="label">Phone</span><span className="value">{admission.phone || "N/A"}</span></div>
+          <div><span className="label">Aadhar</span><span className="value">{admission.aadhar || "N/A"}</span></div>
+          <div><span className="label">PEN</span><span className="value">{admission.pen || "N/A"}</span></div>
         </div>
       </div>
 
-      {/* ================= ADMISSION INFO ================= */}
+      {/* ================= ACADEMIC INFO ================= */}
       <div className="details-card">
-        <h3>Admission Information</h3>
+        <h3>Academic Information</h3>
         <div className="details-grid">
-          <div>
-            <span className="label">Academic Session</span>
-            <span className="value">{admission.academicSession}</span>
-          </div>
-          <div>
-            <span className="label">Status</span>
-            <span className={`badge ${admission.status}`}>
-              {admission.status}
-            </span>
-          </div>
+          <div><span className="label">Class</span><span className="value">{admission.class || "N/A"}</span></div>
+          <div><span className="label">Medium</span><span className="value">{admission.medium || "N/A"}</span></div>
+          <div><span className="label">Stream</span><span className="value">{admission.stream || "N/A"}</span></div>
         </div>
       </div>
 
-      {/* ================= VERIFY MODAL ================= */}
-      {showVerifyModal && (
-        <div className="modal-overlay">
-          <div className="modal-box">
-            <h3>
-              {admission.status !== "verified"
-                ? "Verify Admission"
-                : "Update Registration No"}
-            </h3>
-
-            <label className="modal-label">Assign Registration Number</label>
-            <input
-              type="text"
-              className="modal-input"
-              value={registrationNo}
-              onChange={(e) => setRegistrationNo(e.target.value)}
-              placeholder="Enter registration number"
-            />
-
-            <div className="modal-actions">
-              <button
-                className="action-btn verify"
-                onClick={handleVerifySubmit}
-              >
-                Verify & Save
-              </button>
-              <button
-                className="action-btn back"
-                onClick={() => setShowVerifyModal(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
+      {/* ================= ADDRESS ================= */}
+      <div className="details-card">
+        <h3>Address Details</h3>
+        <div className="details-grid">
+          <div><span className="label">Village</span><span className="value">{admission.address?.village || "N/A"}</span></div>
+          <div><span className="label">Post Office</span><span className="value">{admission.address?.postOffice || "N/A"}</span></div>
+          <div><span className="label">Police Station</span><span className="value">{admission.address?.policeStation || "N/A"}</span></div>
+          <div><span className="label">District</span><span className="value">{admission.address?.district || "N/A"}</span></div>
+          <div><span className="label">State</span><span className="value">{admission.address?.state || "N/A"}</span></div>
+          <div><span className="label">Pincode</span><span className="value">{admission.address?.pincode || "N/A"}</span></div>
         </div>
-      )}
+      </div>
+
+      {/* ================= MODAL ================= */}
+      <VerifyAdmissionModal
+        isOpen={showVerifyModal}
+        onClose={() => setShowVerifyModal(false)}
+        admissionId={id}
+      />
     </div>
   );
 };

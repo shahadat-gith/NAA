@@ -81,6 +81,7 @@ const StudentModal = ({ isOpen, onClose }) => {
       toast.error(
         error.response?.data?.message || "Mass admission failed"
       );
+      console.log("Error in mass addition:", error)
     } finally {
       setLoading(false);
     }

@@ -58,3 +58,13 @@ export const generateAcademicSessions = (years = 5) => {
 
 // usage
 export const SESSION_OPTIONS = generateAcademicSessions(5);
+
+
+  export const academicSessions = [
+    "2024-2025",
+    "2025-2026",
+    "2026-2027",
+    "2027-2028",
+    "2028-2029",
+    "2029-2030",
+  ];

@@ -12,6 +12,7 @@ import achieversRouter from "./routes/achiever.routes.js";
 import studentRouter from "./routes/student.routes.js";
 import paymentRouter from "./routes/payment.routes.js";
 import resultRouter from "./routes/result.routes.js";
+import admissionRouter from "./routes/admission.routes.js";
 
 // MODELS (used in home-data)
 import HeroImage from "./models/Settings/heroImages.js";
@@ -19,6 +20,7 @@ import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
+
 
 const app = express();
 
@@ -83,6 +85,7 @@ app.use("/api/achievers", achieversRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/results", resultRouter);
 app.use("/api/payment", paymentRouter);
+app.use("/api/admission", admissionRouter);
 
 /* ================= CUSTOM API ================= */
 
@@ -115,14 +118,9 @@ app.get("/api/home-data", async (req, res, next) => {
   }
 });
 
-/* ================= HEALTH ================= */
-
-app.get("/ping", (req, res) => {
-  res.json({ ok: true });
-});
 
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "API is working!" });
+  res.status(200).json({ message: "Server is working!" });
 });
 
 /* ================= ERROR HANDLER ================= */

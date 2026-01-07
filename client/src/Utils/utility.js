@@ -56,20 +56,14 @@ export const SUBJECT_OPTIONS = [
 ];
 
 
-export const generateAcademicSessions = (years = 5) => {
-  const currentYear = new Date().getFullYear();
-  const startYear = currentYear - 1;  // Start from the previous year
-
-  return Array.from({ length: years }, (_, i) => {
-    const y1 = startYear + i;
-    const y2 = y1 + 1;
-    return `${y1}-${y2}`;
-  });
-};
-
-
-// usage
-export const SESSION_OPTIONS = generateAcademicSessions(5);
+export const academicSessions = [
+    "2024-2025",
+    "2025-2026",
+    "2026-2027",
+    "2027-2028",
+    "2028-2029",
+    "2029-2030",
+  ];
 
 export const FORM_FIELDS = [
   { label: "Student Name", name: "name", type: "text", isRequired: true },
@@ -90,19 +84,8 @@ export const FORM_FIELDS = [
   },
 
   { label: "Phone", name: "phone", type: "text", isRequired: true },
-  { label: "Aadhar", name: "aadhar", type: "text", isRequired: true },
-  { label: "PAN", name: "pan", type: "text", isRequired: true },
-
-  {
-    label: "Academic Session",
-    name: "academicSession",
-    type: "select",
-    isRequired: true,
-    options: SESSION_OPTIONS.map((s) => ({
-      label: s,
-      value: s,
-    })),
-  },
+  { label: "Aadhar", name: "aadhar", type: "text", isRequired: false },
+  { label: "PEN", name: "pen", type: "text", isRequired: false },
 
   {
     label: "Medium",
@@ -125,20 +108,5 @@ export const ADDRESS_FIELDS = [
   { label: "Pincode", name: "pincode", isRequired: true },
 ];
 
-
-
-
-
-export const getCurrentAcademicSession = (startMonth = 4) => { // 4 = April (1-based)
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1; // 1-12
-
-  if (month >= startMonth) {
-    return `${year}-${year + 1}`;
-  } else {
-    return `${year - 1}-${year}`;
-  }
-};
 
 

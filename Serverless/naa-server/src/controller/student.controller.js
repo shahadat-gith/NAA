@@ -8,74 +8,6 @@ import { generateRegistrationNo, getRegistrationNo } from "../utils/utility.js";
 
 
 
-export const createNewStudentAdmission = async (req, res) => {
-  try {
-    const {
-      name,
-      fatherName,
-      motherName,
-      phone,
-      aadhar,
-      pen,
-      address,
-      class: studentClass,
-      medium,
-      stream,
-      academicSession,
-    } = req.body;
-
-    /* ---------- VALIDATION ---------- */
-    if (!name || !fatherName || !motherName || !studentClass || !medium || !academicSession) {
-      return res.status(400).json({
-        success: false,
-        message: "Name, class, fathername ,mothername, medium and academic session are required",
-      });
-    }
-
-    /* ---------- GENERATE REGISTRATION NO ---------- */
-    const registrationNo = await generateRegistrationNo();
-
-    /* ---------- CREATE STUDENT ---------- */
-    const student = await Student.create({
-      name,
-      fatherName,
-      motherName,
-      phone,
-      aadhar,
-      pen,
-      address,
-      registrationNo,
-      class: studentClass,
-      medium,
-      stream: stream || "",
-      isActive: true,
-    });
-
-    /* ---------- CREATE ADMISSION ---------- */
-    await Admission.create({
-      student: student._id,
-      academicSession,
-      status: "pending",
-      admissionType: "new",
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: "Admission created successfully",
-    });
-
-  } catch (error) {
-    console.error("Admission error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error creating new admission",
-      error: error.message,
-    });
-  }
-};
-
-
-
 export const getAllStudents = async (req, res) => {
   try {
     const students = await Student.find({ isActive: true })
@@ -252,91 +184,6 @@ export const getAdmissions = async (req, res) => {
 
 
 
-export const getAdmissionById = async (req, res) => {
-  try {
-    const { id: admissionId } = req.query;
-
-    if (!admissionId || !mongoose.Types.ObjectId.isValid(admissionId)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid admission ID",
-      });
-    }
-
-    const admission = await Admission.findById(admissionId)
-      .populate("student")
-      .lean();
-
-    if (!admission) {
-      return res.status(404).json({
-        success: false,
-        message: "Admission not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      admission,
-    });
-
-  } catch (error) {
-    console.error("getAdmissionById error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error fetching admission details",
-      error: error.message,
-    });
-  }
-};
-
-
-
-export const verifyAdmission = async (req, res) => {
-  try {
-    const { admissionId, status } = req.body;
-
-    if (!admissionId || !mongoose.Types.ObjectId.isValid(admissionId)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid admission ID ",
-      });
-    }
-
-    const admission = await Admission.findById(admissionId);
-    if (!admission) {
-      return res.status(404).json({
-        success: false,
-        message: "Admission not found",
-      });
-    }
-
-    if (status === "verify") {
-      admission.status = "verified";
-    }
-
-    if (status === "reject") {
-      admission.status = "rejected";
-    }
-    await admission.save();
-
-    return res.status(200).json({
-      success: true,
-      message: "Admission verified successfully",
-    });
-
-  } catch (error) {
-    console.error("verifyAdmission error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error verifying admission",
-      error: error.message,
-    });
-  }
-};
-
-
-
-
 
 /* ================= HELPERS ================= */
 const setNestedValue = (obj, path, value) => {
@@ -364,21 +211,20 @@ export const addMassStudents = async (req, res) => {
     const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
 
     const students = [];
-    let rollNo = 1; // starts from 001
+    let rollNo = 1;
 
     for (const rawRow of rows) {
       const student = {};
 
-      // Dynamic Excel → Schema mapping
       for (const [key, value] of Object.entries(rawRow)) {
-        if (!value) continue;
+        if (value === "" || value === null || value === undefined) continue;
 
-        const finalValue =
-          typeof value === "string"
-            ? value.trim().toLowerCase()
-            : value;
+        let finalValue = value;
 
-
+        // ✅ keep DOB exactly as in Excel
+        if (key !== "dob" && typeof value === "string") {
+          finalValue = value.trim().toLowerCase();
+        }
 
         if (key.includes(".")) {
           setNestedValue(student, key, finalValue);
@@ -387,26 +233,24 @@ export const addMassStudents = async (req, res) => {
         }
       }
 
-      // Force controlled fields
+      // Controlled fields
       student.class = studentClass;
       student.medium = medium;
       student.stream = stream;
       student.isActive = true;
 
-      // Auto-generate registration number
+      // Registration No
       student.registrationNo = getRegistrationNo({
         studentClass,
         medium,
         rollNo,
-        stream
+        stream,
       });
 
       rollNo++;
-
       students.push(student);
     }
 
-    // Bulk insert (single DB call)
     await Student.insertMany(students);
 
     return res.status(201).json({
