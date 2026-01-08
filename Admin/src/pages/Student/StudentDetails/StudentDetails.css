@@ -9,6 +9,96 @@
   border: 1px solid rgba(51, 65, 85, 0.3);
 }
 
+/* ---------- STUDENT HEADER ---------- */
+.naa-student-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+/* ---------- STUDENT NAME ---------- */
+.naa-student-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #e5e7eb; /* light gray */
+  margin: 0;
+}
+
+/* ---------- ACTION BUTTON GROUP ---------- */
+.naa-action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ---------- COMMON BUTTON STYLES ---------- */
+.naa-action-buttons button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+/* ---------- ADMIT CARD BUTTON ---------- */
+.naa-admit-card-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+}
+
+.naa-admit-card-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
+}
+
+/* ---------- DELETE BUTTON ---------- */
+.naa-delete-student-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.35);
+}
+
+.naa-delete-student-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.55);
+}
+
+/* ---------- UPDATE DOB BUTTON ---------- */
+.naa-dob-student-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.naa-dob-student-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ---------- MOBILE RESPONSIVE ---------- */
+@media (max-width: 640px) {
+  .naa-student-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .naa-action-buttons {
+    width: 100%;
+  }
+
+  .naa-action-buttons button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* ================= Title ================= */
 .naa-student-title {
   font-size: 24px;
@@ -104,34 +194,6 @@
 
 .naa-details-table tr:last-child td {
   border-bottom: none;
-}
-
-/* ================= Actions ================= */
-.naa-action-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(51, 65, 85, 0.3);
-}
-
-.naa-admit-card-btn,
-.naa-delete-student-btn {
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  color: white;
-  transition: all 0.25s ease;
-}
-
-.naa-admit-card-btn {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-}
-
-.naa-delete-student-btn {
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
 }
 
 /* ================= States ================= */

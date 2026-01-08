@@ -1,7 +1,6 @@
 import XLSX from "xlsx";
 import mongoose from "mongoose";
 import Student from "../models/Student/student.js";
-import Admission from "../models/Student/admission.js";
 import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
 
@@ -32,7 +31,6 @@ export const getAllStudents = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   try {
-    const { academicSession, type } = req.query;
     const studentId = req.params.id;
 
     const student = await Student.findById(studentId);
@@ -43,52 +41,32 @@ export const getStudentById = async (req, res) => {
       });
     }
 
-    let admission = null;
-    if (academicSession) {
-      admission = await Admission.findOne({
-        student: student._id,
-        academicSession,
-      });
-    }
-
     /* ---------- OPTIONAL: ADMIT CARD ---------- */
     let principal = null;
-    let examIncharge = null;
     let admitCard = null;
-
-    if (type === "admit-card") {
-      const [p, e] = await Promise.all([
-        authorityModel.findOne({ role: /principal/i }),
-        authorityModel.findOne({ role: /exam ic/i }),
-      ]);
-
-      principal = p;
-      examIncharge = e;
-
-      admitCard = await AdmitCardSettings.findOne({
-        class: student.class,
-        medium: student.medium,
-        stream: student.stream || "",
-      });
-    }
+    
+    principal = await authorityModel.findOne({ role: /principal/i });
+    admitCard = await AdmitCardSettings.findOne({
+      class: student.class,
+      medium: student.medium,
+      stream: student.stream || "",
+    });
 
     return res.status(200).json({
-      success: true,
-      student,
-      admission,
-      principal,
-      examIncharge,
-      admitCard,
-    });
+    success: true,
+    student,
+    principal,
+    admitCard,
+  });
 
-  } catch (error) {
-    console.error("getStudentById error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error fetching student details",
-      error: error.message,
-    });
-  }
+} catch (error) {
+  console.error("getStudentById error:", error);
+  return res.status(500).json({
+    success: false,
+    message: "Error fetching student details",
+    error: error.message,
+  });
+}
 };
 
 
@@ -158,131 +136,6 @@ export const SearchStudentsByName = async (req, res) => {
 
 
 
-const CLASS_OPTIONS = {
-  english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-  assamese: [
-    "ankur",
-    "mukul",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ],
-};
-
-
-
-/* ================= REG NO GENERATOR ================= */
-
-const getRegistrationNo = ({
-  studentClass,
-  medium,
-  sequence,
-  stream = "",
-}) => {
-  const PREFIX = "NAA26";
-
-  const normalizedClass = studentClass.toString().toLowerCase();
-  const normalizedMedium = medium.toLowerCase();
-  const normalizedStream = stream.toLowerCase();
-
-  const mediumCode = normalizedMedium === "english" ? "E" : "A";
-
-  const classList = CLASS_OPTIONS[normalizedMedium];
-  if (!classList) throw new Error("Invalid medium");
-
-  const classIndex = classList.indexOf(normalizedClass);
-  if (classIndex === -1)
-    throw new Error("Invalid class for selected medium");
-
-  const classCode = String(classIndex).padStart(2, "0");
-  const seqCode = String(sequence).padStart(3, "0");
-
-  let streamCode = "";
-  if (normalizedClass === "11" || normalizedClass === "12") {
-    if (normalizedStream === "arts") streamCode = "A";
-    else if (normalizedStream === "science") streamCode = "S";
-    else throw new Error("Invalid stream for class 11 or 12");
-  }
-
-  return `${PREFIX}${classCode}${seqCode}${mediumCode}${streamCode}`;
-};
-
-
-export const addMassStudents = async (req, res) => {
-  try {
-    const { class: studentClass, medium, stream = "" } = req.body;
-
-    if (!req.file) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Excel file required" });
-    }
-
-    /* ---------- READ EXCEL ---------- */
-    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-
-    if (!rows.length) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Excel file is empty" });
-    }
-
-    /* ---------- PREPARE STUDENTS ---------- */
-    const students = rows.map((row, index) => {
-      const sequence = index + 1;
-
-      const registrationNo = getRegistrationNo({
-        studentClass,
-        medium,
-        stream,
-        sequence,
-      });
-
-      // 🔥 normalize row values (lowercase)
-      const normalizedRow = Object.fromEntries(
-        Object.entries(row).map(([key, value]) => [
-          key,
-          typeof value === "string" ? value.trim().toLowerCase() : value,
-        ])
-      );
-
-      return {
-        ...normalizedRow,
-        class: studentClass.toString().toLowerCase(),
-        medium: medium.toLowerCase(),
-        stream: stream.toLowerCase(),
-        registrationNo, 
-      };
-    });
-
-    /* ---------- INSERT ---------- */
-    await Student.insertMany(students);
-
-    res.status(201).json({
-      success: true,
-      message: "Students admitted successfully",
-      total: students.length,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Mass Addition failed",
-      error: error.message,
-    });
-  }
-};
 
 
 const toLower = (value) =>
@@ -317,14 +170,14 @@ export const addSingleStudent = async (req, res) => {
     const student = await Student.create({
       /* BASIC */
       name: toLower(name),
-      class:studentClass,
+      class: studentClass,
       medium: toLower(medium),
       stream: toLower(stream) || "",
 
       /* PERSONAL */
       fatherName: toLower(fatherName),
       motherName: toLower(motherName),
-      dob, 
+      dob,
       gender: toLower(gender),
       phone: phone?.trim(),
 
@@ -442,6 +295,202 @@ export const promoteStudents = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error promoting students",
+      error: error.message,
+    });
+  }
+};
+
+
+export const toggleAdmitCardPermission = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
+    }
+    const student = await Student.findById(id);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+    student.canDownloadAdmitCard = !student.canDownloadAdmitCard;
+    await student.save();
+    return res.status(200).json({
+      success: true,
+      message: "Admit card permission updated",
+      canDownloadAdmitCard: student.canDownloadAdmitCard,
+    });
+  } catch (error) {
+    console.error("toggleAdmitCardPermission error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating admit card permission",
+      error: error.message,
+    });
+  }
+};
+
+
+export const updateDob = async (req, res) => {
+  try {
+    const { studentId, dob } = req.body;
+    if (!studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
+    }
+
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+    student.dob = dob;
+    await student.save();
+    return res.status(200).json({
+      success: true,
+      message: "DOB updated successfully",
+    });
+  }
+  catch (error) {
+    console.error("updateDob error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating DOB",
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+
+const CLASS_OPTIONS = {
+  english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+  assamese: [
+    "ankur",
+    "mukul",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+  ],
+};
+
+
+const getRegistrationNo = ({
+  studentClass,
+  medium,
+  sequence,
+  stream = "",
+}) => {
+  const PREFIX = "NAA26";
+
+  const normalizedClass = studentClass.toString().toLowerCase();
+  const normalizedMedium = medium.toLowerCase();
+  const normalizedStream = stream.toLowerCase();
+
+  const mediumCode = normalizedMedium === "english" ? "E" : "A";
+
+  const classList = CLASS_OPTIONS[normalizedMedium];
+  if (!classList) throw new Error("Invalid medium");
+
+  const classIndex = classList.indexOf(normalizedClass);
+  if (classIndex === -1)
+    throw new Error("Invalid class for selected medium");
+
+  const classCode = String(classIndex).padStart(2, "0");
+  const seqCode = String(sequence).padStart(3, "0");
+
+  let streamCode = "";
+  if (normalizedClass === "11" || normalizedClass === "12") {
+    if (normalizedStream === "arts") streamCode = "A";
+    else if (normalizedStream === "science") streamCode = "S";
+    else throw new Error("Invalid stream for class 11 or 12");
+  }
+
+  return `${PREFIX}${classCode}${seqCode}${mediumCode}${streamCode}`;
+};
+
+
+export const addMassStudents = async (req, res) => {
+  try {
+    const { class: studentClass, medium, stream = "" } = req.body;
+
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Excel file required" });
+    }
+
+    /* ---------- READ EXCEL ---------- */
+    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
+
+    if (!rows.length) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Excel file is empty" });
+    }
+
+    /* ---------- PREPARE STUDENTS ---------- */
+    const students = rows.map((row, index) => {
+      const sequence = index + 1;
+
+      const registrationNo = getRegistrationNo({
+        studentClass,
+        medium,
+        stream,
+        sequence,
+      });
+
+      // 🔥 normalize row values (lowercase)
+      const normalizedRow = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [
+          key,
+          typeof value === "string" ? value.trim().toLowerCase() : value,
+        ])
+      );
+
+      return {
+        ...normalizedRow,
+        class: studentClass.toString().toLowerCase(),
+        medium: medium.toLowerCase(),
+        stream: stream.toLowerCase(),
+        registrationNo,
+      };
+    });
+
+    /* ---------- INSERT ---------- */
+    await Student.insertMany(students);
+
+    res.status(201).json({
+      success: true,
+      message: "Students admitted successfully",
+      total: students.length,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Mass Addition failed",
       error: error.message,
     });
   }

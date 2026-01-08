@@ -5,7 +5,10 @@ import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
 import generateAdmitCard from "../../../utils/generateAdmitCard";
 import axios from "axios";
-import { formatAddress, formatClassName } from "../../../utils/utility";
+import { formatClassName, capitalizeWords, capitalizeFirst } from "../../../utils/utility";
+import Loader from "../../../components/Loader/Loader";
+import DobModal from "./DobModal";
+import toast from "react-hot-toast";
 
 
 const StudentDetails = () => {
@@ -18,8 +21,18 @@ const StudentDetails = () => {
 
   const [student, setStudent] = useState(null);
   const [principal, setPrincipal] = useState(null);
-  const [examIncharge, setExamIncharge] = useState(null);
   const [admitCard, setAdmitCard] = useState(null);
+
+  const [showDobModal, setShowDobModal] = useState(false);
+
+
+  const handleDobUpdated = (newDob) => {
+    setStudent((prev) => ({
+      ...prev,
+      dob: newDob,
+    }));
+  };
+
 
   /* ================= FETCH STUDENT ================= */
 
@@ -28,7 +41,7 @@ const StudentDetails = () => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `${backendUrl}/api/student/single/${studentId}?type=admit-card`,
+        `${backendUrl}/api/student/single/${studentId}`,
         {
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -39,7 +52,6 @@ const StudentDetails = () => {
       if (data.success) {
         setStudent(data.student);
         setPrincipal(data.principal);
-        setExamIncharge(data.examIncharge);
         setAdmitCard(data.admitCard);
       }
     } catch (error) {
@@ -61,14 +73,14 @@ const StudentDetails = () => {
       return;
     }
 
-    generateAdmitCard(student,admitCard,principal, examIncharge )
+    generateAdmitCard(student, admitCard, principal)
 
   };
 
   /* ================= LOADING / ERROR ================= */
 
   if (loading) {
-    return <div className="naa-loading">Loading student details...</div>;
+    return <Loader text="loading student..." />
   }
 
   if (!student) {
@@ -79,7 +91,34 @@ const StudentDetails = () => {
 
   return (
     <div className="naa-student-details">
-      <h3 className="naa-student-title">{student.name}</h3>
+
+      <div className="naa-student-header">
+        <h3 className="naa-student-title">{capitalizeWords(student.name)}</h3>
+
+        <div className="naa-action-buttons">
+          <button
+            className="naa-admit-card-btn"
+            onClick={handleAdmitCardDownload}
+          >
+            Generate Admit Card
+          </button>
+
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="naa-delete-student-btn"
+          >
+            Delete Student
+          </button>
+
+          <button
+            className="naa-dob-student-btn"
+            onClick={() => setShowDobModal(true)}
+          >
+            Update DOB
+          </button>
+        </div>
+      </div>
+
 
       {/* ================= DETAILS ================= */}
       <div className="naa-details-container">
@@ -92,11 +131,11 @@ const StudentDetails = () => {
                 <td>Class</td>
                 <td>{formatClassName(student.class)}</td>
                 <td>Medium</td>
-                <td>{student.medium || "N/A"}</td>
+                <td>{capitalizeFirst(student.medium) || "N/A"}</td>
               </tr>
               <tr>
                 <td>Stream</td>
-                <td>{student.stream || "N/A"}</td>
+                <td>{capitalizeFirst(student.stream) || "N/A"}</td>
                 <td>Registration No</td>
                 <td>{student.registrationNo}</td>
               </tr>
@@ -111,9 +150,9 @@ const StudentDetails = () => {
             <tbody>
               <tr>
                 <td>Father's Name</td>
-                <td>{student.fatherName || "N/A"}</td>
+                <td>{capitalizeWords(student.fatherName) || "N/A"}</td>
                 <td>Mother's Name</td>
-                <td>{student.motherName || "N/A"}</td>
+                <td>{capitalizeWords(student.motherName) || "N/A"}</td>
               </tr>
               <tr>
                 <td>Date of Birth</td>
@@ -127,37 +166,38 @@ const StudentDetails = () => {
                 <td>Aadhar</td>
                 <td>{student.aadhar || "N/A"}</td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div className="naa-details-section">
+          <h4>Address Information</h4>
+          <table className="naa-details-table">
+            <tbody>
               <tr>
-                <td>Address</td>
-                <td colSpan="3">{formatAddress(student.address)}</td>
+                <td>Village</td>
+                <td>{capitalizeFirst(student?.address?.village) || "N/A"}</td>
+                <td>Post Office</td>
+                <td>{capitalizeFirst(student?.address?.postOffice) || "N/A"}</td>
               </tr>
               <tr>
-                <td>Status</td>
-                <td colSpan="3">
-                  {student.isActive ? "Active" : "Inactive"}
-                </td>
+                <td>Police Station</td>
+                <td>{capitalizeFirst(student?.addres?.policeStation) || "N/A"}</td>
+                <td>District</td>
+                <td>{capitalizeFirst(student?.address?.district) || "N/A"}</td>
+              </tr>
+              <tr>
+                <td>Pincode</td>
+                <td>{student?.address?.pincode || "N/A"}</td>
+                <td>State</td>
+                <td>{capitalizeFirst(student?.address?.state) || "N/A"}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* ================= ACTIONS ================= */}
-      <div className="naa-action-buttons">
-        <button
-          className="naa-admit-card-btn"
-          onClick={handleAdmitCardDownload}
-        >
-          Generate Admit Card
-        </button>
 
-        <button
-          onClick={() => setShowDeleteConfirm(true)}
-          className="naa-delete-student-btn"
-        >
-          Delete Student
-        </button>
-      </div>
 
       {/* ================= DELETE CONFIRM ================= */}
       {showDeleteConfirm && (
@@ -172,6 +212,17 @@ const StudentDetails = () => {
           onCancel={() => setShowDeleteConfirm(false)}
         />
       )}
+
+      {showDobModal &&
+        <DobModal
+          isOpen={showDobModal}
+          onClose={() => setShowDobModal(false)}
+          studentId={studentId}
+          onDobUpdated={handleDobUpdated}
+        />
+
+
+      }
     </div>
   );
 };

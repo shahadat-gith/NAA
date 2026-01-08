@@ -1,7 +1,7 @@
 import { jsPDF } from "jspdf";
 import {formatDate} from "./utility"
 
-const generateAdmitCard = (student, admitCard, principal, examIncharge) => {
+const generateAdmitCard = (student, admitCard, principal) => {
   try {
     const doc = new jsPDF("p", "mm", "a4");
 
@@ -136,23 +136,14 @@ const generateAdmitCard = (student, admitCard, principal, examIncharge) => {
     const sigY = 270; 
     const sigLine = 50;
     doc.setDrawColor(180, 180, 180);
-    
+
     if (principal?.signature?.url) {
         try {
-            doc.addImage(principal.signature.url, "PNG", 20, sigY - 18, 40, 15); 
+            doc.addImage(principal.signature.url, "PNG", 145, sigY - 18, 40, 15);
         } catch (e) { console.error("Principal signature failed"); }
     }
-    doc.line(15, sigY, 15 + sigLine, sigY);
-    doc.setFont("helvetica", "bold");
-    doc.text("Principal's Signature", 15 + (sigLine/2), sigY + 5, { align: "center" });
-
-    if (examIncharge?.signature?.url) {
-        try {
-            doc.addImage(examIncharge.signature.url, "PNG", 145, sigY - 18, 40, 15);
-        } catch (e) { console.error("In-charge signature failed"); }
-    }
     doc.line(145, sigY, 145 + sigLine, sigY);
-    doc.text("Exam In-Charge", 145 + (sigLine/2), sigY + 5, { align: "center" });
+    doc.text("Principal", 145 + (sigLine/2), sigY + 5, { align: "center" });
 
     /* ========= FOOTER ========= */
     doc.setFillColor(...secondaryColor);

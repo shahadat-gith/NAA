@@ -10,12 +10,10 @@ const StudentDetails = () => {
   const { backendUrl } = useContext(AppContext);
   const { id } = useParams();
   const { state } = useLocation();
-
   const type = state?.type;
 
   const [student, setStudent] = useState(null);
   const [principal, setPrincipal] = useState(null);
-  const [examIncharge, setExamIncharge] = useState(null);
   const [admitCard, setAdmitCard] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +26,7 @@ const StudentDetails = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `${backendUrl}/api/student/single/${id}?type=${type}`
+        `${backendUrl}/api/student/single/${id}`
       );
 
       if (!res.data.success) {
@@ -39,7 +37,6 @@ const StudentDetails = () => {
 
       if (type === "admit-card") {
         setPrincipal(res.data.principal || null);
-        setExamIncharge(res.data.examIncharge || null);
         setAdmitCard(res.data.admitCard || null);
       }
     } catch (err) {
@@ -112,8 +109,7 @@ const StudentDetails = () => {
                     generateAdmitCard(
                       student,
                       admitCard,
-                      principal,
-                      examIncharge
+                      principal
                     )
                   }
                 >

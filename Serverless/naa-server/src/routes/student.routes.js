@@ -7,7 +7,9 @@ import {
     deleteStudent,
     getAllStudents, getStudentById,
     promoteStudents,
-    SearchStudentsByName
+    SearchStudentsByName,
+    toggleAdmitCardPermission,
+    updateDob
 }
 
     from "../controller/student.controller.js";
@@ -20,10 +22,12 @@ const studentRouter = express.Router();
 studentRouter.get("/list", adminAuthMiddleware, getAllStudents);
 studentRouter.get("/single/:id", getStudentById);
 studentRouter.post("/search", SearchStudentsByName);
-studentRouter.delete("/:id", adminAuthMiddleware, deleteStudent)
+studentRouter.delete("/:id", adminAuthMiddleware, deleteStudent);
 studentRouter.post("/add/mass", adminAuthMiddleware, excelUpload.single("file"), addMassStudents);
 studentRouter.post("/add/single", adminAuthMiddleware, addSingleStudent);
-studentRouter.post("/promote", adminAuthMiddleware, promoteStudents)
+studentRouter.post("/promote", adminAuthMiddleware, promoteStudents);
+studentRouter.put("/toggle-admit-card/:id", adminAuthMiddleware, toggleAdmitCardPermission);
+studentRouter.post("/update-dob", adminAuthMiddleware, updateDob);
 
 
 export default studentRouter;

@@ -85,3 +85,58 @@
     padding: 8px;
   }
 }
+
+
+/* ---------- TOGGLE SWITCH ---------- */
+.admit-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+/* hide checkbox */
+.admit-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* slider */
+.admit-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(62, 37, 37, 0.4); /* red off */
+  border-radius: 999px;
+  transition: 0.3s;
+  border: 1px solid rgba(232, 166, 166, 0.6);
+}
+
+/* knob */
+.admit-slider::before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 2.5px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* ON STATE */
+.admit-switch input:checked + .admit-slider {
+  background: rgba(0, 255, 94, 0.9); /* green */
+  border-color: rgba(5, 255, 97, 0.7);
+}
+
+.admit-switch input:checked + .admit-slider::before {
+  transform: translateX(20px);
+}
+
+/* hover */
+.admit-slider:hover {
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+}
