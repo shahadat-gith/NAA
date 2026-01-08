@@ -3,11 +3,9 @@ import "./TeacherModal.css";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../context/AdminContext";
-import { TeacherContext } from "../../../context/TeacherContext";
 
 const TeacherModal = ({ isOpen, onClose }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { getAllTeachers } = useContext(TeacherContext);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +16,6 @@ const TeacherModal = ({ isOpen, onClose }) => {
   const [subjectClassMappings, setSubjectClassMappings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
-
 
   const fileInputRef = useRef(null);
 
@@ -38,7 +35,10 @@ const TeacherModal = ({ isOpen, onClose }) => {
   ];
 
   const addSubjectClassMapping = () => {
-    setSubjectClassMappings([...subjectClassMappings, { subject: "", classes: [] }]);
+    setSubjectClassMappings([
+      ...subjectClassMappings,
+      { subject: "", classes: [] },
+    ]);
   };
 
   const removeSubjectClassMapping = (index) => {
@@ -53,10 +53,9 @@ const TeacherModal = ({ isOpen, onClose }) => {
 
   const toggleClassInMapping = (index, className) => {
     const updated = [...subjectClassMappings];
-    const cls = updated[index].classes;
-    updated[index].classes = cls.includes(className)
-      ? cls.filter((c) => c !== className)
-      : [...cls, className];
+    updated[index].classes = updated[index].classes.includes(className)
+      ? updated[index].classes.filter((c) => c !== className)
+      : [...updated[index].classes, className];
     setSubjectClassMappings(updated);
   };
 
@@ -65,9 +64,8 @@ const TeacherModal = ({ isOpen, onClose }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith("image/")) {
-      setFormError("Teacher image is required");
+      setFormError("Valid teacher image is required");
       return;
-
     }
     setTeacherImage(file);
   };
@@ -86,7 +84,6 @@ const TeacherModal = ({ isOpen, onClose }) => {
     if (!subjectClassMappings.length) {
       setFormError("Add at least one subject & class");
       return;
-
     }
 
     const validMappings = subjectClassMappings.every(
@@ -125,8 +122,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
 
       if (data.success) {
         toast.success("Teacher added successfully");
-        getAllTeachers();
-        onClose();
+        onClose(); // parent will refresh list
       } else {
         setFormError(data.message || "Failed to add teacher");
       }
@@ -137,22 +133,14 @@ const TeacherModal = ({ isOpen, onClose }) => {
     }
   };
 
+  /* ================= SCROLL LOCK ================= */
 
   useEffect(() => {
-    if (isOpen) {
-      // Disable background scrolling
-      document.body.style.overflow = "hidden";
-    } else {
-      // Re-enable scrolling
-      document.body.style.overflow = "";
-    }
-
-    // Cleanup on unmount
+    document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
-
 
   if (!isOpen) return null;
 
@@ -167,104 +155,30 @@ const TeacherModal = ({ isOpen, onClose }) => {
           <button onClick={onClose} className="naa-close-button">✕</button>
         </div>
 
-        {formError && (
-          <div className="naa-form-error">
-            {formError}
-          </div>
-        )}
-
+        {formError && <div className="naa-form-error">{formError}</div>}
 
         <form onSubmit={handleSubmit} className="naa-teacher-form">
-          {/* ===== BASIC INFO (3 ROWS × 2 COLUMNS) ===== */}
+          {/* ===== BASIC INFO ===== */}
           <div className="naa-form-grid">
-            <input
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-                setFormError("");
-              }}
-              placeholder="Full Name"
-              required
-            />
-
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setFormError("");
-              }}
-              placeholder="Email Address"
-            />
-
-            <input
-              value={contact}
-              onChange={(e) => {
-                setContact(e.target.value);
-                setFormError("");
-              }}
-              placeholder="Contact Number"
-              required
-            />
-
-            <input
-              value={degree}
-              onChange={(e) => {
-                setDegree(e.target.value);
-                setFormError("");
-              }}
-              placeholder="Qualification / Degree"
-              required
-            />
-
-            <input
-              value={experience}
-              onChange={(e) => {
-                if (/^\d*$/.test(e.target.value)) {
-                  setExperience(e.target.value);
-                  setFormError("");
-                }
-              }}
-              placeholder="Experience (Years)"
-              required
-            />
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/*"
-              onChange={(e) => {
-                handleImageChange(e);
-                setFormError("");
-              }}
-              required
-            />
+            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required />
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
+            <input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact Number" required />
+            <input value={degree} onChange={(e) => setDegree(e.target.value)} placeholder="Qualification / Degree" required />
+            <input value={experience} onChange={(e) => /^\d*$/.test(e.target.value) && setExperience(e.target.value)} placeholder="Experience (Years)" required />
+            <input type="file" ref={fileInputRef} accept="image/*" onChange={handleImageChange} required />
           </div>
-
-
 
           {/* ===== SUBJECTS ===== */}
           <div className="naa-form-section">
-            <button
-              type="button"
-              className="naa-add-subject-btn"
-              onClick={addSubjectClassMapping}
-            >
+            <button type="button" className="naa-add-subject-btn" onClick={addSubjectClassMapping}>
               + Add Subject
             </button>
 
             {subjectClassMappings.map((mapping, index) => (
               <div key={index} className="naa-subject-mapping-card">
-                <select
-                  value={mapping.subject}
-                  onChange={(e) =>
-                    updateSubjectInMapping(index, e.target.value)
-                  }
-                >
+                <select value={mapping.subject} onChange={(e) => updateSubjectInMapping(index, e.target.value)}>
                   <option value="">Select Subject</option>
-                  {subjects.map((s) => (
-                    <option key={s}>{s}</option>
-                  ))}
+                  {subjects.map((s) => <option key={s}>{s}</option>)}
                 </select>
 
                 <div className="naa-classes-grid">
@@ -272,8 +186,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
                     <button
                       type="button"
                       key={c}
-                      className={`naa-class-btn ${mapping.classes.includes(c) ? "naa-selected" : ""
-                        }`}
+                      className={`naa-class-btn ${mapping.classes.includes(c) ? "naa-selected" : ""}`}
                       onClick={() => toggleClassInMapping(index, c)}
                     >
                       {c}
@@ -281,11 +194,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
                   ))}
                 </div>
 
-                <button
-                  type="button"
-                  className="naa-remove-btn"
-                  onClick={() => removeSubjectClassMapping(index)}
-                >
+                <button type="button" className="naa-remove-btn" onClick={() => removeSubjectClassMapping(index)}>
                   Remove
                 </button>
               </div>

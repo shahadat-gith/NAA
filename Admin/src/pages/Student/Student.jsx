@@ -11,6 +11,7 @@ import { formatClassName} from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
 import { generateIdCards } from "../../utils/generateIdCards";
 import { exportToExcel } from "../../utils/exportToExcel";
+import { exportToPdf } from "../../utils/exportToPdf";
 
 import "./Student.css";
 import Loader from "../../components/Loader/Loader";
@@ -204,6 +205,14 @@ const Student = () => {
           disabled={!filteredStudents.length}
         >
           📊 Export to Excel
+        </button>
+
+        <button
+          className="fs-btn fs-export-btn"
+          onClick={() => exportToPdf(filteredStudents)}
+          disabled={!classFilter}
+        >
+         Export to Pdf
         </button>
 
         <button

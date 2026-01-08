@@ -1,18 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TeacherContext } from "../../context/TeacherContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "./Teacher.css";
-import { AdminContext } from "../../context/AdminContext";
 import TeacherModal from "./TeacherModal/TeacherModal";
+import { AdminContext } from "../../context/AdminContext";
+import Loader from "../../components/Loader/Loader";
 
 const Teacher = () => {
-  const { backendUrl, teachers, getAllTeachers } =
-    useContext(TeacherContext);
+  const { adminToken, backendUrl } = useContext(AdminContext);
 
-  const { adminToken } = useContext(AdminContext);
-
+  const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [teacherToDelete, setTeacherToDelete] = useState(null);
@@ -20,16 +18,41 @@ const Teacher = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   /* ================= FETCH ================= */
+  const getAllTeachers = async () => {
+    setLoading(true)
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/api/teacher/all-teachers`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setTeachers(data.teachers || []);
+      } else {
+        toast.error("Failed to fetch teachers");
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error("Something went wrong while fetching teachers");
+    }finally{
+      setLoading(false)
+    }
+  };
 
   useEffect(() => {
-    getAllTeachers();
-  }, []);
+    if (adminToken && backendUrl) {
+      getAllTeachers();
+    }
+  }, [adminToken, backendUrl]);
 
   /* ================= DELETE ================= */
-
   const handleDelete = (teacherId) => {
-    setShowPopup(true);
     setTeacherToDelete(teacherId);
+    setShowPopup(true);
   };
 
   const confirmDelete = async () => {
@@ -63,18 +86,17 @@ const Teacher = () => {
   };
 
   /* ================= MODAL ================= */
-
   const openFormHandler = () => setTeacherPopUp(true);
   const closeFormHandler = () => setTeacherPopUp(false);
 
   /* ================= SEARCH ================= */
-
   const filteredTeachers = teachers.filter((teacher) =>
-    teacher.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (teacher.name || "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
-  /* ================= UI ================= */
-
+  if(loading) return <Loader text="Loading teachers..."/>
   return (
     <div className="teacher-container">
       {/* ===== Header ===== */}
@@ -105,12 +127,10 @@ const Teacher = () => {
           )}
         </div>
 
-        <div className="teacher-action-buttons">
-          <button className="teacher-add-btn" onClick={openFormHandler}>
-            <i className="fas fa-plus"></i>
-            Add Teacher
-          </button>
-        </div>
+        <button className="teacher-add-btn" onClick={openFormHandler}>
+          <i className="fas fa-plus"></i>
+          Add Teacher
+        </button>
       </div>
 
       {/* ===== Table ===== */}
@@ -131,8 +151,11 @@ const Teacher = () => {
                   <td>
                     <div className="teacher-info">
                       <img
-                        src={teacher.image}
-                        alt={teacher.name}
+                        src={
+                          teacher.image ||
+                          "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+                        }
+                        alt={teacher.name || "Teacher"}
                         className="teacher-img"
                       />
                       <div className="teacher-details">
@@ -140,7 +163,7 @@ const Teacher = () => {
                           to={`/teachers/${teacher._id}`}
                           className="teacher-name"
                         >
-                          {teacher.name}
+                          {teacher.name || "Unnamed Teacher"}
                           <i className="fas fa-external-link-alt"></i>
                         </Link>
                       </div>
@@ -153,7 +176,7 @@ const Teacher = () => {
                       : "Not Available"}
                   </td>
 
-                  <td>{teacher.experience} Years</td>
+                  <td>{teacher.experience || 0} Years</td>
 
                   <td>
                     <button
