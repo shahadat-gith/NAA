@@ -37,10 +37,8 @@
 
 /* ---------- COMMON BUTTON STYLES ---------- */
 .naa-action-buttons button {
-  padding: 8px 16px;
   font-size: 14px;
   font-weight: 500;
-  border-radius: 8px;
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;

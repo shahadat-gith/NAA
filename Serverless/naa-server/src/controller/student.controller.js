@@ -138,10 +138,6 @@ export const SearchStudentsByName = async (req, res) => {
 
 
 
-const toLower = (value) =>
-  typeof value === "string" ? value.trim().toLowerCase() : value;
-
-
 export const addSingleStudent = async (req, res) => {
   try {
     const {
@@ -157,59 +153,120 @@ export const addSingleStudent = async (req, res) => {
       class: studentClass,
       medium,
       stream,
-
-      // Address fields
-      village,
-      postOffice,
-      policeStation,
-      district,
-      state,
-      pincode,
+      address,
     } = req.body;
 
     const student = await Student.create({
       /* BASIC */
-      name: toLower(name),
+      name,
       class: studentClass,
-      medium: toLower(medium),
-      stream: toLower(stream) || "",
+      medium,
+      stream: stream || "",
 
       /* PERSONAL */
-      fatherName: toLower(fatherName),
-      motherName: toLower(motherName),
+      fatherName,
+      motherName,
       dob,
-      gender: toLower(gender),
-      phone: phone?.trim(),
+      gender,
+      phone,
 
       /* ACADEMIC */
       registrationNo,
-      aadhar: aadhar?.trim(),
-      pen: pen?.trim(),
+      aadhar,
+      pen,
 
       /* ADDRESS */
       address: {
-        village: toLower(village),
-        postOffice: toLower(postOffice),
-        policeStation: toLower(policeStation),
-        district: toLower(district),
-        state: toLower(state),
-        pincode: pincode?.trim(),
+        village: address?.village || "",
+        postOffice: address?.postOffice || "",
+        policeStation: address?.policeStation || "",
+        district: address?.district || "",
+        state: address?.state || "",
+        pincode: address?.pincode || "",
       },
     });
 
     return res.status(201).json({
       success: true,
       message: "Student added successfully",
+      student,
     });
   } catch (error) {
     console.error("student adding error:", error);
+
+    // duplicate registration no
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "Registration number already exists",
+      });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Error adding student",
-      error: error.message,
     });
   }
 };
+
+
+export const updateStudent = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // ✅ Whitelisted editable fields
+    const allowedFields = [
+      "name",
+      "fatherName",
+      "motherName",
+      "dob",
+      "gender",
+      "phone",
+      "aadhar",
+      "class",
+      "medium",
+      "stream",
+      "address",
+    ];
+
+    const updatedData = {};
+
+    // ✅ Pick only allowed fields
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) {
+        updatedData[field] = req.body[field];
+      }
+    }
+
+    const student = await Student.findByIdAndUpdate(
+      id,
+      { $set: updatedData },
+      { new: true, runValidators: true }
+    );
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Student updated successfully",
+      student,
+    });
+  } catch (error) {
+    console.error("Update student error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update student",
+    });
+  }
+};
+
+
 
 
 export const promoteStudents = async (req, res) => {
@@ -333,42 +390,6 @@ export const toggleAdmitCardPermission = async (req, res) => {
     });
   }
 };
-
-
-export const updateDob = async (req, res) => {
-  try {
-    const { studentId, dob } = req.body;
-    if (!studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid student ID",
-      });
-    }
-
-    const student = await Student.findById(studentId);
-    if (!student) {
-      return res.status(404).json({
-        success: false,
-        message: "Student not found",
-      });
-    }
-    student.dob = dob;
-    await student.save();
-    return res.status(200).json({
-      success: true,
-      message: "DOB updated successfully",
-    });
-  }
-  catch (error) {
-    console.error("updateDob error:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Error updating DOB",
-      error: error.message,
-    });
-  }
-};
-
 
 
 

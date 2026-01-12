@@ -52,8 +52,6 @@
 /* ================= Base Button ================= */
 
 .naa-btn {
-  padding: 12px 22px;
-  border-radius: 10px;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -199,9 +197,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 14px 24px;
   border: none;
-  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

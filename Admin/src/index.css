@@ -1,3 +1,5 @@
 button{
   cursor: pointer;
+  border-radius: 9999px;
+  padding: 12px 16px;
 }

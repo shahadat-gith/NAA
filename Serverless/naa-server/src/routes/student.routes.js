@@ -9,7 +9,7 @@ import {
     promoteStudents,
     SearchStudentsByName,
     toggleAdmitCardPermission,
-    updateDob
+    updateStudent
 }
 
     from "../controller/student.controller.js";
@@ -27,7 +27,7 @@ studentRouter.post("/add/mass", adminAuthMiddleware, excelUpload.single("file"),
 studentRouter.post("/add/single", adminAuthMiddleware, addSingleStudent);
 studentRouter.post("/promote", adminAuthMiddleware, promoteStudents);
 studentRouter.put("/toggle-admit-card/:id", adminAuthMiddleware, toggleAdmitCardPermission);
-studentRouter.post("/update-dob", adminAuthMiddleware, updateDob);
+studentRouter.put("/:id", adminAuthMiddleware, updateStudent);
 
 
 export default studentRouter;

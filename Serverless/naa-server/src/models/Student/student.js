@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+
 const addressSchema = new mongoose.Schema(
   {
     village: { type: String, trim: true },

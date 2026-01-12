@@ -6,7 +6,7 @@ import { AdminContext } from "../../../context/AdminContext";
 import { formatClassName } from "../../../utils/utility";
 import { CLASS_OPTIONS,STREAM_OPTIONS} from "../../../utils/academicOptions";
 
-const StudentModal = ({ isOpen, onClose }) => {
+const MassStudentModal = ({ isOpen, onClose, fetchStudents }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [file, setFile] = useState(null);
@@ -75,6 +75,7 @@ const StudentModal = ({ isOpen, onClose }) => {
         toast.success(
           `${res.data.total} Students added successfully`
         );
+        fetchStudents?.();
         handleClose();
       }
     } catch (error) {
@@ -170,4 +171,4 @@ const StudentModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default StudentModal;
+export default MassStudentModal;

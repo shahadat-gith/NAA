@@ -316,10 +316,6 @@ export const generateRegistrationNo = async () => {
 };
 
 
-
-
-
-
 export const getAmountForClass = async (
   studentClass,
   medium,

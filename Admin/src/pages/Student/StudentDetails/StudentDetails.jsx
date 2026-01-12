@@ -5,11 +5,14 @@ import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
 import generateAdmitCard from "../../../utils/generateAdmitCard";
 import axios from "axios";
-import { formatClassName, capitalizeWords, capitalizeFirst } from "../../../utils/utility";
+import {
+  formatClassName,
+  capitalizeWords,
+  capitalizeFirst,
+} from "../../../utils/utility";
 import Loader from "../../../components/Loader/Loader";
-import DobModal from "./DobModal";
+import SingleStudentModal from "../StudentModal/SingleStudentModal";
 import toast from "react-hot-toast";
-
 
 const StudentDetails = () => {
   const { id: studentId } = useParams();
@@ -17,22 +20,12 @@ const StudentDetails = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [student, setStudent] = useState(null);
   const [principal, setPrincipal] = useState(null);
   const [admitCard, setAdmitCard] = useState(null);
-
-  const [showDobModal, setShowDobModal] = useState(false);
-
-
-  const handleDobUpdated = (newDob) => {
-    setStudent((prev) => ({
-      ...prev,
-      dob: newDob,
-    }));
-  };
-
 
   /* ================= FETCH STUDENT ================= */
 
@@ -72,16 +65,12 @@ const StudentDetails = () => {
       toast.error("Admit card settings not found for this class/medium.");
       return;
     }
-
-    generateAdmitCard(student, admitCard, principal)
-
+    generateAdmitCard(student, admitCard, principal);
   };
 
   /* ================= LOADING / ERROR ================= */
 
-  if (loading) {
-    return <Loader text="loading student..." />
-  }
+  if (loading) return <Loader text="loading student..." />;
 
   if (!student) {
     return <div className="naa-error">Student not found</div>;
@@ -91,9 +80,11 @@ const StudentDetails = () => {
 
   return (
     <div className="naa-student-details">
-
+      {/* ================= HEADER ================= */}
       <div className="naa-student-header">
-        <h3 className="naa-student-title">{capitalizeWords(student.name)}</h3>
+        <h3 className="naa-student-title">
+          {capitalizeWords(student.name)}
+        </h3>
 
         <div className="naa-action-buttons">
           <button
@@ -104,21 +95,20 @@ const StudentDetails = () => {
           </button>
 
           <button
+            className="naa-edit-student-btn"
+            onClick={() => setShowEditModal(true)}
+          >
+            Edit Student
+          </button>
+
+          <button
             onClick={() => setShowDeleteConfirm(true)}
             className="naa-delete-student-btn"
           >
             Delete Student
           </button>
-
-          <button
-            className="naa-dob-student-btn"
-            onClick={() => setShowDobModal(true)}
-          >
-            Update DOB
-          </button>
         </div>
       </div>
-
 
       {/* ================= DETAILS ================= */}
       <div className="naa-details-container">
@@ -170,6 +160,7 @@ const StudentDetails = () => {
           </table>
         </div>
 
+        {/* -------- Address Information -------- */}
         <div className="naa-details-section">
           <h4>Address Information</h4>
           <table className="naa-details-table">
@@ -178,26 +169,34 @@ const StudentDetails = () => {
                 <td>Village</td>
                 <td>{capitalizeFirst(student?.address?.village) || "N/A"}</td>
                 <td>Post Office</td>
-                <td>{capitalizeFirst(student?.address?.postOffice) || "N/A"}</td>
+                <td>
+                  {capitalizeFirst(student?.address?.postOffice) || "N/A"}
+                </td>
               </tr>
               <tr>
                 <td>Police Station</td>
-                <td>{capitalizeFirst(student?.addres?.policeStation) || "N/A"}</td>
+                <td>
+                  {capitalizeFirst(
+                    student?.address?.policeStation
+                  ) || "N/A"}
+                </td>
                 <td>District</td>
-                <td>{capitalizeFirst(student?.address?.district) || "N/A"}</td>
+                <td>
+                  {capitalizeFirst(student?.address?.district) || "N/A"}
+                </td>
               </tr>
               <tr>
                 <td>Pincode</td>
                 <td>{student?.address?.pincode || "N/A"}</td>
                 <td>State</td>
-                <td>{capitalizeFirst(student?.address?.state) || "N/A"}</td>
+                <td>
+                  {capitalizeFirst(student?.address?.state) || "N/A"}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
-
 
       {/* ================= DELETE CONFIRM ================= */}
       {showDeleteConfirm && (
@@ -213,16 +212,16 @@ const StudentDetails = () => {
         />
       )}
 
-      {showDobModal &&
-        <DobModal
-          isOpen={showDobModal}
-          onClose={() => setShowDobModal(false)}
-          studentId={studentId}
-          onDobUpdated={handleDobUpdated}
+      {/* ================= EDIT MODAL ================= */}
+      {showEditModal && (
+        <SingleStudentModal
+          isOpen={showEditModal}
+          onClose={() => setShowEditModal(false)}
+          student={student}
+          setStudent={setStudent}
+
         />
-
-
-      }
+      )}
     </div>
   );
 };

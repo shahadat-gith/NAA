@@ -3,8 +3,8 @@ import axios from "axios";
 
 import { AdminContext } from "../../context/AdminContext";
 import StudentTable from "./StudentTable/StudentTable";
-import StudentModal from "./StudentModal/StudentModal";
-import SingleStudentAddModal from "./StudentModal/SingleStudentAddModal";
+import MassStudentModal from "./StudentModal/MassStudentModal";
+import SingleStudentModal from "./StudentModal/SingleStudentModal";
 import PromoteStudentsModal from "./StudentModal/PromoteStudentsModal";
 
 import { formatClassName} from "../../utils/utility";
@@ -252,20 +252,22 @@ const Student = () => {
       />
 
       {/* ===== MODALS ===== */}
-      <StudentModal
+      <MassStudentModal
         isOpen={studentModalOpen}
         onClose={() => {
           setStudentModalOpen(false);
-          fetchStudents();
         }}
+
+        fetchStudents={fetchStudents}
       />
 
-      <SingleStudentAddModal
+      <SingleStudentModal
         isOpen={singleStudentModal}
         onClose={() => {
           setSingleStudentModal(false);
-          fetchStudents();
+          
         }}
+        fetchStudents={fetchStudents}
       />
 
       <PromoteStudentsModal
