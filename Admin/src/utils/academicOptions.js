@@ -43,6 +43,7 @@ export const SUBJECT_OPTIONS = [
   "Education",
   "Political Science",
   "Retail Management",
+  "Diniyaat"
 ];
 
 
