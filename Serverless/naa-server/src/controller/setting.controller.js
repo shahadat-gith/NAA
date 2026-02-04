@@ -1,6 +1,7 @@
 import ServiceSettings from "../models/Settings/services.js";
 import FeesSettings from "../models/Settings/fees.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
+import Exam from "../models/Settings/exam.js";
 import HeroImage from "../models/Settings/heroImages.js";
 import cloudinary from "../config/cloudinary.js";
 
@@ -8,29 +9,25 @@ import cloudinary from "../config/cloudinary.js";
 
 export const getSettings = async (req, res) => {
   try {
-
-    const {type} = req.params;
+    const { type } = req.params;
 
     let data = null;
 
-    const serviceSettings = await ServiceSettings.findOne({});
-    const feesSettings = await FeesSettings.findOne({});
-    const admitCardSettings = await AdmitCardSettings.find({});
     if (type === "services") {
-      data = serviceSettings;
+      data = await ServiceSettings.findOne({});
     } else if (type === "fees") {
-      data = feesSettings;
+      data = await FeesSettings.findOne({});
     } else if (type === "admitcard") {
-      data = admitCardSettings;
+      const admitCardSettings = await AdmitCardSettings.find({});
+      const examSettings = await Exam.find({});
+      data = { admitCardSettings, examSettings };
     } else {
-      return res.status(400).json({ message: "Invalid settings type" });
+      return res.status(400).json({ success: false, message: "Invalid settings type" });
     }
-    res.status(200).json({success:true, data });
 
+    res.status(200).json({ success: true, data });
   } catch (error) {
-
-    res.status(500).json({success:false, message: "Server Error", error: error.message });
-
+    res.status(500).json({ success: false, message: "Server Error", error: error.message });
   }
 };
 
@@ -191,6 +188,24 @@ export const updateHeroImage = async (req, res) => {
       message: "Hero image operation failed",
       error: error.message,
     });
+  }
+};
+
+
+export const upsertExam = async (req, res) => {
+  try {
+    const { examName, academicSession } = req.body;
+    let exam = await Exam.findOne({ examName, academicSession });
+    if (!exam) {
+      exam = new Exam({ examName, academicSession });
+    } else {
+      exam.examName = examName;
+      exam.academicSession = academicSession;
+    }
+    await exam.save();
+    res.status(200).json({ success:true, message: "Exam upserted successfully", data: exam });
+  } catch (error) {
+    res.status(500).json({ success:false, message: "Server Error", error: error.message });
   }
 };
 

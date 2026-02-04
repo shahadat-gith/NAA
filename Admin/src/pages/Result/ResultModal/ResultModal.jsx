@@ -9,7 +9,6 @@ import {
   STREAM_OPTIONS,
   EXAM_OPTIONS,
   SESSION_OPTIONS,
-  MEDIUM_OPTIONS,
 } from "../../../utils/academicOptions";
 
 const ResultModal = ({ isOpen, onClose, onSuccess, editData }) => {
@@ -254,7 +253,7 @@ const ResultModal = ({ isOpen, onClose, onSuccess, editData }) => {
                   required
                 >
                   <option value="">Select Medium</option>
-                  {MEDIUM_OPTIONS.map((m) => (
+                  {["english", "assamese"].map((m) => (
                     <option key={m} value={m}>
                       {m.toUpperCase()}
                     </option>
@@ -413,7 +412,7 @@ const ResultModal = ({ isOpen, onClose, onSuccess, editData }) => {
                   required
                 >
                   <option value="">Select Medium</option>
-                  {MEDIUM_OPTIONS.map((m) => (
+                  {["english", "assamese"].map((m) => (
                     <option key={m} value={m}>
                       {m.toUpperCase()}
                     </option>

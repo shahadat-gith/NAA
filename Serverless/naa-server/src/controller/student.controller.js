@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import Student from "../models/Student/student.js";
 import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCardSettings from "../models/Settings/admitcard.js";
-
+import Exam from "../models/Settings/exam.js";
 
 
 export const getAllStudents = async (req, res) => {
@@ -31,42 +31,89 @@ export const getAllStudents = async (req, res) => {
 
 export const getStudentById = async (req, res) => {
   try {
-    const studentId = req.params.id;
+    const { id: studentId } = req.params;
 
-    const student = await Student.findById(studentId);
-    if (!student || student.isActive === false) {
+    const student = await Student.findOne({
+      _id: studentId,
+      isActive: true,
+    }).lean();
+
+    if (!student) {
       return res.status(404).json({
         success: false,
         message: "Student not found or inactive",
       });
     }
 
-    /* ---------- OPTIONAL: ADMIT CARD ---------- */
-    let principal = null;
-    let admitCard = null;
-    
-    principal = await authorityModel.findOne({ role: /principal/i });
-    admitCard = await AdmitCardSettings.findOne({
-      class: student.class,
-      medium: student.medium,
-      stream: student.stream || "",
-    });
+    /* ---------- PARALLEL QUERIES ---------- */
+    const [principal, admitCard, examDetails] = await Promise.all([
+      authorityModel
+        .findOne({ role: /principal/i })
+        .select("name designation signature")
+        .lean(),
+
+      AdmitCardSettings.findOne({
+        class: student.class,
+        medium: student.medium,
+        stream: student.stream || "",
+      }).lean(),
+
+      Exam.findOne().lean(),
+    ]);
 
     return res.status(200).json({
-    success: true,
-    student,
-    principal,
-    admitCard,
-  });
+      success: true,
+      student,
+      principal,
+      admitCard,
+      examDetails,
+    });
+  } catch (error) {
+    console.error("getStudentById error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching student details",
+    });
+  }
+};
 
-} catch (error) {
-  console.error("getStudentById error:", error);
-  return res.status(500).json({
-    success: false,
-    message: "Error fetching student details",
-    error: error.message,
-  });
-}
+
+export const getStudentByRegistrationNo = async (req, res) => {
+  try {
+    const { registrationNo } = req.params;
+
+    if (!registrationNo || !registrationNo.trim()) {
+      return res.status(400).json({
+        success: false,
+        message: "Registration number is required",
+      });
+    }
+
+    const normalizedReg = registrationNo.trim().toUpperCase();
+
+    const student = await Student.findOne({
+      registrationNo: normalizedReg,
+      isActive: true,
+    }).lean();
+
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      student,
+    });
+  } catch (error) {
+    console.error("getStudentByRegistrationNo error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching student",
+    });
+  }
 };
 
 
@@ -132,8 +179,6 @@ export const SearchStudentsByName = async (req, res) => {
     });
   }
 };
-
-
 
 
 

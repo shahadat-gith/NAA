@@ -6,7 +6,8 @@ import { generateRoutinePdf } from "./generateRoutinePdf";
 import { AdminContext } from "../../../../context/AdminContext";
 import "./ExamRoutineModal.css";
 
-const ExamRoutineModal = ({ open, onClose, routine }) => {
+
+const ExamRoutineModal = ({ open, onClose, routine, examDetails }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [signatories, setSignatories] = useState(null);
@@ -29,24 +30,12 @@ const ExamRoutineModal = ({ open, onClose, routine }) => {
             (a) => a.role.toLowerCase() === "principal"
           );
 
-          const examIC = authorities.find(
-            (a) => a.role.toLowerCase().includes("exam")
-          );
-
           setSignatories({
             principal: principal
               ? {
                   name: principal.name,
                   designation: "Principal",
                   signature: principal.signature?.url,
-                }
-              : null,
-
-            examIC: examIC
-              ? {
-                  name: examIC.name,
-                  designation: "Exam In-Charge",
-                  signature: examIC.signature?.url,
                 }
               : null,
           });
@@ -72,12 +61,12 @@ const ExamRoutineModal = ({ open, onClose, routine }) => {
     });
 
   const handleDownload = () => {
-    if (!signatories?.principal || !signatories?.examIC) {
+    if (!signatories?.principal) {
       toast.error("Authorities not configured properly");
       return;
     }
 
-    generateRoutinePdf(routine, signatories);
+    generateRoutinePdf(routine, signatories, examDetails);
   };
 
   return (

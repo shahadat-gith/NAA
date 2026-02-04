@@ -6,7 +6,7 @@ export const CLASS_OPTIONS = {
 
 
 export const STREAM_OPTIONS = ["science", "arts"];
-export const MEDIUM_OPTIONS = ["english", "assamese"];
+
 
 export const EXAM_OPTIONS = [
   "Half Yearly Examination",
@@ -16,6 +16,28 @@ export const EXAM_OPTIONS = [
   "Unit Test 3",
   "Unit Test 4",
 ];
+
+export const TIME_OPTIONS = [
+  "7:00 AM",
+  "8:00 AM",
+  "9:00 AM",
+  "10:00 AM",
+  "11:00 AM",
+  "12:00 PM",
+  "1:00 PM",
+  "2:00 PM",
+  "3:00 PM",
+  "4:00 PM",
+  "5:00 PM",
+  "6:00 PM",
+];
+
+export const EXAM_CENTER_OPTIONS = [
+  "Nashib Ali Academy North Building",
+  "Nashib Ali Academy South Building",
+];
+
+
 
 
 export const SUBJECT_OPTIONS = [
@@ -43,7 +65,14 @@ export const SUBJECT_OPTIONS = [
   "Education",
   "Political Science",
   "Retail Management",
-  "Diniyaat"
+  "Diniyaat",
+  "Elective",
+  "G.K / Drawing",
+  "Parivesh",
+  "Oral",
+  "New Science",
+  "Social Science",
+  "MIL",
 ];
 
 

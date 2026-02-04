@@ -6,6 +6,7 @@ import {
     addSingleStudent,
     deleteStudent,
     getAllStudents, getStudentById,
+    getStudentByRegistrationNo,
     promoteStudents,
     SearchStudentsByName,
     toggleAdmitCardPermission,
@@ -21,6 +22,7 @@ const studentRouter = express.Router();
 
 studentRouter.get("/list", adminAuthMiddleware, getAllStudents);
 studentRouter.get("/single/:id", getStudentById);
+studentRouter.get("/by-registration/:registrationNo", getStudentByRegistrationNo);
 studentRouter.post("/search", SearchStudentsByName);
 studentRouter.delete("/:id", adminAuthMiddleware, deleteStudent);
 studentRouter.post("/add/mass", adminAuthMiddleware, excelUpload.single("file"), addMassStudents);

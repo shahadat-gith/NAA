@@ -6,6 +6,7 @@ import {
   toggleServiceSetting,
   updateAdmitCardSettings,
   updateHeroImage,
+  upsertExam,
 } from "../controller/setting.controller.js";
 
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
@@ -57,6 +58,8 @@ settingsRouter.put(
   adminAuthMiddleware,
   toggleServiceSetting
 );
+
+settingsRouter.post("/exam/upsert", adminAuthMiddleware, upsertExam);
 
 
 settingsRouter.get("/:type", getSettings);

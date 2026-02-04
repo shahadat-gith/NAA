@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Document,
   Page,
@@ -10,73 +9,87 @@ import {
 } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 
-/* ================= SCHOOL DETAILS (FROM BACKEND LATER) ================= */
+/* ================= SCHOOL DETAILS ================= */
 
 const SCHOOL_DETAILS = {
   name: "Nashib Ali Academy",
   estd: "2015",
   regNo: "REG/EDU/ASSAM/2010/1122",
   address: "Mahachara, Barpeta, Assam – 781127",
+  contact: "6001416724",
+  email: "nashibaliacademy.offl@gmail.com"
 };
 
 /* ================= STYLES ================= */
 
 const styles = StyleSheet.create({
   page: {
-    padding: 32,
-    fontSize: 11,
+    padding: 40,
+    fontSize: 10,
     fontFamily: "Helvetica",
     lineHeight: 1.5,
+    display: 'flex',
+    flexDirection: 'column',
   },
 
   /* ---------- Header ---------- */
   header: {
     textAlign: "center",
-    marginBottom: 14,
+    marginBottom: 10,
   },
 
   schoolName: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
+    marginBottom: 2,
   },
 
-  schoolMeta: {
-    fontSize: 10,
-    marginTop: 2,
-  },
-
-  title: {
-    marginTop: 10,
-    fontSize: 15,
+  examName: {
+    fontSize: 14,
     fontWeight: "bold",
+    marginTop: 4,
     textTransform: "uppercase",
+  },
+
+  academicSession: {
+    fontSize: 12,
+    marginTop: 2,
+    color: "#334155",
+  },
+
+  routineTitle: {
+    marginTop: 12,
+    fontSize: 16,
+    fontWeight: "bold",
+    textDecoration: "underline",
   },
 
   divider: {
     height: 1,
     backgroundColor: "#000",
-    marginVertical: 10,
+    marginVertical: 12,
   },
 
   /* ---------- Details ---------- */
   detailsBox: {
-    marginBottom: 18,
+    marginBottom: 15,
     padding: 10,
     border: "1 solid #000",
+    borderRadius: 4,
   },
 
   detailRow: {
     flexDirection: "row",
-    marginBottom: 4,
+    marginBottom: 3,
   },
 
   detailLabel: {
-    width: "28%",
+    width: "25%",
     fontWeight: "bold",
   },
 
   detailValue: {
-    width: "72%",
+    width: "75%",
   },
 
   /* ---------- Table ---------- */
@@ -87,7 +100,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
-    marginBottom: 20,
+    marginBottom: 15,
   },
 
   tableRow: {
@@ -107,34 +120,35 @@ const styles = StyleSheet.create({
     padding: 6,
   },
 
-  colSl: { width: "6%" },
-  colSubject: { width: "30%" },
-  colDate: { width: "18%" },
-  colShift: { width: "14%" },
-  colTime: { width: "32%" },
+  colSl: { width: "8%" },
+  colSubject: { width: "32%" },
+  colDate: { width: "22%" },
+  colShift: { width: "15%" },
+  colTime: { width: "23%" },
 
-  /* ---------- Footer ---------- */
+  /* ---------- Footer Notes ---------- */
   footerNote: {
-    fontSize: 10,
-    marginBottom: 28,
+    fontSize: 9,
+    marginBottom: 20,
+    fontStyle: "italic",
   },
 
-  /* ---------- Signatures ---------- */
+  /* ---------- Signatures (Moved to Right) ---------- */
   signatureSection: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 30,
+    justifyContent: "flex-end", // Aligns signature block to the right
+    marginTop: 20,
   },
 
   signatureBlock: {
     alignItems: "center",
-    width: "40%",
+    width: "35%",
   },
 
   signatureImage: {
-    width: 120,
-    height: 50,
-    marginBottom: 4,
+    width: 100,
+    height: 45,
+    marginBottom: 2,
     objectFit: "contain",
   },
 
@@ -152,17 +166,29 @@ const styles = StyleSheet.create({
 
   signatureDesignation: {
     fontSize: 10,
-    marginTop: 2,
   },
+
+  /* ---------- Page Footer (School Details) ---------- */
+  pageFooter: {
+    position: "absolute",
+    bottom: 30,
+    left: 40,
+    right: 40,
+    borderTop: "1 solid #e2e8f0",
+    paddingTop: 10,
+    textAlign: "center",
+    fontSize: 9,
+    color: "#64748b",
+  }
 });
 
 /* ================= PDF DOCUMENT ================= */
 
-const ExamRoutinePDF = ({ routine, signatories }) => {
+const ExamRoutinePDF = ({ routine, signatories, examDetails }) => {
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-IN", {
       day: "2-digit",
-      month: "long",
+      month: "short",
       year: "numeric",
     });
 
@@ -171,113 +197,80 @@ const ExamRoutinePDF = ({ routine, signatories }) => {
       <Page size="A4" style={styles.page}>
         {/* ================= HEADER ================= */}
         <View style={styles.header}>
-          <Text style={styles.schoolName}>
-            {SCHOOL_DETAILS.name}
-          </Text>
-          <Text style={styles.schoolMeta}>
-            {SCHOOL_DETAILS.address}
-          </Text>
-          <Text style={styles.title}>Examination Routine</Text>
+          <Text style={styles.schoolName}>{SCHOOL_DETAILS.name}</Text>
+          <Text style={styles.examName}>{examDetails?.examName || "Term Examination"}</Text>
+          <Text style={styles.academicSession}>Session: {examDetails?.academicSession || "2024-25"}</Text>
+          <Text style={styles.routineTitle}>Examination Routine</Text>
         </View>
 
         <View style={styles.divider} />
 
-        {/* ================= DETAILS ================= */}
+        {/* ================= CLASS DETAILS ================= */}
         <View style={styles.detailsBox}>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Class</Text>
-            <Text style={styles.detailValue}>: {routine.class}</Text>
-          </View>
-
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Stream</Text>
+            <Text style={styles.detailLabel}>Class / Medium</Text>
             <Text style={styles.detailValue}>
-              : {routine.stream || "—"}
+              : {routine.class.toUpperCase()} ({routine.medium || "N/A"})
             </Text>
           </View>
-
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Medium</Text>
-            <Text style={styles.detailValue}>
-              :{" "}
-              {routine.medium
-                ? routine.medium.charAt(0).toUpperCase() +
-                  routine.medium.slice(1)
-                : "—"}
-            </Text>
-          </View>
-
+          {routine.stream && (
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Stream</Text>
+              <Text style={styles.detailValue}>: {routine.stream}</Text>
+            </View>
+          )}
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Exam Center</Text>
-            <Text style={styles.detailValue}>
-              : {routine.examCenter}
-            </Text>
+            <Text style={styles.detailValue}>: {routine.examCenter}</Text>
           </View>
         </View>
 
         {/* ================= TABLE ================= */}
         <View style={styles.table}>
           <View style={[styles.tableRow, styles.tableHeader]}>
-            <Text style={[styles.tableCol, styles.colSl]}>#</Text>
-            <Text style={[styles.tableCol, styles.colSubject]}>
-              Subject
-            </Text>
-            <Text style={[styles.tableCol, styles.colDate]}>
-              Date
-            </Text>
-            <Text style={[styles.tableCol, styles.colShift]}>
-              Shift
-            </Text>
-            <Text style={[styles.tableCol, styles.colTime]}>
-              Time
-            </Text>
+            <Text style={[styles.tableCol, styles.colSl]}>Sl.</Text>
+            <Text style={[styles.tableCol, styles.colSubject]}>Subject</Text>
+            <Text style={[styles.tableCol, styles.colDate]}>Date</Text>
+            <Text style={[styles.tableCol, styles.colShift]}>Shift</Text>
+            <Text style={[styles.tableCol, styles.colTime]}>Time</Text>
           </View>
 
           {routine.exams.map((exam, index) => (
             <View style={styles.tableRow} key={index}>
-              <Text style={[styles.tableCol, styles.colSl]}>
-                {index + 1}
-              </Text>
-              <Text style={[styles.tableCol, styles.colSubject]}>
-                {exam.subject}
-              </Text>
-              <Text style={[styles.tableCol, styles.colDate]}>
-                {formatDate(exam.date)}
-              </Text>
+              <Text style={[styles.tableCol, styles.colSl]}>{index + 1}</Text>
+              <Text style={[styles.tableCol, styles.colSubject]}>{exam.subject}</Text>
+              <Text style={[styles.tableCol, styles.colDate]}>{formatDate(exam.date)}</Text>
               <Text style={[styles.tableCol, styles.colShift]}>
-                {exam.shift.charAt(0).toUpperCase() +
-                  exam.shift.slice(1)}
+                {exam.shift.charAt(0).toUpperCase() + exam.shift.slice(1)}
               </Text>
-              <Text style={[styles.tableCol, styles.colTime]}>
-                {exam.time}
-              </Text>
+              <Text style={[styles.tableCol, styles.colTime]}>{exam.time}</Text>
             </View>
           ))}
         </View>
 
-        {/* ================= FOOTER NOTES ================= */}
+        {/* ================= NOTES ================= */}
         <View style={styles.footerNote}>
-          <Text>• Students must report at least 30 minutes before exam time.</Text>
-          <Text>• Mobile phones and electronic devices are strictly prohibited.</Text>
+          <Text>Note:</Text>
+          <Text>1. Reporting time: 30 minutes before commencement of examination.</Text>
+          <Text>2. Carrying bags, mobile phones, or smartwatches into the hall is strictly prohibited.</Text>
         </View>
 
-        {/* ================= SIGNATURES ================= */}
+        {/* ================= SIGNATURE (RIGHT SIDE) ================= */}
         <View style={styles.signatureSection}>
           {signatories?.principal && (
             <View style={styles.signatureBlock}>
-              <Image
-                src={signatories.principal.signature}
-                style={styles.signatureImage}
-              />
+              <Image src={signatories.principal.signature} style={styles.signatureImage} />
               <View style={styles.signatureLine} />
-              <Text style={styles.signatureName}>
-                {signatories.principal.name}
-              </Text>
-              <Text style={styles.signatureDesignation}>
-                {signatories.principal.designation}
-              </Text>
+              <Text style={styles.signatureName}>{signatories.principal.name}</Text>
+              <Text style={styles.signatureDesignation}>{signatories.principal.designation}</Text>
             </View>
           )}
+        </View>
+
+        {/* ================= STICKY FOOTER ================= */}
+        <View style={styles.pageFooter} fixed>
+          <Text>{SCHOOL_DETAILS.address}</Text>
+          <Text>Contact: {SCHOOL_DETAILS.contact} | Email: {SCHOOL_DETAILS.email}</Text>
         </View>
       </Page>
     </Document>
@@ -286,18 +279,17 @@ const ExamRoutinePDF = ({ routine, signatories }) => {
 
 /* ================= GENERATE & DOWNLOAD ================= */
 
-export const generateRoutinePdf = async (routine, signatories) => {
+export const generateRoutinePdf = async (routine, signatories, examDetails) => {
   const blob = await pdf(
     <ExamRoutinePDF
       routine={routine}
       signatories={signatories}
+      examDetails={examDetails}
     />
   ).toBlob();
 
   saveAs(
     blob,
-    `Exam_Routine_Class_${routine.class}${
-      routine.stream ? "_" + routine.stream : ""
-    }.pdf`
+    `Routine_${routine.class}_${routine.medium}.pdf`
   );
 };

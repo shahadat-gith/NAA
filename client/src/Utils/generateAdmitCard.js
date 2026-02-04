@@ -1,14 +1,13 @@
 import { jsPDF } from "jspdf";
-import {formatDate} from "./utility"
+import { formatDate } from "./utility";
 
-const generateAdmitCard = (student, admitCard, principal) => {
+const generateAdmitCard = (student, admitCard, principal, examDetails) => {
   try {
     const doc = new jsPDF("p", "mm", "a4");
 
-    /* ========= SETTINGS & PATHS ========= */
-    const logoPath = "/NAA_LOGO.png"; 
-    const accentColor = [31, 41, 55]; 
-    const secondaryColor = [243, 244, 246]; 
+    /* ========= SETTINGS & COLORS ========= */
+    const accentColor = [31, 41, 55];
+    const secondaryColor = [243, 244, 246];
     const textMain = [40, 40, 40];
     const textMuted = [100, 100, 100];
 
@@ -18,31 +17,32 @@ const generateAdmitCard = (student, admitCard, principal) => {
     /* ========= PAGE BORDER ========= */
     doc.setDrawColor(210, 210, 210);
     doc.setLineWidth(0.5);
-    doc.rect(5, 5, 200, 287); 
+    doc.rect(5, 5, 200, 287);
 
     /* ========= HEADER SECTION ========= */
-    try {
-        doc.addImage(logoPath, "PNG", 15, 12, 22, 22);
-    } catch (e) {
-        console.warn("Logo not found at /public/NAA_LOGO.png");
-    }
-
     doc.setTextColor(...textMain);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
-    doc.text("NASHIB ALI ACADEMY", 110, 22, { align: "center" });
-    
-    doc.setFontSize(9);
+    doc.text("NASHIB ALI ACADEMY", 105, 18, { align: "center" });
+
+    // Exam Name
+    doc.setFontSize(14);
+    doc.setTextColor(...accentColor);
+    doc.text(examDetails?.examName || "TERM EXAMINATION", 105, 26, { align: "center" });
+
+    // Academic Session
+    doc.setFontSize(11);
     doc.setFont("helvetica", "normal");
     doc.setTextColor(...textMuted);
-    doc.text("Recognized Educational Institution | ESTD. 2015", 110, 27, { align: "center" });
+    doc.text(`Academic Session: ${examDetails?.academicSession || "2024-25"}`, 105, 32, { align: "center" });
 
+    // Admit Card Badge
     doc.setFillColor(...secondaryColor);
-    doc.roundedRect(80, 38, 60, 12, 2, 2, "F");
+    doc.roundedRect(75, 38, 60, 12, 2, 2, "F");
     doc.setFont("helvetica", "bold");
     doc.setFontSize(13);
     doc.setTextColor(...accentColor);
-    doc.text("ADMIT CARD", 110, 46, { align: "center" });
+    doc.text("ADMIT CARD", 105, 46, { align: "center" });
 
     /* ========= STUDENT INFORMATION ========= */
     doc.setTextColor(...textMain);
@@ -85,7 +85,6 @@ const generateAdmitCard = (student, admitCard, principal) => {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(9);
 
-    // Grouping subjects by date
     const groupedExams = (admitCard?.exams || []).reduce((acc, exam) => {
       const dateKey = formatDate(exam.date);
       if (!acc[dateKey]) acc[dateKey] = { date: dateKey, morning: "-", afternoon: "-" };
@@ -96,7 +95,7 @@ const generateAdmitCard = (student, admitCard, principal) => {
       return acc;
     }, {});
 
-    const examDates = Object.values(groupedExams).slice(0, 8);
+    const examDates = Object.values(groupedExams).slice(0, 12); // Increased limit for more subjects
 
     examDates.forEach((examRow, index) => {
       if (index % 2 !== 0) {
@@ -132,18 +131,19 @@ const generateAdmitCard = (student, admitCard, principal) => {
     ];
     doc.text(instructions.join("\n"), 18, y + 11);
 
-    /* ========= SIGNATURES (FIXED AT BOTTOM) ========= */
+    /* ========= SIGNATURES ========= */
     const sigY = 270; 
     const sigLine = 50;
     doc.setDrawColor(180, 180, 180);
 
     if (principal?.signature?.url) {
-        try {
-            doc.addImage(principal.signature.url, "PNG", 145, sigY - 18, 40, 15);
-        } catch (e) { console.error("Principal signature failed"); }
+      try {
+        doc.addImage(principal.signature.url, "PNG", 145, sigY - 18, 40, 15);
+      } catch (e) { console.error("Principal signature failed"); }
     }
     doc.line(145, sigY, 145 + sigLine, sigY);
-    doc.text("Principal", 145 + (sigLine/2), sigY + 5, { align: "center" });
+    doc.setFont("helvetica", "bold");
+    doc.text("Principal", 145 + (sigLine / 2), sigY + 5, { align: "center" });
 
     /* ========= FOOTER ========= */
     doc.setFillColor(...secondaryColor);
@@ -151,9 +151,15 @@ const generateAdmitCard = (student, admitCard, principal) => {
     doc.setFontSize(8);
     doc.setTextColor(...textMuted);
     doc.text(
-      "Nashib Ali Academy | +91 60014-16724 | www.nashibaliacademy.in",
+      "Nashib Ali Academy, Mahachara, Barpeta, Assam – 781127",
       105,
-      288,
+      287.5,
+      { align: "center" }
+    );
+    doc.text(
+      "+91 60014-16724 | https://www.nashibaliacademy.in",
+      105,
+      291.5,
       { align: "center" }
     );
 

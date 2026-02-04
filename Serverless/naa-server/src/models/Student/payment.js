@@ -9,12 +9,6 @@ const paymentSchema = new mongoose.Schema(
       index: true,
     },
 
-    academicSession: {
-      type: String, // "2025-2026"
-      required: true,
-      index: true,
-    },
-
     amount: {
       type: Number,
       required: true,
@@ -23,9 +17,8 @@ const paymentSchema = new mongoose.Schema(
 
     feeType: {
       type: String,
-      enum: ["admissionFee", "monthlyFee"],
+      enum: ["admissionFee", "monthlyFee", "hostelMonthlyFee", "examFee", "other"],
       required: true,
-      index: true,
     },
 
     month: {

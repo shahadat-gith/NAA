@@ -4,16 +4,13 @@ import {
   CLASS_OPTIONS,
   STREAM_OPTIONS,
   SUBJECT_OPTIONS,
+  TIME_OPTIONS,
+  EXAM_CENTER_OPTIONS
 } from "../../../../utils/academicOptions";
 import { formatClassName } from "../../../../utils/formatclass";
 import "./ExamModal.css";
 
-const MEDIUM_OPTIONS = ["english", "assamese"];
-
-const EXAM_CENTER_OPTIONS = [
-  "Nashib Ali Academy North Building",
-  "Nashib Ali Academy South Building",
-];
+/* ================= COMPONENT ================= */
 
 const ExamModal = ({
   open,
@@ -54,6 +51,8 @@ const ExamModal = ({
 
   if (!open) return null;
 
+  /* ================= EXAM HELPERS ================= */
+
   const addExam = () => {
     setExams((prev) => [
       ...prev,
@@ -63,7 +62,23 @@ const ExamModal = ({
 
   const updateExam = (index, field, value) => {
     const updated = [...exams];
-    updated[index][field] = value;
+    updated[index] = { ...updated[index], [field]: value };
+    setExams(updated);
+  };
+
+  const updateTimeRange = (index, type, value) => {
+    const updated = [...exams];
+    const currentExam = updated[index];
+    
+    // Split existing time or default to empty
+    let [start, end] = (currentExam.time || "").split(" - ");
+
+    if (type === "start") start = value;
+    if (type === "end") end = value;
+
+    // Combine them with the " - " separator
+    updated[index].time = start && end ? `${start} - ${end}` : (start || end || "");
+
     setExams(updated);
   };
 
@@ -71,12 +86,22 @@ const ExamModal = ({
     setExams(exams.filter((_, i) => i !== index));
   };
 
+  /* ================= SUBMIT ================= */
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!selectedClass) return toast.error("Class is required");
     if (["11", "12"].includes(selectedClass) && !selectedStream)
       return toast.error("Stream is required");
+
+    for (const exam of exams) {
+      if (!exam.subject || !exam.date || !exam.time || !exam.time.includes(" - ")) {
+        return toast.error(
+          "Please complete subject, date, and both start/end times"
+        );
+      }
+    }
 
     onSubmit({
       class: selectedClass,
@@ -86,7 +111,6 @@ const ExamModal = ({
       exams,
     });
 
-    // ✅ reset after submit
     resetForm();
   };
 
@@ -94,6 +118,8 @@ const ExamModal = ({
     resetForm();
     onClose();
   };
+
+  /* ================= UI ================= */
 
   return (
     <div className="act-modal-overlay">
@@ -131,7 +157,9 @@ const ExamModal = ({
                 <label>Stream *</label>
                 <select
                   value={selectedStream}
-                  onChange={(e) => setSelectedStream(e.target.value)}
+                  onChange={(e) =>
+                    setSelectedStream(e.target.value)
+                  }
                 >
                   <option value="">Select Stream</option>
                   {STREAM_OPTIONS.map((s) => (
@@ -150,7 +178,7 @@ const ExamModal = ({
                 onChange={(e) => setMedium(e.target.value)}
               >
                 <option value="">Select Medium</option>
-                {MEDIUM_OPTIONS.map((m) => (
+                {["english", "assamese"].map((m) => (
                   <option key={m} value={m}>
                     {m.charAt(0).toUpperCase() + m.slice(1)}
                   </option>
@@ -159,7 +187,7 @@ const ExamModal = ({
             </div>
           </div>
 
-          {/* Exam Center (DROPDOWN) */}
+          {/* Exam Center */}
           <div className="act-field">
             <label>Exam Center</label>
             <select
@@ -179,55 +207,82 @@ const ExamModal = ({
           <div className="act-exams-section">
             <h4>Exam Schedule</h4>
 
-            {exams.map((exam, index) => (
-              <div key={index} className="act-exam-card">
-                <div className="act-exam-grid">
-                  <select
-                    value={exam.subject}
-                    onChange={(e) =>
-                      updateExam(index, "subject", e.target.value)
-                    }
-                  >
-                    <option value="">Subject</option>
-                    {SUBJECT_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
+            {exams.map((exam, index) => {
+              // Deriving start/end values for the dropdowns from the combined string
+              const [startTime = "", endTime = ""] = (exam.time || "").split(" - ");
 
-                  <input
-                    type="date"
-                    value={exam.date}
-                    onChange={(e) =>
-                      updateExam(index, "date", e.target.value)
-                    }
-                  />
+              return (
+                <div key={index} className="act-exam-card">
+                  <div className="act-exam-grid">
+                    <select
+                      value={exam.subject}
+                      onChange={(e) =>
+                        updateExam(index, "subject", e.target.value)
+                      }
+                    >
+                      <option value="">Subject</option>
+                      {SUBJECT_OPTIONS.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
 
-                  <select
-                    value={exam.shift}
-                    onChange={(e) =>
-                      updateExam(index, "shift", e.target.value)
-                    }
-                  >
-                    <option value="morning">Morning</option>
-                    <option value="afternoon">Afternoon</option>
-                  </select>
+                    <input
+                      type="date"
+                      value={exam.date}
+                      onChange={(e) =>
+                        updateExam(index, "date", e.target.value)
+                      }
+                    />
 
-                  <input
-                    placeholder="9:00 AM - 12:00 PM"
-                    value={exam.time}
-                    onChange={(e) =>
-                      updateExam(index, "time", e.target.value)
-                    }
-                  />
+                    <select
+                      value={exam.shift}
+                      onChange={(e) =>
+                        updateExam(index, "shift", e.target.value)
+                      }
+                    >
+                      <option value="morning">Morning</option>
+                      <option value="afternoon">Afternoon</option>
+                    </select>
+
+                    {/* Start Time */}
+                    <select
+                      value={startTime}
+                      onChange={(e) =>
+                        updateTimeRange(index, "start", e.target.value)
+                      }
+                    >
+                      <option value="">Start Time</option>
+                      {TIME_OPTIONS.map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* End Time */}
+                    <select
+                      value={endTime}
+                      onChange={(e) =>
+                        updateTimeRange(index, "end", e.target.value)
+                      }
+                    >
+                      <option value="">End Time</option>
+                      {TIME_OPTIONS.map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button type="button" onClick={() => removeExam(index)}>
+                    Remove
+                  </button>
                 </div>
-
-                <button type="button" onClick={() => removeExam(index)}>
-                  Remove
-                </button>
-              </div>
-            ))}
+              );
+            })}
 
             <button type="button" onClick={addExam}>
               + Add Exam

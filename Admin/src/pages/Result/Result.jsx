@@ -10,7 +10,6 @@ import {
   STREAM_OPTIONS,
   EXAM_OPTIONS,
   SESSION_OPTIONS,
-  MEDIUM_OPTIONS,
 } from "../../utils/academicOptions";
 
 import "./Result.css";
@@ -174,7 +173,7 @@ const Result = () => {
 
         <select value={filterMedium} onChange={(e) => setFilterMedium(e.target.value)}>
           <option value="">Medium</option>
-          {MEDIUM_OPTIONS.map((m) => (
+          {["english", "assamese"].map((m) => (
             <option key={m} value={m}>{m}</option>
           ))}
         </select>

@@ -15,6 +15,7 @@ const StudentDetails = () => {
   const [student, setStudent] = useState(null);
   const [principal, setPrincipal] = useState(null);
   const [admitCard, setAdmitCard] = useState(null);
+  const [examDetails, setExamDetails] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const StudentDetails = () => {
       if (type === "admit-card") {
         setPrincipal(res.data.principal || null);
         setAdmitCard(res.data.admitCard || null);
+        setExamDetails(res.data.examDetails || null)
       }
     } catch (err) {
       console.error("StudentDetails error:", err);
@@ -109,7 +111,8 @@ const StudentDetails = () => {
                     generateAdmitCard(
                       student,
                       admitCard,
-                      principal
+                      principal,
+                      examDetails
                     )
                   }
                 >
