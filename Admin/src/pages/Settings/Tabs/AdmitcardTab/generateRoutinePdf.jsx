@@ -175,9 +175,6 @@ const ExamRoutinePDF = ({ routine, signatories }) => {
             {SCHOOL_DETAILS.name}
           </Text>
           <Text style={styles.schoolMeta}>
-            Estd: {SCHOOL_DETAILS.estd} | Reg. No: {SCHOOL_DETAILS.regNo}
-          </Text>
-          <Text style={styles.schoolMeta}>
             {SCHOOL_DETAILS.address}
           </Text>
           <Text style={styles.title}>Examination Routine</Text>
@@ -266,22 +263,6 @@ const ExamRoutinePDF = ({ routine, signatories }) => {
 
         {/* ================= SIGNATURES ================= */}
         <View style={styles.signatureSection}>
-          {signatories?.examIC && (
-            <View style={styles.signatureBlock}>
-              <Image
-                src={signatories.examIC.signature}
-                style={styles.signatureImage}
-              />
-              <View style={styles.signatureLine} />
-              <Text style={styles.signatureName}>
-                {signatories.examIC.name}
-              </Text>
-              <Text style={styles.signatureDesignation}>
-                {signatories.examIC.designation}
-              </Text>
-            </View>
-          )}
-
           {signatories?.principal && (
             <View style={styles.signatureBlock}>
               <Image
