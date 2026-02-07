@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/StudentSearch.css";
-import BG_IMAGE from "/search.jpg";
+import BG_IMAGE from "/search.webp";
 import axios from "axios";
 import { AppContext } from "../../../../context/AppContext";
 
