@@ -22,10 +22,10 @@ import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 /* ===== Student Pages ===== */
 import StudentSearch from "./pages/Student/Pages/Search/StudentSearch";
 import Dashboard from "./pages/Student/Pages/Dashboard/Dashboard";
-import Admission from "./pages/Student/Pages/Admission/Admission";
 
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
+import Admission from "./pages/Admission/Admission";
 
 
 
@@ -61,11 +61,11 @@ const App = () => {
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+           <Route path="/admission" element={<Admission />} />
 
           {/* Portal */}
 
           <Route path="/student" element={<StudentSearch />} />
-            <Route path="/student/admission" element={<Admission />} />
           <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />

@@ -61,7 +61,7 @@ const Hero = () => {
       {serviceSettings?.admission && (
         <div
           className="admission-notice"
-          onClick={() => navigate("/portal/admission")}
+          onClick={() => navigate("/admission")}
         >
           <div className="admission-track">
             <span className="admission-text">

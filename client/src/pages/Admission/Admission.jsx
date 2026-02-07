@@ -7,7 +7,7 @@ import {
   FORM_FIELDS,
   ADDRESS_FIELDS,
 } from "../../Utils/utility";
-import "../../Styles/Admission.css";
+import "./Admission.css";
 import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 
