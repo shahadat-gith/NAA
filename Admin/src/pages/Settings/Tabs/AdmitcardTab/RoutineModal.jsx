@@ -8,11 +8,11 @@ import {
   EXAM_CENTER_OPTIONS
 } from "../../../../utils/academicOptions";
 import { formatClassName } from "../../../../utils/formatclass";
-import "./ExamModal.css";
+import "./RoutineModal.css";
 
 /* ================= COMPONENT ================= */
 
-const ExamModal = ({
+const RoutineModal = ({
   open,
   onClose,
   onSubmit,
@@ -69,7 +69,7 @@ const ExamModal = ({
   const updateTimeRange = (index, type, value) => {
     const updated = [...exams];
     const currentExam = updated[index];
-    
+
     // Split existing time or default to empty
     let [start, end] = (currentExam.time || "").split(" - ");
 
@@ -278,24 +278,30 @@ const ExamModal = ({
                   </div>
 
                   <button type="button" onClick={() => removeExam(index)}>
-                    Remove
+                    Remove Exam
                   </button>
                 </div>
               );
             })}
 
-            <button type="button" onClick={addExam}>
+            <button type="button" className="act-add-exam" onClick={addExam}>
               + Add Exam
             </button>
           </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Saving..." : "Save"}
-          </button>
+          {/* Actions */}
+          <div className="act-actions">
+            <button type="button" className="act-cancel" onClick={handleClose}>
+              Cancel
+            </button>
+            <button type="submit" className="act-submit" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
+            </button>
+          </div>
         </form>
       </div>
     </div>
   );
 };
 
-export default ExamModal;
+export default RoutineModal;

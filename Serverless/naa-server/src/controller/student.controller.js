@@ -2,8 +2,11 @@ import XLSX from "xlsx";
 import mongoose from "mongoose";
 import Student from "../models/Student/student.js";
 import { authorityModel } from "../models/Academic/authorities.js";
-import AdmitCardSettings from "../models/Settings/admitcard.js";
+import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
+import ServiceSettings from "../models/Settings/services.js";
+import TemporaryFile from "../models/Student/tempFile.js";
+import { uploadToCloudinary } from "../config/cloudinary.js";
 
 
 export const getAllStudents = async (req, res) => {
@@ -27,8 +30,6 @@ export const getAllStudents = async (req, res) => {
   }
 };
 
-
-
 export const getStudentById = async (req, res) => {
   try {
     const { id: studentId } = req.params;
@@ -45,20 +46,29 @@ export const getStudentById = async (req, res) => {
       });
     }
 
+    const tempImage = await TemporaryFile.findOne({ studentId }).lean();
+    if (!student?.image?.url && tempImage) {
+      student.image = tempImage;
+    }else{
+      student.image = student.image || null;
+    }
+
+
     /* ---------- PARALLEL QUERIES ---------- */
-    const [principal, admitCard, examDetails] = await Promise.all([
+    const [principal, admitCard, examDetails, services] = await Promise.all([
       authorityModel
         .findOne({ role: /principal/i })
         .select("name designation signature")
         .lean(),
 
-      AdmitCardSettings.findOne({
+      AdmitCard.findOne({
         class: student.class,
         medium: student.medium,
         stream: student.stream || "",
       }).lean(),
 
       Exam.findOne().lean(),
+      ServiceSettings.findOne().lean(),
     ]);
 
     return res.status(200).json({
@@ -67,6 +77,7 @@ export const getStudentById = async (req, res) => {
       principal,
       admitCard,
       examDetails,
+      services,
     });
   } catch (error) {
     console.error("getStudentById error:", error);
@@ -78,9 +89,9 @@ export const getStudentById = async (req, res) => {
 };
 
 
-export const getStudentByRegistrationNo = async (req, res) => {
+export const SearchStudent = async (req, res) => {
   try {
-    const { registrationNo } = req.params;
+    const { registrationNo } = req.body;
 
     if (!registrationNo || !registrationNo.trim()) {
       return res.status(400).json({
@@ -89,10 +100,8 @@ export const getStudentByRegistrationNo = async (req, res) => {
       });
     }
 
-    const normalizedReg = registrationNo.trim().toUpperCase();
-
     const student = await Student.findOne({
-      registrationNo: normalizedReg,
+      registrationNo,
       isActive: true,
     }).lean();
 
@@ -105,13 +114,15 @@ export const getStudentByRegistrationNo = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      student,
+      studentId: student._id,
     });
+
   } catch (error) {
-    console.error("getStudentByRegistrationNo error:", error);
+    console.error("SearchStudentByRegNo error:", error);
     return res.status(500).json({
       success: false,
       message: "Error fetching student",
+      error: error.message,
     });
   }
 };
@@ -147,40 +158,6 @@ export const deleteStudent = async (req, res) => {
     });
   }
 }
-
-
-export const SearchStudentsByName = async (req, res) => {
-  try {
-    const { name } = req.body;
-
-    if (!name || !name.trim()) {
-      return res.status(400).json({
-        success: false,
-        message: "Search query is required",
-      });
-    }
-
-    const students = await Student.find({
-      name: { $regex: name.trim(), $options: "i" },
-      isActive: true,
-    }).sort({ name: 1 });
-
-    return res.status(200).json({
-      success: true,
-      count: students.length,
-      students,
-    });
-
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Error searching students",
-      error: error.message,
-    });
-  }
-};
-
-
 
 
 export const addSingleStudent = async (req, res) => {
@@ -312,8 +289,6 @@ export const updateStudent = async (req, res) => {
 };
 
 
-
-
 export const promoteStudents = async (req, res) => {
   try {
     const {
@@ -435,7 +410,6 @@ export const toggleAdmitCardPermission = async (req, res) => {
     });
   }
 };
-
 
 
 
@@ -562,5 +536,95 @@ export const addMassStudents = async (req, res) => {
   }
 };
 
+export const uploadTempProfilePicture = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Image file is required",
+      });
+    }
+
+    const result = await uploadToCloudinary(
+      req.file.buffer,
+      "naa_temp_profile_pictures"
+    );
+
+    const temporaryFile = new TemporaryFile({
+      studentId: id,
+      public_id: result.public_id,
+      url: result.secure_url,
+    });
+
+    await temporaryFile.save();
 
 
+    res.status(200).json({
+      success: true,
+      message: "Profile picture uploaded successfully",
+      data: temporaryFile,
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Profile picture upload failed",
+      error: error.message,
+    });
+  }
+};
+
+export const acceptProfilePicture = async (req, res) => {
+  try {
+    const { studentId, accepted } = req.body;
+
+    if (!studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
+    }
+
+    const temporaryFile = await TemporaryFile.findOne({ studentId });
+    if (!temporaryFile) {
+      return res.status(404).json({
+        success: false,
+        message: "Picture not found",
+      });
+    }
+
+    if (accepted) {
+      await Student.findByIdAndUpdate(studentId, {
+        image: {
+          url: temporaryFile.url,
+          public_id: temporaryFile.public_id,
+        },
+      });
+    }
+
+    await cloudinary.uploader.destroy(temporaryFile.public_id);
+    await temporaryFile.remove();
+
+    res.status(200).json({
+      success: true,
+      message: accepted ? "Profile picture accepted" : "Profile picture rejected",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete temporary profile picture",
+      error: error.message,
+    });
+  }
+};

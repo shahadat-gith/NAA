@@ -1,0 +1,148 @@
+
+
+.se-search-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.se-bg-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.se-search-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65); 
+  display: flex;
+  align-items: center;          
+  justify-content: center;   
+  padding: 2rem 1rem;
+}
+
+
+.se-search-content {
+  width: 100%;
+  max-width: 800px;
+}
+
+
+
+.se-search-box {
+  padding: 2rem;
+  
+}
+
+
+
+.se-input-wrapper {
+  position: relative;
+}
+
+/* Search Icon */
+.se-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: #a0aec0;
+}
+
+
+
+.se-search-input {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.8rem;
+  border-radius: 2rem;
+  border: 1px solid #e2e8f0;
+  font-size: 1rem;
+  outline: none;
+  color: #fff;
+  
+}
+
+.se-search-input:focus {
+  border-color: #e94560;
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+.se-search-input::placeholder {
+  color: #fff;
+  opacity: 0.9;    
+}
+
+
+
+.se-error-text {
+  margin-top: 0.75rem;
+  color: #ffb4b4;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+
+
+.se-search-btn {
+  margin-top: 1.25rem;
+  width: 100%;
+  padding: 0.9rem;
+  background: #e94560;
+  color: #ffffff;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.se-search-btn:hover {
+  background: #d33a52;
+  transform: translateY(-1px);
+}
+
+.se-search-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner */
+.se-spinner {
+  font-size: 1rem;
+}
+
+/* ===============================
+   Responsive Adjustments
+================================ */
+
+@media (max-width: 768px) {
+  .se-search-box {
+    padding: 1.5rem;
+  }
+
+  .se-bg-image {
+  height: 450px;
+}
+}
+
+@media (max-width: 480px) {
+  .se-search-box {
+    padding: 1.25rem;
+  }
+
+  .se-search-input {
+    font-size: 0.95rem;
+  }
+
+  .se-search-btn {
+    font-size: 0.95rem;
+  }
+}

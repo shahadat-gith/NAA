@@ -1,6 +1,6 @@
 import ServiceSettings from "../models/Settings/services.js";
 import FeesSettings from "../models/Settings/fees.js";
-import AdmitCardSettings from "../models/Settings/admitcard.js";
+import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
 import HeroImage from "../models/Settings/heroImages.js";
 import cloudinary from "../config/cloudinary.js";
@@ -18,9 +18,9 @@ export const getSettings = async (req, res) => {
     } else if (type === "fees") {
       data = await FeesSettings.findOne({});
     } else if (type === "admitcard") {
-      const admitCardSettings = await AdmitCardSettings.find({});
+      const admitCards = await AdmitCard.find({});
       const examSettings = await Exam.find({});
-      data = { admitCardSettings, examSettings };
+      data = { admitCards, examSettings };
     } else {
       return res.status(400).json({ success: false, message: "Invalid settings type" });
     }
@@ -72,33 +72,33 @@ export const toggleServiceSetting = async (req, res) => {
 };
 
 
-export const updateAdmitCardSettings = async (req, res) => {
+export const updateAdmitCard = async (req, res) => {
   try {
     const { class: classNum, stream,medium, examCenter, exams } = req.body;
-    let admitCardSettings = await AdmitCardSettings.findOne({ class: classNum, stream: stream || "" });
-    if (!admitCardSettings) {
-      admitCardSettings = new AdmitCardSettings({ class: classNum, stream: stream || "" });
+    let admitCard = await AdmitCard.findOne({ class: classNum, stream: stream || "" });
+    if (!admitCard) {
+      admitCard = new AdmitCard({ class: classNum, stream: stream || "" });
     } 
-    admitCardSettings.medium = medium || "";
-    admitCardSettings.examCenter = examCenter || "";
-    admitCardSettings.exams = exams || [];
-    await admitCardSettings.save();
-    res.status(200).json({ success:true, message: "Admit card settings updated", data: admitCardSettings });
+    admitCard.medium = medium || "";
+    admitCard.examCenter = examCenter || "";
+    admitCard.exams = exams || [];
+    await admitCard.save();
+    res.status(200).json({ success:true, message: "Admit card updated", data: admitCard });
   } catch (error) {
     res.status(500).json({ success:false, message: "Server Error", error: error.message });
   }
 };
 
 
-export const deleteAdmitCardSettings = async (req, res) => {
+export const deleteAdmitCard = async (req, res) => {
   try {
     const { id } = req.params;
-    const admitCardSettings = await AdmitCardSettings.findById(id);
-    if (!admitCardSettings) {
-      return res.status(404).json({ success:false, message: "Admit card settings not found" });
+    const admitCard = await AdmitCard.findById(id);
+    if (!admitCard) {
+      return res.status(404).json({ success:false, message: "Admit card not found" });
     }
-    await AdmitCardSettings.findByIdAndDelete(id);
-    res.status(200).json({ success:true, message: "Admit card settings deleted" });
+    await AdmitCard.findByIdAndDelete(id);
+    res.status(200).json({ success:true, message: "Admit card deleted" });
   } catch (error) {
     res.status(500).json({ success:false, message: "Server Error", error: error.message });
   }

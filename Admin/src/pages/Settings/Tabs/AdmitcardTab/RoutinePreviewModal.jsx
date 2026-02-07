@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 import { formatClassName } from "../../../../utils/formatclass";
 import { generateRoutinePdf } from "./generateRoutinePdf";
 import { AdminContext } from "../../../../context/AdminContext";
-import "./ExamRoutineModal.css";
+import "./RoutinePreviewModal.css";
 
 
-const ExamRoutineModal = ({ open, onClose, routine, examDetails }) => {
+const RoutinePreviewModal = ({ open, onClose, routine, examDetails }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [signatories, setSignatories] = useState(null);
@@ -143,4 +143,4 @@ const ExamRoutineModal = ({ open, onClose, routine, examDetails }) => {
   );
 };
 
-export default ExamRoutineModal;
+export default RoutinePreviewModal;

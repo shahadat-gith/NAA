@@ -56,7 +56,7 @@ export const SUBJECT_OPTIONS = [
 ];
 
 
-export const academicSessions = [
+export const SESSION_OPTIONS = [
     "2024-2025",
     "2025-2026",
     "2026-2027",
@@ -107,6 +107,26 @@ export const ADDRESS_FIELDS = [
   { label: "State", name: "state", isRequired: true },
   { label: "Pincode", name: "pincode", isRequired: true },
 ];
+
+
+
+/**
+ * Capitalizes the first letter of each word in a sentence
+ * @param {string} text
+ * @returns {string}
+ */
+const capitalizeWords = (text = "") => {
+  return text
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .map(
+      word => word.charAt(0).toUpperCase() + word.slice(1)
+    )
+    .join(" ");
+};
+
+export default capitalizeWords;
 
 
 

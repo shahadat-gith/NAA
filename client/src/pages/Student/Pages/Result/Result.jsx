@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-import { AppContext } from "../../../context/AppContext";
-import { EXAM_OPTIONS, SESSION_OPTIONS } from "./academicOptions";
-import "./Result.css";
+import { AppContext } from "../../../../context/AppContext";
+import { EXAM_OPTIONS, SESSION_OPTIONS } from "../../../../Utils/utility";
+import "../../Styles/Result.css";
 
 const Result = () => {
   const [registrationNo, setRegistrationNo] = useState("");

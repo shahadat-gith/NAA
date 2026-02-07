@@ -4,30 +4,30 @@ import toast from "react-hot-toast";
 import { AdminContext } from "../../../../context/AdminContext";
 import { formatClassName } from "../../../../utils/formatclass";
 import { CLASS_OPTIONS } from "../../../../utils/academicOptions";
-import ExamModal from "./ExamModal";
-import ExamRoutineModal from "./ExamRoutineModal";
-import ExamSettingsModal from "./ExamSettingsModal";
+import RoutineModal from "./RoutineModal";
+import RoutinePreviewModal from "./RoutinePreviewModal";
+import CurrentExamModal from "./CurrentExamModal";
 import "./AdmitcardTab.css";
 
 const AdmitCardTab = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const [settings, setSettings] = useState([]);
+  const [admitCards, setAdmitCards] = useState([]);
   const [currentExam, setCurrentExam] = useState(null);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMedium, setFilterMedium] = useState("");
 
-  // Exam add/edit modal
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editData, setEditData] = useState(null);
+  // Routine add/edit modal
+  const [routineModalOpen, setRoutineModalOpen] = useState(false);
+  const [editRoutine, setEditRoutine] = useState(null);
 
-  // Exam routine modal
-  const [routineOpen, setRoutineOpen] = useState(false);
-  const [selectedRoutine, setSelectedRoutine] = useState(null);
+  // Routine preview modal
+  const [routinePreviewOpen, setRoutinePreviewOpen] = useState(false);
+  const [routineToPreview, setRoutineToPreview] = useState(null);
 
   // Current exam modal
-  const [examModalOpen, setExamModalOpen] = useState(false);
+  const [currentExamModalOpen, setCurrentExamModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSettings();
@@ -41,9 +41,9 @@ const AdmitCardTab = () => {
       });
       if (res.data.success) {
         const data = res.data.data || {};
-        const admitCardSettings = data.admitCardSettings || data || [];
+        const admitCards = data.admitCards || [];
         const examSettings = data.examSettings || [];
-        setSettings(admitCardSettings);
+        setAdmitCards(admitCards);
         setCurrentExam(examSettings[examSettings.length - 1] || null);
       }
     } catch {
@@ -54,8 +54,8 @@ const AdmitCardTab = () => {
   };
 
   /* ================= FILTER & SORT LOGIC ================= */
-  const filteredSettings = useMemo(() => {
-    let data = [...settings];
+  const filteredAdmitCards = useMemo(() => {
+    let data = [...admitCards];
 
     // 1. Filter by Medium
     if (filterMedium) {
@@ -79,10 +79,10 @@ const AdmitCardTab = () => {
       }
       return orderA - orderB;
     });
-  }, [settings, searchTerm, filterMedium]);
+  }, [admitCards, searchTerm, filterMedium]);
 
   /* ================= SAVE / DELETE / VIEW (Keep Existing) ================= */
-  const handleSave = async (data) => {
+  const handleSaveRoutine = async (data) => {
     try {
       setLoading(true);
       const res = await axios.put(
@@ -93,8 +93,8 @@ const AdmitCardTab = () => {
 
       if (res.data.success) {
         toast.success("Exam schedule saved");
-        setModalOpen(false);
-        setEditData(null);
+        setRoutineModalOpen(false);
+        setEditRoutine(null);
         fetchSettings();
       }
     } catch {
@@ -121,12 +121,12 @@ const AdmitCardTab = () => {
     }
   };
 
-  const openRoutineModal = (schedule) => {
-    setSelectedRoutine(schedule);
-    setRoutineOpen(true);
+  const openRoutinePreview = (schedule) => {
+    setRoutineToPreview(schedule);
+    setRoutinePreviewOpen(true);
   };
 
-  const handleExamUpdate = async (payload) => {
+  const handleCurrentExamUpdate = async (payload) => {
     try {
       setLoading(true);
       const res = await axios.post(
@@ -137,7 +137,7 @@ const AdmitCardTab = () => {
 
       if (res.data.success) {
         toast.success("Current exam updated");
-        setExamModalOpen(false);
+        setCurrentExamModalOpen(false);
         fetchSettings();
       }
     } catch {
@@ -147,7 +147,7 @@ const AdmitCardTab = () => {
     }
   };
 
-  if (loading && settings.length === 0) {
+  if (loading && admitCards.length === 0) {
     return (
       <div className="srv-loading">
         <div className="srv-spinner"></div>
@@ -182,7 +182,7 @@ const AdmitCardTab = () => {
             ))}
           </select>
 
-          <button className="act-add-btn" onClick={() => setModalOpen(true)}>
+          <button className="act-add-btn" onClick={() => setRoutineModalOpen(true)}>
             + Add Schedule
           </button>
         </div>
@@ -200,7 +200,7 @@ const AdmitCardTab = () => {
         </div>
         <button
           className="act-current-exam-btn"
-          onClick={() => setExamModalOpen(true)}
+          onClick={() => setCurrentExamModalOpen(true)}
         >
           Update Exam
         </button>
@@ -218,26 +218,26 @@ const AdmitCardTab = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredSettings.length === 0 ? (
+          {filteredAdmitCards.length === 0 ? (
             <tr>
               <td colSpan="6" style={{ textAlign: "center", opacity: 0.7 }}>
                 No exam schedules found matching your criteria
               </td>
             </tr>
           ) : (
-            filteredSettings.map((s) => (
+            filteredAdmitCards.map((s) => (
               <tr key={s._id}>
                 <td>{formatClassName(s.class)}</td>
                 <td>{s.stream || "-"}</td>
                 <td style={{ textTransform: 'capitalize' }}>{s.medium || "-"}</td>
                 <td>{s.examCenter || "-"}</td>
                 <td>
-                  <button className="act-link-btn" onClick={() => openRoutineModal(s)}>
+                  <button className="act-link-btn" onClick={() => openRoutinePreview(s)}>
                     View Routine
                   </button>
                 </td>
                 <td className="act-action-cell">
-                  <button className="act-edit-btn" onClick={() => { setEditData(s); setModalOpen(true); }}>
+                  <button className="act-edit-btn" onClick={() => { setEditRoutine(s); setRoutineModalOpen(true); }}>
                     Edit
                   </button>
                   <button className="act-delete-btn" onClick={() => handleDelete(s._id)}>
@@ -251,23 +251,23 @@ const AdmitCardTab = () => {
       </table>
 
       {/* Modals remain the same */}
-      <ExamModal
-        open={modalOpen}
-        onClose={() => { setModalOpen(false); setEditData(null); }}
-        onSubmit={handleSave}
-        initialData={editData}
+      <RoutineModal
+        open={routineModalOpen}
+        onClose={() => { setRoutineModalOpen(false); setEditRoutine(null); }}
+        onSubmit={handleSaveRoutine}
+        initialData={editRoutine}
         loading={loading}
       />
-      <ExamRoutineModal
-        open={routineOpen}
-        onClose={() => { setRoutineOpen(false); setSelectedRoutine(null); }}
-        routine={selectedRoutine}
+      <RoutinePreviewModal
+        open={routinePreviewOpen}
+        onClose={() => { setRoutinePreviewOpen(false); setRoutineToPreview(null); }}
+        routine={routineToPreview}
         examDetails={currentExam}
       />
-      <ExamSettingsModal
-        open={examModalOpen}
-        onClose={() => setExamModalOpen(false)}
-        onSubmit={handleExamUpdate}
+      <CurrentExamModal
+        open={currentExamModalOpen}
+        onClose={() => setCurrentExamModalOpen(false)}
+        onSubmit={handleCurrentExamUpdate}
         initialData={currentExam}
         loading={loading}
       />

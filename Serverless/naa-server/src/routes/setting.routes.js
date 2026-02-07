@@ -1,10 +1,10 @@
 import express from "express";
 import {
-  deleteAdmitCardSettings,
+  deleteAdmitCard,
   getHeroImages,
   getSettings,
   toggleServiceSetting,
-  updateAdmitCardSettings,
+  updateAdmitCard,
   updateHeroImage,
   upsertExam,
 } from "../controller/setting.controller.js";
@@ -44,13 +44,13 @@ settingsRouter.post("/authorities", getAllAuthorities);
 settingsRouter.put(
   "/update",
   adminAuthMiddleware,
-  updateAdmitCardSettings
+  updateAdmitCard
 );
 
 settingsRouter.delete(
   "/admitcard/:id",
   adminAuthMiddleware,
-  deleteAdmitCardSettings
+  deleteAdmitCard
 );
 
 settingsRouter.put(

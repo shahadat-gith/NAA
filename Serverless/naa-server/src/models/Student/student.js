@@ -17,6 +17,10 @@ const studentSchema = new mongoose.Schema(
   {
     /* ================= BASIC ================= */
     name: { type: String, required: true, trim: true },
+    image: { 
+      url: { type: String, default: "" },
+      public_id: { type: String, default: "" },
+    },
 
     class: { type: String, required: true },
     stream: { type: String, default: "" },

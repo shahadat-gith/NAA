@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import "./ExamModal.css";
+import "./CurrentExamModal.css";
 import { EXAM_OPTIONS } from "../../../../utils/academicOptions";
 
-const ExamSettingsModal = ({ open, onClose, onSubmit, initialData, loading }) => {
+const CurrentExamModal = ({ open, onClose, onSubmit, initialData, loading }) => {
   const [examName, setExamName] = useState("");
   const [academicSession, setAcademicSession] = useState("");
 
@@ -78,4 +78,4 @@ const ExamSettingsModal = ({ open, onClose, onSubmit, initialData, loading }) =>
   );
 };
 
-export default ExamSettingsModal;
+export default CurrentExamModal;

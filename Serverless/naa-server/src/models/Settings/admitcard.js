@@ -28,7 +28,7 @@ const examSlotSchema = new mongoose.Schema(
 );
 
 /* ---------- Admit Card Per Class ---------- */
-const admitCardSettingsSchema = new mongoose.Schema(
+const admitCardSchema = new mongoose.Schema(
   {
     class: {
       type: String,
@@ -52,4 +52,4 @@ const admitCardSettingsSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.models.AdmitCardSettings || mongoose.model("AdmitCardSettings", admitCardSettingsSchema);
+export default mongoose.models.AdmitCard || mongoose.model("AdmitCard", admitCardSchema);

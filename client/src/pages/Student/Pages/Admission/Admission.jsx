@@ -6,9 +6,9 @@ import {
   STREAM_OPTIONS,
   FORM_FIELDS,
   ADDRESS_FIELDS,
-} from "../../../Utils/utility";
-import "./Admission.css";
-import { AppContext } from "../../../context/AppContext";
+} from "../../../../Utils/utility";
+import "../../Styles/Admission.css";
+import { AppContext } from "../../../../context/AppContext";
 import toast from "react-hot-toast";
 
 const Admission = () => {

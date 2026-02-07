@@ -19,16 +19,15 @@ import Gallery from "./pages/Gallery/Gallery";
 import TeacherDetails from "./pages/Staff/TeacherDetails/TeacherDetails";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
-/* ===== Portal Pages ===== */
-import Portal from "./pages/Portal/Portal";
-import Search from "./pages/Portal/Search/Search";
-import StudentDetails from "./pages/Portal/StudentDetails/StudentDetails";
-import Result from "./pages/Portal/Result/Result";
-import ResultDownload from "./pages/Portal/Result/ResultDownload";
-import Admission from "./pages/Portal/Admission/Admission";
+/* ===== Student Pages ===== */
+import StudentSearch from "./pages/Student/Pages/Search/StudentSearch";
+import Dashboard from "./pages/Student/Pages/Dashboard/Dashboard";
+import Admission from "./pages/Student/Pages/Admission/Admission";
 
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
+
+
 
 const App = () => {
   const location = useLocation();
@@ -64,13 +63,10 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
 
           {/* Portal */}
-          <Route path="/portal" element={<Portal />} />
-          <Route path="/portal/search" element={<Search />} />
-          <Route path="/portal/student/:id" element={<StudentDetails />} />
-          <Route path="/portal/result" element={<Result />} />
-          <Route path="/portal/result/download" element={<ResultDownload />}/>
-          <Route path="/portal/admission" element={<Admission/>}/>
 
+          <Route path="/student" element={<StudentSearch />} />
+            <Route path="/student/admission" element={<Admission />} />
+          <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>
