@@ -75,9 +75,9 @@ export const toggleServiceSetting = async (req, res) => {
 export const updateAdmitCard = async (req, res) => {
   try {
     const { class: classNum, stream,medium, examCenter, exams } = req.body;
-    let admitCard = await AdmitCard.findOne({ class: classNum, stream: stream || "" });
+    let admitCard = await AdmitCard.findOne({ class: classNum, medium, stream: stream || "" });
     if (!admitCard) {
-      admitCard = new AdmitCard({ class: classNum, stream: stream || "" });
+      admitCard = new AdmitCard({ class: classNum, medium, stream: stream || "" });
     } 
     admitCard.medium = medium || "";
     admitCard.examCenter = examCenter || "";
