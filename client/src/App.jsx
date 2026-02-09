@@ -12,11 +12,10 @@ import { AppContext } from "./context/AppContext";
 /* ===== Public Pages ===== */
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
-import Staff from "./pages/Staff/Staff";
+import Teachers from "./pages/Teachers/Teachers";
 import Academics from "./pages/Academics/Academics";
 import Contact from "./pages/Contact/Contact";
 import Gallery from "./pages/Gallery/Gallery";
-import TeacherDetails from "./pages/Staff/TeacherDetails/TeacherDetails";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
 /* ===== Student Pages ===== */
@@ -55,8 +54,7 @@ const App = () => {
           {/* Public */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/staffs" element={<Staff />} />
-          <Route path="/staffs/teacher" element={<TeacherDetails />} />
+          <Route path="/teachers" element={<Teachers />} />
           <Route path="/curriculum" element={<CurriculumDetails />} />
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />

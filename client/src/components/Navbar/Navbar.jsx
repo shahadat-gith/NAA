@@ -48,7 +48,7 @@ const Navbar = () => {
     { to: "/student", label: "Student Corner" },
     { to: "/academics", label: "Academics" },
     { to: "/curriculum?type=kinder", label: "Curriculum" },
-    { to: "/staffs", label: "Staffs" },
+    { to: "/teachers", label: "Teachers" },
     { to: "/gallery", label: "Gallery" },
     { to: "/contact", label: "Contact" },
   ];
