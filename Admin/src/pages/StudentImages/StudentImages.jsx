@@ -91,7 +91,7 @@ const StudentImages = () => {
     /* ================= CLEAR FILTERS ================= */
     const clearFilters = () => {
         setSearchTerm("");
-        setMediumFilter("");
+        setMediumFilter("assamese");
         setClassFilter("");
         setStreamFilter("");
         setFilteredStudents(students);
@@ -137,7 +137,7 @@ const StudentImages = () => {
                     value={mediumFilter}
                     onChange={(event) => setMediumFilter(event.target.value)}
                 >
-                    <option value="">All Media</option>
+                    <option value="">All Mediums</option>
                     {mediumOptions.map((medium) => (
                         <option key={medium} value={medium}>
                             {capitalizeWords(medium)}

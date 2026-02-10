@@ -162,8 +162,6 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 
 						{/* RIGHT PREVIEW & CONTROLS */}
 						<div className="crop-options">
-							<h4>Preview & Controls</h4>
-
 							<label>
 								Zoom
 								<input
@@ -200,9 +198,6 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 				<div className="student-image-modal-actions">
 					<button className="secondary-btn" onClick={resetState}>
 						Reset
-					</button>
-					<button className="secondary-btn" onClick={onClose}>
-						Cancel
 					</button>
 					<button
 						className="primary-btn"

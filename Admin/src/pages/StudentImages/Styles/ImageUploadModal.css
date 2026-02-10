@@ -26,6 +26,7 @@
 
 /* HEADER */
 .student-image-modal-header {
+  position: relative;
   padding: 20px 24px;
   display: flex;
   justify-content: space-between;
@@ -57,17 +58,29 @@
 }
 
 .student-image-modal-header button {
-  background: none;
-  border: none;
-  font-size: 28px;
-  color: #cbd5f5;
+  background: rgba(51, 65, 85, 0.5);
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 50%;
+  font-size: 24px;
+  color: #cbd5e1;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .student-image-modal-header button:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
   color: #f87171;
+  transform: rotate(90deg);
 }
+
+
 
 /* BODY */
 .student-image-modal-body {
@@ -259,8 +272,10 @@
 /* Mobile devices */
 @media (max-width: 768px) {
   .student-image-modal {
-    width: 96%;
+    width: 100%;
     border-radius: 16px;
+    max-width: none;
+    margin: auto 10px;
   }
 
   /* Header */
@@ -313,7 +328,6 @@
   /* Footer buttons */
   .student-image-modal-actions {
     padding: 16px;
-    flex-direction: column;
     gap: 10px;
   }
 
