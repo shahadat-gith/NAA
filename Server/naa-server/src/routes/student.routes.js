@@ -2,7 +2,6 @@ import express from "express";
 import { excelUpload, upload } from "../config/multer.js";
 
 import {
-    acceptProfilePicture,
     addMassStudents,
     addSingleStudent,
     deleteStudent,
@@ -11,7 +10,7 @@ import {
     SearchStudent,
     toggleAdmitCardPermission,
     updateStudent,
-    uploadTempProfilePicture
+    uploadStudentProfilePicture
 }
 
     from "../controller/student.controller.js";
@@ -31,6 +30,5 @@ studentRouter.post("/promote", adminAuthMiddleware, promoteStudents);
 studentRouter.put("/toggle-admit-card/:id", adminAuthMiddleware, toggleAdmitCardPermission);
 studentRouter.put("/:id", adminAuthMiddleware, updateStudent);
 
-studentRouter.post("/upload-temp-profile-pic/:id", upload.single("file"), uploadTempProfilePicture);
-studentRouter.post("/accept-profile-pic", adminAuthMiddleware, acceptProfilePicture);
+studentRouter.post("/upload-profile-picture", adminAuthMiddleware, upload.single("image"), uploadStudentProfilePicture);
 export default studentRouter;

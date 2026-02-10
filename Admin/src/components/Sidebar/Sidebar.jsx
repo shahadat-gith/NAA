@@ -10,6 +10,8 @@ const sidebarLinks = [
 
   // Student & Academic
   { to: "/students", icon: "fas fa-user-graduate", label: "Students" },
+  { to: "/student/images", icon: "fas fa-images", label: "Student Images" },
+
   { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
   { to: "/result", icon: "fas fa-chart-line", label: "Result" },
 

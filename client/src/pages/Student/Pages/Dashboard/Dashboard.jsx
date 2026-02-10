@@ -4,7 +4,6 @@ import axios from "axios";
 import "../../Styles/Dashboard.css";
 import generateAdmitCard from "../../../../Utils/generateAdmitCard";
 import capitalizeWords from "../../../../Utils/utility";
-import ImageUploadModal from "./ImageUploadModal";
 import { AppContext } from "../../../../context/AppContext";
 
 const Dashboard = () => {
@@ -14,7 +13,6 @@ const Dashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [imageModalOpen, setImageModalOpen] = useState(false);
 
   /* ================= FETCH STUDENT ================= */
 
@@ -176,17 +174,6 @@ const Dashboard = () => {
                     <i className="fas fa-user"></i>
                   )}
                 </div>
-
-                {!student?.image?.url && (
-                  <button
-                    type="button"
-                    className="db-avatar-edit"
-                    onClick={() => setImageModalOpen(true)}
-                    title="Upload photo"
-                  >
-                    <i className="fas fa-camera"></i>
-                  </button>
-                )}
               </div>
 
               <div className="db-student-name">
@@ -305,13 +292,6 @@ const Dashboard = () => {
 
         </div>
       </div>
-
-      {/* ================= Image Upload Modal ================= */}
-      <ImageUploadModal
-        open={imageModalOpen}
-        onClose={() => setImageModalOpen(false)}
-        studentId={student._id}
-      />
     </div>
   );
 };

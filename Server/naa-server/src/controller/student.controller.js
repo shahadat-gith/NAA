@@ -5,14 +5,12 @@ import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
 import ServiceSettings from "../models/Settings/services.js";
-import TemporaryFile from "../models/Student/tempFile.js";
-import { uploadToCloudinary } from "../config/cloudinary.js";
+import { uploadToCloudinary,deleteFromCloudinary } from "../config/cloudinary.js";
 
 
 export const getAllStudents = async (req, res) => {
   try {
     const students = await Student.find({ isActive: true })
-      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -45,14 +43,6 @@ export const getStudentById = async (req, res) => {
         message: "Student not found or inactive",
       });
     }
-
-    const tempImage = await TemporaryFile.findOne({ studentId }).lean();
-    if (!student?.image?.url && tempImage) {
-      student.image = tempImage;
-    }else{
-      student.image = student.image || null;
-    }
-
 
     /* ---------- PARALLEL QUERIES ---------- */
     const [principal, admitCard, examDetails, services] = await Promise.all([
@@ -536,94 +526,63 @@ export const addMassStudents = async (req, res) => {
   }
 };
 
-export const uploadTempProfilePicture = async (req, res) => {
+
+export const uploadStudentProfilePicture = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.query;
+    const { oldPublicId } = req.body;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid student ID",
-      });
+      return res.status(400).json({ success: false, message: "Invalid student ID" });
     }
 
     if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "Image file is required",
-      });
+      return res.status(400).json({ success: false, message: "Image file is required" });
     }
 
+    // --- DELETE OLD IMAGE FROM CLOUDINARY ---
+    if (oldPublicId) {
+      try {
+        await deleteFromCloudinary(oldPublicId);
+      } catch (err) {
+        console.error("Cloudinary Delete Error:", err);
+        // We continue anyway so the new upload isn't blocked by a failed deletion
+      }
+    }
+
+    // --- UPLOAD NEW IMAGE ---
     const result = await uploadToCloudinary(
       req.file.buffer,
-      "naa_temp_profile_pictures"
+      "naa_profile_pictures"
     );
 
-    const temporaryFile = new TemporaryFile({
-      studentId: id,
-      public_id: result.public_id,
-      url: result.secure_url,
-    });
+    const student = await Student.findByIdAndUpdate(
+      id,
+      {
+        image: {
+          url: result.secure_url,
+          public_id: result.public_id,
+        },
+      },
+      { new: true }
+    );
 
-    await temporaryFile.save();
+    if (!student) {
+      return res.status(404).json({ success: false, message: "Student not found" });
+    }
 
+    const students = await Student.find({ isActive: true });
 
     res.status(200).json({
       success: true,
-      message: "Profile picture uploaded successfully",
-      data: temporaryFile,
+      message: "Profile picture updated successfully",
+      students,
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
       message: "Profile picture upload failed",
-      error: error.message,
-    });
-  }
-};
-
-export const acceptProfilePicture = async (req, res) => {
-  try {
-    const { studentId, accepted } = req.body;
-
-    if (!studentId || !mongoose.Types.ObjectId.isValid(studentId)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid student ID",
-      });
-    }
-
-    const temporaryFile = await TemporaryFile.findOne({ studentId });
-    if (!temporaryFile) {
-      return res.status(404).json({
-        success: false,
-        message: "Picture not found",
-      });
-    }
-
-    if (accepted) {
-      await Student.findByIdAndUpdate(studentId, {
-        image: {
-          url: temporaryFile.url,
-          public_id: temporaryFile.public_id,
-        },
-      });
-    }
-
-    await cloudinary.uploader.destroy(temporaryFile.public_id);
-    await temporaryFile.remove();
-
-    res.status(200).json({
-      success: true,
-      message: accepted ? "Profile picture accepted" : "Profile picture rejected",
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete temporary profile picture",
       error: error.message,
     });
   }

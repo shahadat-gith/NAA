@@ -1,0 +1,232 @@
+/* OVERLAY */
+.student-image-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.75);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* MODAL */
+.student-image-modal {
+  width: 95%;
+  max-width: 1000px;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border-radius: 20px;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  box-shadow: 0 30px 70px rgba(2, 6, 23, 0.85);
+  color: #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* HEADER */
+.student-image-modal-header {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.35);
+}
+
+.student-image-modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.student-image-modal-header h3::before {
+  content: "";
+  width: 4px;
+  height: 22px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 2px;
+}
+
+.student-image-modal-header p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: rgba(203, 213, 225, 0.75);
+}
+
+.student-image-modal-header button {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #cbd5f5;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.student-image-modal-header button:hover {
+  color: #f87171;
+}
+
+/* BODY */
+.student-image-modal-body {
+  padding: 24px;
+}
+
+/* MAIN LAYOUT */
+.crop-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 24px;
+}
+
+/* LEFT IMAGE AREA */
+.crop-image-area {
+  position: relative;
+  height: 450px;
+  background: #020617;
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  overflow: hidden;
+}
+
+/* Selection Button in the empty state */
+.empty-preview {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #94a3b8;
+}
+
+.select-image-btn {
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select-image-btn:hover {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+/* RIGHT PANEL (PREVIEW & CONTROLS) */
+.crop-options {
+  background: rgba(15, 23, 42, 0.65);
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.45);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.crop-options h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #f8fafc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.crop-options label {
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #94a3b8;
+}
+
+/* PREVIEW BOX */
+.preview-container {
+  flex: 1;
+  min-height: 200px;
+  background: rgba(2, 6, 23, 0.5);
+  border: 2px dashed rgba(51, 65, 85, 0.6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.side-preview-img {
+  max-width: 100%;
+  max-height: 220px;
+  border-radius: 8px;
+  object-fit: contain;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.preview-placeholder {
+  font-size: 12px;
+  color: #475569;
+  text-align: center;
+  padding: 20px;
+}
+
+/* CROP ACTION BUTTON */
+.crop-btn {
+  background: #334155;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.crop-btn:not(:disabled):hover {
+  background: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.crop-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* FOOTER BUTTONS */
+.student-image-modal-actions {
+  padding: 20px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid rgba(51, 65, 85, 0.35);
+}
+
+.primary-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background: rgba(51, 65, 85, 0.3);
+  color: white;
+}

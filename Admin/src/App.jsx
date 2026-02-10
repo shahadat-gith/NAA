@@ -21,6 +21,7 @@ import Login from "./pages/Login/Login";
 import Result from "./pages/Result/Result";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
+import StudentImages from "./pages/StudentImages/StudentImages";
 
 /* ===============================
    PROTECTED ADMIN ROUTE
@@ -83,6 +84,7 @@ const App = () => {
                   <Route path="/teachers/:teacherId" element={<TeacherProfile />} />
 
                   <Route path="/students" element={<Student />} />
+                  <Route path="/student/images" element={<StudentImages />} />
                   <Route path="/students/:id" element={<StudentDetails />} />
                   <Route path="/result" element={<Result/>}/>
 
