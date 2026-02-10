@@ -230,3 +230,128 @@
   background: rgba(51, 65, 85, 0.3);
   color: white;
 }
+
+
+
+/* ===============================
+   RESPONSIVE STYLES
+================================ */
+
+/* Tablets & small laptops */
+@media (max-width: 1024px) {
+  .student-image-modal {
+    max-width: 92%;
+  }
+
+  .crop-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .crop-image-area {
+    height: 380px;
+  }
+
+  .crop-options {
+    padding: 20px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+  .student-image-modal {
+    width: 96%;
+    border-radius: 16px;
+  }
+
+  /* Header */
+  .student-image-modal-header {
+    padding: 16px 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .student-image-modal-header h3 {
+    font-size: 18px;
+  }
+
+  .student-image-modal-header button {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    font-size: 26px;
+  }
+
+  /* Body */
+  .student-image-modal-body {
+    padding: 16px;
+  }
+
+  .crop-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .crop-image-area {
+    height: 300px;
+  }
+
+  /* Right panel */
+  .crop-options {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .preview-container {
+    min-height: 160px;
+  }
+
+  .side-preview-img {
+    max-height: 160px;
+  }
+
+  /* Footer buttons */
+  .student-image-modal-actions {
+    padding: 16px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .student-image-modal-actions button {
+    width: 100%;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .student-image-modal {
+    border-radius: 12px;
+  }
+
+  .crop-image-area {
+    height: 240px;
+  }
+
+  .student-image-modal-header h3 {
+    font-size: 16px;
+  }
+
+  .student-image-modal-header p {
+    font-size: 12px;
+  }
+
+  .crop-options h4 {
+    font-size: 14px;
+  }
+
+  .crop-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
