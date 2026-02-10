@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import logo from "/NAA_LOGO.svg";
+import logo from "/logo.png";
 import "./Navbar.css";
+import { AppContext } from "../../context/AppContext";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { serviceSettings } = useContext(AppContext);
   const mobileMenuRef = useRef(null);
   const navigate = useNavigate();
 
@@ -93,6 +95,13 @@ const Navbar = () => {
             </div>
           </div>
 
+          {serviceSettings?.admission &&
+            <div className="nav-right-action">
+              <NavLink to="/admission" className="nav-admission-btn">Admission</NavLink>
+            </div>
+
+          }
+
           {/* ================= MOBILE MENU BUTTON ================= */}
           <div className="mobile-menu-button">
             <button
@@ -121,6 +130,15 @@ const Navbar = () => {
           className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}
         >
           <div className="mobile-menu-header">
+            {serviceSettings?.admission &&
+              <NavLink onClick={() => setIsMobileMenuOpen(false)}
+                to="/admission"
+                className="nav-admission-btn"
+              >
+                Admission
+              </NavLink>
+
+            }
             <button
               className="mobile-close-button"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -136,8 +154,7 @@ const Navbar = () => {
                 key={link.to}
                 to={link.to}
                 className={({ isActive }) =>
-                  `mobile-nav-link ${
-                    isActive ? "mobile-nav-link-active" : ""
+                  `mobile-nav-link ${isActive ? "mobile-nav-link-active" : ""
                   }`
                 }
                 onClick={() => setIsMobileMenuOpen(false)}

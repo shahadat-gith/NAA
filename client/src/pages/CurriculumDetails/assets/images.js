@@ -10,4 +10,3 @@ export const curriculumImages = {
     middle,
     higher
 }
-

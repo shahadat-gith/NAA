@@ -2,7 +2,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { curriculumDetailsData } from './curriculumData';
 import './CurriculumDetails.css';
 import Banner from '../../components/Banner/Banner';
-import { curriculumImages } from '../../assets/images';
+import { curriculumImages } from './assets/images';
 import { Helmet } from 'react-helmet-async';
 
 const CurriculumDetails = () => {

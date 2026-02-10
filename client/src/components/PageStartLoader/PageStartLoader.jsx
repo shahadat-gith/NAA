@@ -1,6 +1,6 @@
 import React from "react";
 import "./PageStartLoader.css";
-import logo from "/NAA_LOGO.svg";
+import logo from "/logo.png";
 
 const PageStartLoader = () => {
   return (

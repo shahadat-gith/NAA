@@ -65,15 +65,9 @@ const Hero = () => {
         >
           <div className="admission-track">
             <span className="admission-text">
-              📢 Admission is going on for the current academic session —{" "}
+              <span>Admission is going on for the session 2026-2027 </span>
               <span className="admission-cta">Click here to apply now</span>
             </span>
-
-            <span className="admission-text">
-              📢 Admission is going on for the current academic session —{" "}
-              <span className="admission-cta">Click here to apply now</span>
-            </span>
-
           </div>
         </div>
       )}

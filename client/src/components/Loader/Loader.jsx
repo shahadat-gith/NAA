@@ -1,7 +1,7 @@
 // Loader.jsx
 import React from "react";
 import "./Loader.css";
-import logo from "/NAA_LOGO.svg";
+import logo from "/logo.png";
 
 const Loader = ({ text = "Loading..." }) => {
   return (

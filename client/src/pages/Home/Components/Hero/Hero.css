@@ -99,7 +99,6 @@
 .admission-track {
   display: inline-flex;
   align-items: center;
-  animation: admission-scroll 18s linear infinite;
 }
 
 .admission-text {
@@ -114,23 +113,14 @@
   animation-play-state: paused;
 }
 
-/* ===============================
-   ANIMATION
-   =============================== */
-@keyframes admission-scroll {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
 
 /* Mobile */
 @media (max-width: 768px) {
   .admission-text {
     font-size: 0.85rem;
     padding: 0.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
   }
 }
 
