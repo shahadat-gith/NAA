@@ -96,7 +96,6 @@
   }
 
   .sidebar-item {
-    flex-direction: column;
     gap: 8px;
     padding: 8px;
     font-size: 10px;

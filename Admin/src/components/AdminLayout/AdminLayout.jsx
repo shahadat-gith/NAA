@@ -10,6 +10,11 @@ const AdminLayout = ({ children }) => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+
+  const closeSidebar = () =>{
+    setIsSidebarOpen(false)
+  }
+
   return (
     <div className="admin-layout">
       {/* Navbar */}
@@ -17,7 +22,7 @@ const AdminLayout = ({ children }) => {
 
       {/* Sidebar */}
       <div className={`sidebar-wrapper ${isSidebarOpen ? "open" : ""}`}>
-        <Sidebar />
+        <Sidebar closeSidebar = {closeSidebar}/>
       </div>
 
       {/* Main Content */}

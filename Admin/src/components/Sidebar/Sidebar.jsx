@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 
 
-const Sidebar = () => {
+const Sidebar = ({closeSidebar}) => {
 
 const sidebarLinks = [
   { to: "/", icon: "fas fa-home", label: "Home" },
@@ -34,6 +34,7 @@ const sidebarLinks = [
             <NavLink
               to={link.to}
               className={({ isActive }) => `sidebar-item ${isActive ? "active" : ""}`}
+              onClick={closeSidebar}
             >
               <i className={link.icon}></i> {link.label}
               {link.badge > 0 && <span className="badge">{link.badge}</span>}
