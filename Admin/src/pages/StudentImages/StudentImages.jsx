@@ -18,7 +18,7 @@ const StudentImages = () => {
     const [activeStudent, setActiveStudent] = useState(null);
 
     const [searchTerm, setSearchTerm] = useState("");
-    const [mediumFilter, setMediumFilter] = useState("assamese");
+    const [mediumFilter, setMediumFilter] = useState("");
     const [classFilter, setClassFilter] = useState("");
     const [streamFilter, setStreamFilter] = useState("");
     const [loading, setLoading] = useState(false);
@@ -91,7 +91,7 @@ const StudentImages = () => {
     /* ================= CLEAR FILTERS ================= */
     const clearFilters = () => {
         setSearchTerm("");
-        setMediumFilter("assamese");
+        setMediumFilter("");
         setClassFilter("");
         setStreamFilter("");
         setFilteredStudents(students);
