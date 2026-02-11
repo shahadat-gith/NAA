@@ -157,7 +157,21 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 							{capitalizeWords(student?.class)}
 						</p>
 					</div>
+					
 					<button onClick={onClose}>×</button>
+				</div>
+
+				<div className="student-image-modal-actions">
+					<button className="secondary-btn" onClick={resetState}>
+						Reset
+					</button>
+					<button
+						className="primary-btn"
+						onClick={handleUpload}
+						disabled={!croppedBlob || uploading}
+					>
+						{uploading ? "Uploading..." : "Upload Image"}
+					</button>
 				</div>
 
 				{/* BODY */}
@@ -223,18 +237,7 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 				</div>
 
 				{/* FOOTER */}
-				<div className="student-image-modal-actions">
-					<button className="secondary-btn" onClick={resetState}>
-						Reset
-					</button>
-					<button
-						className="primary-btn"
-						onClick={handleUpload}
-						disabled={!croppedBlob || uploading}
-					>
-						{uploading ? "Uploading..." : "Upload Image"}
-					</button>
-				</div>
+				
 
 				<input
 					ref={fileInputRef}
