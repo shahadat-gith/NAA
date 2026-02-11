@@ -9,6 +9,17 @@ const examSchema = new mongoose.Schema({
     academicSession: {
         type: String,
         required: true,
+    },
+
+    time:{
+        morning: {
+            type: String,
+            default: false,
+        },
+        afternoon: {
+            type: String,
+            default: false,
+        }
     }
 })
 

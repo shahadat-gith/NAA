@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-
 import { AdminContext } from "../../context/AdminContext";
+import { AppContext } from "../../context/AppContext";
 import Loader from "../../components/Loader/Loader";
 import ResultModal from "./ResultModal/ResultModal";
 
@@ -18,14 +18,19 @@ import toast from "react-hot-toast";
 const Result = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const [results, setResults] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    results,
+    setResults,
+    fetchResults,
+    fetchingResults,
+  } = useContext(AppContext);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editResult, setEditResult] = useState(null);
   const [updatingId, setUpdatingId] = useState(null);
 
-
   /* ================= SEARCH & FILTER STATES ================= */
+
   const [search, setSearch] = useState("");
   const [filterClass, setFilterClass] = useState("");
   const [filterMedium, setFilterMedium] = useState("");
@@ -33,6 +38,7 @@ const Result = () => {
   const [filterSession, setFilterSession] = useState("");
   const [filterExam, setFilterExam] = useState("");
 
+  /* ================= TOGGLE VISIBILITY ================= */
 
   const toggleVisibility = async (id, currentValue) => {
     try {
@@ -47,47 +53,27 @@ const Result = () => {
       // Optimistic UI update
       setResults((prev) =>
         prev.map((r) =>
-          r._id === id ? { ...r, canSee: !currentValue } : r
+          r._id === id
+            ? { ...r, canSee: !currentValue }
+            : r
         )
       );
-    } catch (err) {
+    } catch {
       toast.error("Failed to update visibility");
     } finally {
       setUpdatingId(null);
     }
   };
 
-
-  /* ================= FETCH RESULTS ================= */
-  const fetchResults = async () => {
-    try {
-      setLoading(true);
-
-      const res = await axios.post(
-        `${backendUrl}/api/results/all`,
-        {},
-        { headers: { Authorization: `Bearer ${adminToken}` } }
-      );
-
-      if (res.data.success) {
-        setResults(res.data.results || []);
-      }
-    } catch (err) {
-      console.error("Error fetching results", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchResults();
-  }, []);
-
   /* ================= FILTERED RESULTS ================= */
+
   const filteredResults = useMemo(() => {
-    return results.filter((r) => {
-      const name = r.studentDetails?.name?.toLowerCase() || "";
-      const reg = r.registrationNo.toLowerCase();
+    return (results || []).filter((r) => {
+      const name =
+        r.studentDetails?.name?.toLowerCase() ||
+        "";
+      const reg =
+        r.registrationNo?.toLowerCase() || "";
 
       if (
         search &&
@@ -97,11 +83,32 @@ const Result = () => {
         return false;
       }
 
-      if (filterClass && r.class !== filterClass) return false;
-      if (filterMedium && r.medium !== filterMedium) return false;
-      if (filterStream && r.stream !== filterStream) return false;
-      if (filterSession && r.academicSession !== filterSession) return false;
-      if (filterExam && r.examName !== filterExam) return false;
+      if (filterClass && r.class !== filterClass)
+        return false;
+
+      if (
+        filterMedium &&
+        r.medium !== filterMedium
+      )
+        return false;
+
+      if (
+        filterStream &&
+        r.stream !== filterStream
+      )
+        return false;
+
+      if (
+        filterSession &&
+        r.academicSession !== filterSession
+      )
+        return false;
+
+      if (
+        filterExam &&
+        r.examName !== filterExam
+      )
+        return false;
 
       return true;
     });
@@ -115,7 +122,6 @@ const Result = () => {
     filterExam,
   ]);
 
-
   const clearFilters = () => {
     setSearch("");
     setFilterClass("");
@@ -126,30 +132,44 @@ const Result = () => {
   };
 
   /* ================= DELETE RESULT ================= */
+
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this result?")) return;
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this result?"
+      );
+
+    if (!confirmDelete) return;
 
     try {
       await axios.post(
         `${backendUrl}/api/results/delete`,
         { id },
-        { headers: { Authorization: `Bearer ${adminToken}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
       );
 
       fetchResults();
-    } catch (err) {
-      alert("Failed to delete result");
+    } catch {
+      toast.error("Failed to delete result");
     }
   };
 
-  if (loading) return <Loader text="loading results..."/>;
+  if (fetchingResults)
+    return <Loader text="Loading results..." />;
 
   return (
     <div className="result-page">
       {/* ================= HEADER ================= */}
       <div className="result-header">
         <h2>Results</h2>
-        <button className="btn-primary" onClick={() => setModalOpen(true)}>
+        <button
+          className="btn-primary"
+          onClick={() => setModalOpen(true)}
+        >
           + Upload Result
         </button>
       </div>
@@ -159,43 +179,83 @@ const Result = () => {
         <input
           placeholder="Search by name or registration no"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
         />
 
-        <select value={filterClass} onChange={(e) => setFilterClass(e.target.value)}>
+        <select
+          value={filterClass}
+          onChange={(e) =>
+            setFilterClass(e.target.value)
+          }
+        >
           <option value="">Class</option>
-          {[...new Set([...CLASS_OPTIONS.english, ...CLASS_OPTIONS.assamese])].map(
-            (c) => (
-              <option key={c} value={c}>{c}</option>
+          {[...new Set([
+            ...CLASS_OPTIONS.english,
+            ...CLASS_OPTIONS.assamese,
+          ])].map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={filterMedium}
+          onChange={(e) =>
+            setFilterMedium(e.target.value)
+          }
+        >
+          <option value="">Medium</option>
+          {["english", "assamese"].map(
+            (m) => (
+              <option key={m} value={m}>
+                {m}
+              </option>
             )
           )}
         </select>
 
-        <select value={filterMedium} onChange={(e) => setFilterMedium(e.target.value)}>
-          <option value="">Medium</option>
-          {["english", "assamese"].map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
-
-        <select value={filterStream} onChange={(e) => setFilterStream(e.target.value)}>
+        <select
+          value={filterStream}
+          onChange={(e) =>
+            setFilterStream(e.target.value)
+          }
+        >
           <option value="">Stream</option>
           {STREAM_OPTIONS.map((s) => (
-            <option key={s} value={s}>{s}</option>
+            <option key={s} value={s}>
+              {s}
+            </option>
           ))}
         </select>
 
-        <select value={filterSession} onChange={(e) => setFilterSession(e.target.value)}>
+        <select
+          value={filterSession}
+          onChange={(e) =>
+            setFilterSession(e.target.value)
+          }
+        >
           <option value="">Session</option>
           {SESSION_OPTIONS.map((s) => (
-            <option key={s} value={s}>{s}</option>
+            <option key={s} value={s}>
+              {s}
+            </option>
           ))}
         </select>
 
-        <select value={filterExam} onChange={(e) => setFilterExam(e.target.value)}>
+        <select
+          value={filterExam}
+          onChange={(e) =>
+            setFilterExam(e.target.value)
+          }
+        >
           <option value="">Exam</option>
           {EXAM_OPTIONS.map((e) => (
-            <option key={e} value={e}>{e}</option>
+            <option key={e} value={e}>
+              {e}
+            </option>
           ))}
         </select>
 
@@ -232,55 +292,89 @@ const Result = () => {
           <tbody>
             {filteredResults.length === 0 ? (
               <tr>
-                <td colSpan="14" style={{ textAlign: "center" }}>
+                <td
+                  colSpan="14"
+                  style={{
+                    textAlign: "center",
+                  }}
+                >
                   No results found
                 </td>
               </tr>
             ) : (
-              filteredResults.map((r, index) => (
-                <tr key={r._id}>
-                  <td>{index + 1}</td>
-                  <td>{r.studentDetails?.name || "—"}</td>
-                  <td>{r.registrationNo}</td>
-                  <td>{r.class}</td>
-                  <td>{r.medium}</td>
-                  <td>{r.stream || "—"}</td>
-                  <td>{r.examName}</td>
-                  <td>{r.academicSession}</td>
-                  <td>{r.totalMarks}</td>
-                  <td>{r.percentage}%</td>
-                  <td>{r.grade}</td>
-                  <td>{r.rank || "—"}</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={r.canSee}
-                        disabled={updatingId === r._id}
-                        onChange={() => toggleVisibility(r._id, r.canSee)}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </td>
-                  <td className="action-cell">
-                    <button
-                      className="btn-edit"
-                      onClick={() => {
-                        setEditResult(r);
-                        setModalOpen(true);
-                      }}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDelete(r._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
+              filteredResults.map(
+                (r, index) => (
+                  <tr key={r._id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      {r.studentDetails
+                        ?.name || "—"}
+                    </td>
+                    <td>{r.registrationNo}</td>
+                    <td>{r.class}</td>
+                    <td>{r.medium}</td>
+                    <td>
+                      {r.stream || "—"}
+                    </td>
+                    <td>{r.examName}</td>
+                    <td>
+                      {r.academicSession}
+                    </td>
+                    <td>{r.totalMarks}</td>
+                    <td>
+                      {r.percentage}%
+                    </td>
+                    <td>{r.grade}</td>
+                    <td>
+                      {r.rank || "—"}
+                    </td>
+                    <td>
+                      <label className="switch">
+                        <input
+                          type="checkbox"
+                          checked={r.canSee}
+                          disabled={
+                            updatingId ===
+                            r._id
+                          }
+                          onChange={() =>
+                            toggleVisibility(
+                              r._id,
+                              r.canSee
+                            )
+                          }
+                        />
+                        <span className="slider"></span>
+                      </label>
+                    </td>
+                    <td className="action-cell">
+                      <button
+                        className="btn-edit"
+                        onClick={() => {
+                          setEditResult(
+                            r
+                          );
+                          setModalOpen(
+                            true
+                          );
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() =>
+                          handleDelete(
+                            r._id
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                )
+              )
             )}
           </tbody>
         </table>

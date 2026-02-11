@@ -1,0 +1,400 @@
+/* Container for the page background */
+.admit-page {
+  background-color: #f4f7f6;
+  padding: 40px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Times New Roman', Times, serif; /* Professional academic font */
+}
+
+/* Download Button Styling */
+.download-wrapper {
+  margin-bottom: 25px;
+}
+
+.download-btn {
+  background-color: #2d5a4c; /* Matching the table header green */
+  color: white;
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background-color: #1a3a32;
+}
+
+/* The Admit Card "Paper" */
+.admit-card-container {
+  background-color: white;
+  width: 100%;
+  max-width: 800px;
+  padding: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Double Border Framing */
+.outer-border {
+  border: 3px solid #004632;              /* Bold deep green */
+  padding: 6px;
+  background: #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px #d8e6df;           /* Soft accent outer ring */
+}
+
+.inner-border {
+  border: 1.5px solid #004632;            /* Secondary border */
+  padding: 40px;
+  min-height: 1000px;                     /* A4-like height */
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  background: linear-gradient(
+    to bottom,
+    #ffffff 0%,
+    #f7fbf9 100%
+  );
+}
+
+
+/* ================= HEADER ================= */
+.admit-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.school-logo {
+  width: 70px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.school-name {
+  font-size: 28px;
+  color: #1a3a5a; /* Deep blue/black */
+  margin: 0 0 8px 0;
+  letter-spacing: 1px;
+}
+
+.divider-wrapper, .session-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 15px;
+}
+
+.line {
+  height: 1px;
+  background-color: #999;
+  flex-grow: 1;
+  max-width: 25%;
+}
+
+.line.short {
+  max-width: 60px;
+}
+
+.exam-name {
+  font-size: 14px;
+  color: #444;
+  text-transform: uppercase;
+}
+
+.admit-title {
+  font-size: 34px;
+  font-weight: bold;
+  margin: 15px 0;
+  letter-spacing: 3px;
+}
+
+.session-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* ================= STUDENT DETAILS ================= */
+.student-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+.student-info p {
+  font-size: 16px;
+  margin: 12px 0;
+  color: #333;
+}
+
+.data-text {
+  text-transform: capitalize;
+  font-weight: normal;
+  margin-left: 5px;
+}
+
+.photo-frame {
+  width: 120px;
+  height: 140px;
+  border: 1px solid #ccc;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= EXAM TABLE ================= */
+.exam-section {
+  margin-top: 30px;
+}
+
+.table-header-box {
+  background-color: #1a3a32; /* Dark green matching screenshots */
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 18px;
+  border: 1px solid #1a3a32;
+}
+
+.exam-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.exam-table th {
+  background-color: #2d5a4c; /* Lighter forest green */
+  color: white;
+  border: 1px solid #1a3a32;
+  padding: 12px;
+  font-size: 13px;
+}
+
+.exam-table td {
+  border: 1px solid #1a3a32;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.subject-cell {
+  font-weight: 500;
+}
+
+/* ================= INSTRUCTIONS ================= */
+.instruction-section {
+  margin-top: 30px;
+}
+
+.instruction-section h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-decoration: underline;
+}
+
+.instruction-list {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.instruction-list li {
+  font-size: 13px;
+  margin-bottom: 6px;
+  line-height: 1.5;
+  color: #444;
+}
+
+/* ================= FOOTER ================= */
+.footer-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto; /* Pushes footer to bottom of inner-border */
+  padding-bottom: 10px;
+}
+
+.signature-container {
+  width: 40%;
+}
+
+.signature-wrapper {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signature-img {
+  width: 150px;
+  height: auto;
+  margin-bottom: -10px; /* Overlap slightly with label for realism */
+}
+
+.signature-placeholder {
+  height: 60px;
+}
+
+.principal-label {
+  font-size: 22px;
+  color: #2e5a88; /* Blue ink color */
+  font-weight: bold;
+  margin: 0;
+}
+
+.principal-name {
+  font-size: 14px;
+  margin: 5px 0 0 0;
+}
+
+/* School Info Side */
+.school-contact-area {
+  text-align: center;
+  width: 55%;
+}
+
+.footer-school-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.footer-school-name {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #333;
+}
+
+.school-contact-area p {
+  margin: 3px 0;
+  font-size: 12px;
+  color: #555;
+}
+
+
+/* ================= RESPONSIVE STYLES ================= */
+
+/* Tablets & small laptops */
+@media (max-width: 900px) {
+  .admit-card-container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .inner-border {
+    padding: 25px;
+  }
+
+  .school-name {
+    font-size: 24px;
+  }
+
+  .admit-title {
+    font-size: 28px;
+  }
+
+  .student-info p {
+    font-size: 15px;
+  }
+
+  .exam-table th,
+  .exam-table td {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+
+/* Mobile devices */
+@media (max-width: 600px) {
+  .admit-page {
+    padding: 15px 0;
+  }
+
+  .school-logo {
+    width: 60px;
+  }
+
+  .school-name {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .divider-wrapper .line {
+    max-width: 15%;
+  }
+
+  .admit-title {
+    font-size: 24px;
+    letter-spacing: 2px;
+  }
+
+  /* Student section stacks */
+  .student-section {
+    align-items: center;
+    gap: 20px;
+  }
+
+  .student-info {
+    width: 100%;
+  }
+
+  .data-text{
+    font-size: 13px;
+  }
+
+
+  /* Footer stacks vertically */
+  .footer-layout {
+    align-items: center;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .signature-container,
+  .school-contact-area {
+    width: 100%;
+  }
+
+  .signature-img {
+    width: 120px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 400px) {
+  .school-name {
+    font-size: 18px;
+  }
+
+  .admit-title {
+    font-size: 22px;
+  }
+
+  .student-info p {
+    font-size: 14px;
+  }
+
+  .instruction-list li {
+    font-size: 12px;
+  }
+}
+

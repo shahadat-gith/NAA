@@ -2,19 +2,9 @@ import React, { useContext } from "react";
 import "./Navbar.css";
 import logo from "/logo.png";
 import { useNavigate } from "react-router-dom";
-import { AdminContext } from "../../context/AdminContext";
-
 const Navbar = ({ toggleSidebar }) => {
-  const { adminToken, setAdminToken } = useContext(AdminContext);
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    navigate("/login");
-    if (adminToken) {
-      setAdminToken("");
-      localStorage.removeItem("adminToken");
-    }
-  };
 
   return (
     <nav className="admin-navbar">
@@ -34,13 +24,7 @@ const Navbar = ({ toggleSidebar }) => {
             </div>
           </div>
         </div>
-
-        {/* Right Section */}
-        <div className="nav-right">
-          <button className="login-btn" onClick={logoutHandler}>
-            Logout
-          </button>
-        </div>
+        
       </div>
     </nav>
   );

@@ -49,8 +49,6 @@ export const getImages = async (req, res) => {
   try {
     const images = await Image.find().sort({ createdAt: -1 });
 
-    const totalImages = await Image.countDocuments();
-
     res.status(200).json({ 
       success: true, 
       images, 

@@ -22,6 +22,7 @@ import Result from "./pages/Result/Result";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
 import StudentImages from "./pages/StudentImages/StudentImages";
+import Utility from "./pages/Utility/Utility";
 
 /* ===============================
    PROTECTED ADMIN ROUTE
@@ -92,9 +93,12 @@ const App = () => {
                   <Route path="/admissions" element={<Admissions/>}/>
                   <Route path="/admissions/:id" element={<AdmissionDetails/>}/>
 
-                  <Route path="/settings" element={<Settings />} />
+                  
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/achievers" element={<Achievers />} />
+
+                  <Route path="/utility" element={<Utility />} />
+                  <Route path="/settings" element={<Settings />} />
                 </Routes>
               </AdminLayout>
             </ProtectedAdminRoute>

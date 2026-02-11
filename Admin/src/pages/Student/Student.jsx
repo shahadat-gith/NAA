@@ -6,22 +6,20 @@ import StudentTable from "./StudentTable/StudentTable";
 import MassStudentModal from "./StudentModal/MassStudentModal";
 import SingleStudentModal from "./StudentModal/SingleStudentModal";
 import PromoteStudentsModal from "./StudentModal/PromoteStudentsModal";
-
-import { formatClassName} from "../../utils/utility";
+import { formatClassName } from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
-import { generateIdCards } from "../../utils/generateIdCards";
-import { exportToExcel } from "../../utils/exportToExcel";
-import { exportToPdf } from "../../utils/exportToPdf";
+
 
 import "./Student.css";
 import Loader from "../../components/Loader/Loader";
+import { AppContext } from "../../context/AppContext";
 
 const Student = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  /* ================= STATE ================= */
-  const [students, setStudents] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
+  const { students,fetchStudents , fetchingStudents} = useContext(AppContext)
+
+  const [filteredStudents, setFilteredStudents] = useState(students || []);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,28 +31,6 @@ const Student = () => {
   const [studentModalOpen, setStudentModalOpen] = useState(false);
   const [singleStudentModal, setSingleStudentModal] = useState(false);
   const [promoteModalOpen, setPromoteModalOpen] = useState(false);
-
-  /* ================= FETCH STUDENTS ================= */
-  const fetchStudents = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`${backendUrl}/api/student/list`, {
-        headers: { Authorization: `Bearer ${adminToken}` },
-      });
-
-      const list = res.data?.students || [];
-      setStudents(list);
-      setFilteredStudents(list);
-    } catch (error) {
-      console.error("Error fetching students:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (backendUrl && adminToken) fetchStudents();
-  }, [backendUrl, adminToken]);
 
   /* ================= FILTER LOGIC ================= */
   useEffect(() => {
@@ -99,7 +75,7 @@ const Student = () => {
     setFilteredStudents(students);
   };
 
-  if (loading) return <Loader text="Loading students..." />;
+  if(fetchingStudents) return <Loader text="loading students..."/>
 
   return (
     <div className="admin-student-list-container">
@@ -195,45 +171,18 @@ const Student = () => {
               </select>
             </div>
           )}
-      </div>
 
-      {/* ===== FILTER ACTIONS ===== */}
-      <div className="fs-actions">
-        <button
-          className="fs-btn fs-export-btn"
-          onClick={() => exportToExcel(filteredStudents)}
-          disabled={!filteredStudents.length}
-        >
-          📊 Export to Excel
-        </button>
-
-        <button
-          className="fs-btn fs-export-btn"
-          onClick={() => exportToPdf(filteredStudents)}
-          disabled={!classFilter}
-        >
-         Export to Pdf
-        </button>
-
-        <button
-          className="fs-btn fs-clear-btn"
-          onClick={clearFilters}
-          disabled={
-            !searchTerm && !mediumFilter && !classFilter && !streamFilter
-          }
-        >
-          ✕ Clear Filters
-        </button>
-
-        <button
-          className="fs-btn fs-idcard-btn"
-          onClick={() =>
-            generateIdCards(filteredStudents, mediumFilter, classFilter)
-          }
-          disabled={!mediumFilter || !classFilter || !filteredStudents.length}
-        >
-          🪪 Generate ID Cards
-        </button>
+        <div className="fs-filter-group">
+          <button
+            className="fs-btn fs-clear-btn"
+            onClick={clearFilters}
+            disabled={
+              !searchTerm && !mediumFilter && !classFilter && !streamFilter
+            }
+          >
+            ✕ Clear Filters
+          </button>
+        </div>
       </div>
 
       {/* ===== COUNT ===== */}
@@ -265,7 +214,7 @@ const Student = () => {
         isOpen={singleStudentModal}
         onClose={() => {
           setSingleStudentModal(false);
-          
+
         }}
         fetchStudents={fetchStudents}
       />

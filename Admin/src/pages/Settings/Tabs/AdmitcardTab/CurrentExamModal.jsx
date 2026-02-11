@@ -6,11 +6,15 @@ import { EXAM_OPTIONS } from "../../../../utils/academicOptions";
 const CurrentExamModal = ({ open, onClose, onSubmit, initialData, loading }) => {
   const [examName, setExamName] = useState("");
   const [academicSession, setAcademicSession] = useState("");
+  const [morning, setMorning] = useState("")
+  const [afternoon, setAfternoon] = useState("")
 
   useEffect(() => {
     if (open) {
       setExamName(initialData?.examName || "");
       setAcademicSession(initialData?.academicSession || "");
+      setMorning(initialData.morning || "")
+      setAfternoon(initialData.afternoon || "")
     }
   }, [open, initialData]);
 
@@ -25,6 +29,8 @@ const CurrentExamModal = ({ open, onClose, onSubmit, initialData, loading }) => 
     onSubmit({
       examName: examName.trim(),
       academicSession: academicSession.trim(),
+      morning: morning.trim(),
+      afternoon:afternoon.trim()
     });
   };
 
@@ -61,6 +67,24 @@ const CurrentExamModal = ({ open, onClose, onSubmit, initialData, loading }) => 
               value={academicSession}
               onChange={(e) => setAcademicSession(e.target.value)}
               placeholder="e.g. 2025-2026"
+            />
+          </div>
+          <div className="act-field">
+            <label>Morning Time *</label>
+            <input
+              type="text"
+              value={morning}
+              onChange={(e) => setMorning(e.target.value)}
+              placeholder="e.g. 9:00 AM - 12:00 PM"
+            />
+          </div>
+          <div className="act-field">
+            <label>Afternoon Time *</label>
+            <input
+              type="text"
+              value={afternoon}
+              onChange={(e) => setAfternoon(e.target.value)}
+              placeholder="e.g. 2:00 PM - 5:00 PM"
             />
           </div>
 

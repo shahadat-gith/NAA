@@ -1,25 +1,19 @@
 import express from "express";
 import {
   deleteAdmitCard,
-  getHeroImages,
   getSettings,
   toggleServiceSetting,
   updateAdmitCard,
+  updateAuthority,
   updateHeroImage,
   upsertExam,
 } from "../controller/setting.controller.js";
 
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
-import {
-  getAllAuthorities,
-  updateAuthority,
-} from "../controller/authority.controller.js";
-
 import { upload } from "../config/multer.js";
 
 const settingsRouter = express.Router();
 
-settingsRouter.get("/hero-images", getHeroImages);
 
 settingsRouter.post(
   "/hero-images/update",
@@ -39,7 +33,6 @@ settingsRouter.post(
   updateAuthority
 );
 
-settingsRouter.post("/authorities", getAllAuthorities);
 
 settingsRouter.put(
   "/update",
@@ -62,6 +55,6 @@ settingsRouter.put(
 settingsRouter.post("/exam/upsert", adminAuthMiddleware, upsertExam);
 
 
-settingsRouter.get("/:type", getSettings);
+settingsRouter.get("/", getSettings);
 
 export default settingsRouter;

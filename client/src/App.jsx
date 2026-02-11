@@ -3,9 +3,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
 import PageStartLoader from "./components/PageStartLoader/PageStartLoader";
-import { ToastContainer } from "react-toastify";
 import { Toaster } from "react-hot-toast";
-import "react-toastify/dist/ReactToastify.css";
 
 import { AppContext } from "./context/AppContext";
 
@@ -25,6 +23,7 @@ import Dashboard from "./pages/Student/Pages/Dashboard/Dashboard";
 /* ===== Not Found ===== */
 import PageNotFound from "./components/404/PageNotFound";
 import Admission from "./pages/Admission/Admission";
+import AdmitCard from "./pages/Student/Pages/AdmitCard/AdmitCard";
 
 
 
@@ -44,8 +43,6 @@ const App = () => {
   return (
     <div className="app-layout">
       <Navbar />
-
-      <ToastContainer />
       <Toaster position="top-center" />
 
       {/*MAIN CONTENT */}
@@ -65,6 +62,7 @@ const App = () => {
 
           <Route path="/student" element={<StudentSearch />} />
           <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
+          <Route path="/student/dashboard/admitcard" element={<AdmitCard />} />
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

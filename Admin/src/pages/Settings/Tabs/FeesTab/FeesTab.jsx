@@ -1,7 +1,7 @@
 import React from "react";
 import "./FeesTab.css";
 
-const FeesTab = () => {
+const FeesTab = ({data, loading}) => {
   return (
     <div className="ft-container">
       <div className="ft-empty-state">

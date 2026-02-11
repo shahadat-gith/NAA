@@ -6,7 +6,7 @@ const generateAdmitCard = (student, admitCard, principal) => {
     const doc = new jsPDF("p", "mm", "a4");
 
     /* ========= SETTINGS & PATHS ========= */
-    const logoPath = "/NAA_LOGO.png"; 
+    const logoPath = "/logo.png"; 
     const accentColor = [31, 41, 55]; 
     const secondaryColor = [243, 244, 246]; 
     const textMain = [40, 40, 40];
@@ -24,7 +24,7 @@ const generateAdmitCard = (student, admitCard, principal) => {
     try {
         doc.addImage(logoPath, "PNG", 15, 12, 22, 22);
     } catch (e) {
-        console.warn("Logo not found at /public/NAA_LOGO.png");
+        console.warn("Logo not found at /public/logo.png");
     }
 
     doc.setTextColor(...textMain);

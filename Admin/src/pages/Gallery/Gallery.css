@@ -1,18 +1,17 @@
 /* ========================================
-   GALLERY STYLES - DARK THEME
+   GLOBAL & LAYOUT
 ======================================== */
-
 .gallery-container {
   min-height: 100vh;
   background: #0f172a;
   padding: 2rem;
   color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 /* ========================================
-   HEADER
+   HEADER & STATS
 ======================================== */
-
 .gallery-header {
   display: flex;
   justify-content: space-between;
@@ -22,47 +21,32 @@
   gap: 1.5rem;
 }
 
-.gallery-header-content h1 {
+.gallery-header h1 {
   font-size: 2rem;
   font-weight: 700;
   color: #f8fafc;
-  margin: 0 0 0.5rem;
-}
-
-.gallery-subtitle {
-  font-size: 1rem;
-  color: #94a3b8;
   margin: 0;
 }
 
 .gallery-upload-btn {
-  padding: 0.875rem 1.75rem;
-  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
   color: #fff;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
 .gallery-upload-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.45);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
-
-.gallery-upload-btn i {
-  font-size: 1rem;
-}
-
-/* ========================================
-   STATS
-======================================== */
 
 .gallery-stats {
   margin-bottom: 2rem;
@@ -72,116 +56,28 @@
   display: inline-flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem 1.75rem;
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.4);
-  border-radius: 12px;
-  transition: all 0.25s ease;
-}
-
-.gallery-stat-card:hover {
-  background: rgba(59, 130, 246, 0.25);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
-}
-
-.gallery-stat-card i {
-  font-size: 2rem;
-  color: #3b82f6;
-}
-
-.gallery-stat-card div {
-  display: flex;
-  flex-direction: column;
+  padding: 0.8rem 1.2rem;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 10px;
 }
 
 .stat-value {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: #3b82f6;
 }
 
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #94a3b8;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ========================================
-   LOADER
-======================================== */
-
-.gallery-loader {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 14px;
-  border: 1px solid rgba(51, 65, 85, 0.4);
-}
-
-.loader-spinner {
-  border: 4px solid rgba(51, 65, 85, 0.3);
-  border-radius: 50%;
-  border-top: 4px solid #3b82f6;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 1rem;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.gallery-loader p {
-  color: #94a3b8;
-  font-size: 1rem;
-}
-
-/* ========================================
-   EMPTY STATE
-======================================== */
-
-.gallery-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 4rem 2rem;
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 14px;
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  text-align: center;
-}
-
-.gallery-empty i {
-  font-size: 4rem;
-  color: #475569;
-  margin-bottom: 1rem;
-}
-
-.gallery-empty h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #f8fafc;
-  margin: 0 0 0.5rem;
-}
-
-.gallery-empty p {
-  font-size: 1rem;
-  color: #94a3b8;
-  margin: 0 0 1.5rem;
+  letter-spacing: 0.05em;
 }
 
 /* ========================================
    GALLERY GRID
 ======================================== */
-
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -189,50 +85,42 @@
 }
 
 .gallery-card {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  border-radius: 14px;
+  background: #1e293b;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid rgba(51, 65, 85, 0.5);
   transition: all 0.3s ease;
 }
 
 .gallery-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
-  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
 
 .gallery-image-wrapper {
   position: relative;
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: #0f172a;
 }
 
 .gallery-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.gallery-card:hover .gallery-image {
-  transform: scale(1.1);
 }
 
 .gallery-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.85);
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.25rem;
   opacity: 0;
   transition: opacity 0.3s ease;
+  backdrop-filter: blur(3px);
 }
 
 .gallery-card:hover .gallery-overlay {
@@ -245,293 +133,177 @@
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease;
 }
 
-.gallery-action-btn i {
-  font-size: 1.1rem;
-}
+.view-btn { background: #3b82f6; color: white; }
+.delete-btn { background: #ef4444; color: white; }
 
-.view-btn {
-  background: rgba(59, 130, 246, 0.25);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.4);
-}
-
-.view-btn:hover {
-  background: rgba(59, 130, 246, 0.4);
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
-}
-
-.delete-btn {
-  background: rgba(239, 68, 68, 0.25);
-  color: #fecaca;
-  border: 1px solid rgba(239, 68, 68, 0.4);
-}
-
-.delete-btn:hover {
-  background: rgba(239, 68, 68, 0.4);
-  transform: scale(1.1);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
+.gallery-action-btn:hover {
+  transform: scale(1.15);
 }
 
 /* ========================================
-   MODALS
+   MODAL CORE
 ======================================== */
-
 .gallery-modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.95);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  padding: 1rem;
-  animation: fadeIn 0.3s ease-out;
+  z-index: 2000;
+  padding: 1.5rem;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .gallery-modal-content {
-  position: relative;
   background: #1e293b;
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-  animation: slideUp 0.4s ease-out;
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow: hidden;
-}
-
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(50px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  border-radius: 16px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .gallery-modal-close {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 40px;
-  height: 40px;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  color: #fecaca;
   cursor: pointer;
-  transition: all 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
 }
 
-.gallery-modal-close:hover {
-  background: rgba(239, 68, 68, 0.3);
-  transform: rotate(90deg) scale(1.1);
-}
-
 .gallery-modal-image {
-  max-width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
+  max-width: 100%;
+  max-height: 85vh;
   display: block;
+  border-radius: 8px;
 }
 
 /* ========================================
-   UPLOAD MODAL
+   UPLOAD MODAL SPECIFICS
 ======================================== */
-
 .upload-modal-content {
   width: 100%;
-  max-width: 700px;
-  padding: 2rem;
-  overflow-y: auto;
+  max-width: 650px;
+  padding: 2.5rem;
 }
 
 .upload-modal-content h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
   color: #f8fafc;
-  margin: 0 0 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
-}
-
-.gallery-upload-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.gallery-form-group {
-  display: flex;
-  flex-direction: column;
 }
 
 .gallery-dropzone {
-  padding: 3rem 2rem;
-  border: 2px dashed rgba(59, 130, 246, 0.4);
+  border: 2px dashed #334155;
   border-radius: 12px;
-  background: rgba(59, 130, 246, 0.05);
+  padding: 3rem 1rem;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  background: rgba(15, 23, 42, 0.3);
+  transition: all 0.2s ease;
 }
 
 .gallery-dropzone:hover {
-  border-color: rgba(59, 130, 246, 0.6);
-  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
 }
 
 .gallery-dropzone i {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: #3b82f6;
   margin-bottom: 1rem;
 }
 
-.gallery-dropzone p {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #e2e8f0;
-  margin: 0 0 0.5rem;
-}
-
-.gallery-dropzone span {
-  font-size: 0.9rem;
-  color: #94a3b8;
-}
-
 .gallery-preview-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   gap: 1rem;
+  margin-top: 1.5rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 8px;
 }
+
+/* Custom Scrollbar for Preview Area */
+.gallery-preview-container::-webkit-scrollbar { width: 5px; }
+.gallery-preview-container::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
 
 .gallery-preview-item {
   position: relative;
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  border-radius: 10px;
-  padding: 0.5rem;
-  overflow: hidden;
+  aspect-ratio: 1;
 }
 
-.gallery-preview-image {
+.gallery-preview-item img {
   width: 100%;
-  height: 120px;
+  height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 0.5rem;
 }
 
-.gallery-filename {
-  display: block;
-  font-size: 0.75rem;
-  color: #94a3b8;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.gallery-remove-btn {
+.gallery-preview-item button {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 24px;
-  height: 24px;
-  background: rgba(239, 68, 68, 0.9);
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: white;
   border: none;
   border-radius: 50%;
-  color: #fff;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.gallery-remove-btn:hover {
-  background: #ef4444;
-  transform: scale(1.1);
+  font-size: 10px;
 }
 
 .gallery-add-more {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 178px;
-  border: 2px dashed rgba(59, 130, 246, 0.4);
-  border-radius: 10px;
+  border: 2px dashed #334155;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.gallery-add-more:hover {
-  border-color: rgba(59, 130, 246, 0.6);
-  background: rgba(59, 130, 246, 0.05);
-}
-
-.gallery-add-more i {
-  font-size: 2rem;
   color: #3b82f6;
 }
 
 .gallery-modal-actions {
   display: flex;
-  gap: 1rem;
   justify-content: flex-end;
-  padding-top: 1rem;
-}
-
-.gallery-cancel-btn,
-.gallery-submit-btn,
-.gallery-delete-confirm-btn {
-  padding: 0.875rem 1.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .gallery-cancel-btn {
-  color: #e2e8f0;
-  background: rgba(51, 65, 85, 0.4);
-  border: 1px solid rgba(51, 65, 85, 0.6);
-}
-
-.gallery-cancel-btn:hover {
-  background: rgba(51, 65, 85, 0.6);
-  transform: translateY(-2px);
+  background: #334155;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .gallery-submit-btn {
-  color: #fff;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.35);
-}
-
-.gallery-submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(59, 130, 246, 0.45);
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .gallery-submit-btn:disabled {
@@ -540,124 +312,40 @@
 }
 
 /* ========================================
-   DELETE MODAL
+   LOADER & ANIMATIONS
 ======================================== */
-
-.delete-modal-content {
-  width: 100%;
-  max-width: 450px;
-  padding: 2rem;
-  text-align: center;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.gallery-delete-icon {
-  width: 80px;
-  height: 80px;
-  background: rgba(239, 68, 68, 0.15);
-  border: 2px solid rgba(239, 68, 68, 0.4);
-  border-radius: 50%;
+.gallery-loader {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.5rem;
+  padding: 5rem;
 }
 
-.gallery-delete-icon i {
-  font-size: 2.5rem;
-  color: #ef4444;
+.loader-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #3b82f6;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
 }
 
-.delete-modal-content h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #f8fafc;
-  margin: 0 0 0.75rem;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-.delete-modal-content p {
-  font-size: 0.95rem;
-  color: #94a3b8;
-  margin: 0 0 2rem;
-  line-height: 1.6;
-}
-
-.gallery-delete-confirm-btn {
-  color: #fff;
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.35);
-}
-
-.gallery-delete-confirm-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(239, 68, 68, 0.45);
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-======================================== */
-
-@media (max-width: 768px) {
-  .gallery-container {
-    padding: 1rem;
-  }
-
-  .gallery-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .gallery-header-content h1 {
-    font-size: 1.6rem;
-  }
-
-  .gallery-upload-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1rem;
-  }
-
-  .gallery-preview-container {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  }
-
-  .gallery-modal-actions {
-    flex-direction: column-reverse;
-  }
-
-  .gallery-cancel-btn,
-  .gallery-submit-btn,
-  .gallery-delete-confirm-btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .gallery-container {
-    padding: 0.75rem;
-  }
-
-  .gallery-header-content h1 {
-    font-size: 1.4rem;
-  }
-
-  .gallery-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .upload-modal-content {
-    padding: 1.5rem;
-  }
-
-  .gallery-dropzone {
-    padding: 2rem 1rem;
-  }
-
-  .gallery-preview-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Responsive fixes */
+@media (max-width: 640px) {
+  .gallery-container { padding: 1rem; }
+  .gallery-header h1 { font-size: 1.5rem; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .upload-modal-content { padding: 1.5rem; }
+  .gallery-modal-actions { flex-direction: column-reverse; }
+  .gallery-modal-actions button { width: 100%; }
 }

@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "../../Styles/Dashboard.css";
-import generateAdmitCard from "../../../../Utils/generateAdmitCard";
 import capitalizeWords from "../../../../Utils/utility";
 import { AppContext } from "../../../../context/AppContext";
 
@@ -119,15 +118,7 @@ const Dashboard = () => {
             <button
               className={`db-action-btn ${!canDownload ? "disabled" : ""}`}
               disabled={!canDownload}
-              onClick={() =>
-                canDownload &&
-                generateAdmitCard(
-                  student,
-                  admitCard,
-                  principal,
-                  examDetails
-                )
-              }
+              onClick={()=> navigate("/student/dashboard/admitcard", {state: {data}})}
             >
               <i className="fas fa-download"></i>
               <span>Download Admit Card</span>

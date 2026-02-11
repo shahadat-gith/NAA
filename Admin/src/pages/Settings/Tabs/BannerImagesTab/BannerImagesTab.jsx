@@ -1,40 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { AdminContext } from "../../../../context/AdminContext";
+import React, { useState } from "react";
 import EditBannerModal from "./EditBannerModal";
 import "./BannerImagesTab.css";
 
 const MAX_IMAGES = 12;
 
-const BannerImagesTab = () => {
-  const [images, setImages] = useState([]);
+const BannerImagesTab = ({ heroImages = [], loading }) => {
   const [editingImage, setEditingImage] = useState(null);
   const [isAddMode, setIsAddMode] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const { backendUrl } = useContext(AdminContext);
-
-  const fetchHeroImages = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get(
-        `${backendUrl}/api/settings/hero-images`
-      );
-
-      if (res.data.success) {
-        setImages(res.data.data);
-      }
-    } catch {
-      toast.error("Failed to load banner images");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchHeroImages();
-  }, []);
+  const images = heroImages || [];
 
   return (
     <div className="banner-container">
@@ -53,7 +27,13 @@ const BannerImagesTab = () => {
       </div>
 
       {loading ? (
-        <div className="banner-loading">Loading banner images...</div>
+        <div className="banner-loading">
+          Loading banner images...
+        </div>
+      ) : images.length === 0 ? (
+        <div className="banner-loading">
+          No banner images found
+        </div>
       ) : (
         <div className="banner-grid">
           {images.map((img) => (
@@ -65,7 +45,11 @@ const BannerImagesTab = () => {
                 <i className="fas fa-edit"></i>
               </button>
 
-              <img src={img.url} alt="Banner" className="banner-image" />
+              <img
+                src={img.url}
+                alt="Banner"
+                className="banner-image"
+              />
             </div>
           ))}
         </div>
@@ -79,7 +63,6 @@ const BannerImagesTab = () => {
           setEditingImage(null);
           setIsAddMode(false);
         }}
-        onSuccess={fetchHeroImages}
       />
     </div>
   );

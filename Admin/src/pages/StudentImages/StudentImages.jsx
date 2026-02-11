@@ -7,13 +7,13 @@ import ImageUploadModal from './ImageUploadModal';
 import './Styles/StudentImages.css';
 import { CLASS_OPTIONS, STREAM_OPTIONS } from '../../utils/academicOptions';
 import { capitalizeWords } from '../../utils/utility';
+import { AppContext } from '../../context/AppContext';
 
 const StudentImages = () => {
     const { backendUrl, adminToken } = useContext(AdminContext);
 
-    /* ================= STATE ================= */
-    const [students, setStudents] = useState([]);
-    const [filteredStudents, setFilteredStudents] = useState([]);
+    const { students, setStudents, fetchingStudents } = useContext(AppContext)
+    const [filteredStudents, setFilteredStudents] = useState(students || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeStudent, setActiveStudent] = useState(null);
 
@@ -21,29 +21,7 @@ const StudentImages = () => {
     const [mediumFilter, setMediumFilter] = useState("");
     const [classFilter, setClassFilter] = useState("");
     const [streamFilter, setStreamFilter] = useState("");
-    const [loading, setLoading] = useState(false);
 
-    /* ================= FETCH STUDENTS ================= */
-    const fetchStudents = async () => {
-        setLoading(true);
-        try {
-            const res = await axios.get(`${backendUrl}/api/student/list`, {
-                headers: { Authorization: `Bearer ${adminToken}` },
-            });
-
-            const list = res.data?.students || [];
-            setStudents(list);
-            setFilteredStudents(list);
-        } catch (error) {
-            console.error("Error fetching students:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (backendUrl && adminToken) fetchStudents();
-    }, [backendUrl, adminToken]);
 
     /* ================= FILTER LOGIC ================= */
     useEffect(() => {
@@ -107,7 +85,7 @@ const StudentImages = () => {
         setActiveStudent(null);
     };
 
-    if (loading) return <Loader text="Loading students..." />;
+    if (fetchingStudents) return <Loader text="Loading students..." />;
 
     const mediumOptions = ["assamese", "english"]
 

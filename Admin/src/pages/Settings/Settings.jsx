@@ -5,15 +5,19 @@ import FeesTab from "./Tabs/FeesTab/FeesTab";
 import AdmitCardTab from "./Tabs/AdmitcardTab/AdmitcardTab";
 import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
 import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
+import { useContext } from "react";
+import { AppContext } from "../../context/AppContext";
 
 const Settings = () => {
+
+  const { settings, fetchingSettings } = useContext(AppContext)
   const tabs = [
     {
       id: "services",
       label: "Services",
       icon: "fa-solid fa-gear",
     },
-    
+
     {
       id: "admitcard",
       label: "Admit Card",
@@ -41,15 +45,46 @@ const Settings = () => {
   const renderTab = () => {
     switch (activeTab) {
       case "services":
-        return <ServiceTab />;
+        return (
+          <ServiceTab
+            data={settings?.serviceSettings}
+            loading={fetchingSettings}
+          />
+        );
+
       case "fees":
-        return <FeesTab />;
+        return (
+          <FeesTab
+            data={settings?.feesSettings}
+            loading={fetchingSettings}
+          />
+        );
+
       case "admitcard":
-        return <AdmitCardTab />;
+        return (
+          <AdmitCardTab
+            admitCards={settings?.admitCards}
+            exams={settings?.exams}
+            loading={fetchingSettings}
+          />
+        );
+
       case "authorities":
-        return <Authoritiestab />;
+        return (
+          <Authoritiestab
+            authorities={settings?.authorities}
+            loading={fetchingSettings}
+          />
+        );
+
       case "BannerImages":
-        return <BannerImagesTab />;
+        return (
+          <BannerImagesTab
+            heroImages={settings?.heroImages}
+            loading={fetchingSettings}
+          />
+        );
+
       default:
         return null;
     }

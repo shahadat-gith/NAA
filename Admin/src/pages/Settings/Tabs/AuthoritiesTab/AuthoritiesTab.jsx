@@ -1,43 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState } from "react";
 import "./AuthoritiesTab.css";
 import EditModal from "./EditModal";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { AdminContext } from "../../../../context/AdminContext";
 
-const AuthoritiesTab = () => {
-  const [authorities, setAuthorities] = useState([]);
+const AuthoritiesTab = ({ authorities = [], loading }) => {
   const [editingAuth, setEditingAuth] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  const { backendUrl, adminToken } = useContext(AdminContext);
-
-  /* ================= FETCH ================= */
-  const fetchAuthorities = async () => {
-    try {
-      setLoading(true);
-      const res = await axios.post(
-        `${backendUrl}/api/settings/authorities`,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
-      );
-
-      if (res.data.success) {
-        setAuthorities(res.data.authorities);
-      }
-    } catch (error) {
-      toast.error("Failed to load authorities");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAuthorities();
-  }, []);
 
   return (
     <div className="auth-container">
@@ -48,7 +14,13 @@ const AuthoritiesTab = () => {
       </div>
 
       {loading ? (
-        <div style={{ color: "#94a3b8" }}>Loading authorities...</div>
+        <div style={{ color: "#94a3b8" }}>
+          Loading authorities...
+        </div>
+      ) : authorities.length === 0 ? (
+        <div style={{ color: "#94a3b8" }}>
+          No authorities found
+        </div>
       ) : (
         <div className="auth-grid">
           {authorities.map((auth) => (
@@ -62,13 +34,15 @@ const AuthoritiesTab = () => {
 
               <div className="auth-card-content">
                 <img
-                  src={auth.image?.url}
+                  src={auth.image?.url || "/user.png"}
                   alt={auth.name}
                   className="auth-photo"
                 />
 
                 <h3 className="auth-name">{auth.name}</h3>
-                <div className="auth-position">{auth.role}</div>
+                <div className="auth-position">
+                  {auth.role}
+                </div>
               </div>
             </div>
           ))}
@@ -80,7 +54,6 @@ const AuthoritiesTab = () => {
         open={!!editingAuth}
         authority={editingAuth}
         onClose={() => setEditingAuth(null)}
-        onSuccess={fetchAuthorities}
       />
     </div>
   );

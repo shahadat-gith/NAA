@@ -1,14 +1,23 @@
 export const formatDate = (date) => {
-  if (!date) return "N/A";
+  const d = new Date(date);
 
-  return new Date(date).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  const day = d.getDate();
+  const year = d.getFullYear();
+  const month = d.toLocaleString("en-IN", { month: "long" });
+
+  // Function to get ordinal suffix
+  const getSuffix = (day) => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
+    }
+  };
+
+  return `${day}${getSuffix(day)} ${month} ${year}`;
 };
-
-
 
 export const CLASS_OPTIONS = {
   english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
