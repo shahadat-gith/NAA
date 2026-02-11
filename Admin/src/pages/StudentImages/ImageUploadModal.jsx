@@ -11,7 +11,7 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 
 	const fileInputRef = useRef(null);
 
-	const [rawImageUrl, setRawImageUrl] = useState("");
+	const [rawImageUrl, setRawImageUrl] = useState();
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
 	const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -22,6 +22,17 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 	useEffect(() => {
 		if (!open) resetState();
 	}, [open]);
+
+	useEffect(() => {
+		if (open && student?.image?.url) {
+			setRawImageUrl(student.image.url);
+			setCrop({ x: 0, y: 0 });
+			setZoom(1);
+			setCroppedBlob(null);
+			setCroppedPreview("");
+		}
+	}, [open, student]);
+
 
 	const resetState = () => {
 		setRawImageUrl("");
@@ -49,14 +60,22 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 		if (!croppedAreaPixels || !rawImageUrl) return;
 
 		const image = new Image();
+
+		// 🔑 REQUIRED for existing cloud images
+		image.crossOrigin = "anonymous";
 		image.src = rawImageUrl;
-		await new Promise((resolve) => (image.onload = resolve));
+
+		await new Promise((resolve, reject) => {
+			image.onload = resolve;
+			image.onerror = reject;
+		});
 
 		const canvas = document.createElement("canvas");
 		canvas.width = croppedAreaPixels.width;
 		canvas.height = croppedAreaPixels.height;
 
 		const ctx = canvas.getContext("2d");
+
 		ctx.drawImage(
 			image,
 			croppedAreaPixels.x,
@@ -69,11 +88,20 @@ const ImageUploadModal = ({ open, student, onClose, setStudents }) => {
 			croppedAreaPixels.height
 		);
 
-		canvas.toBlob((blob) => {
-			if (!blob) return;
-			setCroppedBlob(blob);
-			setCroppedPreview(URL.createObjectURL(blob));
-		}, "image/jpeg", 0.9);
+		return new Promise((resolve) => {
+			canvas.toBlob(
+				(blob) => {
+					if (!blob) return;
+
+					// ✅ Blob recreated from URL or file
+					setCroppedBlob(blob);
+					setCroppedPreview(URL.createObjectURL(blob));
+					resolve();
+				},
+				"image/jpeg",
+				0.9
+			);
+		});
 	};
 
 	const handleUpload = async () => {
