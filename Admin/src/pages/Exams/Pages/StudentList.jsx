@@ -68,13 +68,6 @@ const StudentList = ({
                 .filter(Boolean)
                 .join(" ");
 
-              const classLabel = s.class
-                ? `Class ${s.class}${s.stream ? ` (${s.stream.toUpperCase()})` : ""}`
-                : "-";
-              const mediumLabel = s.medium
-                ? s.medium.charAt(0).toUpperCase() + s.medium.slice(1)
-                : "-";
-
               return (
                 <tr
                   key={key}
@@ -108,8 +101,8 @@ const StudentList = ({
                     </div>
                   </td>
                   <td>{s.registrationNo || "N/A"}</td>
-                  <td>{classLabel}</td>
-                  <td>{mediumLabel}</td>
+                  <td>{s.class.toUpperCase()}</td>
+                  <td>{s.medium.toUpperCase()}</td>
                 </tr>
               );
             })}

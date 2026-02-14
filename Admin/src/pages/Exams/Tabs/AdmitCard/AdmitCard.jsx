@@ -187,9 +187,7 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
         <thead>
           <tr>
             <th>Class</th>
-            <th>Stream</th>
             <th>Medium</th>
-            <th>Exam Center</th>
             <th>Exam Routine</th>
             <th>Action</th>
           </tr>
@@ -204,12 +202,10 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
           ) : (
             filteredAdmitCards.map((s) => (
               <tr key={s._id}>
-                <td>{formatClassName(s.class)}</td>
-                <td>{s.stream || "-"}</td>
+                <td>{s.class.toUpperCase()}</td>
                 <td style={{ textTransform: "capitalize" }}>
                   {s.medium || "-"}
                 </td>
-                <td>{s.examCenter || "-"}</td>
                 <td>
                   <button
                     className="act-link-btn"

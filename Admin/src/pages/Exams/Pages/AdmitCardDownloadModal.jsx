@@ -299,8 +299,8 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
                                     onClick={onclose}
                                 >
                                     {loading
-                                        ? "Generating! please wait..."
-                                        : "Download"}
+                                        ? "Please wait..."
+                                        : "Download Now"}
                                 </button>
                             )}
                         </PDFDownloadLink>
