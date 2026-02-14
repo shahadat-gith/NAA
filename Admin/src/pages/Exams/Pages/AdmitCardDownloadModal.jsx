@@ -264,13 +264,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
                             Reset Search
                         </button>
                     </div>
-                    <button
-                        type="button"
-                        className="admit-download-cancel"
-                        onClick={resetAndClose}
-                    >
-                        Cancel
-                    </button>
 
                     {errorMessage || studentsToDownload.length === 0 ? (
                         <button
