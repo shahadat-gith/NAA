@@ -4,7 +4,6 @@
 
 .admin-dashboard-container {
   min-height: 100vh;
-  background: #0f172a;
   padding: 2rem;
   color: #e2e8f0;
 }
@@ -116,53 +115,98 @@
   z-index: 1;
 }
 
+
+
 /* ========================================
-   CARD HEADINGS
+   QUICK ACCESS
 ======================================== */
 
-.dashboard-card h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #f8fafc;
-  margin: 0 0 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 2px solid rgba(59, 130, 246, 0.4);
+.quick-access-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(51, 65, 85, 0.5);
 }
 
-.dashboard-card p {
-  font-size: 1rem;
+.quick-access-header h2 {
+  margin-bottom: 0.35rem;
+}
+
+.quick-access-header p {
+  margin: 0 0 1.5rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.quick-access-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.45);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9));
   color: #e2e8f0;
-  line-height: 1.8;
-  margin: 0 0 1rem;
-}
-
-.dashboard-card p:last-child {
-  margin-bottom: 0;
-}
-
-/* ========================================
-   HIGHLIGHT CARD
-======================================== */
-
-.highlight-card {
-  background: rgba(59, 130, 246, 0.15);
-  border: 1px solid rgba(59, 130, 246, 0.4);
+  text-decoration: none;
+  transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
 }
 
-.highlight-card::after {
-  content: "✨";
+.quick-access-item::after {
+  content: "";
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  font-size: 3rem;
-  opacity: 0.15;
+  top: -40%;
+  right: -40%;
+  width: 160px;
+  height: 160px;
+  background: rgba(59, 130, 246, 0.15);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.25s ease;
 }
 
-.highlight-card h2 {
+.quick-access-item:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 130, 246, 0.55);
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.6);
+}
+
+.quick-access-item:hover::after {
+  opacity: 1;
+}
+
+.quick-access-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.18);
   color: #93c5fd;
-  border-bottom-color: rgba(59, 130, 246, 0.6);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.quick-access-label {
+  font-size: 15px;
+  font-weight: 600;
+  flex: 1;
+}
+
+.quick-access-arrow {
+  color: rgba(148, 163, 184, 0.75);
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.quick-access-item:hover .quick-access-arrow {
+  transform: translateX(4px);
+  color: #93c5fd;
 }
 
 /* ========================================
@@ -180,6 +224,10 @@
 
   .welcome-card h1 {
     font-size: 1.75rem;
+  }
+
+  .quick-access-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 }
 
@@ -199,5 +247,9 @@
 
   .dashboard-card p {
     font-size: 0.9rem;
+  }
+
+  .quick-access-item {
+    padding: 14px 16px;
   }
 }

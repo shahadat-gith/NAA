@@ -25,6 +25,15 @@ const AdminLayout = ({ children }) => {
         <Sidebar closeSidebar = {closeSidebar}/>
       </div>
 
+      {/* Overlay for mobile */}
+      <div
+        className={`sidebar-overlay ${isSidebarOpen ? "open" : ""}`}
+        onClick={closeSidebar}
+        role="button"
+        tabIndex={-1}
+        aria-label="Close sidebar"
+      />
+
       {/* Main Content */}
       <main className="main-content">
         {children} {/* Page-specific content goes here */}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
@@ -30,33 +31,35 @@ const Home = () => {
         </p>
       </div>
 
-      {/* About Section */}
-      <div className="dashboard-card">
-        <h2>About Nashib Ali Academy</h2>
-        <p>
-          Nashib Ali Academy is dedicated to delivering quality education with
-          a strong foundation in discipline, moral values, and academic
-          excellence. The institution strives to create a nurturing environment
-          for holistic student development.
-        </p>
-        <p>
-          Through experienced faculty, structured academic planning, and
-          transparent administration, the academy continues to shape
-          responsible and confident future leaders.
-        </p>
-      </div>
 
-      {/* Motivation Card */}
-      <div className="dashboard-card highlight-card">
-        <h2>Have a Productive Day</h2>
-        <p>
-          Your leadership ensures smooth academic operations and transparency.
-          Every decision you make contributes to the growth and success of our
-          students.
-        </p>
-        <p>
-          Let us continue working together towards excellence in education.
-        </p>
+      {/* Quick Access */}
+      <div className="dashboard-card quick-access-card">
+        <div className="quick-access-header">
+          <h2>Quick Access</h2>
+          <p>Jump straight to the most used sections.</p>
+        </div>
+        <div className="quick-access-grid">
+          {[
+            { to: "/students", icon: "fas fa-user-graduate", label: "Students" },
+            { to: "/student/images", icon: "fas fa-images", label: "Student Images" },
+            { to: "/exams", icon: "fas fa-chart-line", label: "Exams" },
+            { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
+            { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
+            { to: "/achievers", icon: "fas fa-trophy", label: "Achievers" },
+            { to: "/gallery", icon: "fas fa-images", label: "Gallery" },
+            { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
+          ].map((item) => (
+            <Link key={item.to} to={item.to} className="quick-access-item">
+              <div className="quick-access-icon">
+                <i className={item.icon}></i>
+              </div>
+              <div className="quick-access-label">{item.label}</div>
+              <div className="quick-access-arrow">
+                <i className="fas fa-arrow-right"></i>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
 
     </div>

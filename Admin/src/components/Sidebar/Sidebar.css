@@ -1,17 +1,16 @@
-/* Sidebar.css - Dark Bluish Theme */
+/* Sidebar.css - Minimal Dark */
 
 .admin-sidebar {
-  width: 260px;
+  width: 250px;
   height: 100%;
-  background: linear-gradient(180deg, #0a1929 0%, #1a2942 100%);
+  background: #101b2c;
   display: flex;
   flex-direction: column;
-  padding: 110px 0 20px 0;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  padding: 96px 12px 16px;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  border-right: 1px solid rgba(74, 158, 255, 0.15);
+  border-right: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 .admin-sidebar::-webkit-scrollbar {
@@ -23,12 +22,8 @@
 }
 
 .admin-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(100, 149, 237, 0.4);
+  background: rgba(100, 116, 139, 0.5);
   border-radius: 3px;
-}
-
-.admin-sidebar::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 149, 237, 0.6);
 }
 
 /* Menu */
@@ -40,58 +35,43 @@
 }
 
 .sidebar-menu li {
-  margin: 4px 12px;
+  margin: 4px 0;
 }
 
 /* Sidebar Items */
 .sidebar-item {
   display: flex;
   align-items: center;
-  padding: 14px 18px;
-  color: #b8c5d6;
+  gap: 12px;
+  padding: 10px 12px;
+  color: rgba(226, 232, 240, 0.75);
   text-decoration: none;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  font-size: 15px;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+  font-size: 14px;
   font-weight: 500;
-  position: relative;
-  overflow: hidden;
 }
-
 
 .sidebar-item:hover {
-  background: rgba(74, 158, 255, 0.15);
-  color: #ffffff;
-  transform: translateX(4px);
-}
-
-.sidebar-item:hover::before {
-  transform: scaleY(1);
+  background: rgba(148, 163, 184, 0.12);
+  color: #f8fafc;
 }
 
 .sidebar-item.active {
-  background: linear-gradient(90deg, rgba(74, 158, 255, 0.25) 0%, rgba(74, 158, 255, 0.1) 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(74, 158, 255, 0.2);
-}
-
-.sidebar-item.active::before {
-  transform: scaleY(1);
+  background: rgba(59, 130, 246, 0.18);
+  color: #f8fafc;
 }
 
 .sidebar-item i {
-  font-size: 18px;
-  margin-right: 14px;
-  width: 24px;
+  font-size: 16px;
+  width: 18px;
   text-align: center;
-  color: #4a9eff;
-  transition: transform 0.3s ease;
+  color: rgba(148, 163, 184, 0.9);
 }
 
 .sidebar-item:hover i,
 .sidebar-item.active i {
-  transform: scale(1.1);
-  color: #6bb3ff;
+  color: #93c5fd;
 }
 
 .sidebar-item span {
@@ -100,26 +80,21 @@
 
 /* Badge */
 .badge {
-  background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
-  color: #ffffff;
-  font-size: 11px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #fecaca;
+  font-size: 10px;
   font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 12px;
-  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(255, 71, 87, 0.4);
 }
 
 /* Logout Container */
 .logout-container {
-  padding: 16px 12px;
+  padding: 12px 0 0;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  position: sticky;
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(10, 25, 41, 0.6) 0%, #1a2942 70%);
-  backdrop-filter: blur(6px);
+  border-top: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 .logout-btn {
@@ -127,56 +102,41 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 18px;
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
-  color: #ff6b6b;
-  border: 1px solid rgba(255, 107, 107, 0.3);
-  border-radius: 10px;
-  font-size: 15px;
+  padding: 10px 12px;
+  background: transparent;
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-  color: #ffffff;
-  border-color: #ff6b6b;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 107, 0.3);
-}
-
-.logout-btn:active {
-  transform: translateY(0);
+  background: rgba(239, 68, 68, 0.12);
+  color: #fee2e2;
 }
 
 .logout-btn i {
-  margin-right: 10px;
-  font-size: 16px;
+  margin-right: 8px;
+  font-size: 14px;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .admin-sidebar {
-    width: 280px;
+    width: 260px;
+    padding: 90px 10px 16px;
   }
 
   .sidebar-item {
-    padding: 16px 20px;
-    font-size: 16px;
+    padding: 12px;
+    font-size: 14px;
   }
 
   .sidebar-item i {
-    font-size: 20px;
-    margin-right: 16px;
-  }
-}
-
-/* Hover Effects Enhancement (Desktop only) */
-@media (hover: hover) and (min-width: 769px) {
-  .sidebar-item:hover {
-    background: rgba(74, 158, 255, 0.2);
+    font-size: 16px;
   }
 }
 

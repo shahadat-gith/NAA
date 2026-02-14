@@ -17,6 +17,16 @@
   transition: transform 0.3s ease;
 }
 
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 998;
+}
+
 /* Main Content */
 .main-content {
   flex: 1;
@@ -47,33 +57,17 @@
     transform: translateX(0);
   }
 
+  .sidebar-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   /* Remove left margin on main content */
   .main-content {
     margin-left: 0;
     padding: 16px;
   }
 
-  /* Add backdrop overlay when sidebar is open */
-  .sidebar-wrapper.open::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 280px;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: -1;
-    animation: fadeIn 0.3s ease;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* Prevent body scroll when sidebar is open on mobile */
