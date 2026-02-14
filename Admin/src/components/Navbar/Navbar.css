@@ -21,6 +21,32 @@
   max-width: 100%;
 }
 
+.nav-right-admin {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logout-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fee2e2;
+}
+
 /* Left Section */
 .nav-left-admin {
   display: flex;
@@ -130,6 +156,11 @@
   .nav-left-admin {
     gap: 12px;
   }
+
+  .nav-logout-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
 }
 
 /* Mobile specific adjustments */
@@ -161,6 +192,11 @@
   .nav-left-admin {
     gap: 10px;
   }
+
+  .nav-logout-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
 }
 
 /* Very small screens */
@@ -185,7 +221,8 @@
 
 /* Focus States for Accessibility */
 .sidebar-toggle:focus-visible,
-.nav-logo-admin:focus-visible {
+.nav-logo-admin:focus-visible,
+.nav-logout-btn:focus-visible {
   outline: 2px solid #4a9eff;
   outline-offset: 2px;
 }

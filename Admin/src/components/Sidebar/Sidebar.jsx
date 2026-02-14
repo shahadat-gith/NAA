@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
-import { AdminContext } from "../../context/AdminContext";
 
 const Sidebar = ({ closeSidebar }) => {
   const sidebarLinks = [
@@ -24,17 +23,6 @@ const Sidebar = ({ closeSidebar }) => {
   
     { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
   ];
-
-  const { adminToken, setAdminToken } = useContext(AdminContext);
-  const navigate = useNavigate();
-
-  const logoutHandler = () => {
-    navigate("/login");
-    if (adminToken) {
-      setAdminToken("");
-      localStorage.removeItem("adminToken");
-    }
-  };
 
   return (
     <div className="admin-sidebar">
@@ -59,14 +47,6 @@ const Sidebar = ({ closeSidebar }) => {
           </li>
         ))}
       </ul>
-
-      {/* LOGOUT AT BOTTOM */}
-      <div className="logout-container">
-        <button className="logout-btn" onClick={logoutHandler}>
-          <i className="fas fa-sign-out-alt"></i>
-          Logout
-        </button>
-      </div>
 
     </div>
   );
