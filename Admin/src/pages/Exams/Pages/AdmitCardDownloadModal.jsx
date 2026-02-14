@@ -296,9 +296,10 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
                                     type="button"
                                     className="admit-download-submit"
                                     disabled={loading}
+                                    onClick={onclose}
                                 >
                                     {loading
-                                        ? "Generating..."
+                                        ? "Generating! please wait..."
                                         : "Download"}
                                 </button>
                             )}
