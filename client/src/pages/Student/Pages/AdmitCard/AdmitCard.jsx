@@ -2,16 +2,41 @@ import { useLocation } from "react-router-dom";
 import "../../Styles/AdmitCard.css";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import AdmitCardPdf from "./admitCardPdf";
-import { formatDate } from "../../../../Utils/utility";
+
+const formatDate = (dateInput) => {
+  if (!dateInput) return "-";
+
+  const date = new Date(dateInput);
+  if (isNaN(date)) return "-";
+
+  const day = date.getDate();
+
+  const getOrdinal = (n) => {
+    if (n > 3 && n < 21) return "th";
+    switch (n % 10) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
+    }
+  };
+
+  const month = date.toLocaleString("en-GB", { month: "short" });
+  const year = date.getFullYear();
+  const weekday = date.toLocaleString("en-GB", { weekday: "long" });
+
+  return `${day}${getOrdinal(day)} ${month} ${year} (${weekday})`;
+};
+
 
 const AdmitCard = () => {
   const SCHOOL_DETAILS = {
     name: "NASHIB ALI ACADEMY",
-    address: "South Building, Silchar, Assam - 788002",
-    contact: "+91-9876543210",
-    email: "nashibaliacademy@gmail.com",
-    website: "www.nashibaliacademy.com",
-    logo: "/logo.png", // Ensure this path is correct
+    logo: "/logo.png",
+    address: "Mahachara, Kachumara, Barpeta, Assam - 781127",
+    contact: "+91-60014-16724",
+    email: "nashibaliacademy.offl@gmail.com",
+    website: "www.nashibaliacademy.in",
   };
 
   const location = useLocation();
@@ -32,12 +57,20 @@ const AdmitCard = () => {
     <div className="admit-page">
       <div className="download-wrapper">
         <PDFDownloadLink
-          document={<AdmitCardPdf student={student} admitCard={admitCard} principal={principal} examDetails={examDetails} />}
-          fileName="admit_card.pdf"
-          className="download-btn"
+        className="download-btn"
+          document={
+            <AdmitCardPdf
+              student={student}
+              admitCard={admitCard}
+              examDetails={examDetails}
+              principal={principal}
+            />
+          }
+          fileName={`admit_card_${student.registrationNo}.pdf`}
         >
-          Download
+          {({ loading }) => loading ? "Generating..." : "Download Admit Card"}
         </PDFDownloadLink>
+
       </div>
 
       <div className="admit-card-container">
@@ -75,12 +108,13 @@ const AdmitCard = () => {
                 <p>
                   <strong>Class:</strong> <span className="data-text">{student?.class || "nursery"}</span>
                 </p>
-                <p> 
+                <p>
                   <strong>Medium:</strong> <span className="data-text">{student?.medium || "english"}</span></p>
                 {student.stream &&
                   <p> <strong>Stream:</strong> <span className="data-text">{student?.stream || "Arts"}</span></p>
 
                 }
+                <p> <strong>Registration No:</strong> <span className="data-text">{student?.registrationNo || "N/A"}</span></p>
               </div>
               <div className="photo-frame">
                 <img src={student?.image?.url || "/user.png"} alt="student" />

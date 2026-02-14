@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./Settings.css";
 import ServiceTab from "./Tabs/ServiceTab/ServiceTab";
 import FeesTab from "./Tabs/FeesTab/FeesTab";
-import AdmitCardTab from "./Tabs/AdmitcardTab/AdmitcardTab";
 import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
 import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
 import { useContext } from "react";
@@ -18,11 +17,6 @@ const Settings = () => {
       icon: "fa-solid fa-gear",
     },
 
-    {
-      id: "admitcard",
-      label: "Admit Card",
-      icon: "fa-solid fa-id-card",
-    },
     {
       id: "fees",
       label: "Fees",
@@ -56,15 +50,6 @@ const Settings = () => {
         return (
           <FeesTab
             data={settings?.feesSettings}
-            loading={fetchingSettings}
-          />
-        );
-
-      case "admitcard":
-        return (
-          <AdmitCardTab
-            admitCards={settings?.admitCards}
-            exams={settings?.exams}
             loading={fetchingSettings}
           />
         );

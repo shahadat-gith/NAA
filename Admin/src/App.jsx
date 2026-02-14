@@ -18,11 +18,11 @@ import Achievers from "./pages/Achievers/Achievers";
 import TeacherProfile from "./pages/Teacher/TeacherProfile/TeacherProfile";
 import StudentDetails from "./pages/Student/StudentDetails/StudentDetails";
 import Login from "./pages/Login/Login";
-import Result from "./pages/Result/Result";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
 import StudentImages from "./pages/StudentImages/StudentImages";
-import Utility from "./pages/Utility/Utility";
+import Exams from "./pages/Exams/Pages/Exams";
+
 
 /* ===============================
    PROTECTED ADMIN ROUTE
@@ -87,7 +87,7 @@ const App = () => {
                   <Route path="/students" element={<Student />} />
                   <Route path="/student/images" element={<StudentImages />} />
                   <Route path="/students/:id" element={<StudentDetails />} />
-                  <Route path="/result" element={<Result/>}/>
+                  <Route path="/exams" element={<Exams />} />
 
 
                   <Route path="/admissions" element={<Admissions/>}/>
@@ -97,7 +97,6 @@ const App = () => {
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/achievers" element={<Achievers />} />
 
-                  <Route path="/utility" element={<Utility />} />
                   <Route path="/settings" element={<Settings />} />
                 </Routes>
               </AdminLayout>

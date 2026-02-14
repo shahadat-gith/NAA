@@ -10,8 +10,8 @@ const Sidebar = ({ closeSidebar }) => {
     // Student & Academic
     { to: "/students", icon: "fas fa-user-graduate", label: "Students" },
     { to: "/student/images", icon: "fas fa-images", label: "Student Images" },
+    { to: "/exams", icon: "fas fa-chart-line", label: "Exams" },
     { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
-    { to: "/result", icon: "fas fa-chart-line", label: "Result" },
 
     // Staff
     { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
@@ -21,7 +21,7 @@ const Sidebar = ({ closeSidebar }) => {
     { to: "/gallery", icon: "fas fa-images", label: "Gallery" },
 
     // System
-    { to: "/utility", icon: "fas fa-toolbox", label: "Utility" },
+  
     { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
   ];
 

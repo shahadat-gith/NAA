@@ -39,9 +39,10 @@ export const AppContextProvider = ({ children }) => {
   const [fetchingSettings, setFetchingSettings] =
     useState(false);
 
-  const getSettings = async () => {
+  const getSettings = async (showLoader = true) => {
+    if(showLoader) setFetchingSettings(true);
     if (!token) return;
-    setFetchingSettings(true);
+    
 
     try {
       const { data } = await axios.get(
@@ -238,7 +239,7 @@ export const AppContextProvider = ({ children }) => {
     if (!token) return;
 
     fetchStudents();
-    getSettings();
+    getSettings(true);
     fetchGalleryImages();
     fetchAchievers();
     fetchAdmissions();

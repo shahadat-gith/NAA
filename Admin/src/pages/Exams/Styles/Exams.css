@@ -1,0 +1,147 @@
+/* ================= Exams Page ================= */
+
+.exams-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.exams-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.exams-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.exams-header-btn {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.35);
+}
+
+.exams-header-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.45);
+}
+
+.exams-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #f8fafc;
+  margin: 0 0 6px 0;
+}
+
+.exams-subtitle {
+  margin: 0;
+  color: rgba(148, 163, 184, 0.85);
+  font-size: 14px;
+}
+
+/* ================= Tabs ================= */
+
+.exams-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  background: rgba(30, 41, 59, 0.4);
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.exams-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.exams-tab:hover {
+  background: rgba(51, 65, 85, 0.3);
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.exams-tab-active {
+  background: linear-gradient(135deg, #334155, #475569);
+  color: #f8fafc;
+  box-shadow: 0 4px 12px rgba(51, 65, 85, 0.35);
+}
+
+.exams-tab-icon {
+  font-size: 18px;
+}
+
+.exams-tab-label {
+  font-weight: 600;
+}
+
+/* ================= Content ================= */
+
+.exams-content {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  min-height: 420px;
+}
+
+
+/* ================= Responsive ================= */
+
+@media (max-width: 900px) {
+  .exams-container {
+    padding: 24px;
+  }
+
+  .exams-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .exams-tab {
+    width: 100%;
+  }
+
+  .exams-content {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .exams-container {
+    padding: 18px;
+  }
+
+  .exams-title {
+    font-size: 24px;
+  }
+
+  .exams-subtitle {
+    font-size: 13px;
+  }
+}

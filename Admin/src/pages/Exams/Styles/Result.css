@@ -7,6 +7,12 @@
   color: #e2e8f0;
 }
 
+.result-page-embedded {
+  padding: 0;
+  background: transparent;
+  min-height: auto;
+}
+
 /* ================= Header ================= */
 
 .result-header {

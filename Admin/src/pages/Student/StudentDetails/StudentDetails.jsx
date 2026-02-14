@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AdminContext } from "../../../context/AdminContext";
 import "./StudentDetails.css";
 import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
-import generateAdmitCard from "../../../utils/generateAdmitCard";
 import axios from "axios";
 import {
   formatClassName,
@@ -65,7 +64,7 @@ const StudentDetails = () => {
       toast.error("Admit card settings not found for this class/medium.");
       return;
     }
-    generateAdmitCard(student, admitCard, principal);
+    // generateAdmitCard(student, admitCard, principal);
   };
 
   /* ================= LOADING / ERROR ================= */

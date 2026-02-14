@@ -1,0 +1,314 @@
+
+.admit-download-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    circle at top,
+    rgba(15, 23, 42, 0.55),
+    rgba(2, 6, 23, 0.85)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.admit-download-modal {
+  width: min(900px, 100%);
+  background: linear-gradient(160deg, #0f172a 0%, #0b1220 100%);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: 18px;
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+/* ================= Header ================= */
+
+.admit-download-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: rgba(30, 41, 59, 0.8);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.admit-download-header h3 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: 0.2px;
+}
+
+.admit-download-header button {
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  color: #e2e8f0;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admit-download-header button:hover {
+  background: rgba(148, 163, 184, 0.2);
+}
+
+/* ================= Body ================= */
+
+.admit-download-body {
+  padding: 22px 24px 10px;
+}
+
+.admit-download-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.admit-download-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.admit-download-field select,
+.admit-download-search input {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(51, 65, 85, 0.75);
+  color: #f8fafc;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admit-download-field select:focus,
+.admit-download-search input:focus {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.admit-download-search {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.admit-download-search input {
+  flex: 1;
+}
+
+.admit-download-search button {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  color: #bfdbfe;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.admit-download-search button:hover {
+  background: rgba(59, 130, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ================= Summary ================= */
+
+.admit-download-summary {
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.admit-download-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #93c5fd;
+}
+
+/* ================= List ================= */
+
+.admit-download-list {
+  margin-top: 14px;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.admit-download-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  font-size: 13px;
+  color: #e2e8f0;
+  background: transparent;
+  text-align: left;
+  border: none;
+}
+
+.admit-download-row.is-selectable {
+  cursor: pointer;
+}
+
+.admit-download-row.is-selectable:hover {
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.admit-download-row.is-selected {
+  background: rgba(59, 130, 246, 0.18);
+}
+
+.admit-download-row:last-child {
+  border-bottom: none;
+}
+
+.admit-download-empty {
+  padding: 20px;
+  text-align: center;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.admit-download-name {
+  font-weight: 600;
+}
+
+.admit-download-reg {
+  color: rgba(148, 163, 184, 0.9);
+}
+
+/* ================= Actions ================= */
+
+.admit-download-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 16px 24px 20px;
+  background: rgba(15, 23, 42, 0.92);
+  border-top: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.admit-download-actions-left {
+  display: flex;
+  gap: 10px;
+  margin-right: auto;
+}
+
+.admit-download-reset {
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.admit-download-reset:hover {
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.admit-download-cancel {
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.admit-download-submit {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admit-download-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(34, 197, 94, 0.4);
+}
+
+.admit-download-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================= Responsive ================= */
+
+@media (max-width: 640px) {
+  .admit-download-header {
+    padding: 16px 18px;
+  }
+
+  .admit-download-body {
+    padding: 18px 18px 10px;
+  }
+
+  .admit-download-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admit-download-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admit-download-search button {
+    width: 100%;
+  }
+
+  .admit-download-summary {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .admit-download-list {
+    max-height: 200px;
+  }
+
+  .admit-download-actions {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .admit-download-actions-left {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .admit-download-cancel,
+  .admit-download-submit {
+    width: 100%;
+  }
+}

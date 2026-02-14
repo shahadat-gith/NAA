@@ -1,14 +1,23 @@
+export const formatDate = (date) => {
+  const d = new Date(date);
 
-  export const formatDate = (date) => {
-  if (!date) return "N/A";
+  const day = d.getDate();
+  const year = d.getFullYear();
+  const month = d.toLocaleString("en-IN", { month: "long" });
 
-  return new Date(date).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  // Function to get ordinal suffix
+  const getSuffix = (day) => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1: return "st";
+      case 2: return "nd";
+      case 3: return "rd";
+      default: return "th";
+    }
+  };
+
+  return `${day}${getSuffix(day)} ${month} ${year}`;
 };
-
 
 
 export const formatAddress = (address) => {
@@ -86,6 +95,7 @@ export const normaliseStudent = (data) => ({
     pincode: data.pincode || undefined,
   },
 });
+
 
 
 

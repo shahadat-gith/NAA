@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../../context/AdminContext";
 import "./ServiceTab.css";
+import { AppContext } from "../../../../context/AppContext";
 
 const ServiceTab = ({ data, loading }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
+
+  const { getSettings } = useContext(AppContext)
+
+
 
   // Fallback if no data
   const services = data || {
@@ -57,6 +62,7 @@ const ServiceTab = ({ data, loading }) => {
   ];
 
   const toggleService = async (key) => {
+
     try {
       const res = await axios.put(
         `${backendUrl}/api/settings/toggle/${key}`,
@@ -70,6 +76,8 @@ const ServiceTab = ({ data, loading }) => {
         toast.success(
           `${key} ${res.data.data[key] ? "enabled" : "disabled"}`
         );
+
+        getSettings(false);
       }
     } catch (error) {
       toast.error(

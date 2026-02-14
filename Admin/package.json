@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@react-pdf/renderer": "^4.3.1",
+    "@react-pdf/renderer": "^4.3.2",
     "axios": "^1.8.3",
     "docx": "^9.5.1",
     "file-saver": "^2.0.5",

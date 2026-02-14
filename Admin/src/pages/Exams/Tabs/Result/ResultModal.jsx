@@ -1,15 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AdminContext } from "../../../context/AdminContext";
-import "./ResultModal.css";
+import { AdminContext } from "../../../../context/AdminContext";
+import "../../Styles/ResultModal.css";
 
 import {
   CLASS_OPTIONS,
   STREAM_OPTIONS,
   EXAM_OPTIONS,
   SESSION_OPTIONS,
-} from "../../../utils/academicOptions";
+} from "../../../../utils/academicOptions";
 
 const ResultModal = ({ isOpen, onClose, onSuccess, editData }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);

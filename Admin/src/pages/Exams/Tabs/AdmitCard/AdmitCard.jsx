@@ -2,14 +2,14 @@ import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../../context/AdminContext";
-import { formatClassName } from "../../../../utils/formatclass";
+import { formatClassName } from "../../../../utils/utility";
 import { CLASS_OPTIONS } from "../../../../utils/academicOptions";
 import RoutineModal from "./RoutineModal";
 import RoutinePreviewModal from "./RoutinePreviewModal";
 import CurrentExamModal from "./CurrentExamModal";
-import "./AdmitcardTab.css";
+import "../../Styles/AdmitCard.css";
 
-const AdmitCardTab = ({ admitCards = [], exams = [], loading }) => {
+const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -264,6 +264,7 @@ const AdmitCardTab = ({ admitCards = [], exams = [], loading }) => {
         }}
         routine={routineToPreview}
         examDetails={currentExam}
+        authorities={authorities}
       />
 
       <CurrentExamModal
@@ -277,4 +278,4 @@ const AdmitCardTab = ({ admitCards = [], exams = [], loading }) => {
   );
 };
 
-export default AdmitCardTab;
+export default AdmitCard;

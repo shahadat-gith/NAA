@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import "./CurrentExamModal.css";
+import "../../Styles/CurrentExamModal.css";
 import { EXAM_OPTIONS } from "../../../../utils/academicOptions";
 
 const CurrentExamModal = ({ open, onClose, onSubmit, initialData, loading }) => {

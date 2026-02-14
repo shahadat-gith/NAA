@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { AdminContext } from "../../context/AdminContext";
-import { AppContext } from "../../context/AppContext";
-import Loader from "../../components/Loader/Loader";
-import ResultModal from "./ResultModal/ResultModal";
+import { AdminContext } from "../../../../context/AdminContext";
+import { AppContext } from "../../../../context/AppContext";
+import Loader from "../../../../components/Loader/Loader";
+import ResultModal from "./ResultModal";
 
 import {
   CLASS_OPTIONS,
   STREAM_OPTIONS,
   EXAM_OPTIONS,
   SESSION_OPTIONS,
-} from "../../utils/academicOptions";
+} from "../../../../utils/academicOptions";
 
-import "./Result.css";
+import "../../Styles/Result.css";
 import toast from "react-hot-toast";
 
-const Result = () => {
+const Result = ({ embedded = false }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const {
@@ -162,7 +162,9 @@ const Result = () => {
     return <Loader text="Loading results..." />;
 
   return (
-    <div className="result-page">
+    <div
+      className={`result-page${embedded ? " result-page-embedded" : ""}`}
+    >
       {/* ================= HEADER ================= */}
       <div className="result-header">
         <h2>Results</h2>

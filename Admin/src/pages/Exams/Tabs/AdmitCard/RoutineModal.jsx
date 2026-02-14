@@ -7,8 +7,8 @@ import {
   TIME_OPTIONS,
   EXAM_CENTER_OPTIONS
 } from "../../../../utils/academicOptions";
-import { formatClassName } from "../../../../utils/formatclass";
-import "./RoutineModal.css";
+import { formatClassName } from "../../../../utils/utility";
+import "../../Styles/RoutineModal.css";
 
 /* ================= COMPONENT ================= */
 

@@ -1,0 +1,235 @@
+/* ================= Container ================= */
+
+.student-list-container {
+    margin-top: 16px;
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.7);
+    overflow: hidden;
+}
+
+/* ================= Header ================= */
+
+.student-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: rgba(30, 41, 59, 0.6);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+}
+
+.student-list-count {
+    font-size: 13px;
+    font-weight: 700;
+    color: #93c5fd;
+    letter-spacing: 0.3px;
+}
+
+.student-list-hint {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(148, 163, 184, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ================= Scrollable List ================= */
+
+.student-list-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+/* Custom Scrollbar */
+.student-list-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.student-list-scroll::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+}
+
+.student-list-scroll::-webkit-scrollbar-thumb {
+    background: rgba(51, 65, 85, 0.7);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.student-list-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(71, 85, 105, 0.9);
+}
+
+/* ================= Table ================= */
+
+.student-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+}
+
+.student-list-table thead {
+    background: rgba(30, 41, 59, 0.7);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.student-list-table th,
+.student-list-table td {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 13px;
+    color: #e2e8f0;
+    border-bottom: 1px solid rgba(51, 65, 85, 0.35);
+}
+
+.student-list-table th {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: rgba(226, 232, 240, 0.8);
+}
+
+.student-list-row {
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.student-list-row--selectable {
+    cursor: pointer;
+}
+
+.student-list-row--selectable:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+.student-list-row--selected {
+    background: rgba(59, 130, 246, 0.18);
+}
+
+.student-list-name-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.student-list-name-text {
+    font-weight: 600;
+    color: #f8fafc;
+}
+
+.student-list-selected-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: #16a34a;
+    border: 1px solid #15803d;
+    color: #ecfdf5;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* ================= Empty State ================= */
+
+.student-list-empty {
+    padding: 40px 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.student-list-empty-icon {
+    width: 56px;
+    height: 56px;
+    color: rgba(148, 163, 184, 0.5);
+    margin-bottom: 8px;
+}
+
+.student-list-empty-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: #cbd5e1;
+    margin: 0;
+}
+
+.student-list-empty-subtext {
+    font-size: 13px;
+    color: rgba(148, 163, 184, 0.75);
+    margin: 0;
+    max-width: 320px;
+    line-height: 1.5;
+}
+
+/* ================= Responsive Design ================= */
+
+@media (max-width: 768px) {
+    .student-list-scroll {
+        max-height: 240px;
+    }
+
+    .student-list-header {
+        padding: 10px 14px;
+    }
+
+    .student-list-count {
+        font-size: 12px;
+    }
+
+    .student-list-hint {
+        font-size: 10px;
+    }
+
+    .student-list-table th,
+    .student-list-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .student-list-scroll {
+        max-height: 200px;
+    }
+
+    .student-list-empty {
+        padding: 32px 20px;
+    }
+
+    .student-list-empty-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .student-list-empty-text {
+        font-size: 14px;
+    }
+
+    .student-list-empty-subtext {
+        font-size: 12px;
+    }
+
+    .student-list-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
+
+/* ================= Accessibility ================= */
+
+.student-list-row--selectable:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+    z-index: 1;
+}
+
+.student-list-row--selectable:focus:not(:focus-visible) {
+    outline: none;
+}

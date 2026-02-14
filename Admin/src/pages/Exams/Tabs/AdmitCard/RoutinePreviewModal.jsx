@@ -1,54 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { formatClassName } from "../../../../utils/formatclass";
+import { formatClassName } from "../../../../utils/utility";
 import { generateRoutinePdf } from "./generateRoutinePdf";
-import { AdminContext } from "../../../../context/AdminContext";
-import "./RoutinePreviewModal.css";
+import "../../Styles/RoutinePreviewModal.css";
 
 
-const RoutinePreviewModal = ({ open, onClose, routine, examDetails }) => {
-  const { backendUrl, adminToken } = useContext(AdminContext);
-
-  const [signatories, setSignatories] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  /* ================= FETCH AUTHORITIES ================= */
-  useEffect(() => {
-    if (!open) return;
-
-    const fetchAuthorities = async () => {
-      try {
-        setLoading(true);
-
-        const res = await axios.post(`${backendUrl}/api/settings/authorities`,);
-
-        if (res.data.success) {
-          const authorities = res.data.authorities || [];
-
-          const principal = authorities.find(
-            (a) => a.role.toLowerCase() === "principal"
-          );
-
-          setSignatories({
-            principal: principal
-              ? {
-                  name: principal.name,
-                  designation: "Principal",
-                  signature: principal.signature?.url,
-                }
-              : null,
-          });
-        }
-      } catch (error) {
-        toast.error("Failed to load authorities");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAuthorities();
-  }, [open, backendUrl, adminToken]);
+const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }) => {
 
   /* ================= SAFE EARLY RETURN ================= */
   if (!open || !routine) return null;
@@ -61,12 +19,12 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails }) => {
     });
 
   const handleDownload = () => {
-    if (!signatories?.principal) {
+    if (!authorities?.principal) {
       toast.error("Authorities not configured properly");
       return;
     }
 
-    generateRoutinePdf(routine, signatories, examDetails);
+    generateRoutinePdf(routine, authorities, examDetails);
   };
 
   return (
@@ -133,9 +91,8 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails }) => {
           <button
             className="erm-download-btn"
             onClick={handleDownload}
-            disabled={loading}
           >
-            {loading ? "Preparing..." : "⬇ Download PDF"}
+             Download PDF
           </button>
         </div>
       </div>
