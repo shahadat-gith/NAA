@@ -73,6 +73,9 @@ export const SUBJECT_OPTIONS = [
   "New Science",
   "Social Science",
   "MIL",
+  "MIL / Alternative English",
+  "Environmental Education",
+  "Advance Assamese / Arabic",
 ];
 
 
