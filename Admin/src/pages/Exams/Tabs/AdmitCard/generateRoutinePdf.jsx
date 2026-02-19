@@ -288,8 +288,11 @@ export const generateRoutinePdf = async (routine, signatories, examDetails) => {
     />
   ).toBlob();
 
+  // Conditionally include stream
+  const stream = routine?.stream ? `_${routine.stream}` : "";
+
   saveAs(
     blob,
-    `Routine_${routine.class}_${routine.medium}.pdf`
+    `Admitcards_${routine.class}${stream}_${routine.medium}.pdf`
   );
 };
