@@ -15,9 +15,8 @@ import Loader from "../../components/Loader/Loader";
 import { AppContext } from "../../context/AppContext";
 
 const Student = () => {
-  const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const { students,fetchStudents , fetchingStudents} = useContext(AppContext)
+  const { students, fetchInitialData, loading } = useContext(AppContext)
 
   const [filteredStudents, setFilteredStudents] = useState(students || []);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -26,7 +25,6 @@ const Student = () => {
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
-  const [loading, setLoading] = useState(false);
 
   const [studentModalOpen, setStudentModalOpen] = useState(false);
   const [singleStudentModal, setSingleStudentModal] = useState(false);
@@ -75,7 +73,7 @@ const Student = () => {
     setFilteredStudents(students);
   };
 
-  if(fetchingStudents) return <Loader text="loading students..."/>
+  if(loading) return <Loader text="loading students..."/>
 
   return (
     <div className="admin-student-list-container">
@@ -207,7 +205,7 @@ const Student = () => {
           setStudentModalOpen(false);
         }}
 
-        fetchStudents={fetchStudents}
+        fetchInitialData={fetchInitialData}
       />
 
       <SingleStudentModal
@@ -216,13 +214,13 @@ const Student = () => {
           setSingleStudentModal(false);
 
         }}
-        fetchStudents={fetchStudents}
+        fetchInitialData={fetchInitialData}
       />
 
       <PromoteStudentsModal
         isOpen={promoteModalOpen}
         onClose={() => setPromoteModalOpen(false)}
-        fetchStudents={fetchStudents}
+        fetchInitialData={fetchInitialData}
       />
     </div>
   );

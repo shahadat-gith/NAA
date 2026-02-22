@@ -10,9 +10,8 @@ import { capitalizeWords } from '../../utils/utility';
 import { AppContext } from '../../context/AppContext';
 
 const StudentImages = () => {
-    const { backendUrl, adminToken } = useContext(AdminContext);
 
-    const { students, setStudents, fetchingStudents } = useContext(AppContext)
+    const { students, setStudents, loading } = useContext(AppContext)
     const [filteredStudents, setFilteredStudents] = useState(students || []);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeStudent, setActiveStudent] = useState(null);
@@ -85,7 +84,7 @@ const StudentImages = () => {
         setActiveStudent(null);
     };
 
-    if (fetchingStudents) return <Loader text="Loading students..." />;
+    if (loading) return <Loader text="Loading students..." />;
 
     const mediumOptions = ["assamese", "english"]
 

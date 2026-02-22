@@ -9,7 +9,7 @@ import { formatClassName, normaliseStudent } from "../../../utils/utility";
 const SingleStudentModal = ({
   isOpen,
   onClose,
-  fetchStudents, // optional
+  fetchInitialData, // optional
   student,       // optional → edit mode
   setStudent,    // optional
 }) => {
@@ -179,7 +179,7 @@ const SingleStudentModal = ({
           setStudent(res.data.student);
         }
 
-        fetchStudents?.();
+        fetchInitialData?.();
         handleClose();
       }
     } catch (error) {

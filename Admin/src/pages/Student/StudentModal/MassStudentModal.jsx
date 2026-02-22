@@ -6,7 +6,7 @@ import { AdminContext } from "../../../context/AdminContext";
 import { formatClassName } from "../../../utils/utility";
 import { CLASS_OPTIONS,STREAM_OPTIONS} from "../../../utils/academicOptions";
 
-const MassStudentModal = ({ isOpen, onClose, fetchStudents }) => {
+const MassStudentModal = ({ isOpen, onClose, fetchInitialData }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [file, setFile] = useState(null);

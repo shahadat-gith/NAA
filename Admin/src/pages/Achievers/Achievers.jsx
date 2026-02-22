@@ -10,7 +10,7 @@ import "./Achievers.css";
 
 const Achievers = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { achievers, fetchingAchievers, fetchAchievers } =
+  const { achievers, loading, fetchInitialData } =
     useContext(AppContext);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,7 +57,7 @@ const Achievers = () => {
         }
       );
 
-      fetchAchievers(); // refresh from context
+      fetchInitialData(); // refresh from context
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -99,7 +99,7 @@ const Achievers = () => {
 
       {/* ================= TABLE ================= */}
       <div className="achievers-list-container">
-        {fetchingAchievers ? (
+        {loading ? (
           <div className="loader-container">
             <div className="loader"></div>
             <p>Loading achievers...</p>
@@ -210,7 +210,7 @@ const Achievers = () => {
         onClose={() => setShowAddModal(false)}
         backendUrl={backendUrl}
         adminToken={adminToken}
-        onAddSuccess={fetchAchievers}
+        onAddSuccess={fetchInitialData}
       />
 
       {/* ================= UPDATE MODAL ================= */}
@@ -223,7 +223,7 @@ const Achievers = () => {
           backendUrl={backendUrl}
           adminToken={adminToken}
           achiever={showUpdateModal}
-          onUpdateSuccess={fetchAchievers}
+          onUpdateSuccess={fetchInitialData}
         />
       )}
     </div>

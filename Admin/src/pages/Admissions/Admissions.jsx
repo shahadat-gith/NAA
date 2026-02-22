@@ -8,7 +8,7 @@ import Loader from "../../components/Loader/Loader";
 
 const Admissions = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { admissions, fetchAdmissions, fetchingAdmissions } = useContext(AppContext);
+  const { admissions, fetchInitialData, loading } = useContext(AppContext);
 
   const navigate = useNavigate();
 
@@ -93,7 +93,7 @@ const Admissions = () => {
         }
       );
 
-      fetchAdmissions(); 
+      fetchInitialData(); 
     } catch (err) {
       alert(
         err.response?.data?.message ||
@@ -201,7 +201,7 @@ const Admissions = () => {
 
       {/* ================= TABLE ================= */}
 
-      {fetchingAdmissions ? (
+      {loading ? (
         <Loader text="Loading admissions..." />
       ) : (
         <table className="admissions-table">

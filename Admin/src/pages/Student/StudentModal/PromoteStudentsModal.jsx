@@ -6,7 +6,7 @@ import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../../utils/academicOptions";
 import { formatClassName } from "../../../utils/utility";
 import "./PromoteStudentsModal.css";
 
-const PromoteStudentsModal = ({ isOpen, onClose, fetchStudents }) => {
+const PromoteStudentsModal = ({ isOpen, onClose, fetchInitialData }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [loading, setLoading] = useState(false);

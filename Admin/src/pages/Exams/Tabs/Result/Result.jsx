@@ -21,8 +21,8 @@ const Result = ({ embedded = false }) => {
   const {
     results,
     setResults,
-    fetchResults,
-    fetchingResults,
+    fetchInitialData,
+    loadingInitialData,
   } = useContext(AppContext);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -152,13 +152,13 @@ const Result = ({ embedded = false }) => {
         }
       );
 
-      fetchResults();
+      fetchInitialData();
     } catch {
       toast.error("Failed to delete result");
     }
   };
 
-  if (fetchingResults)
+  if (loadingInitialData)
     return <Loader text="Loading results..." />;
 
   return (
@@ -391,7 +391,7 @@ const Result = ({ embedded = false }) => {
             setEditResult(null);
           }}
           editData={editResult}
-          onSuccess={fetchResults}
+          onSuccess={fetchInitialData}
         />
       )}
     </div>

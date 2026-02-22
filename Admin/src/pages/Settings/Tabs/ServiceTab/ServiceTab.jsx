@@ -8,7 +8,7 @@ import { AppContext } from "../../../../context/AppContext";
 const ServiceTab = ({ data, loading }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const { getSettings } = useContext(AppContext)
+  const { fetchInitialData } = useContext(AppContext)
 
 
 
@@ -77,7 +77,7 @@ const ServiceTab = ({ data, loading }) => {
           `${key} ${res.data.data[key] ? "enabled" : "disabled"}`
         );
 
-        getSettings(false);
+        fetchInitialData(false); //false dont refresh or loading animation again
       }
     } catch (error) {
       toast.error(

@@ -13,8 +13,8 @@ const Teacher = () => {
 
   const {
     teachers,
-    fetchTeachers,
-    fetchingTeachers,
+    fetchInitialData,
+    loading,
   } = useContext(AppContext);
 
   const [teacherPopUp, setTeacherPopUp] = useState(false);
@@ -40,7 +40,7 @@ const Teacher = () => {
       );
 
       toast.success("Teacher deleted successfully");
-      fetchTeachers();
+      fetchInitialData();
     } catch (error) {
       console.error("Delete teacher error:", error);
       toast.error("Failed to delete teacher");
@@ -57,7 +57,7 @@ const Teacher = () => {
     );
   }, [teachers, searchTerm]);
 
-  if (fetchingTeachers)
+  if (loading)
     return <Loader text="Loading teachers..." />;
 
   return (
@@ -199,7 +199,7 @@ const Teacher = () => {
         onClose={() =>
           setTeacherPopUp(false)
         }
-        onSuccess={fetchTeachers}
+        onSuccess={fetchInitialData}
       />
     </div>
   );

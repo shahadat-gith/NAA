@@ -9,7 +9,7 @@ import { AppContext } from "../../context/AppContext";
 
 const Settings = () => {
 
-  const { settings, fetchingSettings } = useContext(AppContext)
+  const { settings, loading } = useContext(AppContext)
   const tabs = [
     {
       id: "services",
@@ -42,7 +42,7 @@ const Settings = () => {
         return (
           <ServiceTab
             data={settings?.serviceSettings}
-            loading={fetchingSettings}
+            loading={loading}
           />
         );
 
@@ -50,7 +50,7 @@ const Settings = () => {
         return (
           <FeesTab
             data={settings?.feesSettings}
-            loading={fetchingSettings}
+            loading={loading}
           />
         );
 
@@ -58,7 +58,7 @@ const Settings = () => {
         return (
           <Authoritiestab
             authorities={settings?.authorities}
-            loading={fetchingSettings}
+            loading={loading}
           />
         );
 
@@ -66,7 +66,7 @@ const Settings = () => {
         return (
           <BannerImagesTab
             heroImages={settings?.heroImages}
-            loading={fetchingSettings}
+            loading={loading}
           />
         );
 

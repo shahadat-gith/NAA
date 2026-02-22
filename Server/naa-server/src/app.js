@@ -20,6 +20,7 @@ import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
+import adminRouter from "./routes/admin.routes.js";
 
 
 const app = express();
@@ -86,6 +87,7 @@ app.use("/api/student", studentRouter);
 app.use("/api/results", resultRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/admission", admissionRouter);
+app.use("/api/admin", adminRouter);
 
 /* ================= CUSTOM API ================= */
 

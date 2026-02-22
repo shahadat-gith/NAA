@@ -10,7 +10,7 @@ import UploadModal from "./UploadModal";
 
 const Gallery = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { gallerImages, fetchGalleryImages, fetchingImages } = useContext(AppContext);
+  const { gallerImages, fetchInitialData, loading } = useContext(AppContext);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
@@ -32,7 +32,7 @@ const Gallery = () => {
       );
       setShowUploadModal(false);
       toggleScroll(false);
-      fetchGalleryImages();
+      fetchInitialData();
     } catch (error) {
       toast.error(error.response?.data?.message || "Upload failed");
     }
@@ -48,7 +48,7 @@ const Gallery = () => {
           }),
           { loading: "Deleting...", success: "Deleted!", error: "Delete failed" }
         );
-        fetchGalleryImages();
+        fetchInitialData();
       } catch (error) {
         toast.error(error.response?.data?.message || "Delete failed");
       }
@@ -74,7 +74,7 @@ const Gallery = () => {
         </div>
       </div>
 
-      {fetchingImages ? (
+      {loading ? (
         <div className="gallery-loader">
           <div className="loader-spinner"></div>
           <p>Loading images...</p>
