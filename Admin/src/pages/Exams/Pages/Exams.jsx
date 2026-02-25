@@ -4,14 +4,10 @@ import { AppContext } from "../../../context/AppContext";
 import AdmitCard from "../Tabs/AdmitCard/AdmitCard";
 import Result from "../Tabs/Result/Result";
 import AdmitCardDownloadModal from "./AdmitCardDownloadModal";
+import Loader from "../../../components/Loader/Loader";
 
 const Exams = () => {
-  const {
-    settings,
-    fetchingSettings,
-    students,
-    fetchingStudents,
-  } = useContext(AppContext);
+  const {settings,fetchingSettings,loading} = useContext(AppContext);
 
   const tabs = [
     {
@@ -49,6 +45,8 @@ const Exams = () => {
     }
   };
 
+ 
+
   return (
     <div className="exams-container">
       <div className="exams-header">
@@ -63,7 +61,7 @@ const Exams = () => {
             className="exams-header-btn"
             onClick={() => setDownloadModalOpen(true)}
           >
-            Download Admit Card
+            Admit Card
           </button>
         </div>
       </div>

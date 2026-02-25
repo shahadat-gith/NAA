@@ -4,13 +4,12 @@ import { AppContext } from "../../../context/AppContext";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../../utils/academicOptions";
 import { formatClassName } from "../../../utils/utility";
 import { generateAdmitCards } from "../AdmitcardPdf/generateAdmitCard";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 import StudentList from "./StudentList";
+import DownloadProgressModal from "./DownloadProgressModal";
 
 const AdmitCardDownloadModal = ({ open, onClose }) => {
-
     const { settings, students, fetchingStudents } = useContext(AppContext);
-
 
     const [medium, setMedium] = useState("");
     const [cls, setCls] = useState("");
@@ -18,24 +17,23 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
     const [query, setQuery] = useState("");
     const [selectedStudentKey, setSelectedStudentKey] = useState("");
 
+    const [isProgressOpen, setIsProgressOpen] = useState(false);
+    const [progress, setProgress] = useState(0);
 
     const currentExam =
         settings?.exams?.[settings.exams?.length - 1] ?? null;
 
-    const principal = settings?.authorities?.find(
-        a => a.role?.toLowerCase() === "principal"
-    ) ?? null;
-
-
+    const principal =
+        settings?.authorities?.find(
+            (a) => a.role?.toLowerCase() === "principal"
+        ) ?? null;
 
     const isSeniorClass = cls === "11" || cls === "12";
 
-    /* -------------------- MEDIUM → CLASS -------------------- */
     const availableClasses = useMemo(() => {
         return medium ? CLASS_OPTIONS[medium] || [] : [];
     }, [medium]);
 
-    /* -------------------- CLASS MODE STUDENTS -------------------- */
     const classStudents = useMemo(() => {
         if (!medium || !cls) return [];
 
@@ -47,7 +45,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
         });
     }, [students, medium, cls, stream, isSeniorClass]);
 
-    /* -------------------- SEARCH MODE STUDENTS -------------------- */
     const searchedStudents = useMemo(() => {
         if (!query.trim()) return [];
 
@@ -59,7 +56,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
         );
     }, [students, query]);
 
-    /* -------------------- ADMIT CARD LOOKUP -------------------- */
     const getAdmitCard = (student) => {
         return (settings?.admitCards || []).find((card) => {
             if (card.class !== student.class) return false;
@@ -70,7 +66,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
         });
     };
 
-    /* -------------------- MODE LOGIC -------------------- */
     let studentsToDownload = [];
     let admitCard = null;
     let errorMessage = "";
@@ -121,8 +116,59 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
             ? `admit_card_${studentsToDownload[0].registrationNo}.pdf`
             : `admit_cards_${cls}_${medium}.pdf`;
 
-    /* -------------------- RESET -------------------- */
+    const handleDownload = async () => {
+        try {
+            setIsProgressOpen(true);
+            setProgress(0);
+
+            await new Promise((resolve) => setTimeout(resolve, 100));
+
+            let simulatedProgress = 0;
+
+            const progressInterval = setInterval(() => {
+                simulatedProgress += 5;
+                if (simulatedProgress <= 90) {
+                    setProgress(simulatedProgress);
+                }
+            }, 250);
+
+            const blob = await pdf(
+                generateAdmitCards({
+                    students: studentsToDownload,
+                    admitCard,
+                    examDetails: currentExam,
+                    principal,
+                })
+            ).toBlob();
+
+            clearInterval(progressInterval);
+
+            setProgress(100);
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+
+            link.remove();
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error("Download failed:", error);
+            setProgress(0);
+            setIsProgressOpen(false);
+        }
+    };
+
+    const handleCloseProgress = () => {
+        setIsProgressOpen(false);
+        setProgress(0);
+    };
+
     const resetAndClose = () => {
+        if (isProgressOpen) return; // prevent closing while downloading
         setMedium("");
         setCls("");
         setStream("");
@@ -143,164 +189,150 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
         setSelectedStudentKey("");
     };
 
-    /* -------------------- SAFE RETURN -------------------- */
     if (!open) return null;
 
-    /* -------------------- STUDENTS TO SHOW -------------------- */
     const studentsToShow = isSearchMode
         ? searchedStudents
         : classStudents;
 
-    /* -------------------- JSX -------------------- */
     return (
-        <div className="admit-download-overlay" onClick={resetAndClose}>
-            <div
-                className="admit-download-modal"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <div className="admit-download-header">
-                    <h3>Download Admit Cards</h3>
-                    <button onClick={resetAndClose}>✕</button>
-                </div>
+        <>
+            <div className="admit-download-overlay" onClick={resetAndClose}>
+                <div
+                    className="admit-download-modal"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="admit-download-header">
+                        <h3>Download Admit Cards</h3>
+                        <button onClick={resetAndClose}>✕</button>
+                    </div>
 
-                <div className="admit-download-body">
-                    <div className="admit-download-grid">
-                        <div className="admit-download-field">
-                            <label>Medium *</label>
-                            <select
-                                value={medium}
-                                onChange={(e) => {
-                                    setMedium(e.target.value);
-                                    setCls("");
-                                    setStream("");
-                                }}
-                            >
-                                <option value="">Select Medium</option>
-                                <option value="english">English</option>
-                                <option value="assamese">Assamese</option>
-                            </select>
-                        </div>
-
-                        <div className="admit-download-field">
-                            <label>Class *</label>
-                            <select
-                                value={cls}
-                                disabled={!medium}
-                                onChange={(e) => {
-                                    setCls(e.target.value);
-                                    setStream("");
-                                }}
-                            >
-                                <option value="">Select Class</option>
-                                {availableClasses.map((c) => (
-                                    <option key={c} value={c}>
-                                        {formatClassName(c)}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        {isSeniorClass && (
+                    <div className="admit-download-body">
+                        <div className="admit-download-grid">
                             <div className="admit-download-field">
-                                <label>Stream *</label>
+                                <label>Medium *</label>
                                 <select
-                                    value={stream}
-                                    onChange={(e) =>
-                                        setStream(e.target.value)
-                                    }
+                                    value={medium}
+                                    onChange={(e) => {
+                                        setMedium(e.target.value);
+                                        setCls("");
+                                        setStream("");
+                                    }}
                                 >
-                                    <option value="">Select Stream</option>
-                                    {STREAM_OPTIONS.map((s) => (
-                                        <option key={s} value={s}>
-                                            {s.toUpperCase()}
+                                    <option value="">Select Medium</option>
+                                    <option value="english">English</option>
+                                    <option value="assamese">Assamese</option>
+                                </select>
+                            </div>
+
+                            <div className="admit-download-field">
+                                <label>Class *</label>
+                                <select
+                                    value={cls}
+                                    disabled={!medium}
+                                    onChange={(e) => {
+                                        setCls(e.target.value);
+                                        setStream("");
+                                    }}
+                                >
+                                    <option value="">Select Class</option>
+                                    {availableClasses.map((c) => (
+                                        <option key={c} value={c}>
+                                            {formatClassName(c)}
                                         </option>
                                     ))}
                                 </select>
                             </div>
-                        )}
-                    </div>
 
-                    <div className="admit-download-search">
-                        <input
-                            placeholder="Search by name or registration no"
-                            value={query}
-                            onChange={(e) => {
-                                setQuery(e.target.value);
-                                setSelectedStudentKey("");
-                            }}
+                            {isSeniorClass && (
+                                <div className="admit-download-field">
+                                    <label>Stream *</label>
+                                    <select
+                                        value={stream}
+                                        onChange={(e) =>
+                                            setStream(e.target.value)
+                                        }
+                                    >
+                                        <option value="">Select Stream</option>
+                                        {STREAM_OPTIONS.map((s) => (
+                                            <option key={s} value={s}>
+                                                {s.toUpperCase()}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
+                        </div>
 
+                        <div className="admit-download-search">
+                            <input
+                                placeholder="Search by name or registration no"
+                                value={query}
+                                onChange={(e) => {
+                                    setQuery(e.target.value);
+                                    setSelectedStudentKey("");
+                                }}
+                            />
+                        </div>
+
+                        <div className="admit-download-summary">
+                            {errorMessage || "Ready to download"}
+                            {fetchingStudents && <span> Loading...</span>}
+                        </div>
+
+                        <StudentList
+                            students={studentsToShow}
+                            selectable={isSearchMode}
+                            selectedKey={selectedStudentKey}
+                            onSelect={setSelectedStudentKey}
                         />
                     </div>
 
-                    <div className="admit-download-summary">
-                        {errorMessage || "Ready to download"}
-                        {fetchingStudents && <span> Loading...</span>}
+                    <div className="admit-download-actions">
+                        <div className="admit-download-actions-left">
+                            <button
+                                type="button"
+                                className="admit-download-reset"
+                                onClick={resetFilters}
+                            >
+                                Reset Filters
+                            </button>
+                            <button
+                                type="button"
+                                className="admit-download-reset"
+                                onClick={resetSearch}
+                            >
+                                Reset Search
+                            </button>
+                        </div>
+
+                        {errorMessage || studentsToDownload.length === 0 ? (
+                            <button
+                                type="button"
+                                className="admit-download-submit"
+                                disabled
+                            >
+                                Download
+                            </button>
+                        ) : (
+                            <button
+                                type="button"
+                                className="admit-download-submit"
+                                onClick={handleDownload}
+                            >
+                                Download Now
+                            </button>
+                        )}
                     </div>
-
-                    {/* ✅ STUDENT LIST*/}
-
-                    <StudentList
-                        students={studentsToShow}
-                        selectable={isSearchMode}
-                        selectedKey={selectedStudentKey}
-                        onSelect={setSelectedStudentKey}
-                    />
-                </div>
-
-                <div className="admit-download-actions">
-                    <div className="admit-download-actions-left">
-                        <button
-                            type="button"
-                            className="admit-download-reset"
-                            onClick={resetFilters}
-                        >
-                            Reset Filters
-                        </button>
-                        <button
-                            type="button"
-                            className="admit-download-reset"
-                            onClick={resetSearch}
-                        >
-                            Reset Search
-                        </button>
-                    </div>
-
-                    {errorMessage || studentsToDownload.length === 0 ? (
-                        <button
-                            type="button"
-                            className="admit-download-submit"
-                            disabled
-                            title={errorMessage || "Select students to download"}
-                        >
-                            Download
-                        </button>
-                    ) : (
-                        <PDFDownloadLink
-                            document={generateAdmitCards({
-                                students: studentsToDownload,
-                                admitCard,
-                                examDetails: currentExam,
-                                principal,
-                            })}
-                            fileName={fileName}
-                        >
-                            {({ loading }) => (
-                                <button
-                                    type="button"
-                                    className="admit-download-submit"
-                                    disabled={loading}
-                                    onClick={onclose}
-                                >
-                                    {loading
-                                        ? "Please wait..."
-                                        : "Download Now"}
-                                </button>
-                            )}
-                        </PDFDownloadLink>
-                    )}
                 </div>
             </div>
-        </div>
+
+            <DownloadProgressModal
+                isOpen={isProgressOpen}
+                progress={progress}
+                onClose={handleCloseProgress}
+            />
+        </>
     );
 };
 
