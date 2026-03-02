@@ -1,3 +1,5 @@
+import { CLASS_OPTIONS } from "./academicOptions";
+
 export const formatDate = (date) => {
   const d = new Date(date);
 
@@ -95,6 +97,30 @@ export const normaliseStudent = (data) => ({
     pincode: data.pincode || undefined,
   },
 });
+
+
+
+
+const MEDIUM_ORDER = Object.keys(CLASS_OPTIONS);
+
+export function sortStudents(students = []) {
+  return [...students].sort((a, b) => {
+    const ma = a.medium || "";
+    const mb = b.medium || "";
+
+    if (ma !== mb) {
+      const ia = MEDIUM_ORDER.indexOf(ma);
+      const ib = MEDIUM_ORDER.indexOf(mb);
+      return ia - ib;
+    }
+
+    // same medium, sort by class order
+    const order = CLASS_OPTIONS[ma] || [];
+    const ca = order.indexOf(a.class);
+    const cb = order.indexOf(b.class);
+    return ca - cb;
+  });
+}
 
 
 

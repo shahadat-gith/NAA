@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-
-import { AdminContext } from "../../context/AdminContext";
 import StudentTable from "./StudentTable/StudentTable";
 import MassStudentModal from "./StudentModal/MassStudentModal";
 import SingleStudentModal from "./StudentModal/SingleStudentModal";
 import PromoteStudentsModal from "./StudentModal/PromoteStudentsModal";
-import { formatClassName } from "../../utils/utility";
+import { formatClassName, sortStudents } from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
 
+// pdf export helper
+import { exportStudentListPDF } from "./exportStudent";
 
 import "./Student.css";
 import Loader from "../../components/Loader/Loader";
@@ -60,7 +59,7 @@ const Student = () => {
       filtered = filtered.filter((s) => s.stream === streamFilter);
     }
 
-    setFilteredStudents(filtered);
+    setFilteredStudents(sortStudents(filtered));
   }, [searchTerm, mediumFilter, classFilter, streamFilter, students]);
 
   /* ================= CLEAR FILTERS ================= */
@@ -70,10 +69,14 @@ const Student = () => {
     setClassFilter("");
     setStreamFilter("");
     setSelectedStudent(null);
-    setFilteredStudents(students);
+    setFilteredStudents(sortStudents(students));
   };
 
-  if(loading) return <Loader text="loading students..."/>
+  /* ===== EXPORT PDF ===== */
+  const exportPdf = () => {
+    exportStudentListPDF(filteredStudents, classFilter, mediumFilter, streamFilter);
+  };
+
 
   return (
     <div className="admin-student-list-container">
@@ -101,6 +104,22 @@ const Student = () => {
         >
           Promote Students
         </button>
+
+        {/* export filtered list */}
+        <div className="naa-export-wrapper">
+          <button
+            className={`naa-btn naa-btn-export ${!mediumFilter ? "naa-btn-disabled" : ""
+              }`}
+            onClick={exportPdf}
+            disabled={!mediumFilter}
+          >
+            {mediumFilter ? "Export PDF" : "Select Medium to Export"}
+          </button>
+
+          {!mediumFilter && (
+            <p className="naa-filter-hint">Please select medium to enable export.</p>
+          )}
+        </div>
       </div>
 
       {/* ===== SEARCH ===== */}

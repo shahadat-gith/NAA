@@ -24,15 +24,7 @@ export const curriculumDetailsData = {
       { name: 'Low student-teacher ratio (8:1)', icon: 'users' },
       { name: 'Regular outdoor activities', icon: 'globe' }
     ],
-    schedule: {
-      dailyHours: '8:30 AM - 1:30 PM',
-      daysPerWeek: 'Monday - Friday',
-      termsPerYear: 3
-    },
-    testimonial: {
-      quote: "The kindergarten program gave my daughter the perfect foundation. She's become more confident and loves learning!",
-      parent: "Michelle K., Parent"
-    },
+   
     enrollmentInfo: "Limited to 16 students per class. Early enrollment recommended.",
     image: "/images/kindergarten-classroom.jpg",
     background: 'rgba(173, 216, 230, 0.2)',
@@ -66,15 +58,7 @@ export const curriculumDetailsData = {
       { name: 'Technology-integrated classrooms', icon: 'laptop' },
       { name: 'Monthly field trips', icon: 'globe' }
     ],
-    schedule: {
-      dailyHours: '8:00 AM - 3:00 PM',
-      daysPerWeek: 'Monday - Friday',
-      termsPerYear: 3
-    },
-    testimonial: {
-      quote: "The elementary program provided excellent academic foundations while keeping my son engaged and excited about learning.",
-      parent: "David R., Parent"
-    },
+  
     image: "/images/elementary-classroom.jpg",
     background: 'rgba(255, 228, 196, 0.2)',
     mainIcon: 'book'
@@ -107,16 +91,6 @@ export const curriculumDetailsData = {
       { name: 'Mentorship opportunities', icon: 'handshake' },
       { name: 'Competitive sports teams', icon: 'basketball-ball' }
     ],
-    schedule: {
-      dailyHours: '8:00 AM - 3:30 PM',
-      daysPerWeek: 'Monday - Friday',
-      termsPerYear: 2
-    },
-    testimonial: {
-      quote: "The middle school program challenged my daughter academically while providing excellent support. The project-based approach really helped develop her critical thinking skills.",
-      parent: "Sarah T., Parent"
-    },
-
     image: "/images/middle-school-classroom.jpg",
     background: 'rgba(221, 160, 221, 0.2)',
     mainIcon: 'chalkboard-teacher'
@@ -151,15 +125,7 @@ export const curriculumDetailsData = {
       { name: 'University partnerships', icon: 'handshake' },
       { name: 'Research programs', icon: 'flask' }
     ],
-    schedule: {
-      dailyHours: '8:00 AM - 4:00 PM',
-      daysPerWeek: 'Monday - Friday',
-      termsPerYear: 2
-    },
-    testimonial: {
-      quote: "The higher secondary program was instrumental in my son's acceptance to his first-choice university. The college counseling and academic preparation were exceptional.",
-      parent: "James L., Parent"
-    },
+    
     image: "/images/higher-secondary-classroom.jpg",
     background: 'rgba(144, 238, 144, 0.2)',
     mainIcon: 'medal'

@@ -4,6 +4,7 @@ import {
   formatClassName,
   capitalizeFirst,
   capitalizeWords,
+  sortStudents,
 } from "../../../utils/utility";
 import "./StudentTable.css";
 import axios from "axios";
@@ -27,7 +28,8 @@ const StudentTable = ({
     setStudents(filteredStudents);
   }, [filteredStudents]);
 
-  const sortedStudents = [...students].sort((a, b) => {
+  // apply global sort (medium → class) and fallback to reg no for equal entries
+  const sortedStudents = sortStudents(students).sort((a, b) => {
     if (!a.registrationNo) return 1;
     if (!b.registrationNo) return -1;
     return a.registrationNo.localeCompare(b.registrationNo);

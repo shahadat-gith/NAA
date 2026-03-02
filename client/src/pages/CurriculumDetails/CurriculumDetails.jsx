@@ -52,24 +52,6 @@ const CurriculumDetails = () => {
               <div className="curriculum-details-card overview-card" style={{ background: details.background }}>
                 <h3><i className="fas fa-book"></i> Overview</h3>
                 <p>{details.overview}</p>
-
-                <div className="curriculum-schedule">
-                  <h4><i className="fas fa-calendar-alt"></i> Schedule Information</h4>
-                  <div className="schedule-details">
-                    <div className="schedule-item">
-                      <i className="fas fa-clock"></i>
-                      <span>Hours: {details.schedule.dailyHours}</span>
-                    </div>
-                    <div className="schedule-item">
-                      <i className="fas fa-calendar-alt"></i>
-                      <span>Days: {details.schedule.daysPerWeek}</span>
-                    </div>
-                    <div className="schedule-item">
-                      <i className="fas fa-book"></i>
-                      <span>Terms: {details.schedule.termsPerYear} per year</span>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <div className="curriculum-details-card" style={{ background: details.background }}>
@@ -117,13 +99,6 @@ const CurriculumDetails = () => {
                   ))}
                 </div>
 
-                <div className="testimonial-box">
-                  <div className="testimonial-quote">
-                    <i className="fas fa-star quote-icon"></i>
-                    <p>"{details.testimonial.quote}"</p>
-                    <p className="testimonial-author">— {details.testimonial.parent}</p>
-                  </div>
-                </div>
               </div>
 
             </div>
