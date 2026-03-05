@@ -20,10 +20,9 @@ import FeesSettings from '../models/Settings/fees.js';
 export const initialData = async (req, res) => {
 
     try {
-        const [students, admissions, results, teachers, achievers, galleries, authorities, admitCards, exams, heroImages, serviceSettings, feesSettings] = await Promise.all([
+        const [students, admissions, teachers, achievers, galleries, authorities, admitCards, exams, heroImages, serviceSettings, feesSettings] = await Promise.all([
             Student.find({}).exec(),
             Admission.find({}).exec(),
-            Result.find({}).exec(),
             teacherModel.find({}).exec(),
             Achievers.find({}).exec(),
             gallery.find({}).exec(),
@@ -40,7 +39,6 @@ export const initialData = async (req, res) => {
             data: {
                 students,
                 admissions,
-                results,
                 teachers,
                 achievers,
                 galleries,

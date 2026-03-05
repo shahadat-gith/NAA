@@ -1,15 +1,18 @@
 import React, { useContext, useMemo, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AdminContext } from "../../../../context/AdminContext";
-import { formatClassName } from "../../../../utils/utility";
-import { CLASS_OPTIONS } from "../../../../utils/academicOptions";
-import RoutineModal from "./RoutineModal";
-import RoutinePreviewModal from "./RoutinePreviewModal";
-import CurrentExamModal from "./CurrentExamModal";
-import "../../Styles/AdmitCard.css";
+import "./Styles/Exams.css";
+import { AppContext } from "../../context/AppContext";
+import { AdminContext } from "../../context/AdminContext";
+import { formatClassName } from "../../utils/utility";
+import { CLASS_OPTIONS } from "../../utils/academicOptions";
+import RoutineModal from "./Components/RoutineModal";
+import RoutinePreviewModal from "./Components/RoutinePreviewModal";
+import CurrentExamModal from "./Components/CurrentExamModal";
+import AdmitCardDownloadModal from "./Components/AdmitCardDownloadModal";
 
-const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) => {
+const Exams = () => {
+  const { settings, fetchingSettings } = useContext(AppContext);
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -22,7 +25,11 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
   const [routineToPreview, setRoutineToPreview] = useState(null);
 
   const [currentExamModalOpen, setCurrentExamModalOpen] = useState(false);
+  const [downloadModalOpen, setDownloadModalOpen] = useState(false);
 
+  const admitCards = settings?.admitCards || [];
+  const exams = settings?.exams || [];
+  const authorities = settings?.authorities || [];
   const currentExam = exams?.[exams.length - 1] || null;
 
   /* ================= FILTER & SORT ================= */
@@ -106,7 +113,7 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
     }
   };
 
-  if (loading) {
+  if (fetchingSettings) {
     return (
       <div className="srv-loading">
         <div className="srv-spinner"></div>
@@ -144,6 +151,13 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
             onClick={() => setRoutineModalOpen(true)}
           >
             + Add Schedule
+          </button>
+
+          <button
+            className="exams-header-btn"
+            onClick={() => setDownloadModalOpen(true)}
+          >
+            Admit Card
           </button>
         </div>
       </div>
@@ -249,7 +263,7 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
         }}
         onSubmit={handleSaveRoutine}
         initialData={editRoutine}
-        loading={loading}
+        loading={fetchingSettings}
       />
 
       <RoutinePreviewModal
@@ -268,10 +282,15 @@ const AdmitCard = ({ admitCards = [], exams = [], loading, authorities = [] }) =
         onClose={() => setCurrentExamModalOpen(false)}
         onSubmit={handleCurrentExamUpdate}
         initialData={currentExam}
-        loading={loading}
+        loading={fetchingSettings}
+      />
+
+      <AdmitCardDownloadModal
+        open={downloadModalOpen}
+        onClose={() => setDownloadModalOpen(false)}
       />
     </div>
   );
 };
 
-export default AdmitCard;
+export default Exams;

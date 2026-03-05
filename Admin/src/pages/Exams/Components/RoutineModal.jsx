@@ -6,9 +6,9 @@ import {
   SUBJECT_OPTIONS,
   TIME_OPTIONS,
   EXAM_CENTER_OPTIONS
-} from "../../../../utils/academicOptions";
-import { formatClassName } from "../../../../utils/utility";
-import "../../Styles/RoutineModal.css";
+} from "../../../utils/academicOptions";
+import { formatClassName } from "../../../utils/utility";
+import "../Styles/RoutineModal.css";
 
 /* ================= COMPONENT ================= */
 

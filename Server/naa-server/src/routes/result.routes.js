@@ -1,36 +1,40 @@
 import express from "express";
 import { excelUpload } from "../config/multer.js";
 import { adminAuthMiddleware } from "../middleware/adminAuth.js";
-
 import {
   uploadResults,
-  createResult,
-  getAllResults,
-  getSpecificResult,
+  getResultByRegistration,
   updateResult,
   deleteResult,
-  updateResultVisibility,
+  getAllResults,
 } from "../controller/result.controller.js";
 
 const resultRouter = express.Router();
 
-// Excel upload (Admin only)
-resultRouter.post("/upload", adminAuthMiddleware, excelUpload.single("file"), uploadResults);
+// Upload results via Excel file (Admin only)
+resultRouter.post(
+  "/upload",
+  adminAuthMiddleware,
+  excelUpload.single("file"),
+  uploadResults
+);
 
-// Create single result (Admin only)
-resultRouter.post("/create", adminAuthMiddleware, createResult);
 
-// Get all results (Admin only)
-resultRouter.post("/all", adminAuthMiddleware, getAllResults);
+// get all results with optional filters (Admin only)
+resultRouter.get("/", adminAuthMiddleware, getAllResults);
 
-// Get specific result (Public)
-resultRouter.post("/fetch", getSpecificResult);
 
-resultRouter.post("/update-visibility", adminAuthMiddleware, updateResultVisibility);
+// Get result by registration number (Public)
+resultRouter.get("/:registrationNo", getResultByRegistration);
+
 // Update result (Admin only)
-resultRouter.post("/update", adminAuthMiddleware, updateResult);
+resultRouter.put(
+  "/:registrationNo",
+  adminAuthMiddleware,
+  updateResult
+);
 
 // Delete result (Admin only)
-resultRouter.post("/delete", adminAuthMiddleware, deleteResult);
+resultRouter.delete("/:registrationNo", adminAuthMiddleware, deleteResult);
 
 export default resultRouter;

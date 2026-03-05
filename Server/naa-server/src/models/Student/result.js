@@ -6,13 +6,11 @@ const resultSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      index: true,
     },
 
     academicSession: {
       type: String,
       required: true,
-      index: true,
     },
 
     examName: {
@@ -26,6 +24,7 @@ const resultSchema = new mongoose.Schema(
     },
     stream: {
       type: String,
+      default: "",
     },
 
     medium: {
@@ -74,8 +73,8 @@ const resultSchema = new mongoose.Schema(
 
     resultStatus: {
       type: String,
-      enum: ["PASS", "FAIL"],
-      default: "PASS",
+      enum: ["pass", "fail"],
+      default: "pass",
     },
 
     canSee: {

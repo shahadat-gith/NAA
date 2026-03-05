@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { formatClassName } from "../../../../utils/utility";
+import { formatClassName } from "../../../utils/utility";
 import { generateRoutinePdf } from "./generateRoutinePdf";
-import "../../Styles/RoutinePreviewModal.css";
+import "../Styles/RoutinePreviewModal.css";
 
 
 const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }) => {

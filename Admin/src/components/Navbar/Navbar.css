@@ -90,9 +90,6 @@
   transition: transform 0.3s ease;
 }
 
-.nav-logo-admin:hover {
-  transform: translateX(4px);
-}
 
 .logo-img {
   width: 60px;

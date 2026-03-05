@@ -21,7 +21,9 @@ import Login from "./pages/Login/Login";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
 import StudentImages from "./pages/StudentImages/StudentImages";
-import Exams from "./pages/Exams/Pages/Exams";
+import Exams from "./pages/Exams/Exams";
+import Result from "./pages/Result/Result";
+import ResultDetails from "./pages/Result/ResultDetails";
 
 
 /* ===============================
@@ -88,7 +90,8 @@ const App = () => {
                   <Route path="/student/images" element={<StudentImages />} />
                   <Route path="/students/:id" element={<StudentDetails />} />
                   <Route path="/exams" element={<Exams />} />
-
+                  <Route path="/result" element={<Result />} />
+                  <Route path="/result/:registrationNo" element={<ResultDetails />} />
 
                   <Route path="/admissions" element={<Admissions/>}/>
                   <Route path="/admissions/:id" element={<AdmissionDetails/>}/>
