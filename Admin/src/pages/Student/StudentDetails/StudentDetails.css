@@ -1,192 +1,140 @@
-/* ================= Container ================= */
+/* ─────────────────────────────────────────────
+   Student Details Styles
+   ───────────────────────────────────────────── */
+
 .naa-student-details {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(51, 65, 85, 0.3);
+  animation: fadeIn var(--transition-base);
 }
 
-/* ---------- STUDENT HEADER ---------- */
+/* ─────────────────────────────────────────────
+   Header Section
+   ───────────────────────────────────────────── */
 .naa-student-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-default);
   flex-wrap: wrap;
+  gap: 20px;
 }
 
-/* ---------- STUDENT NAME ---------- */
 .naa-student-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #e5e7eb; /* light gray */
-  margin: 0;
+  font-size: 1.8rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
-/* ---------- ACTION BUTTON GROUP ---------- */
 .naa-action-buttons {
   display: flex;
   gap: 12px;
-  flex-wrap: wrap;
 }
 
-/* ---------- COMMON BUTTON STYLES ---------- */
+/* Action Button Variants */
 .naa-action-buttons button {
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  white-space: nowrap;
-}
-
-/* ---------- ADMIT CARD BUTTON ---------- */
-.naa-admit-card-btn {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: #ffffff;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
-}
-
-.naa-admit-card-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.55);
-}
-
-/* ---------- DELETE BUTTON ---------- */
-.naa-delete-student-btn {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #ffffff;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.35);
-}
-
-.naa-delete-student-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.55);
-}
-
-/* ---------- UPDATE DOB BUTTON ---------- */
-.naa-dob-student-btn {
-  background: rgba(255, 255, 255, 0.06);
-  color: #e5e7eb;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.naa-dob-student-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* ---------- MOBILE RESPONSIVE ---------- */
-@media (max-width: 640px) {
-  .naa-student-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .naa-action-buttons {
-    width: 100%;
-  }
-
-  .naa-action-buttons button {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-/* ================= Title ================= */
-.naa-student-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: #f1f5f9;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.naa-student-title::before {
-  content: "";
-  width: 4px;
-  height: 24px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 2px;
-}
-
-/* ================= Summary ================= */
-.naa-student-summary {
-  margin-bottom: 32px;
-}
-
-.naa-summary-info {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  background: rgba(30, 41, 59, 0.8);
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid rgba(51, 65, 85, 0.3);
-}
-
-.naa-summary-item {
-  font-size: 14px;
-  color: #cbd5e1;
-}
-
-.naa-summary-item strong {
-  color: #f1f5f9;
-}
-
-/* ================= Sections ================= */
-.naa-details-section {
-  margin-bottom: 28px;
-}
-
-.naa-details-section h4 {
-  font-size: 18px;
-  color: #f1f5f9;
-  margin-bottom: 14px;
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.naa-details-section h4::before {
-  content: "";
-  width: 4px;
-  height: 18px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 2px;
+.naa-admit-card-btn {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
 }
 
-/* ================= Table (2 pairs per row) ================= */
+.naa-admit-card-btn:hover {
+  background-color: var(--color-success);
+  color: white;
+}
+
+.naa-edit-student-btn {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-bright);
+  border: 1px solid var(--border-strong);
+}
+
+.naa-edit-student-btn:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.naa-delete-student-btn {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
+}
+
+.naa-delete-student-btn:hover {
+  background-color: var(--color-error);
+  color: white;
+}
+
+/* ─────────────────────────────────────────────
+   Details Container & Sections
+   ───────────────────────────────────────────── */
+.naa-details-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.naa-details-section {
+  background-color: var(--bg-surface);
+  padding: 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-sm);
+}
+
+.naa-details-section h4 {
+  color: var(--color-primary-bright);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+}
+
+.naa-details-section h4::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-default);
+  margin-left: 15px;
+}
+
+/* ─────────────────────────────────────────────
+   Grid-style Details Table
+   ───────────────────────────────────────────── */
 .naa-details-table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(30, 41, 59, 0.8);
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .naa-details-table td {
-  padding: 12px 14px;
-  font-size: 14px;
-  color: #cbd5e1;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--border-default);
 }
 
-/* Label cells */
+/* Label column */
 .naa-details-table td:nth-child(odd) {
-  font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-secondary);
+  font-weight: 500;
   width: 20%;
+  font-size: 0.85rem;
 }
 
-/* Value cells */
+/* Value column */
 .naa-details-table td:nth-child(even) {
+  color: var(--text-primary);
+  font-weight: 400;
   width: 30%;
 }
 
@@ -194,40 +142,34 @@
   border-bottom: none;
 }
 
-/* ================= States ================= */
-.naa-error {
-  text-align: center;
-  color: #f1f5f9;
-  padding: 32px;
-}
-
-/* ================= Responsive ================= */
+/* ─────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .naa-summary-info {
-    grid-template-columns: repeat(2, 1fr);
+  .naa-details-table td {
+    display: block;
+    width: 100% !important;
+    padding: 8px 0;
+  }
+  
+  .naa-details-table td:nth-child(odd) {
+    border-bottom: none;
+    padding-bottom: 0;
+    color: var(--color-accent);
+  }
+
+  .naa-student-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .naa-action-buttons {
+    width: 100%;
+    flex-direction: column;
   }
 }
 
-@media (max-width: 600px) {
-  .naa-summary-info {
-    grid-template-columns: 1fr;
-  }
-
-  .naa-details-table tr {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .naa-details-table td {
-    border-bottom: none;
-    padding: 10px;
-  }
-
-  .naa-details-table td:nth-child(odd) {
-    background: rgba(15, 23, 42, 0.6);
-  }
-
-  .naa-details-table tr:not(:last-child) {
-    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

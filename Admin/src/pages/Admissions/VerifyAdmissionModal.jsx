@@ -1,11 +1,12 @@
 
-import generateAdmissionSlip from "../../utils/generateAdmissionSlip";
+import generateAdmissionSlip from "./generateAdmissionSlip";
 import { useState } from "react";
 import toast from "react-hot-toast"
 import axios from "axios"
 import { useContext } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import {useNavigate} from "react-router-dom"
+import "./VerifyAdmissionModal.css"
 
 const VerifyAdmissionModal = ({
     isOpen,

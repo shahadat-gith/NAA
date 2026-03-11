@@ -1,15 +1,16 @@
 import { useState, useEffect, useContext, useMemo } from "react";
 import "./Admissions.css";
 import { AdminContext } from "../../context/AdminContext";
-import { AppContext } from "../../context/AppContext";
 import axios from "axios";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 
 const Admissions = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { admissions, fetchInitialData, loading } = useContext(AppContext);
 
+  const [admissions, setAdmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const classOptions = [
@@ -27,8 +28,34 @@ const Admissions = () => {
     status: "",
   });
 
-  /* ================= CLEAR FILTERS ================= */
+  /* ================= FETCH ADMISSIONS ================= */
+  const fetchAdmissions = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/admission/list`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
 
+      if (response.data.success) {
+        setAdmissions(response.data.admissions || []);
+      }
+    } catch (error) {
+      console.error("Error fetching admissions:", error);
+      toast.error("Failed to load admissions");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchAdmissions();
+  }, [adminToken]);
+
+  /* ================= CLEAR FILTERS ================= */
   const clearFilters = () => {
     setFilters({
       class: "",
@@ -39,7 +66,6 @@ const Admissions = () => {
   };
 
   /* ================= FILTERED DATA ================= */
-
   const filteredAdmissions = useMemo(() => {
     let result = [...(admissions || [])];
 
@@ -75,7 +101,6 @@ const Admissions = () => {
   }, [filters, admissions]);
 
   /* ================= DELETE ================= */
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this admission?"
@@ -93,15 +118,19 @@ const Admissions = () => {
         }
       );
 
-      fetchInitialData(); 
+      toast.success("Admission deleted successfully");
+      fetchAdmissions(); 
     } catch (err) {
-      alert(
+      toast.error(
         err.response?.data?.message ||
           "Error deleting admission"
       );
     }
   };
 
+  if (loading) {
+    return <Loader text="Loading admissions..." />;
+  }
 
   return (
     <div className="admissions-page">
@@ -200,93 +229,88 @@ const Admissions = () => {
       </div>
 
       {/* ================= TABLE ================= */}
+      <table className="admissions-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Class</th>
+            <th>Medium</th>
+            <th>Stream</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
 
-      {loading ? (
-        <Loader text="Loading admissions..." />
-      ) : (
-        <table className="admissions-table">
-          <thead>
+        <tbody>
+          {filteredAdmissions.length ===
+          0 ? (
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Class</th>
-              <th>Medium</th>
-              <th>Stream</th>
-              <th>Date</th>
-              <th>Action</th>
+              <td colSpan="7">
+                No admissions found
+              </td>
             </tr>
-          </thead>
+          ) : (
+            filteredAdmissions.map(
+              (adm, index) => {
+                const date =
+                  adm.createdAt
+                    ? new Date(
+                        adm.createdAt
+                      )
+                    : null;
 
-          <tbody>
-            {filteredAdmissions.length ===
-            0 ? (
-              <tr>
-                <td colSpan="7">
-                  No admissions found
-                </td>
-              </tr>
-            ) : (
-              filteredAdmissions.map(
-                (adm, index) => {
-                  const date =
-                    adm.createdAt
-                      ? new Date(
-                          adm.createdAt
-                        )
-                      : null;
+                return (
+                  <tr key={adm._id}>
+                    <td>{index + 1}</td>
+                    <td>{adm.name}</td>
+                    <td>{adm.class}</td>
+                    <td>{adm.medium}</td>
+                    <td>
+                      {adm.stream || "-"}
+                    </td>
+                    <td>
+                      {date
+                        ? date.toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )
+                        : "—"}
+                    </td>
+                    <td className="action-cell">
+                      <button
+                        className="view-btn"
+                        onClick={() =>
+                          navigate(
+                            `/admissions/${adm._id}`
+                          )
+                        }
+                      >
+                        View
+                      </button>
 
-                  return (
-                    <tr key={adm._id}>
-                      <td>{index + 1}</td>
-                      <td>{adm.name}</td>
-                      <td>{adm.class}</td>
-                      <td>{adm.medium}</td>
-                      <td>
-                        {adm.stream || "-"}
-                      </td>
-                      <td>
-                        {date
-                          ? date.toLocaleDateString(
-                              "en-GB",
-                              {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              }
-                            )
-                          : "—"}
-                      </td>
-                      <td className="action-cell">
-                        <button
-                          className="view-btn"
-                          onClick={() =>
-                            navigate(
-                              `/admissions/${adm._id}`
-                            )
-                          }
-                        >
-                          View
-                        </button>
-
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            handleDelete(
-                              adm._id
-                            )
-                          }
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                }
-              )
-            )}
-          </tbody>
-        </table>
-      )}
+                      <button
+                        className="delete-btn"
+                        onClick={() =>
+                          handleDelete(
+                            adm._id
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              }
+            )
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

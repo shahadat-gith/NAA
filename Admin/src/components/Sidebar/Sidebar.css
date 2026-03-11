@@ -1,93 +1,89 @@
-/* Sidebar.css - Minimal Dark */
 
 .admin-sidebar {
-  width: 250px;
   height: 100%;
-  background: #101b2c;
+  padding: 20px 12px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  padding: 96px 12px 16px;
   overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  border-right: 1px solid rgba(51, 65, 85, 0.6);
+  scrollbar-width: none; 
 }
 
-.admin-sidebar::-webkit-scrollbar {
-  width: 6px;
-}
 
-.admin-sidebar::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.admin-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.5);
-  border-radius: 3px;
-}
-
-/* Menu */
+/* ─────────────────────────────────────────────
+   Sidebar Menu List
+   ───────────────────────────────────────────── */
 .sidebar-menu {
   list-style: none;
-  padding: 0;
-  margin: 0;
-  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.sidebar-menu li {
-  margin: 4px 0;
-}
-
-/* Sidebar Items */
+/* ─────────────────────────────────────────────
+   Sidebar Individual Items
+   ───────────────────────────────────────────── */
 .sidebar-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  color: rgba(226, 232, 240, 0.75);
+  gap: 14px;
+  padding: 12px 16px;
   text-decoration: none;
-  border-radius: 8px;
-  transition: background 0.2s ease, color 0.2s ease;
-  font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
   font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  border: 1px solid transparent;
 }
 
+/* Hover State */
 .sidebar-item:hover {
-  background: rgba(148, 163, 184, 0.12);
-  color: #f8fafc;
+  background-color: var(--bg-surface-3);
+  color: var(--text-primary);
+  transform: translateX(4px);
 }
 
+/* Active State (React Router NavLink) */
 .sidebar-item.active {
-  background: rgba(59, 130, 246, 0.18);
-  color: #f8fafc;
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-bright);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 0 15px var(--color-primary-glow);
 }
 
 .sidebar-item i {
-  font-size: 16px;
-  width: 18px;
+  font-size: 1.1rem;
+  width: 20px; /* Consistent icon alignment */
   text-align: center;
-  color: rgba(148, 163, 184, 0.9);
+  transition: color var(--transition-fast);
 }
 
-.sidebar-item:hover i,
 .sidebar-item.active i {
-  color: #93c5fd;
+  color: var(--color-primary-bright);
 }
 
-.sidebar-item span {
-  flex: 1;
-}
-
-/* Badge */
+/* ─────────────────────────────────────────────
+   Badge (For future-proofing notifications)
+   ───────────────────────────────────────────── */
 .badge {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fecaca;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 10px;
-  min-width: 18px;
-  text-align: center;
+  margin-left: auto;
+  background-color: var(--color-accent);
+  color: var(--bg-base);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* ─────────────────────────────────────────────
+   Sections Dividers (Optional addition)
+   ───────────────────────────────────────────── */
+.sidebar-menu li:nth-child(2),
+.sidebar-menu li:nth-child(7),
+.sidebar-menu li:nth-child(9) {
+  /* You can add margin here if you want to group links visually */
+  margin-top: 10px;
 }
 
 /* Mobile Responsive */

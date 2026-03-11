@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-import { formatClassName, capitalizeWords } from "../../utils/utility";
+import { capitalizeWords } from "../../utils/utility";
 import logo from "/logo.png";
 
 /**
@@ -94,7 +94,7 @@ export function exportStudentListPDF(
     doc.setFont("helvetica", "normal");
 
     const displayClsText = cls
-      ? formatClassName(cls)
+      ? cls
       : "All Classes";
 
     doc.text(`Class: ${displayClsText}`, 14, lineY);
@@ -147,7 +147,7 @@ export function exportStudentListPDF(
 
   // ================= FILE NAME =================
   const baseClsText = classFilter
-    ? formatClassName(classFilter)
+    ? classFilter
     : "all_classes";
 
   const fileName = `student_list_${baseClsText}_${mediumText}.pdf`

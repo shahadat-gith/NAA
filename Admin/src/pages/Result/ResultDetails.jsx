@@ -4,7 +4,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
 import { AdminContext } from "../../context/AdminContext";
-import { formatClassName, capitalizeWords, capitalizeFirst } from "../../utils/utility";
+import { capitalizeWords, capitalizeFirst } from "../../utils/utility";
 import "./Styles/ResultDetails.css";
 
 const ResultDetails = () => {
@@ -80,7 +80,7 @@ const ResultDetails = () => {
         {/* ── Info Cards ── */}
         <div className="rd-info-grid">
           {[
-            { label: "Class", value: formatClassName(result.class) },
+            { label: "Class", value: result.class },
             { label: "Medium", value: capitalizeFirst(result.medium) },
             { label: "Stream", value: capitalizeFirst(result.stream) || "N/A" },
             { label: "Exam", value: result.examName },

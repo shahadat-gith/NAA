@@ -3,24 +3,35 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../../context/AdminContext";
 import "./ServiceTab.css";
-import { AppContext } from "../../../../context/AppContext";
 
-const ServiceTab = ({ data, loading }) => {
+const ServiceTab = ({ data, loading, onRefresh }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const { fetchInitialData } = useContext(AppContext)
+  // keep a local copy so UI reflects changes immediately
+  const [services, setServices] = useState(
+    data || {
+      feeMonthly: false,
+      feeAdmission: false,
+      feeHostel: false,
+      result: false,
+      admitCard: false,
+      admission: false,
+    }
+  );
 
-
-
-  // Fallback if no data
-  const services = data || {
-    feeMonthly: false,
-    feeAdmission: false,
-    feeHostel: false,
-    result: false,
-    admitCard: false,
-    admission: false,
-  };
+  // sync with incoming prop whenever it changes
+  React.useEffect(() => {
+    setServices(
+      data || {
+        feeMonthly: false,
+        feeAdmission: false,
+        feeHostel: false,
+        result: false,
+        admitCard: false,
+        admission: false,
+      }
+    );
+  }, [data]);
 
   const servicesList = [
     {
@@ -62,6 +73,12 @@ const ServiceTab = ({ data, loading }) => {
   ];
 
   const toggleService = async (key) => {
+    // remember previous value to rollback if needed
+    const previousValue = services[key];
+    const newValue = !previousValue;
+
+    // optimistic UI update
+    setServices((prev) => ({ ...prev, [key]: newValue }));
 
     try {
       const res = await axios.put(
@@ -73,13 +90,17 @@ const ServiceTab = ({ data, loading }) => {
       );
 
       if (res.data.success) {
-        toast.success(
-          `${key} ${res.data.data[key] ? "enabled" : "disabled"}`
-        );
-
-        fetchInitialData(false); //false dont refresh or loading animation again
+        const updated = res.data.data || {};
+        // ensure state matches server result (in case of discrepancy)
+        setServices((prev) => ({ ...prev, [key]: updated[key] }));
+      } else {
+        // unexpected false response, rollback
+        setServices((prev) => ({ ...prev, [key]: previousValue }));
+        toast.error("Failed to toggle service");
       }
     } catch (error) {
+      // rollback on error
+      setServices((prev) => ({ ...prev, [key]: previousValue }));
       toast.error(
         error.response?.data?.message || "Failed to toggle service"
       );

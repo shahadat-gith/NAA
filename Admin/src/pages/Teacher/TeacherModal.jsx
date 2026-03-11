@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext, useEffect } from "react";
 import "./TeacherModal.css";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AdminContext } from "../../../context/AdminContext";
+import { AdminContext } from "../../context/AdminContext";
 
 const TeacherModal = ({ isOpen, onClose }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -122,7 +122,7 @@ const TeacherModal = ({ isOpen, onClose }) => {
 
       if (data.success) {
         toast.success("Teacher added successfully");
-        onClose(); // parent will refresh list
+        onClose();
       } else {
         setFormError(data.message || "Failed to add teacher");
       }
@@ -145,21 +145,21 @@ const TeacherModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="naa-teacher-modal-overlay" onClick={onClose}>
+    <div className="tm-teacher-modal-overlay" onClick={onClose}>
       <div
-        className="naa-teacher-modal-container"
+        className="tm-teacher-modal-container"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="naa-modal-header">
+        <div className="tm-modal-header">
           <h2>Add New Teacher</h2>
-          <button onClick={onClose} className="naa-close-button">✕</button>
+          <button onClick={onClose} className="tm-close-button">✕</button>
         </div>
 
-        {formError && <div className="naa-form-error">{formError}</div>}
+        {formError && <div className="tm-form-error">{formError}</div>}
 
-        <form onSubmit={handleSubmit} className="naa-teacher-form">
+        <form onSubmit={handleSubmit} className="tm-teacher-form">
           {/* ===== BASIC INFO ===== */}
-          <div className="naa-form-grid">
+          <div className="tm-form-grid">
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required />
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
             <input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact Number" required />
@@ -169,24 +169,24 @@ const TeacherModal = ({ isOpen, onClose }) => {
           </div>
 
           {/* ===== SUBJECTS ===== */}
-          <div className="naa-form-section">
-            <button type="button" className="naa-add-subject-btn" onClick={addSubjectClassMapping}>
+          <div className="tm-form-section">
+            <button type="button" className="tm-add-subject-btn" onClick={addSubjectClassMapping}>
               + Add Subject
             </button>
 
             {subjectClassMappings.map((mapping, index) => (
-              <div key={index} className="naa-subject-mapping-card">
+              <div key={index} className="tm-subject-mapping-card">
                 <select value={mapping.subject} onChange={(e) => updateSubjectInMapping(index, e.target.value)}>
                   <option value="">Select Subject</option>
                   {subjects.map((s) => <option key={s}>{s}</option>)}
                 </select>
 
-                <div className="naa-classes-grid">
+                <div className="tm-classes-grid">
                   {classes.map((c) => (
                     <button
                       type="button"
                       key={c}
-                      className={`naa-class-btn ${mapping.classes.includes(c) ? "naa-selected" : ""}`}
+                      className={`tm-class-btn ${mapping.classes.includes(c) ? "tm-selected" : ""}`}
                       onClick={() => toggleClassInMapping(index, c)}
                     >
                       {c}
@@ -194,14 +194,14 @@ const TeacherModal = ({ isOpen, onClose }) => {
                   ))}
                 </div>
 
-                <button type="button" className="naa-remove-btn" onClick={() => removeSubjectClassMapping(index)}>
+                <button type="button" className="tm-remove-btn" onClick={() => removeSubjectClassMapping(index)}>
                   Remove
                 </button>
               </div>
             ))}
           </div>
 
-          <button type="submit" disabled={loading} className="naa-submit-btn">
+          <button type="submit" disabled={loading} className="tm-submit-btn">
             {loading ? "Saving..." : "Add Teacher"}
           </button>
         </form>

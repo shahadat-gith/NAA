@@ -1,0 +1,198 @@
+/* ─────────────────────────────────────────────
+   Upload Modal (Multi-File Interface)
+   ───────────────────────────────────────────── */
+
+.gallery-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(5, 13, 26, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2100;
+  padding: 20px;
+  animation: fadeIn var(--transition-base);
+}
+
+.upload-modal-content {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  width: 100%;
+  max-width: 550px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  /* Crucial: Must be relative for the absolute close button */
+  position: relative; 
+  overflow: hidden;
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+/* ── Fixed Header ── */
+.upload-modal-content h2 {
+  padding: 20px 24px;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
+  /* Ensure text doesn't overlap the button */
+  padding-right: 60px; 
+}
+
+/* ── Extreme Right Close Button Alignment ── */
+.gallery-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px; /* Explicitly pinned to the right */
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  z-index: 50; /* Above everything */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.gallery-modal-close:hover {
+  color: var(--color-error);
+  border-color: var(--color-error-border);
+  background-color: var(--color-error-bg);
+}
+
+/* ── Form & Content ── */
+.gallery-upload-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+}
+
+/* ── Initial Dropzone ── */
+.gallery-dropzone {
+  width: 100%;
+  height: 200px;
+  background-color: var(--bg-base);
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gallery-dropzone:hover {
+  border-color: var(--color-primary);
+  background-color: var(--bg-surface-2);
+}
+
+.gallery-dropzone i {
+  font-size: 2.5rem;
+  color: var(--color-primary-bright);
+}
+
+/* ── Preview Grid ── */
+.gallery-preview-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.gallery-preview-item {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-default);
+}
+
+.gallery-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Delete individual preview button */
+.gallery-preview-item button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: none;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Add More Box */
+.gallery-add-more {
+  aspect-ratio: 1 / 1;
+  background-color: var(--bg-surface-2);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+/* ── Footer Actions ── */
+.gallery-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-default);
+}
+
+.gallery-cancel-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.gallery-submit-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gallery-submit-btn:disabled {
+  background-color: var(--text-muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,113 @@
+.ps-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(5, 13, 26, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.ps-modal-container {
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+}
+
+.ps-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.ps-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ps-close-button {
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: all var(--transition-fast);
+}
+
+.ps-close-button:hover {
+  color: var(--color-error);
+  border-color: var(--color-error-border);
+}
+
+.ps-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.ps-form select {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237d9bc1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  transition: border var(--transition-fast);
+}
+
+.ps-form select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.ps-form select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-surface-2);
+}
+
+.ps-form button[type="submit"] {
+  background-color: var(--color-warning);
+  color: var(--bg-base);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  margin-top: 8px;
+}
+
+.ps-form button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.ps-form button[type="submit"]:disabled {
+  background-color: var(--text-muted);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}

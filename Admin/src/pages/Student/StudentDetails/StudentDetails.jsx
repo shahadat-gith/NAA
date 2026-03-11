@@ -2,29 +2,22 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AdminContext } from "../../../context/AdminContext";
 import "./StudentDetails.css";
-import DeleteConfirmPopup from "../DeleteConfirmModal/DeleteConfirmPopup";
 import axios from "axios";
 import {
-  formatClassName,
   capitalizeWords,
   capitalizeFirst,
 } from "../../../utils/utility";
 import Loader from "../../../components/Loader/Loader";
-import SingleStudentModal from "../StudentModal/SingleStudentModal";
-import toast from "react-hot-toast";
+import StudentModal from "../Modals/StudentModal";
 
 const StudentDetails = () => {
   const { id: studentId } = useParams();
   const navigate = useNavigate();
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [loading, setLoading] = useState(true);
-
   const [student, setStudent] = useState(null);
-  const [principal, setPrincipal] = useState(null);
-  const [admitCard, setAdmitCard] = useState(null);
 
   /* ================= FETCH STUDENT ================= */
 
@@ -43,8 +36,6 @@ const StudentDetails = () => {
 
       if (data.success) {
         setStudent(data.student);
-        setPrincipal(data.principal);
-        setAdmitCard(data.admitCard);
       }
     } catch (error) {
       console.error("Fetch student error:", error);
@@ -57,14 +48,31 @@ const StudentDetails = () => {
     if (studentId) fetchStudent();
   }, [studentId]);
 
-  /* ================= ADMIT CARD ================= */
+  /* ================= DELETE STUDENT ================= */
 
-  const handleAdmitCardDownload = () => {
-    if (!admitCard) {
-      toast.error("Admit card settings not found for this class/medium.");
-      return;
+  const handleDeleteStudent = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this student?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const { data } = await axios.delete(
+        `${backendUrl}/api/student/delete/${studentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        navigate("/students");
+      }
+    } catch (error) {
+      console.error("Delete student error:", error);
     }
-    // generateAdmitCard(student, admitCard, principal);
   };
 
   /* ================= LOADING / ERROR ================= */
@@ -87,21 +95,14 @@ const StudentDetails = () => {
 
         <div className="naa-action-buttons">
           <button
-            className="naa-admit-card-btn"
-            onClick={handleAdmitCardDownload}
-          >
-            Generate Admit Card
-          </button>
-
-          <button
             className="naa-edit-student-btn"
             onClick={() => setShowEditModal(true)}
           >
-            Edit Student
+            Edit
           </button>
 
           <button
-            onClick={() => setShowDeleteConfirm(true)}
+            onClick={handleDeleteStudent}
             className="naa-delete-student-btn"
           >
             Delete Student
@@ -118,7 +119,7 @@ const StudentDetails = () => {
             <tbody>
               <tr>
                 <td>Class</td>
-                <td>{formatClassName(student.class)}</td>
+                <td>{student.class}</td>
                 <td>Medium</td>
                 <td>{capitalizeFirst(student.medium) || "N/A"}</td>
               </tr>
@@ -175,9 +176,7 @@ const StudentDetails = () => {
               <tr>
                 <td>Police Station</td>
                 <td>
-                  {capitalizeFirst(
-                    student?.address?.policeStation
-                  ) || "N/A"}
+                  {capitalizeFirst(student?.address?.policeStation) || "N/A"}
                 </td>
                 <td>District</td>
                 <td>
@@ -197,28 +196,13 @@ const StudentDetails = () => {
         </div>
       </div>
 
-      {/* ================= DELETE CONFIRM ================= */}
-      {showDeleteConfirm && (
-        <DeleteConfirmPopup
-          student={student}
-          backendUrl={backendUrl}
-          adminToken={adminToken}
-          onConfirm={() => {
-            setShowDeleteConfirm(false);
-            navigate("/students");
-          }}
-          onCancel={() => setShowDeleteConfirm(false)}
-        />
-      )}
-
       {/* ================= EDIT MODAL ================= */}
       {showEditModal && (
-        <SingleStudentModal
+        <StudentModal
           isOpen={showEditModal}
           onClose={() => setShowEditModal(false)}
           student={student}
           setStudent={setStudent}
-
         />
       )}
     </div>

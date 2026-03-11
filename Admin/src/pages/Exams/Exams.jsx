@@ -1,20 +1,20 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "./Styles/Exams.css";
-import { AppContext } from "../../context/AppContext";
 import { AdminContext } from "../../context/AdminContext";
-import { formatClassName } from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
 import RoutineModal from "./Components/RoutineModal";
 import RoutinePreviewModal from "./Components/RoutinePreviewModal";
 import CurrentExamModal from "./Components/CurrentExamModal";
 import AdmitCardDownloadModal from "./Components/AdmitCardDownloadModal";
+import Loader from "../../components/Loader/Loader";
 
 const Exams = () => {
-  const { settings, fetchingSettings } = useContext(AppContext);
   const { backendUrl, adminToken } = useContext(AdminContext);
 
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMedium, setFilterMedium] = useState("");
 
@@ -26,6 +26,50 @@ const Exams = () => {
 
   const [currentExamModalOpen, setCurrentExamModalOpen] = useState(false);
   const [downloadModalOpen, setDownloadModalOpen] = useState(false);
+
+  const [savingLoading, setSavingLoading] = useState(false);
+
+
+  
+
+  /* ================= FETCH EXAMS ================= */
+  const fetchExams = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/settings/`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+      if (response.data.success) {
+        const {
+          admitCards,
+          exams,
+          authorities,
+          heroImages,
+        } = response.data.data || {};
+
+        setSettings({
+          admitCards: admitCards || [],
+          exams: exams || [],
+          authorities: authorities || [],
+          heroImages: heroImages || [],
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching exams:", error);
+      toast.error("Failed to load exams");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchExams();
+  }, [adminToken]);
 
   const admitCards = settings?.admitCards || [];
   const exams = settings?.exams || [];
@@ -42,9 +86,7 @@ const Exams = () => {
 
     if (searchTerm) {
       data = data.filter((s) =>
-        formatClassName(s.class)
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+        s.class.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -97,6 +139,7 @@ const Exams = () => {
   };
 
   const handleCurrentExamUpdate = async (payload) => {
+    setSavingLoading(true)
     try {
       const res = await axios.post(
         `${backendUrl}/api/settings/exam/upsert`,
@@ -107,20 +150,16 @@ const Exams = () => {
       if (res.data.success) {
         toast.success("Current exam updated");
         setCurrentExamModalOpen(false);
+        fetchExams();
       }
     } catch {
       toast.error("Failed to update exam");
+    }finally{
+      setSavingLoading(false)
     }
   };
 
-  if (fetchingSettings) {
-    return (
-      <div className="srv-loading">
-        <div className="srv-spinner"></div>
-        <div>Loading settings...</div>
-      </div>
-    );
-  }
+  if(loading) return <Loader text="Loading exams..." />
 
   return (
     <div className="act-container">
@@ -263,7 +302,7 @@ const Exams = () => {
         }}
         onSubmit={handleSaveRoutine}
         initialData={editRoutine}
-        loading={fetchingSettings}
+        loading={savingLoading}
       />
 
       <RoutinePreviewModal
@@ -282,7 +321,7 @@ const Exams = () => {
         onClose={() => setCurrentExamModalOpen(false)}
         onSubmit={handleCurrentExamUpdate}
         initialData={currentExam}
-        loading={fetchingSettings}
+        loading={savingLoading}
       />
 
       <AdmitCardDownloadModal

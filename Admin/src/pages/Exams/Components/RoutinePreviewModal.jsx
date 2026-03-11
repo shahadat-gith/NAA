@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { formatClassName } from "../../../utils/utility";
 import { generateRoutinePdf } from "./generateRoutinePdf";
 import "../Styles/RoutinePreviewModal.css";
 
-
-const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }) => {
+const RoutinePreviewModal = ({ open, onClose, routine, examDetails, authorities }) => {
 
   /* ================= SAFE EARLY RETURN ================= */
   if (!open || !routine) return null;
@@ -28,23 +26,21 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }
   };
 
   return (
-    <div className="erm-overlay">
-      <div className="erm-modal">
+    <div className="rpm-overlay">
+      <div className="rpm-modal">
         {/* HEADER */}
-        <div className="erm-header">
+        <div className="rpm-header">
           <h3>Examination Routine</h3>
           <button onClick={onClose}>✕</button>
         </div>
 
         {/* DETAILS */}
-        <div className="erm-details">
+        <div className="rpm-details">
           <div>
-            <strong>Class:</strong>{" "}
-            {formatClassName(routine.class)}
+            <strong>Class:</strong> {routine.class}
           </div>
           <div>
-            <strong>Stream:</strong>{" "}
-            {routine.stream || "—"}
+            <strong>Stream:</strong> {routine.stream || "—"}
           </div>
           <div>
             <strong>Medium:</strong>{" "}
@@ -54,13 +50,12 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }
               : "—"}
           </div>
           <div>
-            <strong>Exam Center:</strong>{" "}
-            {routine.examCenter}
+            <strong>Exam Center:</strong> {routine.examCenter}
           </div>
         </div>
 
         {/* TABLE */}
-        <table className="erm-table">
+        <table className="rpm-table">
           <thead>
             <tr>
               <th>#</th>
@@ -87,12 +82,12 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails,authorities }
         </table>
 
         {/* ACTIONS */}
-        <div className="erm-actions">
+        <div className="rpm-actions">
           <button
-            className="erm-download-btn"
+            className="rpm-download-btn"
             onClick={handleDownload}
           >
-             Download PDF
+            Download PDF
           </button>
         </div>
       </div>

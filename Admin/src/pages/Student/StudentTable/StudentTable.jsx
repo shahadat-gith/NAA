@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  formatClassName,
   capitalizeFirst,
   capitalizeWords,
   sortStudents,
@@ -10,6 +9,8 @@ import "./StudentTable.css";
 import axios from "axios";
 import { AdminContext } from "../../../context/AdminContext";
 import toast from "react-hot-toast";
+import { AppContext } from "../../../context/AppContext";
+import Loader from "../../../components/Loader/Loader";
 
 const StudentTable = ({
   filteredStudents = [],
@@ -18,8 +19,8 @@ const StudentTable = ({
 }) => {
   const navigate = useNavigate();
   const { adminToken, backendUrl } = useContext(AdminContext);
+   const { loading } = useContext(AppContext)
 
-  // 🔥 local state to update toggle instantly
   const [students, setStudents] = useState(filteredStudents);
   const [loadingId, setLoadingId] = useState(null);
 
@@ -82,6 +83,8 @@ const StudentTable = ({
     }
   };
 
+   if(loading) return <Loader text="loading students..."/>
+
   return (
     <div className="student-table">
       {sortedStudents.length === 0 ? (
@@ -112,7 +115,7 @@ const StudentTable = ({
                 <td>{index + 1}</td>
                 <td>{student.registrationNo || "-"}</td>
                 <td>{capitalizeWords(student.name)}</td>
-                <td>{formatClassName(student.class)}</td>
+                <td>{student.class}</td>
                 <td>{capitalizeFirst(student.medium)}</td>
                 <td>
                   {student.stream

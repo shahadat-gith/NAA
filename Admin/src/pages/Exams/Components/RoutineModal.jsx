@@ -7,7 +7,6 @@ import {
   TIME_OPTIONS,
   EXAM_CENTER_OPTIONS
 } from "../../../utils/academicOptions";
-import { formatClassName } from "../../../utils/utility";
 import "../Styles/RoutineModal.css";
 
 /* ================= COMPONENT ================= */
@@ -70,13 +69,11 @@ const RoutineModal = ({
     const updated = [...exams];
     const currentExam = updated[index];
 
-    // Split existing time or default to empty
     let [start, end] = (currentExam.time || "").split(" - ");
 
     if (type === "start") start = value;
     if (type === "end") end = value;
 
-    // Combine them with the " - " separator
     updated[index].time = start && end ? `${start} - ${end}` : (start || end || "");
 
     setExams(updated);
@@ -122,19 +119,19 @@ const RoutineModal = ({
   /* ================= UI ================= */
 
   return (
-    <div className="act-modal-overlay">
-      <div className="act-modal">
-        <div className="act-modal-header">
+    <div className="rm-modal-overlay">
+      <div className="rm-modal">
+        <div className="rm-modal-header">
           <h3>Exam Schedule</h3>
           <button type="button" onClick={handleClose}>
             ✕
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="act-form">
+        <form onSubmit={handleSubmit} className="rm-form">
           {/* Class / Stream / Medium */}
-          <div className="act-row">
-            <div className="act-field">
+          <div className="rm-row">
+            <div className="rm-field">
               <label>Class *</label>
               <select
                 value={selectedClass}
@@ -146,14 +143,14 @@ const RoutineModal = ({
                   .filter((v, i, a) => a.indexOf(v) === i)
                   .map((cls) => (
                     <option key={cls} value={cls}>
-                      {formatClassName(cls)}
+                      {cls}
                     </option>
                   ))}
               </select>
             </div>
 
             {["11", "12"].includes(selectedClass) && (
-              <div className="act-field">
+              <div className="rm-field">
                 <label>Stream *</label>
                 <select
                   value={selectedStream}
@@ -171,7 +168,7 @@ const RoutineModal = ({
               </div>
             )}
 
-            <div className="act-field">
+            <div className="rm-field">
               <label>Medium</label>
               <select
                 value={medium}
@@ -188,7 +185,7 @@ const RoutineModal = ({
           </div>
 
           {/* Exam Center */}
-          <div className="act-field">
+          <div className="rm-field">
             <label>Exam Center</label>
             <select
               value={examCenter}
@@ -204,16 +201,15 @@ const RoutineModal = ({
           </div>
 
           {/* Exams */}
-          <div className="act-exams-section">
+          <div className="rm-exams-section">
             <h4>Exam Schedule</h4>
 
             {exams.map((exam, index) => {
-              // Deriving start/end values for the dropdowns from the combined string
               const [startTime = "", endTime = ""] = (exam.time || "").split(" - ");
 
               return (
-                <div key={index} className="act-exam-card">
-                  <div className="act-exam-grid">
+                <div key={index} className="rm-exam-card">
+                  <div className="rm-exam-grid">
                     <select
                       value={exam.subject}
                       onChange={(e) =>
@@ -246,7 +242,6 @@ const RoutineModal = ({
                       <option value="afternoon">Afternoon</option>
                     </select>
 
-                    {/* Start Time */}
                     <select
                       value={startTime}
                       onChange={(e) =>
@@ -261,7 +256,6 @@ const RoutineModal = ({
                       ))}
                     </select>
 
-                    {/* End Time */}
                     <select
                       value={endTime}
                       onChange={(e) =>
@@ -284,17 +278,17 @@ const RoutineModal = ({
               );
             })}
 
-            <button type="button" className="act-add-exam" onClick={addExam}>
+            <button type="button" className="rm-add-exam" onClick={addExam}>
               + Add Exam
             </button>
           </div>
 
           {/* Actions */}
-          <div className="act-actions">
-            <button type="button" className="act-cancel" onClick={handleClose}>
+          <div className="rm-actions">
+            <button type="button" className="rm-cancel" onClick={handleClose}>
               Cancel
             </button>
-            <button type="submit" className="act-submit" disabled={loading}>
+            <button type="submit" className="rm-submit" disabled={loading}>
               {loading ? "Saving..." : "Save"}
             </button>
           </div>

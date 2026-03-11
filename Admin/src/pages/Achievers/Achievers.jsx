@@ -1,26 +1,46 @@
-import React, { useContext, useState, useMemo } from "react";
+import React, { useContext, useState, useMemo, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
-import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import AddAchieverModal from "./AddAchieverModal";
 import UpdateAchieverModal from "./UpdateAchieverModal";
 import ImageModal from "../../components/ImageModal/ImageModal";
+import Loader from "../../components/Loader/Loader";
 import "./Achievers.css";
 
 const Achievers = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { achievers, loading, fetchInitialData } =
-    useContext(AppContext);
 
+  const [achievers, setAchievers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(null);
   const [person, setPerson] = useState(null);
   const [imageOpen, setImageOpen] = useState(false);
 
-  /* ================= FILTERED DATA ================= */
+  /* ================= FETCH ACHIEVERS ================= */
+  const fetchAchievers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/achievers/get-achievers`);
+      if (response.data.success) {
+        setAchievers(response.data.achievers || []);
+      }
+    } catch (error) {
+      console.error("Error fetching achievers:", error);
+      toast.error("Failed to load achievers");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchAchievers();
+  }, []);
+
+  /* ================= FILTERED DATA ================= */
   const filteredAchievers = useMemo(() => {
     if (!searchTerm.trim()) return achievers || [];
 
@@ -32,7 +52,6 @@ const Achievers = () => {
   }, [searchTerm, achievers]);
 
   /* ================= DELETE ================= */
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this achiever?"
@@ -57,7 +76,7 @@ const Achievers = () => {
         }
       );
 
-      fetchInitialData(); // refresh from context
+      fetchAchievers();
     } catch (error) {
       toast.error(
         error.response?.data?.message ||
@@ -66,17 +85,21 @@ const Achievers = () => {
     }
   };
 
+  if (loading) {
+    return <Loader text="Loading achievers..." />;
+  }
+
   return (
     <div className="admin-content">
-      <div className="achievers-header">
+      <div className="ac-header">
         <h1>Manage Achievers</h1>
 
-        <div className="achievers-subtitle">
+        <div className="ac-subtitle">
           Total achievers: {filteredAchievers.length}
         </div>
 
         <button
-          className="add-btn"
+          className="ac-add-btn"
           onClick={() => setShowAddModal(true)}
         >
           <i className="fas fa-plus"></i>
@@ -85,7 +108,7 @@ const Achievers = () => {
       </div>
 
       {/* ================= SEARCH ================= */}
-      <div className="search-section">
+      <div className="ac-search-section">
         <input
           type="text"
           value={searchTerm}
@@ -93,23 +116,18 @@ const Achievers = () => {
             setSearchTerm(e.target.value)
           }
           placeholder="Search by achiever name..."
-          className="search-input"
+          className="ac-search-input"
         />
       </div>
 
       {/* ================= TABLE ================= */}
-      <div className="achievers-list-container">
-        {loading ? (
-          <div className="loader-container">
-            <div className="loader"></div>
-            <p>Loading achievers...</p>
-          </div>
-        ) : filteredAchievers.length === 0 ? (
-          <p className="no-achievers">
+      <div className="ac-list-container">
+        {filteredAchievers.length === 0 ? (
+          <p className="ac-no-achievers">
             No achievers found.
           </p>
         ) : (
-          <table className="achievers-list">
+          <table className="ac-list">
             <thead>
               <tr>
                 <th>Image</th>
@@ -129,9 +147,9 @@ const Achievers = () => {
                 (achiever) => (
                   <tr
                     key={achiever._id}
-                    className="achiever-item"
+                    className="ac-item"
                   >
-                    <td className="image-cell">
+                    <td className="ac-image-cell">
                       {achiever.image ? (
                         <img
                           src={achiever.image.replace(
@@ -139,34 +157,30 @@ const Achievers = () => {
                             "/upload/w_100,h_100,q_auto,f_webp/"
                           )}
                           alt={achiever.name}
-                          className="achiever-image"
+                          className="ac-image"
                           onClick={() => {
                             setPerson(achiever);
                             setImageOpen(true);
                           }}
                         />
                       ) : (
-                        <div className="no-image">
+                        <div className="ac-no-image">
                           <i className="fas fa-user"></i>
                         </div>
                       )}
                     </td>
 
                     <td>{achiever.name}</td>
-                    <td>
-                      {achiever.percentage}%
-                    </td>
+                    <td>{achiever.percentage}%</td>
                     <td>{achiever.father}</td>
                     <td>{achiever.mother}</td>
                     <td>{achiever.village}</td>
                     <td>{achiever.year}</td>
-                    <td>
-                      {achiever.className}
-                    </td>
+                    <td>{achiever.className}</td>
 
-                    <td className="actions-cell">
+                    <td className="ac-actions-cell">
                       <button
-                        className="update-btn"
+                        className="ac-update-btn"
                         onClick={() =>
                           setShowUpdateModal(
                             achiever
@@ -177,7 +191,7 @@ const Achievers = () => {
                       </button>
 
                       <button
-                        className="delete-btn"
+                        className="ac-delete-btn"
                         onClick={() =>
                           handleDelete(
                             achiever._id
@@ -210,7 +224,7 @@ const Achievers = () => {
         onClose={() => setShowAddModal(false)}
         backendUrl={backendUrl}
         adminToken={adminToken}
-        onAddSuccess={fetchInitialData}
+        onAddSuccess={fetchAchievers}
       />
 
       {/* ================= UPDATE MODAL ================= */}
@@ -223,7 +237,7 @@ const Achievers = () => {
           backendUrl={backendUrl}
           adminToken={adminToken}
           achiever={showUpdateModal}
-          onUpdateSuccess={fetchInitialData}
+          onUpdateSuccess={fetchAchievers}
         />
       )}
     </div>

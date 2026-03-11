@@ -15,7 +15,6 @@ import Student from "./pages/Student/Student";
 import Settings from "./pages/Settings/Settings";
 import Gallery from "./pages/Gallery/Gallery";
 import Achievers from "./pages/Achievers/Achievers";
-import TeacherProfile from "./pages/Teacher/TeacherProfile/TeacherProfile";
 import StudentDetails from "./pages/Student/StudentDetails/StudentDetails";
 import Login from "./pages/Login/Login";
 import Admissions from "./pages/Admissions/Admissions";
@@ -24,6 +23,7 @@ import StudentImages from "./pages/StudentImages/StudentImages";
 import Exams from "./pages/Exams/Exams";
 import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
+import TeacherDetails from "./pages/Teacher/TeacherDetails";
 
 
 /* ===============================
@@ -84,7 +84,7 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/teachers" element={<Teacher />} />
-                  <Route path="/teachers/:teacherId" element={<TeacherProfile />} />
+                  <Route path="/teachers/:teacherId" element={<TeacherDetails />} />
 
                   <Route path="/students" element={<Student />} />
                   <Route path="/student/images" element={<StudentImages />} />

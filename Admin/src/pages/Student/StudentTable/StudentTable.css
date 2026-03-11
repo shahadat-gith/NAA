@@ -1,142 +1,147 @@
-/* StudentTable.css - Dark Bluish Theme */
+/* ─────────────────────────────────────────────
+   Student Table Styles
+   ───────────────────────────────────────────── */
 
-/* Table Container */
 .student-table {
   width: 100%;
-  margin-top: 24px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  overflow: hidden; /* Round the table corners */
+  margin-top: 10px;
 }
 
-/* No Students Message */
-.student-table p {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 16px;
-  padding: 20px;
-}
-
-/* Table */
-.student-table table {
+table {
   width: 100%;
   border-collapse: collapse;
-  background: rgba(30, 41, 59, 0.8);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-/* Table Header */
-.student-table th {
-  background: rgba(51, 65, 85, 0.5);
-  color: #f1f5f9;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 12px;
   text-align: left;
+  font-size: 0.9rem;
 }
 
-/* Table Rows */
-.student-table td {
-  padding: 12px;
-  color: #cbd5e1;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+/* ─────────────────────────────────────────────
+   Header
+   ───────────────────────────────────────────── */
+thead tr {
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-strong);
 }
 
-/* Hover and Selected States */
-.student-table tr {
-  transition: background 0.2s ease;
+th {
+  padding: 16px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─────────────────────────────────────────────
+   Body Rows
+   ───────────────────────────────────────────── */
+tbody tr {
+  border-bottom: 1px solid var(--border-default);
+  transition: background-color var(--transition-fast);
   cursor: pointer;
 }
 
-.student-table tr:hover {
-  background: rgba(59, 130, 246, 0.1);
+tbody tr:last-child {
+  border-bottom: none;
 }
 
-.student-table tr.selected {
-  background: rgba(59, 130, 246, 0.2);
+tbody tr:hover {
+  background-color: var(--bg-surface-3);
 }
 
-/* Focus State for Accessibility */
-.student-table tr:focus {
-  outline: none;
-  background: rgba(59, 130, 246, 0.2);
+td {
+  padding: 14px 16px;
+  color: var(--text-primary);
+  vertical-align: middle;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .student-table th,
-  .student-table td {
-    font-size: 12px;
-    padding: 10px;
-  }
+/* Specific Column Styles */
+td:first-child {
+  color: var(--text-muted);
+  font-weight: 500;
 }
 
-@media (max-width: 480px) {
-  .student-table {
-    overflow-x: auto;
-  }
-
-  .student-table table {
-    min-width: 600px;
-  }
-
-  .student-table th,
-  .student-table td {
-    font-size: 12px;
-    padding: 8px;
-  }
-}
-
-
-/* ---------- TOGGLE SWITCH ---------- */
+/* ─────────────────────────────────────────────
+   Admit Card Toggle Switch
+   ───────────────────────────────────────────── */
 .admit-switch {
   position: relative;
   display: inline-block;
   width: 44px;
-  height: 24px;
+  height: 22px;
 }
 
-/* hide checkbox */
 .admit-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* slider */
 .admit-slider {
   position: absolute;
   cursor: pointer;
-  inset: 0;
-  background: rgba(62, 37, 37, 0.4); /* red off */
-  border-radius: 999px;
-  transition: 0.3s;
-  border: 1px solid rgba(232, 166, 166, 0.6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-surface-3);
+  transition: var(--transition-base);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-hover);
 }
 
-/* knob */
-.admit-slider::before {
-  content: "";
+.admit-slider:before {
   position: absolute;
-  height: 18px;
-  width: 18px;
+  content: "";
+  height: 16px;
+  width: 16px;
   left: 3px;
-  bottom: 2.5px;
-  background: #ffffff;
+  bottom: 2px;
+  background-color: var(--text-secondary);
+  transition: var(--transition-base);
   border-radius: 50%;
-  transition: 0.3s;
 }
 
-/* ON STATE */
-.admit-switch input:checked + .admit-slider {
-  background: rgba(0, 255, 94, 0.9); /* green */
-  border-color: rgba(5, 255, 97, 0.7);
+/* Checked State */
+input:checked + .admit-slider {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success-border);
 }
 
-.admit-switch input:checked + .admit-slider::before {
+input:checked + .admit-slider:before {
   transform: translateX(20px);
+  background-color: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success-border);
 }
 
-/* hover */
-.admit-slider:hover {
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+/* Disabled/Loading State */
+input:disabled + .admit-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────
+   Empty State
+   ───────────────────────────────────────────── */
+.student-table p {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────
+   Responsive Table
+   ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .student-table {
+    overflow-x: auto;
+  }
+  
+  table {
+    min-width: 800px; /* Force scroll on small screens to keep data readable */
+  }
 }

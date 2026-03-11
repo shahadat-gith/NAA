@@ -1,0 +1,244 @@
+/* ─────────────────────────────────────────────
+   Teacher Details Hero Header
+   ───────────────────────────────────────────── */
+.td-container {
+  padding-bottom: 40px;
+  animation: fadeIn var(--transition-base);
+}
+
+.td-header {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.td-avatar-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.td-avatar-img {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--color-primary-subtle);
+  overflow: hidden;
+  background-color: var(--bg-base);
+}
+
+.td-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.td-avatar-name {
+  flex: 1;
+  min-width: 200px;
+}
+
+.td-teacher-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px 0;
+}
+
+.td-teacher-title {
+  color: var(--color-primary-bright);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.td-teacher-experience h4 {
+  background-color: var(--bg-surface-2);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border-default);
+}
+
+/* ─────────────────────────────────────────────
+   Navigation Tabs
+   ───────────────────────────────────────────── */
+.td-nav {
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.td-nav-tabs {
+  list-style: none;
+  display: flex;
+  gap: 32px;
+  padding: 0;
+  margin: 0;
+}
+
+.td-nav-tabs li {
+  padding-bottom: 12px;
+  position: relative;
+}
+
+.td-nav-tabs li button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.td-nav-tabs li.td-active button {
+  color: var(--color-primary-bright);
+}
+
+.td-nav-tabs li.td-active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-primary-bright);
+}
+
+/* ─────────────────────────────────────────────
+   Overview Tab Content
+   ───────────────────────────────────────────── */
+.td-overview-tab {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+}
+
+.td-teacher-info-card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  padding: 24px;
+}
+
+.td-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.td-card-title::before {
+  content: "";
+  width: 3px;
+  height: 18px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.td-info-table {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.td-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--bg-surface-2);
+}
+
+.td-info-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.td-info-value {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: right;
+  max-width: 60%;
+}
+
+/* ─────────────────────────────────────────────
+   Stats Grid
+   ───────────────────────────────────────────── */
+.td-stats-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.td-stats-card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.td-stats-card-title {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.td-stats-card-value {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-primary-bright);
+  line-height: 1;
+}
+
+.td-stats-card-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ─────────────────────────────────────────────
+   Utility & States
+   ───────────────────────────────────────────── */
+.td-loading {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.td-error-container {
+  text-align: center;
+  padding: 100px 0;
+  color: var(--color-error);
+}
+
+/* ─────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .td-overview-tab {
+    grid-template-columns: 1fr;
+  }
+
+  .td-avatar-content {
+    justify-content: center;
+    text-align: center;
+  }
+}

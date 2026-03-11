@@ -1,118 +1,148 @@
-.erm-overlay {
+.rpm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.75);
+  background-color: rgba(5, 13, 26, 0.85);
+  backdrop-filter: blur(6px);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
+  padding: 20px;
 }
 
-.erm-modal {
+.rpm-modal {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
   width: 100%;
-  max-width: 900px;
-  background: #020617;
-  border-radius: 14px;
-  padding: 24px;
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  animation: rpmFadeIn 0.3s ease-out;
 }
 
-.erm-header {
+/* HEADER */
+.rpm-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  align-items: center;
+  padding: 16px 24px;
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
 }
 
-.erm-header h3 {
-  font-size: 22px;
-  font-weight: 700;
-  color: #f8fafc;
+.rpm-header h3 {
   margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-.erm-header p {
-  font-size: 13px;
-  color: #94a3b8;
-  margin-top: 4px;
-}
-
-.erm-header button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #94a3b8;
+.rpm-header button {
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
 }
 
-.erm-details {
+.rpm-header button:hover {
+  color: var(--color-error);
+  border-color: var(--color-error-border);
+}
+
+/* DETAILS BAR */
+.rpm-details {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-  background: rgba(15, 23, 42, 0.6);
-  padding: 16px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  color: #e2e8f0;
-  font-size: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 16px 24px;
+  background-color: var(--bg-surface-3);
+  border-bottom: 1px solid var(--border-default);
 }
 
-.erm-table {
+.rpm-details div {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.rpm-details strong {
+  color: var(--text-secondary);
+  margin-right: 4px;
+}
+
+/* TABLE */
+.rpm-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  overflow-y: auto;
 }
 
-.erm-table th,
-.erm-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.4);
-  font-size: 14px;
+.rpm-table th {
+  background-color: var(--bg-surface-2);
+  padding: 12px 16px;
   text-align: left;
-}
-
-.erm-table th {
-  background: rgba(30, 41, 59, 0.7);
-  color: #e2e8f0;
-  text-transform: uppercase;
+  color: var(--text-secondary);
   font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.erm-table td {
-  color: #cbd5f5;
-}
-
-.erm-table tr:hover {
-  background: rgba(30, 41, 59, 0.4);
-}
-
-.erm-footer {
-  font-size: 13px;
-  color: #94a3b8;
-  border-top: 1px dashed rgba(51, 65, 85, 0.6);
-  padding-top: 12px;
-}
-
-
-
-.erm-actions {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.erm-download-btn {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  border: none;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
+.rpm-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-default);
+  color: var(--text-primary);
   font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
 }
 
-.erm-download-btn:hover {
+.rpm-table tbody tr:hover {
+  background-color: var(--bg-overlay);
+}
+
+/* ACTIONS */
+.rpm-actions {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-default);
+  background-color: var(--bg-surface-2);
+}
+
+.rpm-download-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.rpm-download-btn:hover {
   opacity: 0.9;
+}
+
+@keyframes rpmFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 600px) {
+  .rpm-table {
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .rpm-details {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }

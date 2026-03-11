@@ -1,34 +1,59 @@
 import React, { useState, useEffect, useContext } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 import StudentTable from "./StudentTable/StudentTable";
-import MassStudentModal from "./StudentModal/MassStudentModal";
-import SingleStudentModal from "./StudentModal/SingleStudentModal";
-import PromoteStudentsModal from "./StudentModal/PromoteStudentsModal";
-import { formatClassName, sortStudents } from "../../utils/utility";
+import StudentModal from "./Modals/StudentModal";
+import PromoteStudentsModal from "./Modals/PromoteStudentsModal";
+import { sortStudents } from "../../utils/utility";
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
-
-// pdf export helper
 import { exportStudentListPDF } from "./exportStudent";
-import exportStudentsToExcel from "./StudentTable/exportToExcel";
-
+import exportStudentsToExcel from "./exportToExcel";
 import "./Student.css";
+import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/Loader/Loader";
-import { AppContext } from "../../context/AppContext";
 
 const Student = () => {
+  const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const { students, fetchInitialData, loading } = useContext(AppContext)
-
-  const [filteredStudents, setFilteredStudents] = useState(students || []);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredStudents, setFilteredStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
-
-  const [studentModalOpen, setStudentModalOpen] = useState(false);
-  const [singleStudentModal, setSingleStudentModal] = useState(false);
+  const [studentModal, setStudentModal] = useState(false);
   const [promoteModalOpen, setPromoteModalOpen] = useState(false);
+
+  /* ================= FETCH STUDENTS ================= */
+  const fetchStudents = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/student/list`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+
+      if (response.data.success) {
+        setStudents(response.data.students || []);
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      toast.error("Failed to load students");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   /* ================= FILTER LOGIC ================= */
   useEffect(() => {
@@ -78,13 +103,14 @@ const Student = () => {
     exportStudentListPDF(filteredStudents, classFilter, mediumFilter, streamFilter);
   };
 
-
   const exportexcel = () => {
     // pass filters explicitly so filename is accurate
     exportStudentsToExcel(filteredStudents, classFilter, mediumFilter, streamFilter);
   };
 
-
+  if (loading) {
+    return <Loader text="Loading students..." />;
+  }
 
   return (
     <div className="admin-student-list-container">
@@ -93,24 +119,17 @@ const Student = () => {
       {/* ===== ACTION BUTTONS ===== */}
       <div className="add-student-action">
         <button
-          className="naa-btn naa-btn-mass"
-          onClick={() => setStudentModalOpen(true)}
-        >
-          Mass Addition
-        </button>
-
-        <button
           className="naa-btn naa-btn-single"
-          onClick={() => setSingleStudentModal(true)}
+          onClick={() => setStudentModal(true)}
         >
-          Single Addition
+          Add +
         </button>
 
         <button
           className="naa-btn naa-btn-promote"
           onClick={() => setPromoteModalOpen(true)}
         >
-          Promote Students
+          Promote
         </button>
 
         {/* export filtered list */}
@@ -179,7 +198,7 @@ const Student = () => {
               <option value="">All Classes</option>
               {CLASS_OPTIONS[mediumFilter].map((cls) => (
                 <option key={cls} value={cls}>
-                  {formatClassName(cls)}
+                  {cls}
                 </option>
               ))}
             </select>
@@ -230,29 +249,18 @@ const Student = () => {
         setSelectedStudent={setSelectedStudent}
       />
 
-      {/* ===== MODALS ===== */}
-      <MassStudentModal
-        isOpen={studentModalOpen}
+      <StudentModal
+        isOpen={studentModal}
         onClose={() => {
-          setStudentModalOpen(false);
+          setStudentModal(false);
         }}
-
-        fetchInitialData={fetchInitialData}
-      />
-
-      <SingleStudentModal
-        isOpen={singleStudentModal}
-        onClose={() => {
-          setSingleStudentModal(false);
-
-        }}
-        fetchInitialData={fetchInitialData}
+        onSuccess={fetchStudents}
       />
 
       <PromoteStudentsModal
         isOpen={promoteModalOpen}
         onClose={() => setPromoteModalOpen(false)}
-        fetchInitialData={fetchInitialData}
+        onSuccess={fetchStudents}
       />
     </div>
   );

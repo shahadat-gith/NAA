@@ -5,18 +5,18 @@ import UploadResults from "./UploadResults";
 import "./Styles/Result.css";
 import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
-import { AppContext } from "../../context/AppContext";
 import { AdminContext } from "../../context/AdminContext";
-
+import { capitalizeWords } from "../../utils/utility";
 
 const Result = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { results, setResults } = useContext(AppContext);
-  const [loading, setLoading] = useState(false);
+
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // helper to fetch results and update context/local state
+  /* ================= FETCH RESULTS ================= */
   const fetchResults = async () => {
     if (!adminToken) return;
     setLoading(true);
@@ -36,14 +36,18 @@ const Result = () => {
     }
   };
 
-  // load once on mount
+  /* ================= LOAD ON MOUNT ================= */
   useEffect(() => {
     fetchResults();
-  }, []);
+  }, [adminToken]);
 
   const handleView = (registrationNo) => {
     navigate(`/result/${registrationNo}`);
   };
+
+  if (loading) {
+    return <Loader text="Loading results..." />;
+  }
 
   return (
     <div className="result-page">
@@ -65,9 +69,7 @@ const Result = () => {
 
       {/* ================= TABLE ================= */}
       <div className="result-list-container">
-        {loading ? (
-          <Loader message="Loading results..." />
-        ) : results && results.length > 0 ? (
+        {results && results.length > 0 ? (
           <table className="result-table">
             <thead>
               <tr>
@@ -81,10 +83,10 @@ const Result = () => {
             <tbody>
               {results.map((r) => (
                 <tr key={r._id} className="result-row">
-                  <td>{r.name || "-"}</td>
-                  <td>{r.class}</td>
-                  <td>{r.medium}</td>
-                  <td>{r.stream || "-"}</td>
+                  <td>{capitalizeWords(r.name) || "-"}</td>
+                  <td>{capitalizeWords(r.class)}</td>
+                  <td>{capitalizeWords(r.medium)}</td>
+                  <td>{capitalizeWords(r.stream) || "-"}</td>
                   <td className="actions-cell">
                     <button
                       className="view-btn"

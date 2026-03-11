@@ -1,191 +1,165 @@
-/* AddAchieverModal.css - Dark Bluish Theme */
-
-/* Modal Container */
-.modal-container {
+/* ─────────────────────────────────────────────
+   Add Achiever Modal Overlay
+   ───────────────────────────────────────────── */
+.aacm-modal-container {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background-color: rgba(5, 13, 26, 0.85);
+  backdrop-filter: blur(6px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-in-out;
+  z-index: 2000;
+  padding: 50px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Modal Content */
-.modal-content {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
+.aacm-modal-content {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
   width: 100%;
-  max-width: 1000px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(51, 65, 85, 0.3);
-  position: relative;
-  animation: scaleIn 0.3s ease-in-out;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.modal-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: rgba(71, 85, 105, 0.5);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #cbd5e1;
-  transition: all 0.2s ease;
-}
-
-.modal-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  transform: scale(1.05);
-}
-
-.modal-btn i {
-  font-size: 16px;
-}
-
-/* Add Modal */
-.add-modal h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #f1f5f9;
-  margin: 24px 24px 16px;
-}
-
-.add-achiever-form {
-  padding: 0 24px 24px;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.form-group {
+  max-width: 850px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  overflow: hidden;
+  position: relative;
+  animation: modalSlideUp 0.3s ease-out;
 }
 
-.form-group label {
-  font-size: 14px;
-  font-weight: 500;
-  color: #cbd5e1;
+/* ── Header & Close Button ── */
+.aacm-modal-content h2 {
+  margin: 0;
+  padding: 20px 24px;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
 }
 
-.form-group input,
-.form-group input[type="file"] {
-  padding: 12px;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 8px;
-  color: #f1f5f9;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background: rgba(30, 41, 59, 1);
-}
-
-.form-group input::placeholder {
-  color: #64748b;
-}
-
-.form-group input[type="file"] {
-  padding: 10px;
-}
-
-.submit-btn {
+.aacm-modal-btn {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #22c55e 0%, #15803d 100%);
-  color: white;
-  font-size: 14px;
+  justify-content: center;
+  z-index: 10;
+  transition: all var(--transition-fast);
+}
+
+.aacm-modal-btn:hover {
+  color: var(--color-error);
+  border-color: var(--color-error-border);
+  background-color: var(--color-error-bg);
+}
+
+/* ── Form Layout ── */
+.aacm-form {
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aacm-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.aacm-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.aacm-form-group input:not([type="file"]) {
+  padding: 12px 14px;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast);
+}
+
+.aacm-form-group input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* ─────────────────────────────────────────────
+   Professional File Input Design
+   ───────────────────────────────────────────── */
+.aacm-form-group input[type="file"] {
+  padding: 8px;
+  background-color: var(--bg-surface-2);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.aacm-form-group input[type="file"]::file-selector-button {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-bright);
+  border: 1px solid var(--color-primary);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  margin-right: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100%;
-  justify-content: center;
-  margin-top: 16px;
+  transition: all var(--transition-fast);
 }
 
-.submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+.aacm-form-group input[type="file"]::file-selector-button:hover {
+  background-color: var(--color-primary);
+  color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .modal-content {
-    max-width: 90%;
-  }
+/* ── Footer Button ── */
+.aacm-submit-btn {
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: opacity var(--transition-fast);
+}
 
-  .form-row {
+.aacm-submit-btn:hover {
+  opacity: 0.9;
+}
+
+.aacm-submit-btn:disabled {
+  background-color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+/* ── Animation ── */
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .aacm-form-row {
     grid-template-columns: 1fr;
-  }
-
-  .add-modal h2 {
-    font-size: 18px;
-    margin: 16px 16px 12px;
-  }
-
-  .add-achiever-form {
-    padding: 0 16px 16px;
-  }
-
-  .form-group input,
-  .form-group input[type="file"] {
-    font-size: 12px;
-    padding: 10px;
-  }
-
-  .submit-btn {
-    padding: 10px 16px;
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-btn {
-    width: 28px;
-    height: 28px;
-    top: 12px;
-    right: 12px;
-  }
-
-  .modal-btn i {
-    font-size: 14px;
   }
 }

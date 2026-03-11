@@ -92,16 +92,17 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
     if (!isOpen) return null;
 
     return (
-        <div className="ach-modal-container" onClick={onClose}>
-            <div className="ach-modal-content add-modal" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-btn" onClick={onClose} title="Close" aria-label="Close add achiever modal">
+        <div className="aacm-modal-container" onClick={onClose}>
+            <div className="aacm-modal-content aacm-add-modal" onClick={(e) => e.stopPropagation()}>
+                <button className="aacm-modal-btn" onClick={onClose} title="Close" aria-label="Close add achiever modal">
                     <i className="fas fa-times"></i>
                 </button>
                 <h2>Add Achiever</h2>
-                <form onSubmit={handleAddAchiever} className="add-achiever-form">
+
+                <form onSubmit={handleAddAchiever} className="aacm-form">
                     {/* Row 1 */}
-                    <div className="form-row">
-                        <div className="form-group">
+                    <div className="aacm-form-row">
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="name"
@@ -112,7 +113,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                                 required
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="percentage"
@@ -123,7 +125,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                                 required
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="year"
@@ -137,8 +140,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                     </div>
 
                     {/* Row 2 */}
-                    <div className="form-row">
-                        <div className="form-group">
+                    <div className="aacm-form-row">
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="className"
@@ -149,7 +152,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                                 required
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="father"
@@ -160,7 +164,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                                 required
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="mother"
@@ -174,8 +179,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                     </div>
 
                     {/* Row 3 */}
-                    <div className="form-row">
-                        <div className="form-group">
+                    <div className="aacm-form-row">
+                        <div className="aacm-form-group">
                             <input
                                 type="text"
                                 id="village"
@@ -186,7 +191,8 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                                 required
                             />
                         </div>
-                        <div className="form-group">
+
+                        <div className="aacm-form-group">
                             <input
                                 type="file"
                                 id="image"
@@ -197,7 +203,7 @@ const AddAchieverModal = ({ isOpen, onClose, backendUrl, adminToken, onAddSucces
                         </div>
                     </div>
 
-                    <button type="submit" className="submit-btn" aria-label="Add new achiever">
+                    <button type="submit" className="aacm-submit-btn" aria-label="Add new achiever">
                         Add Achiever
                     </button>
                 </form>

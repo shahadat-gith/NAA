@@ -1,8 +1,8 @@
 /* ─────────────────────────────────────────────
-   Authority Edit Modal
+   Student Modal (Add/Edit)
    ───────────────────────────────────────────── */
 
-.em-modal-overlay {
+.ssm-modal-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(5, 13, 26, 0.85);
@@ -10,48 +10,41 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 2200;
+  z-index: 2000;
   padding: 20px;
-  animation: fadeIn var(--transition-base);
 }
 
-.em-modal-content {
+.ssm-modal-container {
   background-color: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-default);
   width: 100%;
-  max-width: 600px;
-  position: relative;
-  overflow: hidden;
+  max-width: 1050px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   animation: modalSlideUp 0.3s ease-out;
 }
 
-/* ── Header & Close Button ── */
-.em-modal-header {
+/* ── Header ── */
+.ssm-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 24px;
+  padding: 20px 24px;
   background-color: var(--bg-surface-2);
   border-bottom: 1px solid var(--border-default);
 }
 
-.em-modal-title {
+.ssm-modal-header h2 {
   margin: 0;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-weight: 700;
 }
 
-.em-modal-title i {
-  color: var(--color-primary-bright);
-}
-
-.em-modal-close {
+.ssm-close-button {
   background: var(--bg-surface-3);
   border: 1px solid var(--border-default);
   color: var(--text-secondary);
@@ -65,127 +58,117 @@
   transition: all var(--transition-fast);
 }
 
-.em-modal-close:hover {
+.ssm-close-button:hover {
   color: var(--color-error);
   border-color: var(--color-error-border);
-  background-color: var(--color-error-bg);
 }
 
-/* ── Body & Form ── */
-.em-modal-body {
+/* ── Form Body ── */
+.ssm-form {
   padding: 24px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
 }
 
-.em-form-row {
+/* Section Grids */
+.ssm-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--bg-surface-2);
 }
 
-.em-form-group {
+/* Remove border from last grid */
+.ssm-form-grid:last-of-type {
+  border-bottom: none;
+}
+
+.ssm-form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
-.em-form-label {
-  font-size: 0.8rem;
+.ssm-form-group label {
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.em-form-input {
-  padding: 12px 14px;
+.ssm-required {
+  color: var(--color-error);
+  margin-left: 2px;
+}
+
+.ssm-form-group input,
+.ssm-form-group select {
+  padding: 10px 12px;
   background-color: var(--bg-base);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast);
 }
 
-.em-form-input:focus {
+.ssm-form-group input:focus,
+.ssm-form-group select:focus {
   outline: none;
   border-color: var(--color-primary);
 }
 
-/* ── Custom Upload Boxes ── */
-.em-hidden-file {
-  display: none;
-}
-
-.em-upload-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px;
+.ssm-form-group input:disabled {
   background-color: var(--bg-surface-2);
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  text-align: center;
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
-.em-upload-box:hover {
-  border-color: var(--color-primary);
-  background-color: var(--bg-surface-3);
-}
-
-.em-upload-box i {
-  font-size: 1.5rem;
-  color: var(--color-primary-bright);
-}
-
-.em-upload-box span {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* ── Footer ── */
-.em-modal-footer {
-  padding: 20px 24px;
-  background-color: var(--bg-surface-2);
-  border-top: 1px solid var(--border-default);
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.em-btn-cancel {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border-default);
-  padding: 10px 20px;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.em-btn-save {
+/* ── Submit Button ── */
+.ssm-form button[type="submit"] {
   background-color: var(--color-primary);
   color: white;
   border: none;
-  padding: 10px 24px;
+  padding: 14px;
   border-radius: var(--radius-sm);
   font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
+  transition: opacity var(--transition-fast);
+  margin-top: 10px;
+  width: 100%;
 }
 
-.em-btn-save:disabled {
-  opacity: 0.6;
+.ssm-form button[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.ssm-form button[type="submit"]:disabled {
+  background-color: var(--text-muted);
   cursor: not-allowed;
+}
+
+/* ── Responsive ── */
+@media (max-width: 800px) {
+  .ssm-form-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 550px) {
+  .ssm-form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ssm-modal-container {
+    max-height: 95vh;
+  }
 }
 
 @keyframes modalSlideUp {

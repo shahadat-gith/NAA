@@ -1,78 +1,103 @@
-/* AdminLayout.css */
+/* ─────────────────────────────────────────────
+   AdminLayout Styles
+   ───────────────────────────────────────────── */
 
 .admin-layout {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f1922 0%, #1a2332 100%);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   position: relative;
+  overflow-x: hidden;
 }
 
-/* Sidebar Wrapper */
-.sidebar-wrapper {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  z-index: 999;
-  transition: transform 0.3s ease;
-}
-
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 998;
-}
-
-/* Main Content */
+/* ─────────────────────────────────────────────
+   Main Content Area
+   ───────────────────────────────────────────── */
 .main-content {
   flex: 1;
-  margin-left: 260px;
-  margin-top: 70px;
-  padding: 24px;
-  min-height: calc(100vh - 70px);
-  background: #0f1922;
-  transition: margin-left 0.3s ease;
+  padding: 35px 24px;
+  margin-top: 75px; 
+  transition: margin-left var(--transition-base);
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Desktop - Sidebar always visible */
-@media (min-width: 769px) {
+/* Desktop Sidebar Logic (Assuming 260px width) */
+@media (min-width: 1024px) {
   .sidebar-wrapper {
-    transform: translateX(0);
+    position: fixed;
+    top: 64px; /* Below Navbar */
+    left: 0;
+    bottom: 0;
+    width: 260px;
+    background-color: var(--bg-surface);
+    border-right: 1px solid var(--border-default);
+    z-index: 40;
+  }
+
+  .main-content {
+    margin-left: 260px;
+    width: calc(100% - 260px);
   }
 }
 
-/* Mobile & Tablet - Sidebar hidden by default */
-@media (max-width: 768px) {
-  /* Hide sidebar by default */
+/* ─────────────────────────────────────────────
+   Mobile Sidebar & Overlay
+   ───────────────────────────────────────────── */
+@media (max-width: 1023px) {
   .sidebar-wrapper {
-    transform: translateX(-100%);
+    position: fixed;
+    top: 0;
+    left: -280px; /* Hidden by default */
+    width: 280px;
+    height: 100%;
+    background-color: var(--bg-surface-2);
+    z-index: 100;
+    transition: transform var(--transition-slow);
+    box-shadow: var(--shadow-lg);
   }
 
-  /* Show sidebar when open */
   .sidebar-wrapper.open {
-    transform: translateX(0);
+    transform: translateX(280px);
+  }
+
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(5, 13, 26, 0.8); /* Darkened bg-base */
+    backdrop-filter: blur(4px);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-base);
   }
 
   .sidebar-overlay.open {
     opacity: 1;
-    pointer-events: auto;
+    visibility: visible;
   }
-
-  /* Remove left margin on main content */
+  
   .main-content {
     margin-left: 0;
-    padding: 16px;
+    width: 100%;
   }
-
 }
 
-/* Prevent body scroll when sidebar is open on mobile */
-@media (max-width: 768px) {
-  body:has(.sidebar-wrapper.open) {
-    overflow: hidden;
-  }
+/* ─────────────────────────────────────────────
+   Utility Scrollbar (Optional)
+   ───────────────────────────────────────────── */
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-3);
+  border-radius: var(--radius-full);
 }

@@ -1,113 +1,80 @@
-import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { createContext, useContext, useEffect, useState } from "react";
+import { AdminContext } from "./AdminContext";
 
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const token = localStorage.getItem("adminToken");
-
-  /* ================= INITIAL DATA LOADING ================= */
-  const [loading, setLoading] = useState(false);
-
-  /* ================= STATE VARIABLES ================= */
+  const { backendUrl, adminToken } = useContext(AdminContext);
+  /* ================= CONTEXT VALUE ================= */
   const [students, setStudents] = useState([]);
+  const [fetchingStudents, setFetchingStudents] = useState(true);
+  const [fetchingSettings, setFetchingSettings] = useState(true);
   const [settings, setSettings] = useState(null);
-  const [gallerImages, setGallerImages] = useState([]);
-  const [achievers, setAchievers] = useState([]);
-  const [admissions, setAdmissions] = useState([]);
-  const [results, setResults] = useState([]);
-  const [teachers, setTeachers] = useState([]);
 
-  /* ================= FETCH ALL INITIAL DATA ================= */
-  const fetchInitialData = async (refresh) => {
-    if (!token) return;
-    if(refresh) setLoading(true);
 
+  /* ================= FETCH STUDENTS ================= */
+  const fetchStudents = async () => {
+    if (!adminToken) return;
+    setFetchingStudents(true);
     try {
-      const { data } = await axios.get(
-        `${backendUrl}/api/admin/initial-data`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${backendUrl}/api/student/list`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
 
-      if (data.success) {
-        const {
-          students: fetchedStudents,
-          admissions: fetchedAdmissions,
-          results: fetchedResults,
-          teachers: fetchedTeachers,
-          achievers: fetchedAchievers,
-          galleries: fetchedGalleries,
-          serviceSettings: fetchedServiceSettings,
-          feesSettings: fetchedFeesSettings,
-          authorities: fetchedAuthorities,
-          admitCards: fetchedAdmitCards,
-          exams: fetchedExams,
-          heroImages: fetchedHeroImages,
-        } = data.data;
 
-        setStudents(fetchedStudents || []);
-        setAdmissions(fetchedAdmissions || []);
-        setResults(fetchedResults || []);
-        setTeachers(fetchedTeachers || []);
-        setAchievers(fetchedAchievers || []);
-        setGallerImages(fetchedGalleries || []);
-        setSettings({
-          serviceSettings: fetchedServiceSettings?.[0] || null,
-          feesSettings: fetchedFeesSettings?.[0] || null,
-          authorities: fetchedAuthorities || [],
-          admitCards: fetchedAdmitCards || [],
-          exams: fetchedExams || [],
-          heroImages: fetchedHeroImages || [],
-        });
+      if (response.data.success) {
+        setStudents(response.data.students || []);
       }
     } catch (error) {
-      console.error("Error fetching initial data:", error);
-      toast.error("Failed to load initial data");
+      console.error("Error fetching students:", error);
+      toast.error("Failed to load students");
     } finally {
-      setLoading(false);
+      setFetchingStudents(false);
     }
   };
 
 
-  /* ================= AUTO LOAD ================= */
 
+  /* ================= FETCH SETTINGS ================= */
+  const fetchSettings = async () => {
+    if (!adminToken) return;
+    setFetchingSettings(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/settings/`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+      if (response.data.success) {
+        const data = response.data.data || {};
+        setSettings(data);
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      toast.error("Failed to load settings");
+    } finally {
+      setFetchingSettings(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
   useEffect(() => {
-    if (!token) return;
+    fetchSettings();
+  }, [adminToken]);
 
-    fetchInitialData();
-  }, [token]);
 
-  /* ================= CONTEXT VALUE ================= */
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchStudents();
+  }, []);
 
   const value = {
-    // Initial Data
-    loading,
-    setLoading,
-    fetchInitialData,
-    fetchingSettings: loading,
-    loadingInitialData: loading,
-
-    // Data States
-    students,
-    setStudents,
-    settings,
-    setSettings,
-    gallerImages,
-    setGallerImages,
-    achievers,
-    setAchievers,
-    admissions,
-    setAdmissions,
-    results,
-    setResults,
-    teachers,
-    setTeachers,
+    students, fetchingStudents,
+    settings, fetchingSettings
   };
 
   return (

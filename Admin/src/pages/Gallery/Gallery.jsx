@@ -1,19 +1,40 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
-import { AppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import "./Gallery.css";
-
+import Loader from "../../components/Loader/Loader";
 import ImagePreviewModal from "./ImagePreviewModal";
 import UploadModal from "./UploadModal";
 
 const Gallery = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
-  const { gallerImages, fetchInitialData, loading } = useContext(AppContext);
 
+  const [gallerImages, setGallerImages] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
+
+  /* ================= FETCH GALLERIES ================= */
+  const fetchGalleries = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/gallery/`);
+      if (response.data.success) {
+        setGallerImages(response.data.images || []);
+      }
+    } catch (error) {
+      console.error("Error fetching galleries:", error);
+      toast.error("Failed to load gallery images");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchGalleries();
+  }, []);
 
   const toggleScroll = (lock) => {
     document.body.style.overflow = lock ? "hidden" : "unset";
@@ -32,7 +53,7 @@ const Gallery = () => {
       );
       setShowUploadModal(false);
       toggleScroll(false);
-      fetchInitialData();
+      fetchGalleries();
     } catch (error) {
       toast.error(error.response?.data?.message || "Upload failed");
     }
@@ -48,12 +69,16 @@ const Gallery = () => {
           }),
           { loading: "Deleting...", success: "Deleted!", error: "Delete failed" }
         );
-        fetchInitialData();
+        fetchGalleries();
       } catch (error) {
         toast.error(error.response?.data?.message || "Delete failed");
       }
     }
   };
+
+  if (loading) {
+    return <Loader text="Loading gallery images..." />;
+  }
 
   return (
     <div className="gallery-container">
@@ -74,30 +99,23 @@ const Gallery = () => {
         </div>
       </div>
 
-      {loading ? (
-        <div className="gallery-loader">
-          <div className="loader-spinner"></div>
-          <p>Loading images...</p>
-        </div>
-      ) : (
-        <div className="gallery-grid">
-          {gallerImages?.map((item) => (
-            <div key={item._id} className="gallery-card">
-              <div className="gallery-image-wrapper">
-                <img src={item.url} alt="Gallery" className="gallery-image" />
-                <div className="gallery-overlay">
-                  <button className="gallery-action-btn view-btn" onClick={() => { setSelectedImage(item); toggleScroll(true); }}>
-                    <i className="fas fa-eye"></i>
-                  </button>
-                  <button className="gallery-action-btn delete-btn" onClick={() => handleDelete(item.publicId)}>
-                    <i className="fas fa-trash"></i>
-                  </button>
-                </div>
+      <div className="gallery-grid">
+        {gallerImages?.map((item) => (
+          <div key={item._id} className="gallery-card">
+            <div className="gallery-image-wrapper">
+              <img src={item.url} alt="Gallery" className="gallery-image" />
+              <div className="gallery-overlay">
+                <button className="gallery-action-btn view-btn" onClick={() => { setSelectedImage(item); toggleScroll(true); }}>
+                  <i className="fas fa-eye"></i>
+                </button>
+                <button className="gallery-action-btn delete-btn" onClick={() => handleDelete(item.publicId)}>
+                  <i className="fas fa-trash"></i>
+                </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
 
       <ImagePreviewModal 
         image={selectedImage} 

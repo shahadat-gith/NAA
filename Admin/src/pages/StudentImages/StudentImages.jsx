@@ -1,25 +1,54 @@
 
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { AdminContext } from '../../context/AdminContext';
+import toast from 'react-hot-toast';
 import Loader from '../../components/Loader/Loader';
 import ImageUploadModal from './ImageUploadModal';
 import './Styles/StudentImages.css';
-import { CLASS_OPTIONS, STREAM_OPTIONS } from '../../utils/academicOptions';
+import { CLASS_OPTIONS } from '../../utils/academicOptions';
 import { capitalizeWords } from '../../utils/utility';
-import { AppContext } from '../../context/AppContext';
+import { AdminContext } from '../../context/AdminContext';
 
 const StudentImages = () => {
+  const { backendUrl, adminToken } = useContext(AdminContext);
 
-    const { students, setStudents, loading } = useContext(AppContext)
-    const [filteredStudents, setFilteredStudents] = useState(students || []);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [activeStudent, setActiveStudent] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeStudent, setActiveStudent] = useState(null);
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const [mediumFilter, setMediumFilter] = useState("");
-    const [classFilter, setClassFilter] = useState("");
-    const [streamFilter, setStreamFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [mediumFilter, setMediumFilter] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [streamFilter, setStreamFilter] = useState("");
+
+  /* ================= FETCH STUDENT IMAGES ================= */
+  const fetchStudentImages = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/student/list`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+      if (response.data.success) {
+        setStudents(response.data.students || []);
+      }
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      toast.error("Failed to load students");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchStudentImages();
+  }, [adminToken]);
 
 
     /* ================= FILTER LOGIC ================= */
@@ -207,10 +236,10 @@ const StudentImages = () => {
             </div>
 
             <ImageUploadModal
-                open={isModalOpen}
+                isOpen={isModalOpen}
                 student={activeStudent}
                 onClose={closeUploadModal}
-                setStudents={setStudents}
+                onSuccess={fetchStudentImages}
             />
         </div>
     );

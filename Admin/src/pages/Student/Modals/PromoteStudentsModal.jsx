@@ -3,10 +3,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../../context/AdminContext";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../../utils/academicOptions";
-import { formatClassName } from "../../../utils/utility";
 import "./PromoteStudentsModal.css";
 
-const PromoteStudentsModal = ({ isOpen, onClose, fetchInitialData }) => {
+const PromoteStudentsModal = ({ isOpen, onClose, onSuccess }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [loading, setLoading] = useState(false);
@@ -79,7 +78,7 @@ const PromoteStudentsModal = ({ isOpen, onClose, fetchInitialData }) => {
         toast.success(
           `Students promoted successfully (${res.data.promotedCount})`
         );
-        fetchStudents?.();
+        onSuccess?.();
         handleClose();
       }
     } catch (error) {
@@ -133,7 +132,7 @@ const PromoteStudentsModal = ({ isOpen, onClose, fetchInitialData }) => {
             {formData.medium &&
               CLASS_OPTIONS[formData.medium].map((cls) => (
                 <option key={cls} value={cls}>
-                  {formatClassName(cls)}
+                  {cls}
                 </option>
               ))}
           </select>
@@ -169,7 +168,7 @@ const PromoteStudentsModal = ({ isOpen, onClose, fetchInitialData }) => {
                 .filter((cls) => cls !== formData.class)
                 .map((cls) => (
                   <option key={cls} value={cls}>
-                    {formatClassName(cls)}
+                    {cls}
                   </option>
                 ))}
           </select>

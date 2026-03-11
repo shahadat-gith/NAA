@@ -1,207 +1,116 @@
-
-/* ── Overlay ── */
 .download-progress-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(4, 12, 30, 0.72);
-    z-index: 9999;
-    animation: overlayFadeIn 0.35s ease forwards;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(5, 13, 26, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
 }
 
-@keyframes overlayFadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
-
-/* ── Modal Card ── */
 .download-progress-modal {
-    position: relative;
-    width: 360px;
-    padding: 44px 36px 40px;
-    border-radius: 24px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    /* layered background */
-    background:
-        radial-gradient(ellipse at 30% 0%,  rgba(56, 139, 253, 0.18) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 100%, rgba(79, 70, 229, 0.15) 0%, transparent 60%),
-        linear-gradient(160deg, #0d1b3e 0%, #091229 100%);
-
-    /* glass border */
-    border: 1px solid rgba(99, 179, 255, 0.18);
-    box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04) inset,
-        0 32px 80px rgba(0, 20, 80, 0.6),
-        0 0 60px rgba(38, 120, 230, 0.12);
-
-    animation: modalSlideIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
 }
 
-@keyframes modalSlideIn {
-    from { opacity: 0; transform: translateY(24px) scale(0.96); }
-    to   { opacity: 1; transform: translateY(0)   scale(1); }
+/* Spinner */
+.download-progress-modal .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-surface-3);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-/* decorative top glow line */
-.download-progress-modal::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 20%;
-    right: 20%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.7), transparent);
-}
-
-/* ── Spinner ── */
-.spinner {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    position: relative;
-    flex-shrink: 0;
-    animation: spinnerRotate 1.1s linear infinite;
-
-}
-
-@keyframes spinnerRotate {
-    to { transform: rotate(360deg); }
-}
-
-/* ── Message Text ── */
 .progress-message {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: #93c5fd;
-    margin: 0;
-    text-align: center;
-    animation: messagePop 0.3s ease;
-    min-height: 22px;
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 15px;
+  margin: 0;
 }
 
-@keyframes messagePop {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Progress Bar ── */
+/* Progress Bar Container */
 .progress-bar {
-    width: 100%;
-    height: 6px;
-    border-radius: 99px;
-    background: rgba(30, 58, 138, 0.5);
-    overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  width: 100%;
+  height: 8px;
+  background-color: var(--bg-base);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-default);
 }
 
 .progress-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #1d4ed8, #3b82f6, #7dd3fc);
-    background-size: 200% 100%;
-    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
-    animation: shimmer 2s linear infinite;
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
 }
 
-@keyframes shimmer {
-    0%   { background-position: 100% 0; }
-    100% { background-position: -100% 0; }
-}
-
-/* ── Percent Label ── */
 .progress-percent {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(147, 197, 253, 0.6);
-    letter-spacing: 0.08em;
-    align-self: flex-end;
-    margin-top: -10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
-/* ── Completed State ── */
+/* Complete State */
 .download-complete {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 14px;
-    animation: completeFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes completeFadeIn {
-    from { opacity: 0; transform: scale(0.85); }
-    to   { opacity: 1; transform: scale(1); }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: fadeIn var(--transition-base);
 }
 
 .checkmark {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    color: #fff;
-    font-weight: 700;
-
-    background: radial-gradient(circle at 35% 35%, #3b82f6, #1d4ed8);
-    box-shadow:
-        0 0 0 8px rgba(59, 130, 246, 0.15),
-        0 0 0 16px rgba(59, 130, 246, 0.07),
-        0 8px 24px rgba(29, 78, 216, 0.6);
-
-    animation: checkPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-}
-
-@keyframes checkPop {
-    0%   { transform: scale(0);   opacity: 0; }
-    60%  { transform: scale(1.15); opacity: 1; }
-    100% { transform: scale(1);   opacity: 1; }
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 2px solid var(--color-success-border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .download-complete p {
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: #e0f2fe;
-    margin: 0;
-    letter-spacing: 0.02em;
-    text-align: center;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
 }
-
-.download-complete span {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    color: rgba(96, 165, 250, 0.65);
-    letter-spacing: 0.1em;
-}
-
-
 
 .download-close-btn {
-    margin-top: 20px;
-    padding: 8px 18px;
-    background: linear-gradient(90deg, #4da3ff, #2563eb);
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  background-color: var(--color-success);
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
 }
 
 .download-close-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }

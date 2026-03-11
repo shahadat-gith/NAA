@@ -1,9 +1,9 @@
-/* ================= RoutineModal.css - Dark Bluish Theme ================= */
+/* ================= RoutineModal.css ================= */
 
-.act-modal-overlay {
+.rm-modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.75);
+  background-color: rgba(0,0,0,0.6);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
@@ -12,55 +12,56 @@
   padding: 20px;
 }
 
-.act-modal {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
+.rm-modal {
+  background: linear-gradient(
+    135deg,
+    var(--bg-surface),
+    var(--bg-surface-2)
+  );
+  border-radius: var(--radius-lg);
   width: 100%;
   max-width: 1000px;
   max-height: 90vh;
   overflow: hidden;
-  border: 1px solid rgba(51, 65, 85, 0.3);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-default);
+
   animation: modalFadeIn 0.3s ease-out;
 }
 
 /* ================= Header ================= */
 
-.act-modal-header {
+.rm-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 24px 32px;
-  background: linear-gradient(135deg, #1e293b, #334155);
-  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
 }
 
-.act-modal-header h3 {
-  margin: 0;
+.rm-modal-header h3 {
   font-size: 26px;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text-primary);
 }
 
-.act-modal-header button {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: 8px;
+.rm-modal-header button {
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-sm);
   padding: 6px 10px;
-  cursor: pointer;
-  color: #fecaca;
+  color: var(--color-error);
   font-size: 18px;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
 }
 
-.act-modal-header button:hover {
-  background: rgba(239, 68, 68, 0.25);
+.rm-modal-header button:hover {
   transform: scale(1.05);
 }
 
 /* ================= Form ================= */
 
-.act-form {
+.rm-form {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -70,288 +71,198 @@
 }
 
 /* Scrollbar */
-.act-form::-webkit-scrollbar {
+
+.rm-form::-webkit-scrollbar {
   width: 8px;
 }
 
-.act-form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #334155, #475569);
-  border-radius: 4px;
+.rm-form::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-3);
+  border-radius: var(--radius-sm);
 }
 
-.act-form::-webkit-scrollbar-track {
-  background: rgba(30, 41, 59, 0.3);
+.rm-form::-webkit-scrollbar-track {
+  background: var(--bg-surface);
 }
 
 /* ================= Row & Fields ================= */
 
-.act-row {
+.rm-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
   gap: 16px;
 }
 
-.act-field {
+.rm-field {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.act-field label {
+.rm-field label {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(203, 213, 225, 0.9);
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
-.act-field input,
-.act-field select {
+.rm-field input,
+.rm-field select {
   padding: 14px 16px;
-  border-radius: 10px;
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  background: rgba(15, 23, 42, 0.45);
-  color: rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
   font-size: 15px;
-  transition: all 0.25s ease;
+  transition: var(--transition-base);
 }
 
-.act-field input::placeholder {
-  color: rgba(148, 163, 184, 0.55);
+.rm-field input::placeholder {
+  color: var(--text-muted);
 }
 
-.act-field input:focus,
-.act-field select:focus {
+.rm-field input:focus,
+.rm-field select:focus {
   outline: none;
-  border-color: #64748b;
-  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.25);
-  background: rgba(15, 23, 42, 0.6);
-}
-
-.act-field select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  padding-right: 40px;
-}
-
-.act-field select:hover {
-  border-color: rgba(100, 116, 139, 0.6);
-  background: rgba(15, 23, 42, 0.55);
-}
-
-.act-field select option {
-  background: #1e293b;
-  color: #e2e8f0;
-  padding: 12px;
-}
-
-.act-field select option:hover,
-.act-field select option:focus,
-.act-field select option:checked {
-  background: linear-gradient(135deg, #334155, #475569);
-  color: #f8fafc;
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
 }
 
 /* ================= Exams Section ================= */
 
-.act-exams-section {
-  background: rgba(30, 41, 59, 0.3);
-  border: 1px solid rgba(51, 65, 85, 0.3);
-  border-radius: 12px;
+.rm-exams-section {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
   padding: 24px;
 }
 
-.act-exams-section h4 {
+.rm-exams-section h4 {
   font-size: 18px;
   font-weight: 600;
-  color: #f8fafc;
-  margin: 0 0 20px 0;
+  color: var(--text-primary);
+  margin-bottom: 20px;
 }
 
 /* ================= Exam Card ================= */
 
-.act-exam-card {
-  background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  border-radius: 10px;
+.rm-exam-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
   padding: 20px;
   margin-bottom: 16px;
-  transition: all 0.3s ease;
+  transition: var(--transition-base);
 }
 
-.act-exam-card:hover {
-  border-color: rgba(100, 116, 139, 0.6);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+.rm-exam-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
 }
 
-.act-exam-card:last-of-type {
-  margin-bottom: 16px;
-}
-
-.act-exam-grid {
+.rm-exam-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2,1fr);
   gap: 12px;
   margin-bottom: 12px;
 }
 
-.act-exam-grid input,
-.act-exam-grid select {
+.rm-exam-grid input,
+.rm-exam-grid select {
   padding: 12px 14px;
-  border-radius: 8px;
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  background: rgba(15, 23, 42, 0.45);
-  color: rgba(226, 232, 240, 0.95);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background: var(--bg-surface);
+  color: var(--text-primary);
   font-size: 14px;
-  transition: all 0.25s ease;
+  transition: var(--transition-base);
 }
 
-.act-exam-grid input::placeholder {
-  color: rgba(148, 163, 184, 0.55);
-}
-
-.act-exam-grid input:focus,
-.act-exam-grid select:focus {
+.rm-exam-grid input:focus,
+.rm-exam-grid select:focus {
   outline: none;
-  border-color: #64748b;
-  box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.25);
-  background: rgba(15, 23, 42, 0.6);
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px var(--color-primary-subtle);
 }
 
-.act-exam-grid select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 36px;
-}
+/* ================= Remove Exam Button ================= */
 
-.act-exam-grid select:hover {
-  border-color: rgba(100, 116, 139, 0.6);
-}
-
-.act-exam-grid select option {
-  background: #1e293b;
-  color: #e2e8f0;
-  padding: 12px;
-}
-
-/* ================= Buttons ================= */
-
-.act-exam-card button {
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  border-radius: 8px;
+.rm-exam-card button {
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-sm);
   padding: 10px 18px;
-  color: #fecaca;
+  color: var(--color-error);
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-base);
   width: 100%;
 }
 
-.act-exam-card button:hover {
-  background: rgba(239, 68, 68, 0.25);
+.rm-exam-card button:hover {
   transform: translateY(-1px);
 }
 
-.act-exams-section > button[type="button"] {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+/* ================= Add Exam Button ================= */
+
+.rm-add-exam {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-accent)
+  );
   color: white;
-  border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-md);
   width: 100%;
-  margin-top: 4px;
 }
 
-.act-exams-section > button[type="button"]:hover {
+.rm-add-exam:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.4);
-}
-
-.act-form > button[type="submit"] {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 16px 32px;
-  font-size: 15px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
-  margin-top: 8px;
-}
-
-.act-form > button[type="submit"]:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.45);
-}
-
-.act-form > button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
 }
 
 /* ================= Modal Actions ================= */
 
-.act-actions {
+.rm-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
 }
 
-.act-cancel {
-  background: rgba(148, 163, 184, 0.15);
-  border: 1px solid rgba(148, 163, 184, 0.4);
-  color: #cbd5f5;
+.rm-cancel {
+  background: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
   padding: 12px 20px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.act-cancel:hover {
-  background: rgba(148, 163, 184, 0.25);
-}
-
-.act-submit {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+.rm-submit {
+  background: linear-gradient(
+    135deg,
+    var(--color-success),
+    var(--color-accent)
+  );
   color: white;
-  border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 12px 22px;
   font-size: 14px;
   font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+  box-shadow: var(--shadow-md);
 }
 
-.act-submit:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(34, 197, 94, 0.45);
-}
-
-.act-submit:disabled {
+.rm-submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* ================= Animations ================= */
+/* ================= Animation ================= */
 
 @keyframes modalFadeIn {
   from {
@@ -366,68 +277,30 @@
 
 /* ================= Responsive ================= */
 
-@media (max-width: 768px) {
-  .act-modal {
-    width: 95%;
-    max-width: 100%;
+@media (max-width:768px) {
+
+  .rm-modal {
+    width:95%;
   }
 
-  .act-modal-header {
-    padding: 20px 24px;
+  .rm-row {
+    grid-template-columns:1fr;
   }
 
-  .act-modal-header h3 {
-    font-size: 22px;
+  .rm-exam-grid {
+    grid-template-columns:1fr;
   }
 
-  .act-form {
-    padding: 24px 20px;
-  }
-
-  .act-row {
-    grid-template-columns: 1fr;
-  }
-
-  .act-exam-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .act-exams-section {
-    padding: 20px;
-  }
 }
 
-@media (max-width: 480px) {
-  .act-modal-header {
-    padding: 16px 20px;
+@media (max-width:480px) {
+
+  .rm-form {
+    padding:20px 16px;
   }
 
-  .act-modal-header h3 {
-    font-size: 20px;
+  .rm-exams-section {
+    padding:16px;
   }
 
-  .act-form {
-    padding: 20px 16px;
-    gap: 20px;
-  }
-
-  .act-exams-section {
-    padding: 16px;
-  }
-
-  .act-exam-card {
-    padding: 16px;
-  }
-
-  .act-field input,
-  .act-field select {
-    font-size: 14px;
-    padding: 12px 14px;
-  }
-
-  .act-exam-grid input,
-  .act-exam-grid select {
-    font-size: 13px;
-    padding: 10px 12px;
-  }
 }

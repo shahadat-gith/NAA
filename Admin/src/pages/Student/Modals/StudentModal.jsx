@@ -4,14 +4,14 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { AdminContext } from "../../../context/AdminContext";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../../utils/academicOptions";
-import { formatClassName, normaliseStudent } from "../../../utils/utility";
+import { normaliseStudent } from "../../../utils/utility";
 
-const SingleStudentModal = ({
+const StudentModal = ({
   isOpen,
   onClose,
-  fetchInitialData, // optional
-  student,       // optional → edit mode
-  setStudent,    // optional
+  onSuccess,
+  student,
+  setStudent,
 }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
   const isEditMode = Boolean(student);
@@ -41,7 +41,6 @@ const SingleStudentModal = ({
 
   const [formData, setFormData] = useState(initialState);
 
-  /* ================= INIT FORM ================= */
   useEffect(() => {
     if (isEditMode && student) {
       setFormData({
@@ -71,8 +70,6 @@ const SingleStudentModal = ({
 
   if (!isOpen) return null;
 
-  /* ================= HANDLERS ================= */
-
   const handleClose = () => {
     setFormData(initialState);
     setLoading(false);
@@ -90,7 +87,6 @@ const SingleStudentModal = ({
     }));
   };
 
-  // DOB formatter → DD-MM-YYYY
   const handleDobChange = (e) => {
     let value = e.target.value.replace(/\D/g, "").slice(0, 8);
 
@@ -106,12 +102,9 @@ const SingleStudentModal = ({
     }));
   };
 
-  /* ================= SUBMIT ================= */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // required fields
     if (
       !formData.name ||
       !formData.phone ||
@@ -122,7 +115,6 @@ const SingleStudentModal = ({
       return toast.error("Please fill all required fields");
     }
 
-    // stream validation
     if (
       ["11", "12"].includes(formData.class) &&
       formData.medium === "assamese" &&
@@ -131,12 +123,10 @@ const SingleStudentModal = ({
       return toast.error("Please select stream for class 11 or 12");
     }
 
-    // pincode validation
     if (formData.pincode && !/^\d{6}$/.test(formData.pincode)) {
       return toast.error("Invalid pincode");
     }
 
-    // DOB validation
     if (formData.dob && !/^\d{2}-\d{2}-\d{4}$/.test(formData.dob)) {
       return toast.error("DOB must be in DD-MM-YYYY format");
     }
@@ -144,7 +134,6 @@ const SingleStudentModal = ({
     setLoading(true);
 
     try {
-      // normalize payload (lowercase etc.)
       const payload = normaliseStudent(formData);
 
       let res;
@@ -153,17 +142,13 @@ const SingleStudentModal = ({
         res = await axios.put(
           `${backendUrl}/api/student/${student._id}`,
           payload,
-          {
-            headers: { Authorization: `Bearer ${adminToken}` },
-          }
+          { headers: { Authorization: `Bearer ${adminToken}` } }
         );
       } else {
         res = await axios.post(
           `${backendUrl}/api/student/add/single`,
           payload,
-          {
-            headers: { Authorization: `Bearer ${adminToken}` },
-          }
+          { headers: { Authorization: `Bearer ${adminToken}` } }
         );
       }
 
@@ -174,50 +159,44 @@ const SingleStudentModal = ({
             : "Student added successfully"
         );
 
-        // update local student state (safe)
         if (isEditMode && typeof setStudent === "function") {
           setStudent(res.data.student);
         }
 
-        fetchInitialData?.();
+        onSuccess?.();
         handleClose();
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Operation failed");
-      console.log(error)
+      console.log(error);
     } finally {
       setLoading(false);
     }
   };
 
-  /* ================= UI ================= */
-
   return (
-    <div className="sm-modal-overlay" onClick={handleClose}>
+    <div className="ssm-modal-overlay" onClick={handleClose}>
       <div
-        className="sm-modal-container"
+        className="ssm-modal-container"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="sm-modal-header">
+        <div className="ssm-modal-header">
           <h2>{isEditMode ? "Edit Student" : "Add Single Student"}</h2>
-          <button className="sm-close-button" onClick={handleClose}>
+          <button className="ssm-close-button" onClick={handleClose}>
             ✕
           </button>
         </div>
 
-        {/* Form */}
-        <form className="sm-form" onSubmit={handleSubmit}>
-          {/* ================= BASIC ================= */}
-          <div className="sm-form-grid">
+        <form className="ssm-form" onSubmit={handleSubmit}>
+          <div className="ssm-form-grid">
 
-            <div className="sm-form-group">
-              <label>Student Name <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Student Name <span className="ssm-required">*</span></label>
               <input name="name" value={formData.name} onChange={handleChange} />
             </div>
 
-            <div className="sm-form-group">
-              <label>Registration No <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Registration No <span className="ssm-required">*</span></label>
               <input
                 name="registrationNo"
                 value={formData.registrationNo}
@@ -226,12 +205,12 @@ const SingleStudentModal = ({
               />
             </div>
 
-            <div className="sm-form-group">
-              <label>Phone <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Phone <span className="ssm-required">*</span></label>
               <input name="phone" value={formData.phone} onChange={handleChange} />
             </div>
 
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Gender</label>
               <select name="gender" value={formData.gender} onChange={handleChange}>
                 <option value="">Select Gender</option>
@@ -241,7 +220,7 @@ const SingleStudentModal = ({
               </select>
             </div>
 
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Date of Birth</label>
               <input
                 type="text"
@@ -252,33 +231,32 @@ const SingleStudentModal = ({
               />
             </div>
 
-            <div className="sm-form-group">
-              <label>Father Name <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Father Name <span className="ssm-required">*</span></label>
               <input name="fatherName" value={formData.fatherName} onChange={handleChange} />
             </div>
 
-            <div className="sm-form-group">
-              <label>Mother Name <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Mother Name <span className="ssm-required">*</span></label>
               <input name="motherName" value={formData.motherName} onChange={handleChange} />
             </div>
 
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Aadhar</label>
               <input name="aadhar" value={formData.aadhar} onChange={handleChange} />
             </div>
 
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>PEN</label>
               <input name="pen" value={formData.pen} onChange={handleChange} />
             </div>
 
           </div>
 
-          {/* ================= ACADEMIC ================= */}
-          <div className="sm-form-grid">
+          <div className="ssm-form-grid">
 
-            <div className="sm-form-group">
-              <label>Medium <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Medium <span className="ssm-required">*</span></label>
               <select name="medium" value={formData.medium} onChange={handleChange}>
                 <option value="">Select Medium</option>
                 <option value="english">English</option>
@@ -286,8 +264,8 @@ const SingleStudentModal = ({
               </select>
             </div>
 
-            <div className="sm-form-group">
-              <label>Class <span className="sm-required">*</span></label>
+            <div className="ssm-form-group">
+              <label>Class <span className="ssm-required">*</span></label>
               <select
                 name="class"
                 value={formData.class}
@@ -298,7 +276,7 @@ const SingleStudentModal = ({
                 {formData.medium &&
                   CLASS_OPTIONS[formData.medium].map((cls) => (
                     <option key={cls} value={cls}>
-                      {formatClassName(cls)}
+                      {cls}
                     </option>
                   ))}
               </select>
@@ -306,8 +284,8 @@ const SingleStudentModal = ({
 
             {formData.medium === "assamese" &&
               ["11", "12"].includes(formData.class) && (
-                <div className="sm-form-group">
-                  <label>Stream <span className="sm-required">*</span></label>
+                <div className="ssm-form-group">
+                  <label>Stream <span className="ssm-required">*</span></label>
                   <select name="stream" value={formData.stream} onChange={handleChange}>
                     <option value="">Select Stream</option>
                     {STREAM_OPTIONS.map((s) => (
@@ -320,29 +298,28 @@ const SingleStudentModal = ({
               )}
           </div>
 
-          {/* ================= ADDRESS ================= */}
-          <div className="sm-form-grid">
-            <div className="sm-form-group">
+          <div className="ssm-form-grid">
+            <div className="ssm-form-group">
               <label>Village</label>
               <input name="village" value={formData.village} onChange={handleChange} />
             </div>
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Post Office</label>
               <input name="postOffice" value={formData.postOffice} onChange={handleChange} />
             </div>
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Police Station</label>
               <input name="policeStation" value={formData.policeStation} onChange={handleChange} />
             </div>
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>District</label>
               <input name="district" value={formData.district} onChange={handleChange} />
             </div>
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>State</label>
               <input name="state" value={formData.state} onChange={handleChange} />
             </div>
-            <div className="sm-form-group">
+            <div className="ssm-form-group">
               <label>Pincode</label>
               <input name="pincode" value={formData.pincode} onChange={handleChange} />
             </div>
@@ -363,4 +340,4 @@ const SingleStudentModal = ({
   );
 };
 
-export default SingleStudentModal;
+export default StudentModal;

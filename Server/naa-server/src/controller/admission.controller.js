@@ -18,7 +18,7 @@ export const createAdmission = async (req, res) => {
 export const getAllAdmissions = async (req, res) => {
     try {
         const admissions = await Admission.find();
-        res.status(200).json(admissions);
+        res.status(200).json({ success: true, admissions });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error fetching admissions", error: error.message });
     }
@@ -62,7 +62,7 @@ export const verifyAdmission = async (req, res) => {
         await newStudent.save();
         await Admission.findByIdAndDelete(admissionId);
 
-        const principal = await authorityModel.findOne({role: "Principal"});
+        const principal = await authorityModel.findOne({ role: "Principal" });
         res.status(201).json({ success: true, message: "Admission verified and student created successfully", student: newStudent, principal });
     } catch (error) {
         res.status(500).json({ success: false, message: "Error verifying admission", error: error.message });

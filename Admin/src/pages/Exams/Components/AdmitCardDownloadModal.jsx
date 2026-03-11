@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState } from "react";
 import "../Styles/AdmitCardDownloadModal.css";
 import { AppContext } from "../../../context/AppContext";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../../utils/academicOptions";
-import { formatClassName } from "../../../utils/utility";
 import { generateAdmitCards } from "../AdmitcardPdf/generateAdmitCard";
 import { pdf } from "@react-pdf/renderer";
 import StudentList from "./StudentList";
@@ -238,7 +237,7 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
                                     <option value="">Select Class</option>
                                     {availableClasses.map((c) => (
                                         <option key={c} value={c}>
-                                            {formatClassName(c)}
+                                            {c}
                                         </option>
                                     ))}
                                 </select>

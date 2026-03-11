@@ -1,610 +1,247 @@
-/* Achievers.css - Dark Bluish Theme */
+/* ─────────────────────────────────────────────
+   Achievers Management Page
+   ───────────────────────────────────────────── */
 
-/* Main Container */
 .admin-content {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
-  width: 100%;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
-              0 0 0 1px rgba(148, 163, 184, 0.1);
-  border: 1px solid rgba(51, 65, 85, 0.3);
+  padding-bottom: 40px;
+  animation: fadeIn var(--transition-base);
 }
 
-/* Header */
-.achievers-header {
+.ac-header {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
   gap: 16px;
+}
+
+.ac-header h1 {
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.ac-subtitle {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─────────────────────────────────────────────
+   Action / Search Bar
+   ───────────────────────────────────────────── */
+.ac-search-section {
+  display: flex;
   align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
   margin-bottom: 24px;
 }
 
-.achievers-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #f1f5f9;
-  margin: 0;
+.ac-search-input {
   flex: 1;
+  padding: 10px 16px;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  transition: border-color var(--transition-fast);
 }
 
-.achievers-header h1::before {
-  content: '';
-  display: inline-block;
-  width: 4px;
-  height: 24px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  border-radius: 2px;
-  margin-right: 12px;
+.ac-search-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.ac-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+}
+
+.ac-add-btn:hover {
+  opacity: 0.9;
+}
+
+/* ─────────────────────────────────────────────
+   Achievers Table Container
+   ───────────────────────────────────────────── */
+.ac-list-container {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  overflow-x: auto;
+}
+
+.ac-list {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px; /* Ensures readable layout on small desktop */
+}
+
+.ac-list thead tr {
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.ac-list th {
+  padding: 16px;
+  text-align: left;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ac-list td {
+  padding: 12px 16px;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-default);
+  font-size: 0.9rem;
   vertical-align: middle;
 }
 
-.achievers-subtitle {
-  font-size: 14px;
-  color: #94a3b8;
-  font-weight: 500;
+.ac-item:hover {
+  background-color: var(--bg-surface-3);
 }
 
-.add-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.add-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
-}
-
-.add-btn i {
-  font-size: 16px;
-}
-
-/* Search Section */
-.search-section {
-  margin-bottom: 24px;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px;
-  background: rgba(30, 41, 59, 0.8);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 8px;
-  color: #f1f5f9;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  background: rgba(30, 41, 59, 1);
-}
-
-.search-input::placeholder {
-  color: #64748b;
-}
-
-/* Loader */
-.loader-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  color: #cbd5e1;
-  font-size: 16px;
-}
-
-.loader {
-  border: 4px solid rgba(59, 130, 246, 0.2);
-  border-top: 4px solid #3b82f6;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* No Achievers Message */
-.no-achievers {
-  text-align: center;
-  color: #94a3b8;
-  font-size: 16px;
-  padding: 20px;
-}
-
-/* Achievers Table */
-.achievers-list-container {
-  width: 100%;
-}
-
-.achievers-list {
-  width: 100%;
-  border-collapse: collapse;
-  background: rgba(30, 41, 59, 0.8);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.achievers-list th {
-  background: rgba(51, 65, 85, 0.5);
-  color: #f1f5f9;
-  font-weight: 600;
-  font-size: 14px;
-  padding: 12px;
-  text-align: left;
-}
-
-.achievers-list td {
-  padding: 12px;
-  color: #cbd5e1;
-  font-size: 14px;
-  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
-}
-
-.achiever-item:hover {
-  background: rgba(59, 130, 246, 0.1);
-  cursor: pointer;
-}
-
-/* Image Column */
-.image-cell {
+/* Image Cell Specifics */
+.ac-image-cell {
   width: 80px;
 }
 
-.achiever-image {
-  width: 60px;
-  height: 60px;
+.ac-image {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
   object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid var(--border-default);
+  cursor: zoom-in;
+  transition: transform var(--transition-fast);
 }
 
-.no-image {
-  width: 60px;
-  height: 60px;
-  background: rgba(51, 65, 85, 0.5);
-  border-radius: 50%;
+.ac-image:hover {
+  transform: scale(1.05);
+}
+
+.ac-no-image {
+  width: 48px;
+  height: 48px;
+  background-color: var(--bg-base);
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
-  font-size: 24px;
+  color: var(--text-muted);
 }
 
-/* Actions Column */
-.actions-cell {
+/* ─────────────────────────────────────────────
+   Action Buttons
+   ───────────────────────────────────────────── */
+.ac-actions-cell {
   display: flex;
   gap: 8px;
 }
 
-.view-btn,
-.delete-btn {
-  padding: 8px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  background: rgba(71, 85, 105, 0.5);
-  color: #f1f5f9;
-}
-
-.view-btn:hover {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  transform: scale(1.1);
-}
-
-.delete-btn:hover {
-  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-  transform: scale(1.1);
-}
-
-.view-btn i,
-.delete-btn i {
-  font-size: 16px;
-}
-
-/* Modal Container */
-.modal-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(8px);
+.ac-update-btn, 
+.ac-delete-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.3s ease-in-out;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid var(--border-default);
+}
+
+.ac-update-btn {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary-bright);
+}
+
+.ac-update-btn:hover {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.ac-delete-btn {
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.ac-delete-btn:hover {
+  background-color: var(--color-error);
+  color: white;
+}
+
+/* ─────────────────────────────────────────────
+   States (Loader / Empty)
+   ───────────────────────────────────────────── */
+.ac-loader-container {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.ac-loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--bg-surface-3);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  animation: spin 1s linear infinite;
+}
+
+.ac-no-achievers {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────
+   Animations & Responsive
+   ───────────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Modal Content */
-.modal-content {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(51, 65, 85, 0.3);
-  position: relative;
-  animation: scaleIn 0.3s ease-in-out;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-.modal-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: rgba(71, 85, 105, 0.5);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #cbd5e1;
-  transition: all 0.2s ease;
-}
-
-.modal-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  transform: scale(1.05);
-}
-
-.modal-btn i {
-  font-size: 16px;
-}
-
-/* View Modal */
-.view-modal-content {
-  display: flex;
-  gap: 24px;
-  padding: 24px;
-}
-
-.view-modal-image-container {
-  flex: 0 0 200px;
-}
-
-.view-modal-image {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 2px solid rgba(59, 130, 246, 0.3);
-}
-
-.view-modal-no-image {
-  width: 200px;
-  height: 200px;
-  background: rgba(51, 65, 85, 0.5);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  font-size: 48px;
-}
-
-.view-modal-details {
-  flex: 1;
-  color: #cbd5e1;
-}
-
-.view-modal-title {
-  font-size: 20px;
-  font-weight: 600;
-  color: #f1f5f9;
-  margin: 0 0 16px;
-}
-
-.view-modal-info p {
-  margin: 8px 0;
-  font-size: 14px;
-}
-
-.view-modal-info strong {
-  color: #f1f5f9;
-}
-
-
-.update-btn, .delete-btn {
-  background-color: #3ABEF9;
-  color: white;
-  padding: 6px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-}
-
-.update-btn:hover {
-  background-color: #2a9be0;
-}
-
-.delete-btn {
-  background-color: #E94560;
-}
-
-.delete-btn:hover {
-  background-color: #d43c55;
-}
-
-
-
-/* Delete Confirmation Modal */
-.delete-confirm-modal {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
-  width: 100%;
-  max-width: 500px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(51, 65, 85, 0.3);
-  position: relative;
-  text-align: center;
-  padding: 24px;
-  animation: scaleIn 0.3s ease-in-out;
-}
-
-@keyframes scaleIn {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
-/* Close Button */
-.modal-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: rgba(71, 85, 105, 0.5);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #cbd5e1;
-  transition: all 0.2s ease;
-}
-
-.modal-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
-  transform: scale(1.05);
-}
-
-.modal-btn i {
-  font-size: 16px;
-}
-
-/* Modal Content */
-.delete-confirm-modal h2 {
-  font-size: 20px;
-  font-weight: 600;
-  color: #f1f5f9;
-  margin: 0 0 16px;
-}
-
-.delete-confirm-modal > div:not(.delete-confirm-buttons) {
-  color: #cbd5e1;
-  font-size: 16px;
-  margin: 0 0 24px;
-}
-
-/* Buttons Container */
-.delete-confirm-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-}
-
-/* Cancel and Delete Buttons */
-.cancel-btn,
-.confirm-delete-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  min-width: 120px;
-}
-
-.cancel-btn {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  color: white;
-}
-
-.cancel-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(107, 114, 128, 0.4);
-}
-
-.confirm-delete-btn {
-  background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
-  color: white;
-}
-
-.confirm-delete-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
-  .delete-confirm-modal {
-    padding: 16px;
-  }
-
-  .delete-confirm-modal h2 {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-
-  .delete-confirm-modal > div:not(.delete-confirm-buttons) {
-    font-size: 14px;
-    margin-bottom: 16px;
-  }
-
-  .cancel-btn,
-  .confirm-delete-btn {
-    padding: 10px 16px;
-    font-size: 12px;
-    min-width: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .delete-confirm-modal {
-    max-width: 90%;
-  }
-
-  .modal-btn {
-    width: 28px;
-    height: 28px;
-    top: 12px;
-    right: 12px;
-  }
-
-  .modal-btn i {
-    font-size: 14px;
-  }
-
-  .delete-confirm-buttons {
+  .ac-header {
     flex-direction: column;
-    gap: 12px;
+    align-items: flex-start;
   }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .admin-content {
-    margin: 10px;
-    padding: 20px;
-  }
-
-  .achievers-header h1 {
-    font-size: 20px;
-  }
-
-  .achievers-header h1::before {
-    height: 20px;
-  }
-
-  .add-btn {
-    padding: 10px 16px;
-    font-size: 12px;
-  }
-
-  .search-input {
-    max-width: 100%;
-  }
-
-  .achievers-list th,
-  .achievers-list td {
-    font-size: 12px;
-    padding: 10px;
-  }
-
-  .view-modal-content {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .view-modal-image-container {
-    flex: 0 0 auto;
-  }
-
-  .view-modal-image,
-  .view-modal-no-image {
-    width: 150px;
-    height: 150px;
-  }
-
-  .delete-confirm-modal {
-    padding: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .achievers-list-container {
-    overflow-x: auto;
-  }
-
-  .achievers-list {
-    min-width: 600px;
-  }
-
-  .achievers-list th,
-  .achievers-list td {
-    font-size: 12px;
-    padding: 8px;
-  }
-
-  .achiever-image,
-  .no-image {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .view-modal-image,
-  .view-modal-no-image {
-    width: 120px;
-    height: 120px;
-  }
-
-  .view-modal-title {
-    font-size: 18px;
-  }
-
-  .view-modal-info p {
-    font-size: 12px;
-  }
-
-  .cancel-btn,
-  .confirm-delete-btn {
-    padding: 10px 16px;
-    font-size: 12px;
-    min-width: 100px;
+  
+  .ac-add-btn {
+    width: 100%;
+    justify-content: center;
   }
 }

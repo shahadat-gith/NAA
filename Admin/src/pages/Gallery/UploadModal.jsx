@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
+import "./UploadModal.css"
 
 const UploadModal = ({ isOpen, onClose, onUpload }) => {
   const [imageFiles, setImageFiles] = useState([]);

@@ -3,25 +3,41 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import "./Teacher.css";
-import TeacherModal from "./TeacherModal/TeacherModal";
+import TeacherModal from "./TeacherModal";
 import { AdminContext } from "../../context/AdminContext";
-import { AppContext } from "../../context/AppContext";
 import Loader from "../../components/Loader/Loader";
 
 const Teacher = () => {
   const { adminToken, backendUrl } = useContext(AdminContext);
 
-  const {
-    teachers,
-    fetchInitialData,
-    loading,
-  } = useContext(AppContext);
-
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [teacherPopUp, setTeacherPopUp] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  /* ================= DELETE ================= */
+  /* ================= FETCH TEACHERS ================= */
+  const fetchTeachers = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/teacher/all-teachers`);
+      if (response.data.success) {
+        setTeachers(response.data.teachers || []);
+      }
+    } catch (error) {
+      console.error("Error fetching teachers:", error);
+      toast.error("Failed to load teachers");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchTeachers();
+  }, [adminToken]);
+
+  /* ================= DELETE ================= */
   const handleDelete = async (teacherId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this teacher?"
@@ -40,7 +56,7 @@ const Teacher = () => {
       );
 
       toast.success("Teacher deleted successfully");
-      fetchInitialData();
+      fetchTeachers();
     } catch (error) {
       console.error("Delete teacher error:", error);
       toast.error("Failed to delete teacher");
@@ -48,7 +64,6 @@ const Teacher = () => {
   };
 
   /* ================= SEARCH ================= */
-
   const filteredTeachers = useMemo(() => {
     return (teachers || []).filter((teacher) =>
       (teacher.name || "")
@@ -199,7 +214,7 @@ const Teacher = () => {
         onClose={() =>
           setTeacherPopUp(false)
         }
-        onSuccess={fetchInitialData}
+        onSuccess={fetchTeachers}
       />
     </div>
   );

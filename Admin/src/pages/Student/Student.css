@@ -1,335 +1,175 @@
+/* ─────────────────────────────────────────────
+   Student List Page Styles
+   ───────────────────────────────────────────── */
 
 .admin-student-list-container {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(51, 65, 85, 0.3);
+  padding-bottom: 40px;
 }
 
-/* Title */
 .admin-student-list-container h2 {
-  font-size: 24px;
-  font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-primary);
   margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
-.admin-student-list-container h2::before {
-  content: "";
-  width: 4px;
-  height: 24px;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  border-radius: 2px;
-}
-
-/* =========================================
-   ACTION BUTTONS SECTION
-========================================= */
-
+/* ─────────────────────────────────────────────
+   Action Buttons (Top Bar)
+   ───────────────────────────────────────────── */
 .add-student-action {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 30px;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
 }
 
-/* Base Button Style */
 .naa-btn {
-  padding: 14px 22px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 180px;
-  color: #fff;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
 }
 
-/* Mass Addition */
 .naa-btn-mass {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background-color: var(--color-primary);
+  color: white;
 }
 
-.naa-btn-mass:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.35);
-}
-
-/* Single Addition */
 .naa-btn-single {
-  background: linear-gradient(135deg, #10b981, #059669);
+  background-color: var(--bg-surface-3);
+  color: var(--text-primary);
+  border: 1px solid var(--border-hover);
 }
 
-.naa-btn-single:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
-}
-
-/* Promote Students */
 .naa-btn-promote {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+  border: 1px solid var(--color-warning-border);
 }
 
-.naa-btn-promote:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.35);
-}
-
-/* Export PDF */
 .naa-btn-export {
-  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
 }
 
-.naa-btn-export:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+.naa-btn-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(1);
 }
 
-/* Active Click Effect */
-.naa-btn:active {
-  transform: scale(0.97);
+.naa-export-wrapper {
+  display: flex;
+  gap: 12px;
+  margin-left: auto; /* Push exports to the right */
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .add-student-action {
-    flex-direction: column;
-  }
-
-  .naa-btn {
-    width: 100%;
-  }
-}
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
+/* ─────────────────────────────────────────────
+   Search & Filters
+   ───────────────────────────────────────────── */
 .fs-search-wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .fs-search-input {
   width: 100%;
-  padding: 16px 20px;
-  background: rgba(30, 41, 59, 0.6);
-  border: 1px solid rgba(51, 65, 85, 0.4);
-  border-radius: 12px;
-  color: #f1f5f9;
-  font-size: 15px;
-  transition: all 0.3s ease;
-}
-
-.fs-search-input::placeholder {
-  color: rgba(148, 163, 184, 0.6);
+  padding: 14px 20px;
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: border var(--transition-fast);
 }
 
 .fs-search-input:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-  background: rgba(30, 41, 59, 0.8);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-glow);
 }
-
-/* =====================================================
-   FILTERS
-===================================================== */
 
 .fs-filters-row {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: 22px;
-  margin-bottom: 28px;
+  gap: 20px;
+  padding: 20px;
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  margin-bottom: 16px;
 }
 
-/* Filter Group */
 .fs-filter-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 200px;
+  flex: 1;
+  min-width: 180px;
 }
 
-/* Labels */
 .fs-filter-group label {
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: rgba(203, 213, 225, 0.85);
-}
-
-/* Select Styling */
-.fs-filter-group select {
-  padding: 13px 16px;
-  background: rgba(30, 41, 59, 0.65);
-  border: 1px solid rgba(51, 65, 85, 0.5);
-  border-radius: 10px;
-  color: #f8fafc;
-  font-size: 14px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
   font-weight: 500;
-  cursor: pointer;
-  appearance: none;
-  transition: all 0.25s ease;
-  backdrop-filter: blur(4px);
+  text-transform: uppercase;
 }
 
-/* Custom dropdown arrow */
 .fs-filter-group select {
-  background-image: url("data:image/svg+xml;utf8,<svg fill='%23cbd5e1' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-}
-
-/* Hover */
-.fs-filter-group select:hover {
-  border-color: rgba(96, 165, 250, 0.6);
-  background: rgba(30, 41, 59, 0.8);
-}
-
-/* Focus */
-.fs-filter-group select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.18);
-  background: rgba(30, 41, 59, 0.9);
-}
-
-/* Buttons */
-.fs-btn {
-  padding: 13px 20px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 10px;
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.25s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* Clear Button */
+/* Clear Filter Button */
 .fs-clear-btn {
-  background: linear-gradient(135deg, #64748b, #475569);
-  color: #ffffff;
-  min-width: 160px;
+  background-color: transparent;
+  color: var(--color-error);
+  border: 1px solid var(--color-error-border);
+  height: 42px; /* Match select height */
 }
 
 .fs-clear-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6b7280, #334155);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  background-color: var(--color-error-bg);
 }
 
-.fs-btn:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .fs-filters-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .fs-filter-group {
-    width: 100%;
-  }
-
-  .fs-clear-btn {
-    width: 100%;
-  }
-}
-
-
-/* =====================================================
-   RESULT COUNT
-===================================================== */
+/* ─────────────────────────────────────────────
+   Results Count
+   ───────────────────────────────────────────── */
 .fs-results-count {
-  padding: 12px 20px;
-  background: rgba(59, 130, 246, 0.1);
-  border-left: 4px solid #3b82f6;
-  border-radius: 8px;
-  color: #e2e8f0;
-  font-size: 14px;
-  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  padding-left: 4px;
 }
 
 .fs-results-count strong {
-  color: #3b82f6;
+  color: var(--color-primary-bright);
 }
 
-/* =====================================================
-   RESPONSIVE
-===================================================== */
+/* ─────────────────────────────────────────────
+   Responsive Tweaks
+   ───────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .admin-student-list-container {
-    padding: 20px;
-  }
-
-  .add-student-action {
-    justify-content: stretch;
-  }
-
-  .naa-add-student-btn {
+  .naa-export-wrapper {
+    margin-left: 0;
     width: 100%;
   }
-
-  .fs-actions {
-    flex-direction: column;
+  
+  .naa-btn {
+    flex: 1;
   }
-
-  .fs-btn {
-    width: 100%;
-    justify-content: center;
+  
+  .fs-filter-group {
+    min-width: 100%;
   }
-}
-
-
-.fs-idcard-btn {
-  background: #4b7bec;
-  color: #fff;
-}
-
-.fs-idcard-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-
-
-.naa-btn-disabled {
-  background-color: #cbd5e1;   /* soft grey */
-  cursor: not-allowed;
-  opacity: 0.7;
-  transform: none;
-  position: relative;
-}
-
-.naa-btn-disabled:hover {
-  background-color: #cbd5e1;
-}
-
-.naa-filter-hint {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #64748b;
-  position: absolute;
 }

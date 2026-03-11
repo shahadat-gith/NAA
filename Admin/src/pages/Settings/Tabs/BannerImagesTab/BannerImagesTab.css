@@ -1,74 +1,136 @@
+/* ─────────────────────────────────────────────
+   Banner Management Tab
+   ───────────────────────────────────────────── */
+
 .banner-container {
-  min-height: 100vh;
-  background:#0f172a;
-  padding: 24px;
-  border-radius: 15px;
+  animation: fadeIn var(--transition-base);
 }
 
 .banner-header {
-  max-width: 1400px;
-  margin: 0 auto 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 }
 
 .banner-title {
-  font-size: 32px;
+  color: var(--text-primary);
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
   display: flex;
+  align-items: center;
   gap: 12px;
 }
 
+.banner-title i {
+  color: var(--color-primary-bright);
+}
+
 .banner-add-btn {
-  background: #3b82f6;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.banner-add-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .banner-add-btn:disabled {
-  opacity: 0.4;
+  background-color: var(--bg-surface-3);
+  color: var(--text-muted);
   cursor: not-allowed;
+  border: 1px solid var(--border-default);
 }
 
+/* ─────────────────────────────────────────────
+   Banner Grid
+   ───────────────────────────────────────────── */
 .banner-grid {
-  max-width: 1400px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .banner-card {
   position: relative;
-  background: rgba(30, 41, 59, 0.8);
-  border-radius: 16px;
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  /* Maintain a wide hero-like aspect ratio */
+  aspect-ratio: 16 / 9; 
+  transition: all var(--transition-fast);
+}
+
+.banner-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .banner-image {
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
+/* ── Edit Button Overlay ── */
 .banner-edit-icon {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(59, 130, 246, 0.2);
-  border: none;
-  border-radius: 8px;
-  color: #60a5fa;
-  width: 34px;
-  height: 34px;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(5, 13, 26, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all var(--transition-fast);
+  opacity: 0; /* Hidden by default */
+  transform: translateY(-5px);
+}
+
+.banner-card:hover .banner-edit-icon {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.banner-edit-icon:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* ── States ── */
+.banner-loading {
+  padding: 60px;
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+  background-color: var(--bg-surface-2);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--border-default);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .banner-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,15 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 import "./Settings.css";
 import ServiceTab from "./Tabs/ServiceTab/ServiceTab";
 import FeesTab from "./Tabs/FeesTab/FeesTab";
 import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
 import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import Loader from "../../components/Loader/Loader";
+import { AdminContext } from "../../context/AdminContext";
 
 const Settings = () => {
+  const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const { settings, loading } = useContext(AppContext)
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  /* ================= FETCH SETTINGS ================= */
+  const fetchSettings = async () => {
+    if (!adminToken) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${backendUrl}/api/settings/`, {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      });
+
+      if (response.data.success) {
+        const data = response.data.data || {};
+        setSettings({
+          serviceSettings: data.serviceSettings || null,
+          feesSettings: data.feesSettings || null,
+          authorities: data.authorities || [],
+          heroImages: data.heroImages || [],
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching settings:", error);
+      toast.error("Failed to load settings");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ================= LOAD ON MOUNT ================= */
+  useEffect(() => {
+    fetchSettings();
+  }, [adminToken]);
   const tabs = [
     {
       id: "services",
@@ -43,6 +80,7 @@ const Settings = () => {
           <ServiceTab
             data={settings?.serviceSettings}
             loading={loading}
+            onRefresh={fetchSettings}
           />
         );
 
@@ -51,6 +89,7 @@ const Settings = () => {
           <FeesTab
             data={settings?.feesSettings}
             loading={loading}
+            onRefresh={fetchSettings}
           />
         );
 
@@ -59,6 +98,7 @@ const Settings = () => {
           <Authoritiestab
             authorities={settings?.authorities}
             loading={loading}
+            onRefresh={fetchSettings}
           />
         );
 
@@ -67,6 +107,7 @@ const Settings = () => {
           <BannerImagesTab
             heroImages={settings?.heroImages}
             loading={loading}
+            onRefresh={fetchSettings}
           />
         );
 
@@ -74,6 +115,10 @@ const Settings = () => {
         return null;
     }
   };
+
+  if (loading) {
+    return <Loader text="Loading settings..." />;
+  }
 
   return (
     <div className="st-container">
