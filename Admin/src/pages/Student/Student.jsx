@@ -8,6 +8,7 @@ import { CLASS_OPTIONS } from "../../utils/academicOptions";
 
 // pdf export helper
 import { exportStudentListPDF } from "./exportStudent";
+import exportStudentsToExcel from "./StudentTable/exportToExcel";
 
 import "./Student.css";
 import Loader from "../../components/Loader/Loader";
@@ -78,6 +79,13 @@ const Student = () => {
   };
 
 
+  const exportexcel = () => {
+    // pass filters explicitly so filename is accurate
+    exportStudentsToExcel(filteredStudents, classFilter, mediumFilter, streamFilter);
+  };
+
+
+
   return (
     <div className="admin-student-list-container">
       <h2>Student List</h2>
@@ -115,10 +123,15 @@ const Student = () => {
           >
             {mediumFilter ? "Export PDF" : "Select Medium to Export"}
           </button>
-
-          {!mediumFilter && (
-            <p className="naa-filter-hint">Please select medium to enable export.</p>
-          )}
+          
+          <button
+            className={`naa-btn naa-btn-export ${!mediumFilter || !classFilter ? "naa-btn-disabled" : ""
+              }`}
+            onClick={exportexcel}
+            disabled={!mediumFilter || !classFilter}
+          >
+            {mediumFilter && classFilter ? "Export Excel" : "Select class and Medium to Export"}
+          </button>
         </div>
       </div>
 

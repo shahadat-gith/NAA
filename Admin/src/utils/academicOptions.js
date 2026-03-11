@@ -80,17 +80,15 @@ export const SUBJECT_OPTIONS = [
 
 
 
-export const generateAcademicSessions = (years = 5) => {
-  const startYear = new Date().getFullYear();
-  return Array.from({ length: years }, (_, i) => {
-    const y1 = startYear + i;
-    const y2 = y1 + 1;
-    return `${y1}-${y2}`;
-  });
-};
-
 // usage
-export const SESSION_OPTIONS = generateAcademicSessions(5);
+export const SESSION_OPTIONS = [
+    "2024-2025",
+    "2025-2026",
+    "2026-2027",
+    "2027-2028",
+    "2028-2029",
+    "2029-2030",
+  ];
 
 
   export const academicSessions = [

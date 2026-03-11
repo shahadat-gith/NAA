@@ -118,7 +118,16 @@ export function sortStudents(students = []) {
     const order = CLASS_OPTIONS[ma] || [];
     const ca = order.indexOf(a.class);
     const cb = order.indexOf(b.class);
-    return ca - cb;
+    if (ca !== cb) return ca - cb;
+
+    // if classes also match, fall back to registration number
+    const ra = a.registrationNo || "";
+    const rb = b.registrationNo || "";
+    // try numeric comparison if both are numbers
+    const na = parseInt(ra, 10);
+    const nb = parseInt(rb, 10);
+    if (!isNaN(na) && !isNaN(nb)) return na - nb;
+    return ra.localeCompare(rb);
   });
 }
 

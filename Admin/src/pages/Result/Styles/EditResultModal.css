@@ -1,0 +1,172 @@
+/* ================= EditResultModal.css ================= */
+
+.erm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.erm-modal-content {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  border: 1px solid rgba(51, 65, 85, 0.3);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}
+
+.erm-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.erm-modal-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.erm-modal-header button {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #fecaca;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.erm-modal-header button:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: scale(1.05);
+}
+
+.erm-modal-body {
+  padding: 32px;
+  overflow-y: auto;
+  max-height: calc(90vh - 200px);
+}
+
+.erm-form-group {
+  margin-bottom: 20px;
+}
+
+.erm-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.erm-form-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+}
+
+.erm-marks-section h4 {
+  margin-bottom: 16px;
+  color: #f8fafc;
+}
+
+.erm-subject-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.erm-subject-row input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  background: rgba(15, 23, 42, 0.45);
+  color: #e2e8f0;
+}
+
+.erm-subject-row button {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  color: #fecaca;
+  transition: all 0.2s ease;
+}
+
+.erm-subject-row button:hover {
+  background: rgba(239, 68, 68, 0.25);
+}
+
+.erm-marks-section button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+}
+
+.erm-marks-section button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.erm-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px 32px;
+  background: rgba(30, 41, 59, 0.5);
+  border-top: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.erm-modal-footer button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.erm-modal-footer button:first-child {
+  background: rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+}
+
+.erm-modal-footer button:first-child:hover {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.erm-modal-footer button:last-child {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+}
+
+.erm-modal-footer button:last-child:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.erm-modal-footer button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}

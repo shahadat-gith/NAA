@@ -11,7 +11,7 @@ import {
   SESSION_OPTIONS,
 } from "../../utils/academicOptions";
 
-const UploadResults = ({ isOpen, onClose }) => {
+const UploadResults = ({ isOpen, onClose, onSuccess }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [loading, setLoading] = useState(false);
@@ -71,6 +71,8 @@ const UploadResults = ({ isOpen, onClose }) => {
 
       if (res.data.success) {
         toast.success(`Uploaded ${res.data.count} results`);
+        // let parent know so it can refresh
+        if (typeof onSuccess === "function") onSuccess();
         handleClose();
       }
 

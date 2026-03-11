@@ -7,26 +7,38 @@ export const uploadResults = async (req, res) => {
     const { academicSession, examName, class: className, stream, medium, maxMarksPerSubject } = req.body;
 
     if (!req.file) {
-      return res.status(400).json({success: false, message: "Please upload an Excel file." });
+      return res.status(400).json({ success: false, message: "Please upload an Excel file." });
     }
 
-    // 1. Read Excel from Buffer
+    // Read Excel
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheetName = workbook.SheetNames[0];
     const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
     if (data.length === 0) {
-      return res.status(400).json({success: false, message: "Excel file is empty." });
+      return res.status(400).json({ success: false, message: "Excel file is empty." });
     }
 
-    // 2. Map and Pre-calculate Totals for Ranking
-    // Note: We calculate a temporary total here just to determine rank
+    // Process data
     let resultsData = data.map((row) => {
-      // Logic to extract marks: Assuming columns like "Maths", "Science", etc.
-      // We exclude known keys to find the subject marks
-      const staticKeys = ["registrationNo", "name", "canSee"];
+
+      const registrationNo = row.registrationNo;
+      const name = row.name;
+
+      // Convert canSee
+      const canSee =
+        row.canSee && String(row.canSee).toLowerCase() === "no"
+          ? false
+          : true;
+
+      // Subjects = everything except registrationNo, name, canSee
       const marks = Object.keys(row)
-        .filter((key) => !staticKeys.includes(key.toLowerCase()))
+        .filter(
+          (key) =>
+            !["registrationno", "name", "cansee"].includes(
+              key.toLowerCase()
+            )
+        )
         .map((subject) => ({
           subject: subject,
           mark: Number(row[subject]) || 0,
@@ -35,10 +47,11 @@ export const uploadResults = async (req, res) => {
       const totalObtained = marks.reduce((sum, m) => sum + m.mark, 0);
 
       return {
-        registrationNo: row.registrationNo || row.registrationNo,
-        canSee: row.canSee === undefined ? true : row.canSee,
+        registrationNo,
+        name,
+        canSee,
         marks,
-        totalObtained, // temporary field for sorting
+        totalObtained,
         academicSession,
         examName,
         class: className,
@@ -48,15 +61,15 @@ export const uploadResults = async (req, res) => {
       };
     });
 
-    // 3. Calculate Rank based on totalObtained
+    // Ranking
     resultsData.sort((a, b) => b.totalObtained - a.totalObtained);
+
     resultsData = resultsData.map((item, index) => ({
       ...item,
       rank: index + 1,
     }));
 
-    // 4. Save to Database 
-    // We use .create() so the pre-save hook in your schema runs!
+    // Save
     const savedResults = await Result.create(resultsData);
 
     res.status(201).json({
@@ -64,12 +77,16 @@ export const uploadResults = async (req, res) => {
       message: "Results uploaded and ranked successfully",
       count: savedResults.length,
     });
+
   } catch (error) {
     console.error("Upload Error:", error);
-    res.status(500).json({success: false, message: "Server error during upload", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error during upload",
+      error: error.message,
+    });
   }
 };
-
 export const getAllResults = async (req, res) => {
   try {
     const { academicSession, examName} = req.query;
