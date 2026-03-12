@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
 import { AdminContext } from "../../context/AdminContext";
 import { capitalizeWords, capitalizeFirst } from "../../utils/utility";
+import { SESSION_OPTIONS, EXAM_OPTIONS } from "../../utils/academicOptions";
 import "./Styles/ResultDetails.css";
 
 const ResultDetails = () => {
