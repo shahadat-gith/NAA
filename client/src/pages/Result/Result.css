@@ -1,7 +1,6 @@
 /* ================= Page Layout ================= */
 
 .result-page {
-    min-height: 100vh;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -11,17 +10,6 @@
     position: relative;
 }
 
-.result-page::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(circle at 20% 50%, rgba(233, 69, 112, 0.03) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, rgba(79, 70, 229, 0.03) 0%, transparent 50%);
-    pointer-events: none;
-}
 
 /* ================= Header ================= */
 
@@ -69,6 +57,7 @@
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
     z-index: 1;
     animation: fadeInUp 0.8s ease-out;
+    margin-bottom: 30px;
 }
 
 @keyframes fadeInUp {

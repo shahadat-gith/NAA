@@ -1,0 +1,134 @@
+/* ── HeroBanner.css ── */
+.hero-banner {
+  position: relative;
+  background: linear-gradient(135deg, #1a2340 0%, #2c3a6b 55%, #3a2050 100%);
+  overflow: hidden;
+  padding: 32px 48px 0;
+}
+
+.hero-texture {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 85%, rgba(233, 69, 96, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 85% 15%, rgba(100, 120, 220, 0.15) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── title block ── */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 24px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(233, 69, 96, 0.18);
+  border: 1px solid rgba(233, 69, 96, 0.35);
+  color: #ffb3c1;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 10px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: #e94560;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.65); }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+}
+
+.hero-accent {
+  color: #e94560;
+  font-style: italic;
+}
+
+/* ── nav tabs ── */
+.hero-nav {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 4px;
+}
+
+.hero-nav-inner {
+  display: flex;
+  flex-wrap: wrap;        /* wraps naturally on any screen size */
+  gap: 0;
+  padding: 0;
+}
+
+.hero-nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.16s, border-color 0.16s, background 0.16s;
+  letter-spacing: 0.01em;
+}
+
+.hero-nav-tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.hero-nav-tab--active {
+  color: #fff;
+  border-bottom-color: #e94560;
+  background: rgba(233, 69, 96, 0.1);
+}
+
+.hero-nav-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.hero-nav-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── decorative shapes ── */
+.hero-shapes { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.hs { position: absolute; border-radius: 50%; border: 1px solid rgba(255,255,255,0.05); }
+.hs1 { width: 240px; height: 240px; right: 4%;  top: -80px;  background: rgba(233,69,96,0.07); }
+.hs2 { width: 130px; height: 130px; right: 18%; bottom: 10px; background: rgba(100,140,255,0.05); }
+.hs3 { width: 60px;  height: 60px;  right: 10%; top: 40%;   background: rgba(233,69,96,0.1); }
+
+/* ── responsive ── */
+@media (max-width: 640px) {
+  .hero-banner { padding: 24px 20px 0; }
+  .hero-nav-tab { padding: 10px 14px; font-size: 0.78rem; }
+  .hs1, .hs2, .hs3 { display: none; }
+}

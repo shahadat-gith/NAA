@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import "../../Styles/AdmitCard.css";
+import "./Styles/AdmitCard.css"
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import AdmitCardPdf from "./admitCardPdf";
 

@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../Styles/StudentSearch.css";
+import "./Styles/StudentSearch.css"
 import BG_IMAGE from "/search.webp";
 import axios from "axios";
-import { AppContext } from "../../../../context/AppContext";
+import { AppContext } from "../../context/AppContext";
 
 const StudentSearch = () => {
   const { backendUrl } = useContext(AppContext);

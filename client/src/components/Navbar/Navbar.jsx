@@ -47,7 +47,8 @@ const Navbar = () => {
   const navLinks = [
     { to: "/", label: "Home" },
     { to: "/about", label: "About" },
-    { to: "/student", label: "Student Corner" },
+    { to: "/student", label: "Student Portal" },
+    // { to: "/student-corner", label: "Student Corner" },
     { to: "/academics", label: "Academics" },
     { to: "/curriculum?type=kinder", label: "Curriculum" },
     { to: "/teachers", label: "Teachers" },

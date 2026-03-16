@@ -170,22 +170,37 @@ export const updateHeroImage = async (req, res) => {
 export const upsertExam = async (req, res) => {
   try {
     const { examName, academicSession, morning, afternoon } = req.body;
-    let exam = await Exam.findOne({ examName, academicSession });
-    if (!exam) {
-      exam = new Exam({ examName, academicSession, time: { morning, afternoon } });
-    } else {
-      exam.examName = examName;
-      exam.academicSession = academicSession;
-      exam.time.morning = morning;
-      exam.time.afternoon = afternoon;
-    }
-    await exam.save();
-    res.status(200).json({ success:true, message: "Exam upserted successfully", data: exam });
+
+    const exam = await Exam.findOneAndUpdate(
+      {}, // always target the single document
+      {
+        examName,
+        academicSession,
+        time: {
+          morning,
+          afternoon
+        }
+      },
+      {
+        new: true,
+        upsert: true // creates only if collection is empty
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Exam updated successfully",
+      data: exam
+    });
+
   } catch (error) {
-    res.status(500).json({ success:false, message: "Server Error", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+      error: error.message
+    });
   }
 };
-
 
 export const updateAuthority = async (req, res) => {
   try {

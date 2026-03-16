@@ -1,16 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AppContext } from "../../../../context/AppContext";
-import { EXAM_OPTIONS, SESSION_OPTIONS } from "../../../../Utils/utility";
-import "../../Styles/Result.css";
+import { AppContext } from "../../context/AppContext";
+import { EXAM_OPTIONS, SESSION_OPTIONS } from "../../Utils/utility";
+import "./Result.css";
 
 const Result = () => {
   const [registrationNo, setRegistrationNo] = useState("");
   const [examName, setExamName] = useState("");
   const [academicSession, setAcademicSession] = useState("");
-
-  const [resultData, setResultData] = useState(null);
+  const [result, setResult] = useState(null);
   const [principal, setPrincipal] = useState(null);
 
   const [loading, setLoading] = useState(false);
@@ -26,7 +25,7 @@ const Result = () => {
     e.preventDefault();
     setError("");
     setInfoMessage("");
-    setResultData(null);
+    setResult(null);
 
     if (!registrationNo || !examName || !academicSession) {
       setError("Please fill in all required fields");
@@ -37,7 +36,7 @@ const Result = () => {
       setLoading(true);
 
       const res = await axios.post(
-        `${backendUrl}/api/results/fetch`,
+        `${backendUrl}/api/results/student/fetch`,
         {
           registrationNo: registrationNo.trim(),
           examName,
@@ -60,7 +59,7 @@ const Result = () => {
         return;
       }
 
-      setResultData(result);
+      setResult(result);
       setPrincipal(res.data.principal || null);
     } catch (err) {
       setError(
@@ -75,25 +74,24 @@ const Result = () => {
   /* ================= NAVIGATE TO DOWNLOAD ================= */
 
   useEffect(() => {
-    if (resultData) {
+    if (result) {
       navigate("download", {
-        state: { resultData, principal },
+        state: { result, principal },
       });
     }
-  }, [resultData, navigate, principal]);
+  }, [result, navigate, principal]);
 
   /* ================= UI ================= */
 
   return (
     <div className="result-page">
       <div className="result-header">
-        <h2>Student Result Portal</h2>
+        <h2>Check Result</h2>
         <p>Enter your details below to check your examination results</p>
       </div>
 
       <div className="result-form-container">
-        <h3 className="form-title">Enter Your Details</h3>
-
+       
         <form onSubmit={handleSubmit}>
           <div className="result-form">
             <div className="form-group">
@@ -103,7 +101,7 @@ const Result = () => {
               <input
                 type="text"
                 placeholder="e.g. NAA2511001A"
-                value={registrationNo}
+                value={registrationNo.toUpperCase()}
                 onChange={(e) => setRegistrationNo(e.target.value)}
                 disabled={loading}
                 required
@@ -150,7 +148,7 @@ const Result = () => {
           </div>
 
           <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? "Checking..." : "Check Result"}
+            {loading ? "Searching..." : "Search Result"}
           </button>
         </form>
 

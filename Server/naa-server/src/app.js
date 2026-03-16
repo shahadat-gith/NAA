@@ -3,7 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 
-// ROUTES
+/* ================= ROUTES ================= */
 import { userRouter } from "./routes/auth.routes.js";
 import teacherRouter from "./routes/teacher.routes.js";
 import settingsRouter from "./routes/setting.routes.js";
@@ -13,64 +13,46 @@ import studentRouter from "./routes/student.routes.js";
 import paymentRouter from "./routes/payment.routes.js";
 import resultRouter from "./routes/result.routes.js";
 import admissionRouter from "./routes/admission.routes.js";
+import adminRouter from "./routes/admin.routes.js";
 
-// MODELS (used in home-data)
+/* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
 import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
-import adminRouter from "./routes/admin.routes.js";
-
 
 const app = express();
 
 /* ================= CORS CONFIG ================= */
 
-// const allowedOrigins = [
-//   process.env.ADMIN_URL,
-//   process.env.CLIENT_URL,
-// ];
-
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     // Allow server-to-server, Postman, curl
-//     if (!origin) return callback(null, true);
-
-//     if (allowedOrigins.includes(origin)) {
-//       return callback(null, true);
-//     }
-
-//     return callback(null, false); // ❌ DO NOT throw error
-//   },
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: [
-//     "Content-Type",
-//     "Authorization",
-//     "X-Requested-With",
-//   ],
-// };
-
-// /* ================= MIDDLEWARES ================= */
-
-// // IMPORTANT: order matters
-// app.use(cors(corsOptions));
-
-// // 🔥 REQUIRED for browser preflight on AWS Lambda
-// app.options("*", cors(corsOptions));
-
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://www.nashibaliacademy.in",
+  "https://admin.nashibaliacademy.in"
+];
 
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow Postman / server calls
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
   })
 );
 
 app.options("*", cors());
 
+/* ================= MIDDLEWARE ================= */
 
 app.use(express.json());
 app.use(cookieParser());
@@ -94,6 +76,7 @@ app.use("/api/admin", adminRouter);
 app.get("/api/home-data", async (req, res, next) => {
   try {
     const heroImages = await HeroImage.find({});
+
     const authorities = await authorityModel.find({
       role: { $in: ["Principal", "Managing Director"] },
     });
@@ -103,6 +86,7 @@ app.get("/api/home-data", async (req, res, next) => {
       .select("name email contact degree experience image subjectClassMappings");
 
     const galleryImages = await Image.find({});
+
     const serviceSettings = await ServiceSettings.findOne({});
 
     res.status(200).json({
@@ -120,12 +104,13 @@ app.get("/api/home-data", async (req, res, next) => {
   }
 });
 
+/* ================= ROOT ================= */
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is working!" });
 });
 
-/* ================= ERROR HANDLER ================= */
+/* ================= GLOBAL ERROR HANDLER ================= */
 
 app.use((err, req, res, next) => {
   console.error("Global Error:", err);

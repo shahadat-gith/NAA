@@ -7,6 +7,7 @@ import {
   updateResult,
   deleteResult,
   getAllResults,
+  fetchResultForStudent,
 } from "../controller/result.controller.js";
 
 const resultRouter = express.Router();
@@ -26,6 +27,10 @@ resultRouter.get("/", adminAuthMiddleware, getAllResults);
 
 // Get result by registration number (Public)
 resultRouter.get("/:registrationNo", getResultByRegistration);
+
+// Get result for student (Public)
+resultRouter.post("/student/fetch", fetchResultForStudent);
+
 
 // Update result (Admin only)
 resultRouter.put(

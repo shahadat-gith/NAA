@@ -1,6 +1,9 @@
 import XLSX from "xlsx";
 import Result from "../models/Student/result.js";
 import Student from "../models/Student/student.js";
+import { authorityModel } from '../models/Academic/authorities.js';
+import Exam from "../models/Settings/exam.js";
+import ServiceSettings from "../models/Settings/services.js";
 
 export const uploadResults = async (req, res) => {
   try {
@@ -89,7 +92,7 @@ export const uploadResults = async (req, res) => {
 };
 export const getAllResults = async (req, res) => {
   try {
-    const { academicSession, examName} = req.query;
+    const { academicSession, examName } = req.query;
     const filter = {};
 
     if (academicSession) filter.academicSession = academicSession;
@@ -115,7 +118,7 @@ export const getAllResults = async (req, res) => {
     });
   } catch (error) {
     console.error("Fetch Error:", error);
-    res.status(500).json({success: false, message: "Server error during fetch", error: error.message });
+    res.status(500).json({ success: false, message: "Server error during fetch", error: error.message });
   }
 };
 
@@ -125,12 +128,7 @@ export const getResultByRegistration = async (req, res) => {
     const result = await Result.findOne({ registrationNo });
 
     if (!result) {
-      return res.status(404).json({success: false, message: "Result not found for the given registration number." });
-    }
-
-    // Check if result is visible to public
-    if (!result.canSee) {
-      return res.status(403).json({success: false, message: "Result is not visible to the public." });
+      return res.status(404).json({ success: false, message: "Result not found for the given registration number." });
     }
 
     // Fetch student details
@@ -149,7 +147,7 @@ export const getResultByRegistration = async (req, res) => {
     });
   } catch (error) {
     console.error("Fetch Error:", error);
-    res.status(500).json({success: false, message: "Server error during fetch", error: error.message });
+    res.status(500).json({ success: false, message: "Server error during fetch", error: error.message });
   }
 };
 
@@ -161,7 +159,7 @@ export const updateResult = async (req, res) => {
     const result = await Result.findOneAndUpdate({ registrationNo }, updateData, { new: true });
 
     if (!result) {
-      return res.status(404).json({success: false, message: "Result not found for the given registration number." });
+      return res.status(404).json({ success: false, message: "Result not found for the given registration number." });
     }
 
     res.status(200).json({
@@ -171,7 +169,7 @@ export const updateResult = async (req, res) => {
     });
   } catch (error) {
     console.error("Update Error:", error);
-    res.status(500).json({success: false, message: "Server error during update", error: error.message });
+    res.status(500).json({ success: false, message: "Server error during update", error: error.message });
   }
 };
 
@@ -181,7 +179,7 @@ export const deleteResult = async (req, res) => {
     const result = await Result.findOneAndDelete({ registrationNo });
 
     if (!result) {
-      return res.status(404).json({success: false, message: "Result not found for the given registration number." });
+      return res.status(404).json({ success: false, message: "Result not found for the given registration number." });
     }
     res.status(200).json({
       success: true,
@@ -190,6 +188,96 @@ export const deleteResult = async (req, res) => {
     });
   } catch (error) {
     console.error("Delete Error:", error);
-    res.status(500).json({success: false, message: "Server error during delete", error: error.message });
+    res.status(500).json({ success: false, message: "Server error during delete", error: error.message });
+  }
+};
+
+
+
+export const fetchResultForStudent = async (req, res) => {
+  try {
+    const { registrationNo } = req.body;
+
+    if (!registrationNo) {
+      return res.status(400).json({
+        success: false,
+        message: "Registration number is required."
+      });
+    }
+
+    const [exam, serviceSettings] = await Promise.all([
+      Exam.findOne({}).lean(),
+      ServiceSettings.findOne({}).lean()
+    ]);
+
+    /* ===== RESULT SERVICE CHECK ===== */
+
+    if (serviceSettings && !serviceSettings.result) {
+      return res.status(403).json({
+        success: false,
+        message:
+          "Result service is currently unavailable. Please contact the administration."
+      });
+    }
+
+    /* ===== EXAM CHECK ===== */
+
+    if (!exam) {
+      return res.status(404).json({
+        success: false,
+        message: "No active exam found."
+      });
+    }
+
+    /* ===== FIND RESULT ===== */
+
+    const result = await Result.findOne({
+      registrationNo,
+      examName: exam.examName,
+      academicSession: exam.academicSession
+    }).lean();
+
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        message: "Result not found for the given registration number."
+      });
+    }
+
+    /* ===== FETCH STUDENT + PRINCIPAL ===== */
+
+    const [student, principal] = await Promise.all([
+      Student.findOne({ registrationNo })
+        .select("name image fatherName motherName")
+        .lean(),
+
+      authorityModel
+        .findOne({ role: "Principal" })
+        .select("name signature")
+        .lean()
+    ]);
+
+    /* ===== RESPONSE ===== */
+
+    return res.status(200).json({
+      success: true,
+      result: {
+        ...result,
+        name: student?.name || "Unknown Student",
+        image: student?.image || null,
+        fatherName: student?.fatherName || "N/A",
+        motherName: student?.motherName || "N/A"
+      },
+      principal
+    });
+
+  } catch (error) {
+    console.error("Fetch Result Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error during result fetch.",
+      error: error.message
+    });
   }
 };

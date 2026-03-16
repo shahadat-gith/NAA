@@ -1,9 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import "../../Styles/Dashboard.css";
-import capitalizeWords from "../../../../Utils/utility";
-import { AppContext } from "../../../../context/AppContext";
+import "./Styles/Dashboard.css";
+import capitalizeWords from "../../Utils/utility";
+import { AppContext } from "../../context/AppContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();

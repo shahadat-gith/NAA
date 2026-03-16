@@ -17,13 +17,16 @@ import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
 /* ===== Student Pages ===== */
-import StudentSearch from "./pages/Student/Pages/Search/StudentSearch";
-import Dashboard from "./pages/Student/Pages/Dashboard/Dashboard";
-
-/* ===== Not Found ===== */
-import PageNotFound from "./components/404/PageNotFound";
+import StudentSearch from "./pages/Student/StudentSearch";
+import Dashboard from "./pages/Student/Dashboard";
 import Admission from "./pages/Admission/Admission";
-import AdmitCard from "./pages/Student/Pages/AdmitCard/AdmitCard";
+import AdmitCard from "./pages/Student/AdmitCard";
+
+
+import PageNotFound from "./components/404/PageNotFound";
+import StudentCorner from "./pages/StudentCorner/StudentCorner";
+import Result from "./pages/Result/Result";
+import ResultDownload from "./pages/Result/ResultDownload";
 
 
 
@@ -63,6 +66,10 @@ const App = () => {
           <Route path="/student" element={<StudentSearch />} />
           <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
           <Route path="/student/dashboard/admitcard" element={<AdmitCard />} />
+          {/* <Route path="/student-corner" element={<StudentCorner />} /> */}
+          <Route path="/result" element={<Result />} />
+          <Route path="/result/download" element={<ResultDownload/>} />
+
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />
         </Routes>

@@ -1,0 +1,44 @@
+/* ── StudentCorner.css ── */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+
+:root {
+  --accent:       #e94560;
+  --accent-light: #fff0f3;
+  --accent-dark:  #c73250;
+  --bg:           #f5f7fb;
+  --surface:      #ffffff;
+  --surface2:     #f0f2f7;
+  --border:       #e4e8f0;
+  --text:         #1a2340;
+  --text-muted:   #6b7a99;
+  --text-light:   #9aa4bf;
+  --shadow-sm:    0 2px 8px rgba(30,40,80,0.07);
+  --shadow-md:    0 6px 24px rgba(30,40,80,0.10);
+  --shadow-lg:    0 12px 40px rgba(30,40,80,0.13);
+  --radius:       14px;
+  --radius-sm:    8px;
+  --font-body:    'Nunito', sans-serif;
+  --font-display: 'Playfair Display', serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.sc-root {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.sc-body {
+  background: var(--bg);
+}

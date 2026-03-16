@@ -1,0 +1,345 @@
+
+/* ===== PAGE WRAPPER ===== */
+.report-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px 60px;
+}
+
+/* ===== A4 SHEET ===== */
+.report-sheet {
+  width: 794px;         
+  background: #fff;
+  padding: 20px;      
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+}
+
+/* ===== DOUBLE BORDER (outerBorder + innerBorder) ===== */
+.report-outer-border {
+  border: 2px solid #000;
+  padding: 6px;
+}
+
+.report-inner-border {
+  border: 1px solid #000;
+  padding: 14px;
+}
+
+/* ===== HEADER ===== */
+.report-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.school-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.report-header h1 {
+  font-family: "EB Garamond", serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0;
+}
+
+/* Divider row — line | text | line */
+.header-divider,
+.session-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 3px 0;
+}
+
+.header-divider::before,
+.header-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000;
+}
+
+.header-divider span {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 8px;
+  white-space: nowrap;
+}
+
+.report-header h2 {
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 4px 0 0;
+  color: #000;
+}
+
+/* Session row */
+.session-row {
+  justify-content: center;
+  gap: 6px;
+}
+
+.line-short {
+  width: 40px;
+  border-bottom: 1px solid #000;
+}
+
+.session-row span {
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+/* ===== STUDENT SECTION ===== */
+.student-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 8px 0;
+}
+
+.student-info {
+  width: 75%;
+}
+
+.info-row {
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.info-label {
+  width: 110px;
+  font-size: 9px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 9px;
+}
+
+/* Photo */
+.photo-frame {
+  width: 90px;
+  height: 110px;
+  border: 1px solid #000;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ===== TABLE ===== */
+.table-title {
+  border: 1px solid #000;
+  padding: 4px;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.marks-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+.marks-table thead tr th,
+.marks-table tbody tr td {
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 4px;
+  text-align: center;
+  font-size: 9px;
+}
+
+.marks-table thead tr th:last-child,
+.marks-table tbody tr td:last-child {
+  border-right: none;
+}
+
+.marks-table thead tr th {
+  font-weight: 700;
+  background: #fff;
+}
+
+.marks-table tbody tr td {
+  font-weight: 400;
+}
+
+/* ===== SUMMARY ===== */
+.summary-section {
+  margin-top: 8px;
+}
+
+.summary-section > div {
+  font-size: 9px;
+  margin-bottom: 2px;
+}
+
+.summary-section > div:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+/* ===== FOOTER ===== */
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+/* Principal signature */
+.principal-sign {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.principal-sign-img {
+  width: 80px;
+  height: 30px;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.sign-line {
+  width: 100%;
+  border-bottom: 1px solid #000;
+  margin-bottom: 3px;
+}
+
+.principal-sign span {
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.principal-name {
+  font-size: 9px;
+  margin-top: 1px;
+}
+
+/* School contact */
+.school-contact {
+  width: 55%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.divider-footer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.divider-footer::before,
+.divider-footer::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000;
+}
+
+.divider-footer span {
+  font-size: 9px;
+  font-weight: 700;
+  margin: 0 8px;
+  white-space: nowrap;
+}
+
+.school-contact > div {
+  font-size: 8px;
+  text-align: center;
+}
+
+/* ===== DOWNLOAD BUTTON ===== */
+.actions-container {
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: center;
+}
+
+.download-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 12px 36px;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.download-btn:hover:not(:disabled) {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+.download-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.download-btn:disabled {
+  background: #888;
+  cursor: not-allowed;
+}
+
+/* ===== RESPONSIVE — shrink on small screens ===== */
+@media (max-width: 860px) {
+  .report-sheet {
+    width: 100%;
+    max-width: 794px;
+  }
+}
+
+@media (max-width: 600px) {
+  .report-sheet {
+    font-size: 8px;
+  }
+
+  .school-logo {
+    width: 38px;
+    height: 38px;
+  }
+
+  .report-header h1 {
+    font-size: 13px;
+  }
+
+  .photo-frame {
+    width: 68px;
+    height: 85px;
+  }
+
+  .info-label {
+    width: 90px;
+  }
+}
