@@ -11,6 +11,7 @@ const Sidebar = ({ closeSidebar }) => {
     { to: "/student/images", icon: "fas fa-images", label: "Student Images" },
     { to: "/exams", icon: "fas fa-chart-line", label: "Exams" },
     { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
+    { to: "/notices", icon: "fas fa-bullhorn", label: "Notices" },
     { to: "/result", icon: "fas fa-poll", label: "Result" },
     // Staff
     { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },

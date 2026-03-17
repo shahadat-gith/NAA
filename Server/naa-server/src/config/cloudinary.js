@@ -23,6 +23,19 @@ const uploadToCloudinary = (buffer, folder) => {
   });
 };
 
+const uploadPdfToCloudinary = (buffer, folder) => {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: 'raw' },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+    stream.end(buffer);
+  })
+};
+
 const deleteFromCloudinary = (publicId) => {
   return new Promise((resolve, reject) => {
     cloudinary.uploader.destroy(publicId, (error, result) => {
@@ -33,4 +46,4 @@ const deleteFromCloudinary = (publicId) => {
 };
 
 
-export { uploadToCloudinary, deleteFromCloudinary };
+export { uploadToCloudinary, deleteFromCloudinary, uploadPdfToCloudinary };

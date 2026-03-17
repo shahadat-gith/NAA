@@ -24,6 +24,7 @@ import Exams from "./pages/Exams/Exams";
 import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
 import TeacherDetails from "./pages/Teacher/TeacherDetails";
+import Notices from "./pages/Notices/Notices";
 
 
 /* ===============================
@@ -95,6 +96,7 @@ const App = () => {
 
                   <Route path="/admissions" element={<Admissions/>}/>
                   <Route path="/admissions/:id" element={<AdmissionDetails/>}/>
+                  <Route path="/notices" element={<Notices/>}/>
 
                   
                   <Route path="/gallery" element={<Gallery />} />

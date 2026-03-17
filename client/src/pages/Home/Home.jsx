@@ -5,6 +5,7 @@ import MessageSection from "./Components/MessageSection/MessageSection";
 import SalientFeatures from "./Components/SalientFeatures/SalientFeatures";
 import Curriculum from "./Components/Curriculum/Curriculum";
 import WhyChooseUs from "./Components/WhyChooseUs/WhyChooseUs";
+import NoticeBoard from "./Components/NoticeBoard/NoticeBoard";
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       </Helmet>
 
       <Hero />
+      <NoticeBoard/>
       <MessageSection />
       <SalientFeatures />
       <Curriculum />

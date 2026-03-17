@@ -14,6 +14,7 @@ import paymentRouter from "./routes/payment.routes.js";
 import resultRouter from "./routes/result.routes.js";
 import admissionRouter from "./routes/admission.routes.js";
 import adminRouter from "./routes/admin.routes.js";
+import noticeRouter from "./routes/notice.routes.js";
 
 /* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
@@ -24,33 +25,29 @@ import ServiceSettings from "./models/Settings/services.js";
 
 const app = express();
 
-/* ================= CORS CONFIG ================= */
+/* ================= CORS CONFIG (CRITICAL) ================= */
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "https://www.nashibaliacademy.in",
-  "https://admin.nashibaliacademy.in"
-];
+// 1. Manual headers (REQUIRED for API Gateway)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
+  // Handle preflight explicitly
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
+// 2. Optional cors middleware (fine to keep)
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow Postman / server calls
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      } else {
-        return callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
+    origin: true,
+    credentials: true,
   })
 );
-
-app.options("*", cors());
 
 /* ================= MIDDLEWARE ================= */
 
@@ -70,6 +67,7 @@ app.use("/api/results", resultRouter);
 app.use("/api/payment", paymentRouter);
 app.use("/api/admission", admissionRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/notices", noticeRouter);
 
 /* ================= CUSTOM API ================= */
 
@@ -86,7 +84,6 @@ app.get("/api/home-data", async (req, res, next) => {
       .select("name email contact degree experience image subjectClassMappings");
 
     const galleryImages = await Image.find({});
-
     const serviceSettings = await ServiceSettings.findOne({});
 
     res.status(200).json({
