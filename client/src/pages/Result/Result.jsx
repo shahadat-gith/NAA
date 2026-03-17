@@ -27,8 +27,8 @@ const Result = () => {
     setInfoMessage("");
     setResult(null);
 
-    if (!registrationNo || !examName || !academicSession) {
-      setError("Please fill in all required fields");
+    if (!registrationNo) {
+      setError("Please enter registration no");
       return;
     }
 
@@ -38,9 +38,7 @@ const Result = () => {
       const res = await axios.post(
         `${backendUrl}/api/results/student/fetch`,
         {
-          registrationNo: registrationNo.trim(),
-          examName,
-          academicSession,
+          registrationNo: registrationNo.trim().toUpperCase()
         }
       );
 
@@ -106,44 +104,6 @@ const Result = () => {
                 disabled={loading}
                 required
               />
-            </div>
-
-            <div className="form-group">
-              <label>
-                Exam Name<span>*</span>
-              </label>
-              <select
-                value={examName}
-                onChange={(e) => setExamName(e.target.value)}
-                disabled={loading}
-                required
-              >
-                <option value="">Select Exam</option>
-                {EXAM_OPTIONS.map((exam) => (
-                  <option key={exam} value={exam}>
-                    {exam}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>
-                Academic Session<span>*</span>
-              </label>
-              <select
-                value={academicSession}
-                onChange={(e) => setAcademicSession(e.target.value)}
-                disabled={loading}
-                required
-              >
-                <option value="">Select Session</option>
-                {SESSION_OPTIONS.map((session) => (
-                  <option key={session} value={session}>
-                    {session}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
 

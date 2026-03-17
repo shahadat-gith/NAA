@@ -21,6 +21,8 @@ const ResultDownload = () => {
   const result = state?.result;
   const principal = state?.principal;
 
+  const MAX_MARKS_SUM = result?.marks.length * result?.maxMarksPerSubject;
+
   if (!result) {
     return (
       <div className="report-page">
@@ -44,7 +46,7 @@ const ResultDownload = () => {
         >
           {({ loading }) => (
             <button className="download-btn" disabled={loading}>
-              {loading ? "Generating PDF..." : "Download PDF Report"}
+              {loading ? "Generating PDF..." : "Download"}
             </button>
           )}
         </PDFDownloadLink>
@@ -141,7 +143,7 @@ const ResultDownload = () => {
 
         <div className="summary-section">
 
-          <div>Total Marks: {result.totalMarks}</div>
+          <div>Marks Obtained: {result.totalMarks}/{MAX_MARKS_SUM}</div>
           <div>Percentage: {result.percentage}%</div>
           <div>Grade: {result.grade}</div>
           <div>Result: {result.resultStatus}</div>

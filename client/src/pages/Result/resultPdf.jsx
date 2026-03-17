@@ -159,6 +159,9 @@ const ResultReportPdf = ({ result, principal }) => {
 
               <Text style={styles.instructionTitle}>Result Summary:</Text>
               <Text style={styles.instructionText}>
+                Marks Obtained: {total}/{result?.marks.length * result?.maxMarksPerSubject}
+              </Text>
+              <Text style={styles.instructionText}>
                 Percentage: {percentage.toFixed(2)}%
               </Text>
 
