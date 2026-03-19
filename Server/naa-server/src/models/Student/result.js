@@ -73,8 +73,8 @@ const resultSchema = new mongoose.Schema(
 
     resultStatus: {
       type: String,
-      enum: ["pass", "fail"],
-      default: "pass",
+      enum: ["PASS", "FAIL"],
+      default: "PASS",
     },
 
     canSee: {
@@ -97,16 +97,17 @@ resultSchema.pre("save", function (next) {
   const maxTotalMarks = subjectCount * this.maxMarksPerSubject;
 
   this.totalMarks = obtainedMarks;
+
   this.percentage = maxTotalMarks
     ? Number(((obtainedMarks / maxTotalMarks) * 100).toFixed(2))
     : 0;
 
-  // PASS / FAIL logic (example: fail if any subject < 33%)
-  const hasFailed = this.marks.some(
-    (m) => m.mark < this.maxMarksPerSubject * 0.33
-  );
+  // ✅ NEW FAIL LOGIC
+  const failCount = this.marks.filter(
+    (m) => m.mark < this.maxMarksPerSubject * 0.30
+  ).length;
 
-  this.resultStatus = hasFailed ? "FAIL" : "PASS";
+  this.resultStatus = failCount >= 3 ? "FAIL" : "PASS";
 
   // Grade logic
   if (this.percentage >= 90) this.grade = "A+";
@@ -115,11 +116,10 @@ resultSchema.pre("save", function (next) {
   else if (this.percentage >= 60) this.grade = "B";
   else if (this.percentage >= 50) this.grade = "C+";
   else if (this.percentage >= 40) this.grade = "C";
-  else if (this.percentage >= 33) this.grade = "D";
+  else if (this.percentage >= 30) this.grade = "D";
   else this.grade = "F";
 
   next();
 });
-
 
 export default mongoose.models.Result || mongoose.model("Result", resultSchema);

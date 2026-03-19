@@ -27,6 +27,7 @@ import PageNotFound from "./components/404/PageNotFound";
 import StudentCorner from "./pages/StudentCorner/StudentCorner";
 import Result from "./pages/Result/Result";
 import ResultDownload from "./pages/Result/ResultDownload";
+import Notices from "./pages/Notices/Notices";
 
 
 
@@ -59,7 +60,8 @@ const App = () => {
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
-           <Route path="/admission" element={<Admission />} />
+          <Route path="/admission" element={<Admission />} />
+          <Route path="/notices" element={<Notices />} />
 
           {/* Portal */}
 
@@ -68,7 +70,7 @@ const App = () => {
           <Route path="/student/dashboard/admitcard" element={<AdmitCard />} />
           {/* <Route path="/student-corner" element={<StudentCorner />} /> */}
           <Route path="/result" element={<Result />} />
-          <Route path="/result/download" element={<ResultDownload/>} />
+          <Route path="/result/download" element={<ResultDownload />} />
 
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />

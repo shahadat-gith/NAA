@@ -8,7 +8,7 @@
   flex-direction: column;
   padding: 26px;
   margin: 30px;
-  height: 550px;
+
   transition: all 0.3s ease;
 }
 
@@ -240,4 +240,35 @@
   .notice-title-link {
     font-size: 0.9rem;
   }
+}
+
+
+
+/* Ensure the button looks exactly like your links */
+.btn-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: inherit;
+}
+
+.btn-reset:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+/* Make sure the download icon spins when loading */
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
 }

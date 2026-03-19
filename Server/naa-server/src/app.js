@@ -22,6 +22,7 @@ import { authorityModel } from "./models/Academic/authorities.js";
 import { teacherModel } from "./models/Academic/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
+import Notice from "./models/Academic/notices.js";
 
 const app = express();
 
@@ -73,18 +74,14 @@ app.use("/api/notices", noticeRouter);
 
 app.get("/api/home-data", async (req, res, next) => {
   try {
-    const heroImages = await HeroImage.find({});
-
-    const authorities = await authorityModel.find({
-      role: { $in: ["Principal", "Managing Director"] },
-    });
-
-    const teachers = await teacherModel
-      .find({})
-      .select("name email contact degree experience image subjectClassMappings");
-
-    const galleryImages = await Image.find({});
-    const serviceSettings = await ServiceSettings.findOne({});
+    const [heroImages, authorities, teachers, galleryImages, serviceSettings, notices] = await Promise.all([
+      HeroImage.find({}),
+      authorityModel.find({ role: { $in: ["Principal", "Managing Director"] } }),
+      teacherModel.find({}).select("name email contact degree experience image subjectClassMappings"),
+      Image.find({}),
+      ServiceSettings.findOne({}),
+      Notice.find({}).sort({ createdAt: -1 })
+    ]);
 
     res.status(200).json({
       success: true,
@@ -94,6 +91,7 @@ app.get("/api/home-data", async (req, res, next) => {
         teachers,
         galleryImages,
         serviceSettings,
+        notices,
       },
     });
   } catch (error) {

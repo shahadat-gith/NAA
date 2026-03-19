@@ -3,56 +3,52 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./NoticeBoard.css";
 import { AppContext } from "../../../../context/AppContext";
-
-const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+import Countdown from "../../../../components/Countdown/Countdown";
 
 const NoticeBoard = () => {
-  const { backendUrl } = useContext(AppContext);
-  const [notices, setNotices] = useState([]);
+  const { notices } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch notices
-  useEffect(() => {
-    const fetchNotices = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`${backendUrl}/api/notices`);
-
-        if (response.data.success) {
-          setNotices(response.data.notices);
-        }
-      } catch (err) {
-        console.error("Error fetching notices:", err);
-        setError("Failed to load updates.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNotices();
-  }, [backendUrl]);
 
   const getNoticeIcon = (type) => {
     switch (type) {
-      case "FILE":
-        return "fa-file-pdf";
-      case "INTERNAL_LINK":
-        return "fa-door-open";
-      case "EXTERNAL_LINK":
-        return "fa-external-link-alt";
-      default:
-        return "fa-bullhorn";
+      case "FILE": return "fa-file-pdf";
+      case "INTERNAL_LINK": return "fa-door-open";
+      case "EXTERNAL_LINK": return "fa-external-link-alt";
+      default: return "fa-bullhorn";
     }
   };
+
+
+  const sortedNotices = [...notices]
+    .sort((a, b) => {
+      const now = new Date();
+
+      const aFuture = a.targetDate && new Date(a.targetDate) > now;
+      const bFuture = b.targetDate && new Date(b.targetDate) > now;
+
+      // future ones first
+      if (aFuture && !bFuture) return -1;
+      if (!aFuture && bFuture) return 1;
+
+      // then latest created
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    })
+    .slice(0, 5);
 
   const renderNoticeAction = (notice) => {
     switch (notice.noticeType) {
       case "FILE":
-        const file = notice.file;
-
+        const fileUrl = notice?.file?.url;
         return (
-          <a className="notice-title-link">
+          <a
+            href={fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="notice-title-link"
+            download={`${notice.title}.pdf`}
+          >
             <span className="notice-text-content">{notice.title}</span>
             <div className="action-icons">
               <i className="fas fa-download download-mini"></i>
@@ -97,51 +93,54 @@ const NoticeBoard = () => {
       </div>
 
       <div className="notice-scroll-area">
-        {loading ? (
-          <div className="notice-status-msg">
-            <div className="spinner-mini"></div> Loading notices...
-          </div>
-        ) : error ? (
-          <div className="notice-status-msg error">{error}</div>
-        ) : notices.length === 0 ? (
-          <div className="notice-status-msg">
-            No recent updates available.
-          </div>
+        {notices.length === 0 ? (
+          <div className="notice-status-msg">No recent updates.</div>
         ) : (
           <ul className="notice-list">
-            {notices.map((notice) => (
-              <li key={notice._id} className="notice-item">
-                <div
-                  className={`notice-icon-box ${notice.noticeType.toLowerCase()}`}
-                >
-                  <i className={`fas ${getNoticeIcon(notice.noticeType)}`}></i>
-                </div>
+            {sortedNotices.map((notice) => {
+              const isFuture =
+                notice.targetDate && new Date(notice.targetDate) > new Date();
 
-                <div className="notice-content">
-                  <div className="notice-meta">
-                    <span className="notice-date">
-                      {new Date(notice.createdAt).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
+              return (
+                <li key={notice._id} className="notice-item">
 
-                    {(new Date() - new Date(notice.createdAt)) /
-                      (1000 * 60 * 60 * 24) <
-                      7 && <span className="new-badge">New</span>}
+                  <div className={`notice-icon-box ${notice.noticeType.toLowerCase()}`}>
+                    <i className={`fas ${getNoticeIcon(notice.noticeType)}`}></i>
                   </div>
 
-                  {renderNoticeAction(notice)}
-                </div>
-              </li>
-            ))}
+                  <div className="notice-content">
+
+                    <div className="notice-meta">
+                      <span className="notice-date">
+                        {new Date(notice.createdAt).toLocaleDateString("en-IN", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </span>
+
+                      {(new Date() - new Date(notice.createdAt)) / (1000 * 60 * 60 * 24) < 7 && (
+                        <span className="new-badge">New</span>
+                      )}
+
+                      {/* 🔥 Countdown */}
+                      {notice.targetDate && (
+                        <Countdown targetDate={notice.targetDate} />
+                      )}
+                    </div>
+
+                    {renderNoticeAction(notice)}
+
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>
 
-      <Link to="/notices-archive" className="view-all-notices-btn">
-        View All Archives <i className="fas fa-arrow-right"></i>
+      <Link to="/notices" className="view-all-notices-btn">
+        View All Notices <i className="fas fa-arrow-right"></i>
       </Link>
     </div>
   );

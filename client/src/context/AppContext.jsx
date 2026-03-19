@@ -10,9 +10,10 @@ export const AppContextProvider = (props) => {
   const [authorities, setAuthorities] = useState([]);
   const [heroImages, setHeroImages] = useState([]);
   const [galleryImages, setGalleryImages] = useState([]);
- const [serviceSettings, setServiceSettings] = useState(null);
+  const [serviceSettings, setServiceSettings] = useState(null);
   const [loading, setLoading] = useState(false);
- 
+  const [notices, setNotices] = useState([])
+
 
   const fetchHomeData = async () => {
     setLoading(true);
@@ -20,13 +21,14 @@ export const AppContextProvider = (props) => {
       const res = await axios.get(`${backendUrl}/api/home-data`);
 
       if (res.data.success) {
-        const { teachers, authorities, heroImages,galleryImages, serviceSettings } = res.data.data;
+        const { teachers, authorities, heroImages, galleryImages, serviceSettings, notices} = res.data.data;
 
         setTeachers(teachers || []);
         setAuthorities(authorities || []);
         setHeroImages(heroImages || []);
         setGalleryImages(galleryImages || [])
         setServiceSettings(serviceSettings || [])
+        setNotices(notices || [])
       }
     } catch (error) {
       console.error("Error fetching home data:", error);
@@ -47,6 +49,7 @@ export const AppContextProvider = (props) => {
     heroImages,
     galleryImages,
     serviceSettings,
+    notices,
     loading,
   };
 

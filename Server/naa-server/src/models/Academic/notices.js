@@ -6,6 +6,11 @@ const NoticeSchema = new mongoose.Schema({
         required: [true, "Notice title is required"],
         trim: true
     },
+    description: {
+        type: String,
+        default: '',
+        trim: true
+    },
     // Type helps frontend show the right icon (PDF icon vs Link icon)
     noticeType: {
         type: String,
@@ -21,6 +26,11 @@ const NoticeSchema = new mongoose.Schema({
     externalUrl: {
         type: String,
         default: ''
+    },
+
+    targetDate: {
+        type: Date,
+        default: null
     },
 
     linkedPage: {type: String, default: ''}, // Store internal page slug if noticeType is 'INTERNAL_LINK'

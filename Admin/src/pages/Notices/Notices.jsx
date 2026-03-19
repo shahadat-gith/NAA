@@ -1,36 +1,20 @@
-
 import { useState, useEffect, useContext } from "react";
 import "./Notices.css";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
-import NoticeAddModal from "./NoticeAddModal";
-
-
-export const pages = [
-  { name: 'Student Portal', path: '/student'},
-
-  { name: 'Academics', path: '/academics'},
-
-  { name: 'Curriculum', path: '/curriculum?type=kinder'},
-
-  { name: 'Teachers', path: '/teachers'},
-
-  { name: 'Gallery', path: '/gallery'},
-
-  { name: 'Admission', path: '/admission'},
-
-  { name: 'Result', path: '/result'},
-];
-
+import NoticeModal from "./NoticeModal";
 
 const Notices = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddModal, setShowAddModal] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [selectedNotice, setSelectedNotice] = useState(null);
 
   const noticeTypeOptions = ["", "TEXT", "FILE", "INTERNAL_LINK", "EXTERNAL_LINK"];
 
@@ -38,65 +22,67 @@ const Notices = () => {
     noticeType: "",
   });
 
-  /* ================= FETCH NOTICES ================= */
+  /* ================= FETCH ================= */
   const fetchNotices = async () => {
     if (!adminToken) return;
     setLoading(true);
+
     try {
       const response = await axios.get(`${backendUrl}/api/notices`, {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
 
       if (response.data.success) {
         setNotices(response.data.notices || []);
       }
     } catch (error) {
-      console.error("Error fetching notices:", error);
+      console.error(error);
       toast.error("Failed to load notices");
     } finally {
       setLoading(false);
     }
   };
 
-  /* ================= LOAD ON MOUNT ================= */
   useEffect(() => {
     fetchNotices();
   }, [adminToken]);
 
-  /* ================= CLEAR FILTERS ================= */
-  const clearFilters = () => {
-    setFilters({
-      noticeType: "",
-    });
-  };
-
-  /* ================= FILTERED DATA ================= */
-  const filteredNotices = notices.filter((notice) => {
-    if (filters.noticeType && notice.noticeType !== filters.noticeType) {
-      return false;
-    }
-    return true;
-  });
-
   /* ================= DELETE ================= */
   const handleDelete = async (notice) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete the notice "${notice.title}"?`);
+    const confirmDelete = window.confirm(
+      `Delete "${notice.title}"?`
+    );
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${backendUrl}/api/notices/${notice._id}`, {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
-      });
+      const res = await axios.delete(
+        `${backendUrl}/api/notices/${notice._id}`,
+        {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }
+      );
 
-      toast.success("Notice deleted successfully");
-      fetchNotices();
+      if (res.data.success) {
+        toast.success("Notice deleted");
+        setNotices(res.data.notices);
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Error deleting notice");
+      toast.error(err.response?.data?.message || "Delete failed");
     }
+  };
+
+  /* ================= EDIT ================= */
+  const handleEdit = (notice) => {
+    setSelectedNotice(notice);
+    setIsUpdate(true);
+    setShowModal(true);
+  };
+
+  /* ================= ADD ================= */
+  const handleAdd = () => {
+    setSelectedNotice(null);
+    setIsUpdate(false);
+    setShowModal(true);
   };
 
   if (loading) {
@@ -105,41 +91,16 @@ const Notices = () => {
 
   return (
     <div className="notices-page">
+      
+      {/* Header */}
       <div className="notices-header">
         <h2>Notices</h2>
-        <button
-          className="add-notice-btn"
-          onClick={() => setShowAddModal(true)}
-        >
+        <button className="add-notice-btn" onClick={handleAdd}>
           <i className="fas fa-plus"></i> Add Notice
         </button>
       </div>
 
-      {/* ================= FILTERS ================= */}
-      <div className="notices-filter">
-        <label>Type</label>
-        <select
-          value={filters.noticeType}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              noticeType: e.target.value,
-            })
-          }
-        >
-          {noticeTypeOptions.map((type) => (
-            <option key={type} value={type}>
-              {type || "All"}
-            </option>
-          ))}
-        </select>
-
-        <button className="clear-filter-btn" onClick={clearFilters}>
-          Clear Filters
-        </button>
-      </div>
-
-      {/* ================= NOTICES TABLE ================= */}
+      {/* Table */}
       <div className="notices-table-container">
         <table className="notices-table">
           <thead>
@@ -150,30 +111,50 @@ const Notices = () => {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {filteredNotices.length === 0 ? (
+            {notices.length === 0 ? (
               <tr>
                 <td colSpan="4" className="no-data">
                   No notices found.
                 </td>
               </tr>
             ) : (
-              filteredNotices.map((notice) => (
+              notices.map((notice) => (
                 <tr key={notice._id}>
+                  
                   <td>{notice.title}</td>
+
                   <td>
                     <span className={`notice-type ${notice.noticeType.toLowerCase()}`}>
                       {notice.noticeType}
                     </span>
                   </td>
-                  <td>{new Date(notice.createdAt).toLocaleDateString()}</td>
+
                   <td>
+                    {new Date(notice.createdAt).toLocaleDateString("en-IN")}
+                  </td>
+
+                  <td className="actions-cell">
+                    
+                    {/* ✏️ Edit */}
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(notice)}
+                      title="Edit"
+                    >
+                      <i className="fas fa-pen"></i>
+                    </button>
+
+                    {/* 🗑 Delete */}
                     <button
                       className="delete-btn"
                       onClick={() => handleDelete(notice)}
+                      title="Delete"
                     >
                       <i className="fas fa-trash"></i>
                     </button>
+
                   </td>
                 </tr>
               ))
@@ -182,14 +163,13 @@ const Notices = () => {
         </table>
       </div>
 
-      {/* ================= MODALS ================= */}
-      {showAddModal && (
-        <NoticeAddModal
-          onClose={() => setShowAddModal(false)}
-          onSuccess={() => {
-            fetchNotices();
-            setShowAddModal(false);
-          }}
+      {/* Modal */}
+      {showModal && (
+        <NoticeModal
+          onClose={() => setShowModal(false)}
+          setNotices={setNotices}
+          isUpdate={isUpdate}
+          currNotice={selectedNotice}
         />
       )}
     </div>

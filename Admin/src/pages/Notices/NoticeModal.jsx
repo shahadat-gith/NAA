@@ -1,22 +1,55 @@
-import { useState, useContext } from "react";
-import "./NoticeAddModal.css";
+import { useState, useContext, useEffect } from "react";
+import "./NoticeModal.css";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { pages } from "./Notices";
 
-const NoticeAddModal = ({ onClose, onSuccess }) => {
+const pages = [
+  { name: 'Student Portal', path: '/student' },
+  { name: 'Academics', path: '/academics' },
+  { name: 'Curriculum', path: '/curriculum?type=kinder' },
+  { name: 'Teachers', path: '/teachers' },
+  { name: 'Gallery', path: '/gallery' },
+  { name: 'Admission', path: '/admission' },
+  { name: 'Result', path: '/result' },
+];
+
+const NoticeModal = ({
+  onClose,
+  setNotices,
+  isUpdate,
+  currNotice = {}
+}) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [formData, setFormData] = useState({
     title: "",
+    description: "",
     noticeType: "TEXT",
     externalUrl: "",
     linkedPage: "",
+    targetDate: "",
     file: null,
   });
 
   const [loading, setLoading] = useState(false);
+
+  // ✅ Prefill (Update Mode)
+  useEffect(() => {
+    if (isUpdate && currNotice) {
+      setFormData({
+        title: currNotice.title || "",
+        description: currNotice.description || "",
+        noticeType: currNotice.noticeType || "TEXT",
+        externalUrl: currNotice.externalUrl || "",
+        linkedPage: currNotice.linkedPage || "",
+        targetDate: currNotice.targetDate
+          ? new Date(currNotice.targetDate).toISOString().slice(0, 16)
+          : "",
+        file: null,
+      });
+    }
+  }, [isUpdate, currNotice]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +73,14 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
     try {
       const data = new FormData();
       data.append("title", formData.title);
+      data.append("description", formData.description);
       data.append("noticeType", formData.noticeType);
+
+      // ✅ Handle date + time properly
+      if (formData.targetDate) {
+        const localDate = new Date(formData.targetDate);
+        data.append("targetDate", localDate.toISOString());
+      }
 
       if (formData.noticeType === "EXTERNAL_LINK") {
         data.append("externalUrl", formData.externalUrl);
@@ -54,7 +94,17 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
         data.append("file", formData.file);
       }
 
-      const response = await axios.post(`${backendUrl}/api/notices`, data, {
+      // ✅ Create vs Update
+      const url = isUpdate
+        ? `${backendUrl}/api/notices/${currNotice._id}`
+        : `${backendUrl}/api/notices`;
+
+      const method = isUpdate ? "put" : "post";
+
+      const response = await axios({
+        method,
+        url,
+        data,
         headers: {
           Authorization: `Bearer ${adminToken}`,
           "Content-Type": "multipart/form-data",
@@ -62,12 +112,20 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
       });
 
       if (response.data.success) {
-        toast.success("Notice added successfully!");
-        onSuccess();
+        toast.success(
+          isUpdate ? "Notice updated successfully!" : "Notice added successfully!"
+        );
+
+        if (setNotices) {
+          setNotices(response.data.notices);
+        }
+
+        onClose();
       }
+
     } catch (error) {
-      console.error("Error adding notice:", error);
-      toast.error(error.response?.data?.message || "Failed to add notice");
+      console.error("Error saving notice:", error);
+      toast.error(error.response?.data?.message || "Operation failed");
     } finally {
       setLoading(false);
     }
@@ -76,19 +134,21 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+
         <div className="modal-header">
-          <h3>Add New Notice</h3>
+          <h3>{isUpdate ? "Update Notice" : "Add New Notice"}</h3>
           <button className="close-btn" onClick={onClose}>
             <i className="fas fa-times"></i>
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="notice-form">
+
+          {/* Title */}
           <div className="form-group">
-            <label htmlFor="title">Title *</label>
+            <label>Title *</label>
             <input
               type="text"
-              id="title"
               name="title"
               value={formData.title}
               onChange={handleInputChange}
@@ -97,14 +157,25 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
             />
           </div>
 
+          {/* Description */}
           <div className="form-group">
-            <label htmlFor="noticeType">Notice Type *</label>
+            <label>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              rows={3}
+              placeholder="Optional description..."
+            />
+          </div>
+
+          {/* Notice Type */}
+          <div className="form-group">
+            <label>Notice Type *</label>
             <select
-              id="noticeType"
               name="noticeType"
               value={formData.noticeType}
               onChange={handleInputChange}
-              required
             >
               <option value="TEXT">Text</option>
               <option value="FILE">File</option>
@@ -113,32 +184,31 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
             </select>
           </div>
 
+          {/* External Link */}
           {formData.noticeType === "EXTERNAL_LINK" && (
             <div className="form-group">
-              <label htmlFor="externalUrl">External URL *</label>
+              <label>External URL *</label>
               <input
                 type="url"
-                id="externalUrl"
                 name="externalUrl"
                 value={formData.externalUrl}
                 onChange={handleInputChange}
                 required
-                placeholder="https://example.com"
               />
             </div>
           )}
 
+          {/* Internal Link */}
           {formData.noticeType === "INTERNAL_LINK" && (
             <div className="form-group">
-              <label htmlFor="linkedPage">Linked Page *</label>
+              <label>Linked Page *</label>
               <select
-                id="linkedPage"
                 name="linkedPage"
                 value={formData.linkedPage}
                 onChange={handleInputChange}
                 required
               >
-                <option value="">Select a page</option>
+                <option value="">Select page</option>
                 {pages.map((page) => (
                   <option key={page.path} value={page.path}>
                     {page.name}
@@ -148,33 +218,53 @@ const NoticeAddModal = ({ onClose, onSuccess }) => {
             </div>
           )}
 
+          {/* File Upload */}
           {formData.noticeType === "FILE" && (
             <div className="form-group">
-              <label htmlFor="file">Upload File *</label>
+              <label>Upload File *</label>
               <input
                 type="file"
-                id="file"
-                name="file"
                 onChange={handleFileChange}
                 accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                required
+                required={!isUpdate}
               />
-              <small>Supported formats: PDF, Images, Documents</small>
             </div>
           )}
 
+          {/* Target Date + Time */}
+          <div className="form-group">
+            <label>Target Date & Time (Optional)</label>
+            <input
+              type="datetime-local"
+              name="targetDate"
+              value={formData.targetDate}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Actions */}
           <div className="form-actions">
-            <button type="button" className="cancel-btn" onClick={onClose}>
+            <button type="button" onClick={onClose} className="cancel-btn">
               Cancel
             </button>
-            <button type="submit" className="submit-btn" disabled={loading}>
-              {loading ? "Adding..." : "Add Notice"}
+
+            <button type="submit" disabled={loading} className="submit-btn">
+              {loading ? (
+                <>
+                  <i className="fas fa-spinner fa-spin"></i> Processing...
+                </>
+              ) : isUpdate ? (
+                "Update"
+              ) : (
+                "Add"
+              )}
             </button>
           </div>
+
         </form>
       </div>
     </div>
   );
 };
 
-export default NoticeAddModal;
+export default NoticeModal;

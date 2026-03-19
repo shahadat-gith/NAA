@@ -18,6 +18,7 @@ export const pages = [
   { name: 'Admission', path: '/admission', desc: 'Apply now & enrollment information', icon: <i className="fas fa-file-alt"></i> },
 
   { name: 'Result', path: '/result', desc: 'Check exam results & performance reports', icon: <i className="fas fa-chart-bar"></i> },
+  { name: 'Notices', path: '/notices', desc: 'Check latest updates and notices', icon: <i className="fas fa-bullhorn"></i> },
 ];
 
 

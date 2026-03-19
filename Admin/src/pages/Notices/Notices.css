@@ -37,63 +37,7 @@
   background-color: var(--color-primary-hover);
 }
 
-/* ─────────────────────────────────────────────
-   Filter Action Bar
-   ───────────────────────────────────────────── */
-.notices-filter {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background-color: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-default);
-  margin-bottom: 24px;
-}
 
-.notices-filter label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.notices-filter select {
-  padding: 10px 14px;
-  background-color: var(--bg-surface-2);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  font-size: 14px;
-  min-width: 120px;
-  transition: border var(--transition-fast);
-}
-
-.notices-filter select:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
-.clear-filter-btn {
-  margin-left: auto;
-  height: 40px;
-  padding: 0 20px;
-  background-color: transparent;
-  color: var(--color-error);
-  border: 1px solid var(--color-error-border);
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.clear-filter-btn:hover {
-  background-color: var(--color-error-bg);
-}
 
 /* ─────────────────────────────────────────────
    Notices Table
@@ -174,16 +118,31 @@
   color: var(--color-primary);
 }
 
-.delete-btn {
-  background-color: transparent;
-  border: none;
-  color: var(--color-error);
-  cursor: pointer;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
+.actions-cell {
+  display: flex;
+  gap: 8px;
 }
 
-.delete-btn:hover {
-  background-color: var(--color-error-bg);
+.edit-btn {
+  background: var(--color-primary-subtle);
+  border: 1px solid var(--border-default);
+  color: var(--color-primary-bright);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.edit-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-surface-3);
+}
+
+.delete-btn {
+  background: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: var(--color-error);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
 }

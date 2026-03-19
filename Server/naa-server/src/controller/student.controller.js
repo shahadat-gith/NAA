@@ -5,7 +5,7 @@ import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
 import ServiceSettings from "../models/Settings/services.js";
-import { uploadToCloudinary,deleteFromCloudinary } from "../config/cloudinary.js";
+import { uploadImageToCloudinary,deleteFromCloudinary } from "../config/cloudinary.js";
 
 
 export const getAllStudents = async (req, res) => {
@@ -551,8 +551,8 @@ export const uploadStudentProfilePicture = async (req, res) => {
     }
 
     // --- UPLOAD NEW IMAGE ---
-    const result = await uploadToCloudinary(
-      req.file.buffer,
+    const result = await uploadImageToCloudinary(
+      req.file,
       "naa_profile_pictures"
     );
 

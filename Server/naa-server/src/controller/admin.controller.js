@@ -12,6 +12,7 @@ import Exam from '../models/Settings/exam.js';
 import HeroImage from '../models/Settings/heroImages.js';
 import services from '../models/Settings/services.js';
 import FeesSettings from '../models/Settings/fees.js';
+import Notice from '../models/Academic/notices.js';
 
 
 
@@ -20,7 +21,7 @@ import FeesSettings from '../models/Settings/fees.js';
 export const initialData = async (req, res) => {
 
     try {
-        const [students, admissions, teachers, achievers, galleries, authorities, admitCards, exams, heroImages, serviceSettings, feesSettings] = await Promise.all([
+        const [students, admissions, teachers, achievers, galleries, authorities, admitCards, exams, heroImages, serviceSettings, feesSettings, notices] = await Promise.all([
             Student.find({}).exec(),
             Admission.find({}).exec(),
             teacherModel.find({}).exec(),
@@ -31,7 +32,8 @@ export const initialData = async (req, res) => {
             Exam.find({}).exec(),
             HeroImage.find({}).exec(),
             services.find({}).exec(),
-            FeesSettings.find({}).exec()
+            FeesSettings.find({}).exec(),
+            Notice.find({}).exec()
         ]);
         res.status(200).json({
             success: true,
@@ -47,7 +49,8 @@ export const initialData = async (req, res) => {
                 exams,
                 heroImages,
                 serviceSettings,
-                feesSettings
+                feesSettings,
+                notices,
             }
         });
     } catch (error) {
