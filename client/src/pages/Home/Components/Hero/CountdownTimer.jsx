@@ -6,7 +6,7 @@ const countdownDetails = {
   title: "Annual Result Declaration",
   description: "Results for session 2025–2026 will be live on the portal.",
 
-  targetDateTime: "2026-03-24T10:00:00",
+  targetDateTime: "2026-03-27T10:00:00",
 
   onCompleteMessage: "Result is Live now",
   onCompleteDescription: "You can now check your results from the portal.",
