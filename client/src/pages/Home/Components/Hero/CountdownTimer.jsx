@@ -7,13 +7,22 @@ const countdownDetails = {
   description: "Results for session 2025–2026 will be live on the portal.",
   date: "2026-03-27",
   time: "10:00 AM",
-  onCompleteMessage: "Result is Live",
+  onCompleteMessage: "Result is Live now",
   linkUrl: "/result",
   linkBtntext: "Check Your Result",
 };
 
 const getTimeLeft = (date, time) => {
-  const target = new Date(`${date} ${time}`);
+  const [hours, minutesPart] = time.split(":");
+  const minutes = minutesPart.slice(0, 2);
+  const isPM = time.includes("PM");
+
+  let hrs = parseInt(hours, 10);
+  if (isPM && hrs !== 12) hrs += 12;
+  if (!isPM && hrs === 12) hrs = 0;
+
+  const target = new Date(`${date}T${String(hrs).padStart(2, "0")}:${minutes}:00`);
+
   const now = new Date();
   const diff = target - now;
 
