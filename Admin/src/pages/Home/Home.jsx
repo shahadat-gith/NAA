@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Home.css";
+import { navLinks } from "../../utils/utility";
 
 const Home = () => {
   const hour = new Date().getHours();
@@ -39,16 +40,7 @@ const Home = () => {
           <p>Jump straight to the most used sections.</p>
         </div>
         <div className="quick-access-grid">
-          {[
-            { to: "/students", icon: "fas fa-user-graduate", label: "Students" },
-            { to: "/student/images", icon: "fas fa-images", label: "Student Images" },
-            { to: "/exams", icon: "fas fa-chart-line", label: "Exams" },
-            { to: "/admissions", icon: "fas fa-user-plus", label: "Admissions" },
-            { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
-            { to: "/achievers", icon: "fas fa-trophy", label: "Achievers" },
-            { to: "/gallery", icon: "fas fa-images", label: "Gallery" },
-            { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
-          ].map((item) => (
+          {navLinks.map((item) => (
             <Link key={item.to} to={item.to} className="quick-access-item">
               <div className="quick-access-icon">
                 <i className={item.icon}></i>
