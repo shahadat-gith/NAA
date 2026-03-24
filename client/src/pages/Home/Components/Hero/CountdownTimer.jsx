@@ -5,24 +5,18 @@ import { Link } from "react-router-dom";
 const countdownDetails = {
   title: "Annual Result Declaration",
   description: "Results for session 2025–2026 will be live on the portal.",
-  date: "2026-03-27",
-  time: "10:00 AM",
+
+  targetDateTime: "2026-03-24T10:00:00",
+
   onCompleteMessage: "Result is Live now",
+  onCompleteDescription: "You can now check your results from the portal.",
+
   linkUrl: "/result",
   linkBtntext: "Check Your Result",
 };
 
-const getTimeLeft = (date, time) => {
-  const [hours, minutesPart] = time.split(":");
-  const minutes = minutesPart.slice(0, 2);
-  const isPM = time.includes("PM");
-
-  let hrs = parseInt(hours, 10);
-  if (isPM && hrs !== 12) hrs += 12;
-  if (!isPM && hrs === 12) hrs = 0;
-
-  const target = new Date(`${date}T${String(hrs).padStart(2, "0")}:${minutes}:00`);
-
+const getTimeLeft = (targetDateTime) => {
+  const target = new Date(targetDateTime);
   const now = new Date();
   const diff = target - now;
 
@@ -42,22 +36,22 @@ const CountdownTimer = () => {
   const {
     title,
     description,
-    date,
-    time,
+    targetDateTime,
     onCompleteMessage,
+    onCompleteDescription,
     linkUrl,
     linkBtntext,
   } = countdownDetails;
 
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft(date, time));
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(targetDateTime));
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft(getTimeLeft(date, time));
+      setTimeLeft(getTimeLeft(targetDateTime));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [date, time]);
+  }, [targetDateTime]);
 
   const units = [
     { label: "Days", value: timeLeft?.days },
@@ -85,8 +79,12 @@ const CountdownTimer = () => {
         </h3>
 
         {/* Description */}
-        {!isLive && <p className="ct-desc">{description}</p>
-        }
+        <p className="ct-desc">
+          {isLive
+            ? onCompleteDescription || description
+            : description}
+        </p>
+
         {/* Timer / Result Button */}
         <div className="ct-timer-box">
           {isLive ? (
