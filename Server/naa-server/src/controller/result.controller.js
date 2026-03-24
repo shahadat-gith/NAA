@@ -7,34 +7,56 @@ import ServiceSettings from "../models/Settings/services.js";
 
 export const uploadResults = async (req, res) => {
   try {
-    const { academicSession, examName, class: className, stream, medium, maxMarksPerSubject } = req.body;
+    const {
+      academicSession,
+      examName,
+      class: className,
+      stream = "",
+      medium,
+      maxMarksPerSubject,
+    } = req.body;
 
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "Please upload an Excel file." });
+    // ✅ Validation
+    if (!academicSession || !examName || !className || !medium || !maxMarksPerSubject) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields",
+      });
     }
 
-    // Read Excel
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload an Excel file",
+      });
+    }
+
+    // ✅ Read Excel
     const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
     const sheetName = workbook.SheetNames[0];
     const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
-    if (data.length === 0) {
-      return res.status(400).json({ success: false, message: "Excel file is empty." });
+    if (!data.length) {
+      return res.status(400).json({
+        success: false,
+        message: "Excel file is empty",
+      });
     }
 
-    // Process data
-    let resultsData = data.map((row) => {
+    // ✅ Convert Excel → JSON
+    let resultsData = data.map((row, index) => {
+      const registrationNo = row.registrationNo || row.registrationno;
 
-      const registrationNo = row.registrationNo;
-      const name = row.name;
+      if (!registrationNo) {
+        throw new Error(`Missing registrationNo at row ${index + 2}`);
+      }
 
-      // Convert canSee
       const canSee =
         row.canSee && String(row.canSee).toLowerCase() === "no"
           ? false
           : true;
 
-      // Subjects = everything except registrationNo, name, canSee
+      // Extract subjects dynamically
       const marks = Object.keys(row)
         .filter(
           (key) =>
@@ -43,18 +65,18 @@ export const uploadResults = async (req, res) => {
             )
         )
         .map((subject) => ({
-          subject: subject,
+          subject,
           mark: Number(row[subject]) || 0,
         }));
 
-      const totalObtained = marks.reduce((sum, m) => sum + m.mark, 0);
+      // ✅ IMPORTANT: Calculate total for ranking
+      const totalMarks = marks.reduce((sum, m) => sum + m.mark, 0);
 
       return {
         registrationNo,
-        name,
-        canSee,
         marks,
-        totalObtained,
+        totalMarks, // used ONLY for ranking
+        canSee,
         academicSession,
         examName,
         class: className,
@@ -64,32 +86,63 @@ export const uploadResults = async (req, res) => {
       };
     });
 
-    // Ranking
-    resultsData.sort((a, b) => b.totalObtained - a.totalObtained);
+    // ✅ GROUPING (class + stream + medium)
+    const groupedResults = {};
 
-    resultsData = resultsData.map((item, index) => ({
-      ...item,
-      rank: index + 1,
-    }));
+    resultsData.forEach((student) => {
+      const key = `${student.class}-${student.stream || "NA"}-${student.medium}`;
 
-    // Save
-    const savedResults = await Result.create(resultsData);
+      if (!groupedResults[key]) {
+        groupedResults[key] = [];
+      }
 
-    res.status(201).json({
-      success: true,
-      message: "Results uploaded and ranked successfully",
-      count: savedResults.length,
+      groupedResults[key].push(student);
     });
 
+    // ✅ RANKING WITH TIES
+    let finalResults = [];
+
+    Object.values(groupedResults).forEach((group) => {
+      // Sort by totalMarks DESC
+      group.sort((a, b) => b.totalMarks - a.totalMarks);
+
+      let currentRank = 1;
+      let prevMarks = null;
+
+      group.forEach((student, index) => {
+        if (prevMarks !== null && student.totalMarks < prevMarks) {
+          currentRank = index + 1;
+        }
+
+        student.rank = currentRank;
+        prevMarks = student.totalMarks;
+      });
+
+      finalResults.push(...group);
+    });
+
+    // ✅ Remove temp totalMarks (schema will recalc)
+    finalResults = finalResults.map(({ totalMarks, ...rest }) => rest);
+
+    // ✅ SAVE (Triggers pre-save hook ✅)
+    const savedResults = await Result.create(finalResults);
+
+    return res.status(201).json({
+      success: true,
+      message: "Results uploaded, ranked, and calculated successfully",
+      count: savedResults.length,
+    });
   } catch (error) {
     console.error("Upload Error:", error);
-    res.status(500).json({
+
+    return res.status(500).json({
       success: false,
-      message: "Server error during upload",
-      error: error.message,
+      message: error.message || "Server error during upload",
     });
   }
 };
+
+
 export const getAllResults = async (req, res) => {
   try {
     const { academicSession, examName } = req.query;

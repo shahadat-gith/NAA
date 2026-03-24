@@ -31,24 +31,29 @@ const Result = () => {
   };
 
   /* ================= FILTER LOGIC ================= */
-  // useMemo ensures we don't recalculate on every small re-render
   const filteredResults = useMemo(() => {
-    return results.filter((r) => {
-      const matchesMedium = !filters.medium || r.medium?.toLowerCase() === filters.medium.toLowerCase();
-      const matchesClass = !filters.class || r.class === filters.class;
-      const matchesStream = !filters.stream || r.stream?.toLowerCase() === filters.stream.toLowerCase();
-      
-      // Search by Name OR Registration Number
-      const searchLower = filters.searchTerm.toLowerCase();
-      const matchesSearch =
-        !filters.searchTerm ||
-        r.name?.toLowerCase().includes(searchLower) ||
-        r.registrationNo?.toString().toLowerCase().includes(searchLower);
+    return results
+      .filter((r) => {
+        const searchLower = filters.searchTerm.toLowerCase();
 
-      return matchesMedium && matchesClass && matchesStream && matchesSearch;
-    });
+        // Use optional chaining and nullish coalescing to prevent crashes
+        return (
+          (!filters.medium || r.medium?.toLowerCase() === filters.medium.toLowerCase()) &&
+          (!filters.class || r.class === filters.class) &&
+          (!filters.stream || r.stream?.toLowerCase() === filters.stream.toLowerCase()) &&
+          (!filters.searchTerm ||
+            r.name?.toLowerCase().includes(searchLower) ||
+            r.registrationNo?.toString().includes(searchLower))
+        );
+      })
+      .sort((a, b) => {
+        // 1. Sort by Rank (Numeric)
+        if (a.rank !== b.rank) return (a.rank || 999) - (b.rank || 999);
+
+        // 2. Secondary sort by Name (Alphabetical)
+        return (a.name || "").localeCompare(b.name || "");
+      });
   }, [results, filters]);
-
   const fetchResults = async () => {
     if (!adminToken) return;
     setLoading(true);
@@ -84,7 +89,12 @@ const Result = () => {
           <p className="result-subtitle">Manage and upload student exam results.</p>
         </div>
         <button className="btn-primary" onClick={() => setModalOpen(true)}>
-          + Upload Result
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1v8M3.5 5.5L7 2l3.5 3.5M2 11h10"
+              stroke="#EEEDFE" strokeWidth="1.5"
+              strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          Upload result
         </button>
       </div>
 
@@ -161,27 +171,30 @@ const Result = () => {
           <table className="result-table">
             <thead>
               <tr>
-                <th>Reg No</th>
-                <th>Name</th>
-                <th>Class</th>
-                <th>Medium</th>
-                <th>Stream</th>
-                <th>Actions</th>
+                <th className="col-rank">Rank</th>
+                <th className="col-name">Name</th>
+                <th className="col-name">Total Marks</th>
+                <th className="col-percent">Percentage</th>
+                <th className="col-action">Action</th>
               </tr>
             </thead>
             <tbody>
-              {/* IMPORTANT: Map through filteredResults, not results */}
               {filteredResults.map((r) => (
                 <tr key={r._id} className="result-row">
-                  <td className="reg-no-cell">#{r.registrationNo}</td>
-                  <td>{capitalizeWords(r.name) || "-"}</td>
-                  <td>{capitalizeWords(r.class)}</td>
-                  <td>{capitalizeWords(r.medium)}</td>
-                  <td>{capitalizeWords(r.stream) || "-"}</td>
-                  <td className="actions-cell">
-                    <button className="view-btn" onClick={() => handleView(r.registrationNo)}>
-                      View
-                    </button>
+                  <td className="col-rank">#{r.rank}</td>
+                  <td className="col-name">{capitalizeWords(r.name) || "-"}</td>
+                  <td className="col-total">
+                    {r.totalMarks
+                      ? `${r.totalMarks} / ${r.maxMarksPerSubject * r.marks.length}`
+                      : "Absent"}
+                  </td>
+                  <td className="col-percent">
+                    {r.percentage !== 0
+                      ? `${r.percentage}%`
+                      : "Absent"}
+                  </td>
+                  <td className="col-action">
+                    <button className="view-btn" onClick={() => handleView(r.registrationNo)}>View</button>
                   </td>
                 </tr>
               ))}
@@ -189,7 +202,7 @@ const Result = () => {
           </table>
         ) : (
           <div className="no-results-box">
-             <p className="no-results">No records match your filters.</p>
+            <p className="no-results">No records match your filters.</p>
           </div>
         )}
       </div>
