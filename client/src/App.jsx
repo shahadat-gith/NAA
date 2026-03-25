@@ -17,14 +17,13 @@ import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
 /* ===== Student Pages ===== */
-import StudentSearch from "./pages/Student/StudentSearch";
+import StudentPortal from "./pages/Student/StudentPortal";
 import Dashboard from "./pages/Student/Dashboard";
 import Admission from "./pages/Admission/Admission";
 import AdmitCard from "./pages/Student/AdmitCard";
 
 
 import PageNotFound from "./components/404/PageNotFound";
-import StudentCorner from "./pages/StudentCorner/StudentCorner";
 import Result from "./pages/Result/Result";
 import ResultDownload from "./pages/Result/ResultDownload";
 import Notices from "./pages/Notices/Notices";
@@ -65,7 +64,7 @@ const App = () => {
 
           {/* Portal */}
 
-          <Route path="/student" element={<StudentSearch />} />
+          <Route path="/student" element={<StudentPortal />} />
           <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
           <Route path="/student/dashboard/admitcard" element={<AdmitCard />} />
           {/* <Route path="/student-corner" element={<StudentCorner />} /> */}

@@ -145,35 +145,51 @@ export const uploadResults = async (req, res) => {
 
 export const getAllResults = async (req, res) => {
   try {
-    const { academicSession, examName } = req.query;
-    const filter = {};
+    const results = await Result.aggregate([
 
-    if (academicSession) filter.academicSession = academicSession;
-    if (examName) filter.examName = examName;
+      {
+        $lookup: {
+          from: "students",
+          localField: "registrationNo",
+          foreignField: "registrationNo",
+          as: "student"
+        }
+      },
 
-    const results = await Result.find(filter);
+      {
+        $unwind: {
+          path: "$student",
+          preserveNullAndEmptyArrays: true
+        }
+      },
 
-    const resultsWithStudentInfo = await Promise.all(results.map(async (result) => {
-      const student = await Student.findOne({ registrationNo: result.registrationNo }).select("name image fatherName motherName");
-      return {
-        ...result.toObject(),
-        name: student ? student.name : "Unknown Student",
-        image: student ? student.image : null,
-        fatherName: student ? student.fatherName : "N/A",
-        motherName: student ? student.motherName : "N/A",
-      };
-    }));
+      {
+        $addFields: {
+          name: { $ifNull: ["$student.name", "Unknown Student"] },
+          image: "$student.image",
+          fatherName: { $ifNull: ["$student.fatherName", "N/A"] },
+          motherName: { $ifNull: ["$student.motherName", "N/A"] }
+        }
+      }
+
+    ]);
 
     res.status(200).json({
       success: true,
-      message: "Results fetched successfully",
-      data: resultsWithStudentInfo,
+      message: "All results fetched successfully",
+      data: results,
     });
+
   } catch (error) {
     console.error("Fetch Error:", error);
-    res.status(500).json({ success: false, message: "Server error during fetch", error: error.message });
+    res.status(500).json({
+      success: false,
+      message: "Server error during fetch",
+      error: error.message
+    });
   }
 };
+
 
 export const getResultByRegistration = async (req, res) => {
   try {

@@ -65,6 +65,7 @@ const Result = () => {
         const data = res.data.data || [];
 
         setResults(data);
+        console.log(data)
 
         sessionStorage.setItem("results", JSON.stringify(data));
         sessionStorage.setItem("results_time", Date.now());

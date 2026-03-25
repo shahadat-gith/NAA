@@ -55,7 +55,10 @@ const Academics = () => {
       </Helmet>
 
       <section className="academics-header">
-        <Header title={"Academics 2025"} tagline={"Empowering Excellence in Education"} />
+        <Header
+          title={`Academics ${new Date().getFullYear()}`}
+          tagline={"Empowering Excellence in Education"}
+        />
       </section>
       <section className="academics-section achievers-section">
         <h2 className="section-title">Our Top Achievers</h2>

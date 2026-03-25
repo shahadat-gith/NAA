@@ -206,7 +206,7 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
               className="ur-submit-btn"
               disabled={loading}
             >
-              {loading ? "Uploading..." : "Upload & Rank Results"}
+              {loading ? "Uploading..." : "Submit"}
             </button>
           </form>
         </div>

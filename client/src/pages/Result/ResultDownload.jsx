@@ -216,6 +216,7 @@ const calculateGrade = (marks) => {
   if (m >= 60) return "B";
   if (m >= 50) return "C+";
   if (m >= 40) return "C";
+  if (m > 30) return "D";
   return "F";
 };
 
