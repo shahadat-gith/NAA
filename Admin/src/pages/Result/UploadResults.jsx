@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { AdminContext } from "../../context/AdminContext";
 import "./Styles/UploadResults.css";
 
@@ -16,19 +15,19 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
 
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
-  const [medium, setMedium] = useState(""); // 1. Select Medium First
-  const [selectedClass, setSelectedClass] = useState(""); // 2. Then Class
+  const [medium, setMedium] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
   const [stream, setStream] = useState("");
   const [examName, setExamName] = useState("");
   const [academicSession, setAcademicSession] = useState("");
   const [maxMarksPerSubject, setMaxMarksPerSubject] = useState("");
 
-  // Get classes based on selected medium
+  // ✅ NEW STATES
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
   const availableClasses = medium ? CLASS_OPTIONS[medium] || [] : [];
-
   const isSeniorClass = (cls) => cls === "11" || cls === "12";
-
-  /* ================= HELPERS ================= */
 
   const resetForm = () => {
     setFile(null);
@@ -42,16 +41,18 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
 
   const handleClose = () => {
     resetForm();
+    setSuccessMsg("");
+    setErrorMsg("");
     onClose();
   };
 
   if (!isOpen) return null;
 
-  /* ================= UPLOAD LOGIC ================= */
-
   const submitResult = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setSuccessMsg("");
+    setErrorMsg("");
 
     try {
       const formData = new FormData();
@@ -63,45 +64,54 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
       formData.append("academicSession", academicSession);
       formData.append("maxMarksPerSubject", maxMarksPerSubject);
 
-      const res = await axios.post(`${backendUrl}/api/results/upload`, formData,
+      const res = await axios.post(
+        `${backendUrl}/api/results/upload`,
+        formData,
         {
-          headers: { Authorization: `Bearer ${adminToken}` }
+          headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
 
       if (res.data.success) {
-        toast.success(`Uploaded ${res.data.count} results`);
-        // let parent know so it can refresh
-        if (typeof onSuccess === "function") onSuccess();
-        handleClose();
+        setSuccessMsg(`✅ Uploaded ${res.data.count} results successfully`);
+        resetForm();
       }
-
-
     } catch (err) {
-      toast.error(err.response?.data?.message || "Upload failed");
+      setErrorMsg(err.response?.data?.message || "❌ Upload failed");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="result-modal-overlay" onClick={handleClose}>
-      <div className="result-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="result-modal-header">
+    <div className="ur-result-modal-overlay" onClick={handleClose}>
+      <div
+        className="ur-result-modal"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="ur-result-modal-header">
           <h2>Upload Results</h2>
           <button onClick={handleClose}>✕</button>
         </div>
 
-        <div className="result-form-container">
-          <form onSubmit={submitResult} className="result-form">
-            <div className="form-grid">
+        <div className="ur-result-form-container">
+          <form onSubmit={submitResult} className="ur-result-form">
 
-              {/* Step 1: Medium */}
+            {/* ✅ SUCCESS / ERROR MESSAGE */}
+            {successMsg && (
+              <div className="ur-success-msg">{successMsg}</div>
+            )}
+            {errorMsg && (
+              <div className="ur-error-msg">{errorMsg}</div>
+            )}
+
+            <div className="ur-form-grid">
+
               <select
                 value={medium}
                 onChange={(e) => {
                   setMedium(e.target.value);
-                  setSelectedClass(""); // Reset class if medium changes
+                  setSelectedClass("");
                   setStream("");
                 }}
                 required
@@ -114,10 +124,9 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
                 ))}
               </select>
 
-              {/* Step 2: Class (Filtered by Medium) */}
               <select
                 value={selectedClass}
-                disabled={!medium} // Disable until medium is picked
+                disabled={!medium}
                 onChange={(e) => {
                   setSelectedClass(e.target.value);
                   setStream("");
@@ -132,7 +141,6 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
                 ))}
               </select>
 
-              {/* Step 3: Stream (Only for 11 & 12) */}
               {isSeniorClass(selectedClass) && (
                 <select
                   value={stream}
@@ -183,7 +191,7 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
               />
             </div>
 
-            <div className="file-upload-section">
+            <div className="ur-file-upload-section">
               <label>Upload Excel File (.xlsx)</label>
               <input
                 type="file"
@@ -193,7 +201,11 @@ const UploadResults = ({ isOpen, onClose, onSuccess }) => {
               />
             </div>
 
-            <button type="submit" className="submit-btn" disabled={loading}>
+            <button
+              type="submit"
+              className="ur-submit-btn"
+              disabled={loading}
+            >
               {loading ? "Uploading..." : "Upload & Rank Results"}
             </button>
           </form>

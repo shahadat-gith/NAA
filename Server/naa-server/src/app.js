@@ -26,21 +26,16 @@ import Notice from "./models/Academic/notices.js";
 
 const app = express();
 
-/* ================= CORS CONFIG (CRITICAL) ================= */
+// TOP of middleware (before routes)
+app.use(cors({
+  origin: "*", // or your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
 
-// 1. Manual headers (REQUIRED for API Gateway)
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-
-  // Handle preflight explicitly
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
+// Explicit preflight handler (VERY IMPORTANT)
+app.options("*", cors());
 
 // 2. Optional cors middleware (fine to keep)
 app.use(

@@ -1,5 +1,5 @@
-
-.result-modal-overlay {
+/* ================= Overlay ================= */
+.ur-result-modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(5, 13, 26, 0.75);
@@ -10,33 +10,32 @@
   justify-content: center;
   z-index: 1000;
   padding: 16px;
-  animation: overlayIn var(--transition-base) ease;
+  animation: ur-overlayIn var(--transition-base) ease;
 }
 
-@keyframes overlayIn {
+@keyframes ur-overlayIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-.result-modal {
+/* ================= Modal ================= */
+.ur-result-modal {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   width: 100%;
   max-width: 720px;
-  animation: modalIn var(--transition-base) ease;
+  animation: ur-modalIn var(--transition-base) ease;
   overflow: hidden;
 }
 
-@keyframes modalIn {
+@keyframes ur-modalIn {
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0)   scale(1);    }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ─────────────────────────────────────────────
-   Header
-   ───────────────────────────────────────────── */
-.result-modal-header {
+/* ================= Header ================= */
+.ur-result-modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -44,7 +43,7 @@
   border-bottom: 1px solid var(--border-default);
 }
 
-.result-modal-header h2 {
+.ur-result-modal-header h2 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--text-primary);
@@ -52,7 +51,7 @@
   letter-spacing: 0.01em;
 }
 
-.result-modal-header button {
+.ur-result-modal-header button {
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);
@@ -68,36 +67,53 @@
   line-height: 1;
 }
 
-.result-modal-header button:hover {
+.ur-result-modal-header button:hover {
   background: var(--color-error-bg);
   border-color: var(--color-error-border);
   color: var(--color-error);
 }
 
-/* ─────────────────────────────────────────────
-   Form Container
-   ───────────────────────────────────────────── */
-.result-form-container {
+/* ================= Form Container ================= */
+.ur-result-form-container {
   padding: 24px;
 }
 
-.result-form {
+.ur-result-form {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-/* ─────────────────────────────────────────────
-   Form Grid
-   ───────────────────────────────────────────── */
-.form-grid {
+/* ================= Success & Error ================= */
+.ur-success-msg {
+  background: #e6ffed;
+  color: #067d2e;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #b7ebc6;
+}
+
+.ur-error-msg {
+  background: #ffe6e6;
+  color: #b30000;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #ffb3b3;
+}
+
+/* ================= Grid ================= */
+.ur-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
 
-.form-grid select,
-.form-grid input {
+.ur-form-grid select,
+.ur-form-grid input {
   width: 100%;
   padding: 10px 14px;
   background: var(--bg-surface-2);
@@ -112,7 +128,7 @@
   -webkit-appearance: none;
 }
 
-.form-grid select {
+.ur-form-grid select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233d5a80' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -120,42 +136,40 @@
   cursor: pointer;
 }
 
-.form-grid select option {
+.ur-form-grid select option {
   background: var(--bg-surface-2);
   color: var(--text-primary);
 }
 
-.form-grid select:focus,
-.form-grid input:focus {
+.ur-form-grid select:focus,
+.ur-form-grid input:focus {
   border-color: var(--color-primary);
   background: var(--bg-surface-3);
   box-shadow: 0 0 0 3px var(--color-primary-subtle);
 }
 
-.form-grid select:hover:not(:disabled),
-.form-grid input:hover:not(:disabled) {
+.ur-form-grid select:hover:not(:disabled),
+.ur-form-grid input:hover:not(:disabled) {
   border-color: var(--border-hover);
 }
 
-.form-grid select:disabled {
+.ur-form-grid select:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.form-grid input::placeholder {
+.ur-form-grid input::placeholder {
   color: var(--text-muted);
 }
 
-/* ─────────────────────────────────────────────
-   File Upload Section
-   ───────────────────────────────────────────── */
-.file-upload-section {
+/* ================= File Upload ================= */
+.ur-file-upload-section {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.file-upload-section label {
+.ur-file-upload-section label {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
@@ -163,7 +177,7 @@
   letter-spacing: 0.06em;
 }
 
-.file-upload-section input[type="file"] {
+.ur-file-upload-section input[type="file"] {
   width: 100%;
   padding: 10px 14px;
   background: var(--bg-surface-2);
@@ -177,17 +191,17 @@
   outline: none;
 }
 
-.file-upload-section input[type="file"]:hover {
+.ur-file-upload-section input[type="file"]:hover {
   border-color: var(--color-primary);
   background: var(--color-primary-subtle);
 }
 
-.file-upload-section input[type="file"]:focus {
+.ur-file-upload-section input[type="file"]:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px var(--color-primary-subtle);
 }
 
-.file-upload-section input[type="file"]::file-selector-button {
+.ur-file-upload-section input[type="file"]::file-selector-button {
   padding: 6px 14px;
   margin-right: 12px;
   border-radius: var(--radius-sm);
@@ -198,18 +212,15 @@
   font-family: var(--font-body);
   font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition-fast), border-color var(--transition-fast);
 }
 
-.file-upload-section input[type="file"]::file-selector-button:hover {
+.ur-file-upload-section input[type="file"]::file-selector-button:hover {
   background: var(--color-primary-subtle);
   border-color: var(--color-primary);
 }
 
-/* ─────────────────────────────────────────────
-   Submit Button
-   ───────────────────────────────────────────── */
-.submit-btn {
+/* ================= Button ================= */
+.ur-submit-btn {
   width: 100%;
   padding: 12px 20px;
   border-radius: 9999px;
@@ -224,30 +235,28 @@
   transition: background var(--transition-fast), box-shadow var(--transition-fast), transform 0.1s ease;
 }
 
-.submit-btn:hover:not(:disabled) {
+.ur-submit-btn:hover:not(:disabled) {
   background: var(--color-primary-bright);
   box-shadow: var(--shadow-md);
 }
 
-.submit-btn:active:not(:disabled) {
+.ur-submit-btn:active:not(:disabled) {
   transform: scale(0.99);
 }
 
-.submit-btn:disabled {
+.ur-submit-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* ─────────────────────────────────────────────
-   Responsive
-   ───────────────────────────────────────────── */
+/* ================= Responsive ================= */
 @media (max-width: 480px) {
-  .result-modal-header,
-  .result-form-container {
+  .ur-result-modal-header,
+  .ur-result-form-container {
     padding: 16px;
   }
 
-  .form-grid {
+  .ur-form-grid {
     grid-template-columns: 1fr;
   }
 }

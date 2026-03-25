@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import UploadResults from "./UploadResults";
 import "./Styles/Result.css";
-import toast from "react-hot-toast";
 import Loader from "../../components/Loader/Loader";
 import { AdminContext } from "../../context/AdminContext";
 import { capitalizeWords } from "../../utils/utility";
@@ -15,7 +14,6 @@ const Result = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ Load from sessionStorage initially
   const [results, setResults] = useState(() => {
     const cached = sessionStorage.getItem("results");
     return cached ? JSON.parse(cached) : [];
@@ -24,7 +22,6 @@ const Result = () => {
   const [loading, setLoading] = useState(results.length === 0);
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Filter states
   const [filters, setFilters] = useState({
     class: "",
     medium: "",
@@ -37,7 +34,6 @@ const Result = () => {
     return CLASS_OPTIONS[filters.medium.toLowerCase()] || [];
   };
 
-  /* ================= FILTER LOGIC ================= */
   const filteredResults = useMemo(() => {
     return results
       .filter((r) => {
@@ -70,20 +66,24 @@ const Result = () => {
 
         setResults(data);
 
-        // ✅ Save to sessionStorage
         sessionStorage.setItem("results", JSON.stringify(data));
         sessionStorage.setItem("results_time", Date.now());
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Unable to load results");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  /* ================= LOAD LOGIC ================= */
+  /* ================= REFRESH ================= */
+  const handleRefresh = () => {
+    sessionStorage.removeItem("results");
+    sessionStorage.removeItem("results_time");
+    fetchResults();
+  };
 
-  // ✅ 1. Restore from navigation state (coming back)
+  /* ================= LOAD ================= */
   useEffect(() => {
     if (location.state?.results) {
       setResults(location.state.results);
@@ -92,14 +92,14 @@ const Result = () => {
     }
   }, [location.state]);
 
-  // ✅ 2. Fetch only if no cached data
   useEffect(() => {
     if (!adminToken) return;
 
     const cached = sessionStorage.getItem("results");
     const cachedTime = sessionStorage.getItem("results_time");
 
-    const isExpired = cachedTime && Date.now() - Number(cachedTime) > 30 * 60 * 1000; // 30 min expiry
+    const isExpired =
+      cachedTime && Date.now() - Number(cachedTime) > 30 * 60 * 1000;
 
     if (!cached || isExpired) {
       fetchResults();
@@ -116,24 +116,33 @@ const Result = () => {
   if (loading) return <Loader text="Loading results..." />;
 
   return (
-    <div className="result-page">
-      <div className="result-header">
+    <div className="rp-result-page">
+      <div className="rp-result-header">
         <div>
           <h2>Results</h2>
-          <p className="result-subtitle">
+          <p className="rp-result-subtitle">
             Manage and upload student exam results.
           </p>
         </div>
 
-        <button className="btn-primary" onClick={() => setModalOpen(true)}>
-          Upload result
-        </button>
+        <div className="rp-header-actions">
+          <button className="rp-btn-secondary" onClick={handleRefresh}>
+            Refresh
+          </button>
+
+          <button
+            className="rp-btn-primary"
+            onClick={() => setModalOpen(true)}
+          >
+            Upload result
+          </button>
+        </div>
       </div>
 
       {/* ================= FILTERS ================= */}
-      <div className="result-filters">
-        <div className="filter-row">
-          <div className="filter-group">
+      <div className="rp-result-filters">
+        <div className="rp-filter-row">
+          <div className="rp-filter-group">
             <label>Medium</label>
             <select
               value={filters.medium}
@@ -147,7 +156,7 @@ const Result = () => {
             </select>
           </div>
 
-          <div className="filter-group">
+          <div className="rp-filter-group">
             <label>Class</label>
             <select
               value={filters.class}
@@ -165,7 +174,7 @@ const Result = () => {
             </select>
           </div>
 
-          <div className="filter-group">
+          <div className="rp-filter-group">
             <label>Stream</label>
             <select
               value={filters.stream}
@@ -182,7 +191,7 @@ const Result = () => {
             </select>
           </div>
 
-          <div className="filter-group">
+          <div className="rp-filter-group">
             <label>Search Name / RegNo</label>
             <input
               type="text"
@@ -199,7 +208,7 @@ const Result = () => {
             filters.stream ||
             filters.searchTerm) && (
             <button
-              className="clear-filters-btn"
+              className="rp-clear-filters-btn"
               onClick={() =>
                 setFilters({
                   class: "",
@@ -216,9 +225,9 @@ const Result = () => {
       </div>
 
       {/* ================= TABLE ================= */}
-      <div className="result-list-container">
+      <div className="rp-result-list-container">
         {filteredResults.length > 0 ? (
-          <table className="result-table">
+          <table className="rp-result-table">
             <thead>
               <tr>
                 <th>Rank</th>
@@ -251,7 +260,7 @@ const Result = () => {
 
                   <td>
                     <button
-                      className="view-btn"
+                      className="rp-view-btn"
                       onClick={() => handleView(r.registrationNo)}
                     >
                       View
@@ -262,7 +271,7 @@ const Result = () => {
             </tbody>
           </table>
         ) : (
-          <div className="no-results-box">
+          <div className="rp-no-results-box">
             <p>No records match your filters.</p>
           </div>
         )}
@@ -272,7 +281,6 @@ const Result = () => {
         <UploadResults
           isOpen={modalOpen}
           onClose={() => setModalOpen(false)}
-          onSuccess={() => fetchResults()}
         />
       )}
     </div>
