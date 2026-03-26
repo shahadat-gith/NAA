@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import "./Styles/Dashboard.css";
 import capitalizeWords from "../../Utils/utility";
 import { AppContext } from "../../context/AppContext";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();

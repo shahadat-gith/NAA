@@ -8,6 +8,7 @@ import {
   deleteResult,
   getAllResults,
   fetchResultForStudent,
+  getAllClassToppers,
 } from "../controller/result.controller.js";
 
 const resultRouter = express.Router();
@@ -30,6 +31,7 @@ resultRouter.get("/:registrationNo", getResultByRegistration);
 
 // Get result for student (Public)
 resultRouter.post("/student/fetch", fetchResultForStudent);
+resultRouter.get("/student/toppers", getAllClassToppers);
 
 
 // Update result (Admin only)

@@ -100,15 +100,5 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is working!" });
 });
 
-/* ================= GLOBAL ERROR HANDLER ================= */
-
-app.use((err, req, res, next) => {
-  console.error("Global Error:", err);
-
-  res.status(500).json({
-    success: false,
-    message: err.message || "Internal Server Error",
-  });
-});
 
 export default app;

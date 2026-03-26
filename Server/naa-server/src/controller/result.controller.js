@@ -350,3 +350,121 @@ export const fetchResultForStudent = async (req, res) => {
     });
   }
 };
+
+
+
+
+export const getAllClassToppers = async (req, res) => {
+  try {
+    const examName = "Annual Examination";
+    const { academicSession = "2025-2026" } = req.query;
+
+    /* ================= CLASS TOPPERS ================= */
+    const classToppers = await Result.aggregate([
+      {
+        $match: {
+          academicSession,
+          examName,
+          rank: 1
+        }
+      },
+      {
+        $lookup: {
+          from: "students",
+          localField: "registrationNo",
+          foreignField: "registrationNo",
+          as: "student"
+        }
+      },
+      {
+        $unwind: {
+          path: "$student",
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          session: "$academicSession",
+          medium: 1,
+          class: 1,
+          stream: 1,
+          name: "$student.name",
+          image: "$student.image",
+          percentage: 1,
+          rank: 1
+        }
+      },
+      {
+        $sort: { class: 1 }
+      }
+    ]);
+
+    /* ================= SCHOOL TOPPERS ================= */
+
+    // 🔥 Step 1: Get top 3 distinct percentages
+    const top3Percentages = (
+      await Result.distinct("percentage", {
+        academicSession,
+        examName
+      })
+    )
+      .sort((a, b) => b - a)
+      .slice(0, 3);
+
+    // 🔥 Step 2: Get all students in those percentage groups
+    const schoolToppersRaw = await Result.find({
+      academicSession,
+      examName,
+      percentage: { $in: top3Percentages }
+    })
+      .sort({ percentage: -1 })
+      .lean();
+
+    // 🔥 Step 3: Fetch student details
+    const regNos = schoolToppersRaw.map(r => r.registrationNo);
+
+    const students = await Student.find({
+      registrationNo: { $in: regNos }
+    }).lean();
+
+    const studentMap = {};
+    students.forEach(s => {
+      studentMap[s.registrationNo] = s;
+    });
+
+    // 🔥 Step 4: Format final school toppers
+    const schoolToppersFlat = schoolToppersRaw.map(r => ({
+      session: r.academicSession,
+      class: r.class,
+      stream: r.stream,
+      medium: r.medium,
+      percentage: r.percentage,
+      rank: r.rank,
+      name: studentMap[r.registrationNo]?.name || "N/A",
+      image: studentMap[r.registrationNo]?.image || ""
+    }));
+
+    // 🔥 Step 5 (Optional but recommended): Group by percentage
+    const schoolToppers = top3Percentages.map(p => ({
+      percentage: p,
+      students: schoolToppersFlat.filter(s => s.percentage === p)
+    }));
+
+    /* ================= RESPONSE ================= */
+
+    res.status(200).json({
+      success: true,
+      toppers: classToppers,
+      schoolToppers
+    });
+
+  } catch (error) {
+    console.error("Fetch Toppers Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during toppers fetch.",
+      error: error.message
+    });
+  }
+};
