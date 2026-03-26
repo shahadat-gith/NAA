@@ -78,11 +78,11 @@ const ResultReportPdf = ({ result, principal }) => {
               </Text>
 
               <View style={styles.dividerRow}>
-                <View style={styles.line}/>
+                <View style={styles.line} />
                 <Text style={styles.examName}>
                   {result?.examName || "RESULT"}
                 </Text>
-                <View style={styles.line}/>
+                <View style={styles.line} />
               </View>
 
               <Text style={styles.admitTitle}>
@@ -91,11 +91,11 @@ const ResultReportPdf = ({ result, principal }) => {
 
               <View style={styles.dividerRow}>
                 <View style={{ flex: 1 }} />
-                <View style={styles.lineShort}/>
+                <View style={styles.lineShort} />
                 <Text style={styles.sessionText}>
                   SESSION: {result?.academicSession || "-"}
                 </Text>
-                <View style={styles.lineShort}/>
+                <View style={styles.lineShort} />
                 <View style={{ flex: 1 }} />
               </View>
             </View>
@@ -105,14 +105,14 @@ const ResultReportPdf = ({ result, principal }) => {
             <View style={styles.studentSection}>
 
               <View style={styles.studentInfo}>
-                <Info label="Name" value={capitalizeWords(result?.name)}/>
-                <Info label="Father's Name" value={capitalizeWords(result?.fatherName)}/>
-                <Info label="Mother's Name" value={capitalizeWords(result?.motherName)}/>
-                <Info label="Class" value={capitalizeWords(result?.class)}/>
-                <Info label="Registration No" value={result?.registrationNo}/>
+                <Info label="Name" value={capitalizeWords(result?.name)} />
+                <Info label="Father's Name" value={capitalizeWords(result?.fatherName)} />
+                <Info label="Mother's Name" value={capitalizeWords(result?.motherName)} />
+                <Info label="Class" value={capitalizeWords(result?.class)} />
+                <Info label="Registration No" value={result?.registrationNo} />
 
                 {(result?.class === "11" || result?.class === "12") && (
-                  <Info label="Stream" value={capitalizeWords(result?.stream)}/>
+                  <Info label="Stream" value={capitalizeWords(result?.stream)} />
                 )}
 
                 <Info label="Rank" value={result.rank || "-"} />
@@ -137,18 +137,18 @@ const ResultReportPdf = ({ result, principal }) => {
             <View style={styles.table}>
 
               <View style={styles.tRow}>
-                <HeaderCell text="SUBJECT"/>
-                <HeaderCell text="MAX MARKS"/>
-                <HeaderCell text="OBTAINED"/>
-                <HeaderCell text="GRADE"/>
+                <HeaderCell text="SUBJECT" />
+                <HeaderCell text="MAX MARKS" />
+                <Cell text={m.obtained === 0 ? "Absent" : m.obtained} />
+                <HeaderCell text="GRADE" />
               </View>
 
               {marksRows.map((m, i) => (
                 <View key={i} style={styles.tRow}>
-                  <Cell text={m.subject}/>
-                  <Cell text="100"/>
-                  <Cell text={m.obtained}/>
-                  <Cell text={m.grade}/>
+                  <Cell text={m.subject} />
+                  <Cell text="100" />
+                  <Cell text={m.obtained} />
+                  <Cell text={m.grade} />
                 </View>
               ))}
 
@@ -159,8 +159,8 @@ const ResultReportPdf = ({ result, principal }) => {
             <View style={styles.instructionSection}>
 
               <Text style={styles.instructionTitle}>Result Summary:</Text>
-              <Text style={styles.instructionText}>
-                Marks Obtained: {total}/{result?.marks.length * result?.maxMarksPerSubject}
+              <Text style={[styles.instructionText, { fontWeight: "bold" }]}>
+                Marks Obtained: {total}/{result?.marks?.length * (result?.maxMarksPerSubject || 100)}
               </Text>
               <Text style={styles.instructionText}>
                 Percentage: {percentage.toFixed(2)}%
@@ -200,7 +200,7 @@ const ResultReportPdf = ({ result, principal }) => {
               </View>
 
               <View style={styles.schoolContactArea}>
-                <DividerTitle text={SCHOOL_DETAILS.name}/>
+                <DividerTitle text={SCHOOL_DETAILS.name} />
 
                 <Text style={styles.contactText}>
                   {SCHOOL_DETAILS.address}
@@ -251,10 +251,10 @@ const Cell = ({ text }) => (
 
 const DividerTitle = ({ text }) => (
   <View style={styles.dividerRow}>
-    <View style={styles.line}/>
+    <View style={styles.line} />
     <Text style={{ fontSize: 9, fontWeight: "bold", marginHorizontal: 8 }}>
       {text}
     </Text>
-    <View style={styles.line}/>
+    <View style={styles.line} />
   </View>
 );

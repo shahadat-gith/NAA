@@ -3,22 +3,35 @@ import { NavLink, useNavigate } from "react-router-dom";
 import logo from "/logo.png";
 import "./Navbar.css";
 import { AppContext } from "../../context/AppContext";
-import SearchBar from "../SearchBar/SearchBar";
+import SearchBar from "./SearchBar";
+import { navGroups } from "./utils";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [openGroup, setOpenGroup] = useState(null); // tracks which dropdown is open
   const { serviceSettings } = useContext(AppContext);
   const mobileMenuRef = useRef(null);
-  const searchBarRef = useRef(null);
+  const navRef = useRef(null);
   const navigate = useNavigate();
 
+  // Close dropdown on outside click
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setOpenGroup(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Close mobile menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
       if (
         mobileMenuRef.current &&
-        !mobileMenuRef.current.contains(event.target) &&
-        !event.target.closest(".hamburger-button")
+        !mobileMenuRef.current.contains(e.target) &&
+        !e.target.closest(".hamburger-button")
       ) {
         setIsMobileMenuOpen(false);
       }
@@ -27,124 +40,111 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Lock body scroll when mobile menu open
   useEffect(() => {
-    const handleEscKey = (event) => {
-      if (event.key === "Escape") {
-        setIsMobileMenuOpen(false);
-        setIsSearchOpen(false);
-      }
-    };
-    document.addEventListener("keydown", handleEscKey);
-    return () => document.removeEventListener("keydown", handleEscKey);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "auto";
-    return () => { document.body.style.overflow = "auto"; };
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isMobileMenuOpen]);
 
-  const navLinks = [
-    { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
-    { to: "/student", label: "Student Portal" },
-    { to: "/academics", label: "Academics" },
-    { to: "/curriculum?type=kinder", label: "Curriculum" },
-    { to: "/teachers", label: "Teachers" },
-    { to: "/gallery", label: "Gallery" },
-    { to: "/contact", label: "Contact" },
-  ];
+  // Close dropdown on Escape key
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setOpenGroup(null);
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, []);
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-  const toggleSearch = () => setIsSearchOpen(!isSearchOpen);
+  const handleGroupClick = (title) => {
+    setOpenGroup((prev) => (prev === title ? null : title));
+  };
+
+  const handleDropdownLinkClick = () => {
+    setOpenGroup(null);
+  };
 
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" ref={navRef}>
         <div className="navbar-container">
           <div className="navbar-content">
 
-            {/* ================= LOGO ================= */}
+            {/* ── LOGO ── */}
             <div className="logo-container">
               <div className="logo-wrapper" onClick={() => navigate("/")}>
                 <img src={logo} alt="Nashib Ali Academy" className="logo-image" />
                 <div className="school-info">
                   <h2 className="school-title">Nashib Ali</h2>
-                  <p className="school-subtitle">Academy</p>
+                  <span className="school-subtitle">Academy</span>
                 </div>
               </div>
             </div>
 
-            {/* ================= DESKTOP NAV ================= */}
+            {/* ── SEARCH ── */}
+            <div className="navbar-search-inline">
+              <SearchBar />
+            </div>
+
+            {/* ── DESKTOP NAV GROUPS ── */}
             <div className="desktop-nav">
-              <div className="nav-links">
-                {navLinks.map((link) => (
-                  <NavLink
-                    key={link.to}
-                    to={link.to}
-                    className={({ isActive }) =>
-                      `nav-link ${isActive ? "nav-link-active" : ""}`
-                    }
+              <div className="nav-groups">
+                {navGroups.map((group) => (
+                  <div
+                    key={group.title}
+                    className={`nav-group ${openGroup === group.title ? "open" : ""}`}
                   >
-                    {link.label}
-                  </NavLink>
+                    <div
+                      className="nav-group-title"
+                      onClick={() => handleGroupClick(group.title)}
+                    >
+                      {group.title}
+                      <i className="fas fa-chevron-down" aria-hidden="true" />
+                    </div>
+
+                    <div className="nav-dropdown">
+                      {group.items.map((item) => (
+                        <NavLink
+                          key={item.to}
+                          to={item.to}
+                          className={({ isActive }) =>
+                            "nav-dropdown-link" + (isActive ? " active" : "")
+                          }
+                          onClick={handleDropdownLinkClick}
+                        >
+                          {item.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
 
-            {/* ================= RIGHT ACTIONS ================= */}
+            {/* ── RIGHT ── */}
             <div className="navbar-right">
-              <button
-                className={`search-toggle-btn ${isSearchOpen ? "active" : ""}`}
-                onClick={toggleSearch}
-                aria-label="Toggle search"
-                title="Search pages"
-              >
-                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-
               {serviceSettings?.admission && (
-                <NavLink to="/admission" className="nav-admission-btn">Admission</NavLink>
+                <NavLink to="/admission" className="nav-admission-btn">
+                  Apply Now
+                </NavLink>
               )}
 
-              {/* ================= MOBILE MENU BUTTON ================= */}
               <div className="mobile-menu-button">
                 <button
                   className="hamburger-button"
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  aria-label="Toggle menu"
                   aria-expanded={isMobileMenuOpen}
-                  onClick={toggleMobileMenu}
                 >
-                  <span className="sr-only">Open main menu</span>
-                  {isMobileMenuOpen ? (
-                    <i className="fas fa-times"></i>
-                  ) : (
-                    <i className="fas fa-bars"></i>
-                  )}
+                  <i className={`fas ${isMobileMenuOpen ? "fa-times" : "fa-bars"}`} />
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </nav>
 
-      {/* ================= SEARCH MODAL (outside nav) ================= */}
-      {isSearchOpen && (
-        <div
-          className="navbar-search-modal-overlay"
-          onClick={() => setIsSearchOpen(false)}
-        >
-          <div
-            className="navbar-search-modal"
-            ref={searchBarRef}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <SearchBar onClose={() => setIsSearchOpen(false)} />
-          </div>
-        </div>
-      )}
-
-      {/* ================= MOBILE MENU ================= */}
+      {/* ── MOBILE MENU ── */}
       <div
         className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`}
         aria-hidden={!isMobileMenuOpen}
@@ -152,40 +152,74 @@ const Navbar = () => {
         <div
           ref={mobileMenuRef}
           className={`mobile-menu ${isMobileMenuOpen ? "open" : ""}`}
+          role="dialog"
+          aria-label="Navigation menu"
         >
+
+          {/* Header */}
           <div className="mobile-menu-header">
-            {serviceSettings?.admission && (
-              <NavLink
-                onClick={() => setIsMobileMenuOpen(false)}
-                to="/admission"
-                className="nav-admission-btn"
-              >
-                Admission
-              </NavLink>
-            )}
+            <div className="mobile-brand">
+              <img
+                src={logo}
+                alt="logo"
+                className="logo-image"
+                style={{ width: 32, height: 32 }}
+              />
+              <div>
+                <div className="mobile-brand-title">Nashib Ali</div>
+                <span className="mobile-brand-sub">Academy</span>
+              </div>
+            </div>
             <button
               className="mobile-close-button"
               onClick={() => setIsMobileMenuOpen(false)}
+              aria-label="Close menu"
             >
-              <i className="fas fa-times"></i>
-              <span className="sr-only">Close menu</span>
+              <i className="fas fa-times" />
             </button>
           </div>
 
+          {/* Search */}
+          <div className="mobile-search-wrap">
+            <SearchBar onClose={() => setIsMobileMenuOpen(false)} />
+          </div>
+
+          {/* Links */}
           <div className="mobile-nav-links">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={({ isActive }) =>
-                  `mobile-nav-link ${isActive ? "mobile-nav-link-active" : ""}`
-                }
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </NavLink>
+            {navGroups.map((group) => (
+              <div key={group.title} className="mobile-group">
+                <div className="mobile-group-title">{group.title}</div>
+
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      "mobile-nav-link" + (isActive ? " active" : "")
+                    }
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                    <i className="fas fa-chevron-right" aria-hidden="true" />
+                  </NavLink>
+                ))}
+              </div>
             ))}
           </div>
+
+          {/* Footer CTA */}
+          {serviceSettings?.admission && (
+            <div className="mobile-footer">
+              <NavLink
+                to="/admission"
+                className="mobile-admission-btn"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Apply for Admission
+              </NavLink>
+            </div>
+          )}
+
         </div>
       </div>
     </>

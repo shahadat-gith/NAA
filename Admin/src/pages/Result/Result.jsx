@@ -7,6 +7,9 @@ import Loader from "../../components/Loader/Loader";
 import { AdminContext } from "../../context/AdminContext";
 import { capitalizeWords } from "../../utils/utility";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../utils/academicOptions";
+import { generateReportCards } from "./resultPdf";
+import { pdf } from "@react-pdf/renderer";
+import toast from "react-hot-toast";
 
 const Result = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -21,6 +24,7 @@ const Result = () => {
 
   const [loading, setLoading] = useState(results.length === 0);
   const [modalOpen, setModalOpen] = useState(false);
+  const [downloading, setDownloading] = useState(false);
 
   const [filters, setFilters] = useState({
     class: "",
@@ -114,6 +118,69 @@ const Result = () => {
     navigate(`/result/${registrationNo}`, { state: { results } });
   };
 
+  /* ================= DOWNLOAD ================= */
+  const handleDownload = async () => {
+    // Validate filters
+    if (!filters.medium) {
+      toast.error("Please select a medium");
+      return;
+    }
+    if (!filters.class) {
+      toast.error("Please select a class");
+      return;
+    }
+    if ((filters.class === "11" || filters.class === "12") && !filters.stream) {
+      toast.error("Please select a stream for classes 11 and 12");
+      return;
+    }
+
+    if (filteredResults.length === 0) {
+      toast.error("No results found for the selected filters");
+      return;
+    }
+
+    try {
+      setDownloading(true);
+
+      // Get principal details
+      const settingsRes = await axios.get(`${backendUrl}/api/settings/`, {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      });
+
+      const principal = settingsRes.data.success
+        ? settingsRes.data.data.authorities?.find(
+            (a) => a.role?.toLowerCase() === "principal"
+          )
+        : null;
+
+      const fileName = `report_cards_${filters.class}_${filters.medium}${filters.stream ? `_${filters.stream}` : ''}.pdf`;
+
+      const blob = await pdf(
+        generateReportCards({
+          results: filteredResults,
+          principal,
+        })
+      ).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      toast.success("Report cards downloaded successfully!");
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Failed to download report cards");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   if (loading) return <Loader text="Loading results..." />;
 
   return (
@@ -129,6 +196,14 @@ const Result = () => {
         <div className="rp-header-actions">
           <button className="rp-btn-secondary" onClick={handleRefresh}>
             Refresh
+          </button>
+
+          <button
+            className="rp-btn-secondary"
+            onClick={handleDownload}
+            disabled={downloading}
+          >
+            {downloading ? "Downloading..." : "Download Report Cards"}
           </button>
 
           <button

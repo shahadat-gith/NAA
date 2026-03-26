@@ -34,3 +34,32 @@ export function highlight(text, query) {
     </>
   );
 }
+
+
+
+  export const navGroups = [
+    {
+      title: "Academics",
+      items: [
+        { label: "Overview", to: "/academics" },
+        { label: "Curriculum", to: "/curriculum?type=kinder" },
+        { label: "Teachers", to: "/teachers" },
+      ],
+    },
+    {
+      title: "Students",
+      items: [
+        { label: "Student Portal", to: "/student" },
+        { label: "Results", to: "/result" },
+      ],
+    },
+    {
+      title: "Explore",
+      items: [
+        { label: "Gallery", to: "/gallery" },
+        { label: "About", to: "/about" },
+        { label: "Contact", to: "/contact" },
+      ],
+    },
+  ];
+
