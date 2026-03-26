@@ -148,7 +148,7 @@ const StudentPortal = () => {
                   group.students.map((s, si) => (
                     <div key={si} className={`sp-winner-card rank-${gi + 1}`}>
                       <div className="sp-card-rank-tag">
-                        Rank {gi + 1}
+                        {gi + 1}
                       </div>
 
                       <div className="sp-image-frame">
