@@ -31,7 +31,7 @@ const SCHOOL_DETAILS = {
   website: "www.nashibaliacademy.in",
 };
 
-/* ================= CAPITALIZE WORDS ================= */
+/* ================= CAPITALIZE ================= */
 
 const capitalizeWords = (str) => {
   if (!str) return "";
@@ -47,16 +47,17 @@ const ResultReportPdf = ({ result, principal }) => {
 
   const { marksRows, total, percentage } = useMemo(() => {
 
-    const rows = result?.marks?.map((m) => ({
-      subject: m.subject,
-      obtained: m.mark,
-      grade: calculateGrade(m.mark),
-    })) || [];
+    const rows =
+      result?.marks?.map((m) => ({
+        subject: m?.subject,
+        obtained: m?.mark,
+        grade: calculateGrade(m?.mark),
+      })) || [];
 
     return {
       marksRows: rows,
-      total: result.totalMarks || 0,
-      percentage: result.percentage || 0
+      total: result?.totalMarks || 0,
+      percentage: result?.percentage || 0,
     };
 
   }, [result]);
@@ -115,8 +116,7 @@ const ResultReportPdf = ({ result, principal }) => {
                   <Info label="Stream" value={capitalizeWords(result?.stream)} />
                 )}
 
-                <Info label="Rank" value={result.rank || "-"} />
-
+                <Info label="Rank" value={result?.rank || "-"} />
               </View>
 
               <View style={styles.photoFrame}>
@@ -128,7 +128,7 @@ const ResultReportPdf = ({ result, principal }) => {
 
             </View>
 
-            {/* ================= MARKS TABLE ================= */}
+            {/* ================= TABLE ================= */}
 
             <View style={styles.tableHeaderBox}>
               <Text>Marks Details</Text>
@@ -136,45 +136,56 @@ const ResultReportPdf = ({ result, principal }) => {
 
             <View style={styles.table}>
 
+              {/* ✅ FIXED HEADER */}
               <View style={styles.tRow}>
                 <HeaderCell text="SUBJECT" />
                 <HeaderCell text="MAX MARKS" />
-                <Cell text={m.obtained === 0 ? "Absent" : m.obtained} />
+                <HeaderCell text="OBTAINED" />
                 <HeaderCell text="GRADE" />
               </View>
 
-              {marksRows.map((m, i) => (
-                <View key={i} style={styles.tRow}>
-                  <Cell text={m.subject} />
-                  <Cell text="100" />
-                  <Cell text={m.obtained} />
-                  <Cell text={m.grade} />
+              {/* ✅ SAFE MAP */}
+              {marksRows.length > 0 ? (
+                marksRows.map((m, i) => (
+                  <View key={i} style={styles.tRow}>
+                    <Cell text={m.subject} />
+                    <Cell text={result?.maxMarksPerSubject || 100} />
+                    <Cell text={m.obtained === 0 ? "Absent" : m.obtained} />
+                    <Cell text={m.grade} />
+                  </View>
+                ))
+              ) : (
+                <View style={styles.tRow}>
+                  <Cell text="No data" />
+                  <Cell text="-" />
+                  <Cell text="-" />
+                  <Cell text="-" />
                 </View>
-              ))}
+              )}
 
             </View>
 
             {/* ================= SUMMARY ================= */}
 
             <View style={styles.instructionSection}>
-
               <Text style={styles.instructionTitle}>Result Summary:</Text>
+
               <Text style={[styles.instructionText, { fontWeight: "bold" }]}>
-                Marks Obtained: {total}/{result?.marks?.length * (result?.maxMarksPerSubject || 100)}
-              </Text>
-              <Text style={styles.instructionText}>
-                Percentage: {percentage.toFixed(2)}%
+                Marks Obtained: {total}/
+                {(result?.marks?.length || 0) * (result?.maxMarksPerSubject || 100)}
               </Text>
 
               <Text style={styles.instructionText}>
-                Grade: {result.grade}
+                Percentage: {Number(percentage).toFixed(2)}%
               </Text>
-
 
               <Text style={styles.instructionText}>
-                Result: {result.resultStatus}
+                Grade: {result?.grade || "-"}
               </Text>
 
+              <Text style={styles.instructionText}>
+                Result: {result?.resultStatus || "-"}
+              </Text>
             </View>
 
             {/* ================= FOOTER ================= */}
@@ -189,14 +200,11 @@ const ResultReportPdf = ({ result, principal }) => {
                   />
                 )}
 
-                <Text style={styles.principalLabel}>
-                  Principal
-                </Text>
+                <Text style={styles.principalLabel}>Principal</Text>
 
                 <Text style={styles.tCellText}>
                   ({principal?.name || "-"})
                 </Text>
-
               </View>
 
               <View style={styles.schoolContactArea}>
@@ -213,7 +221,6 @@ const ResultReportPdf = ({ result, principal }) => {
                 <Text style={styles.contactText}>
                   {SCHOOL_DETAILS.email} | {SCHOOL_DETAILS.contact}
                 </Text>
-
               </View>
 
             </View>
