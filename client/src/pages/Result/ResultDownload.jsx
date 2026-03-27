@@ -21,7 +21,9 @@ const ResultDownload = () => {
   const result = state?.result;
   const principal = state?.principal;
 
-  const MAX_MARKS_SUM = result?.marks.length * result?.maxMarksPerSubject;
+  // ✅ SAFE calculation
+  const MAX_MARKS_SUM =
+    (result?.marks?.length || 0) * (result?.maxMarksPerSubject || 0);
 
   if (!result) {
     return (
@@ -36,10 +38,8 @@ const ResultDownload = () => {
 
   return (
     <div className="report-page">
-
-      
+      {/* ================= ACTION ================= */}
       <div className="actions-container">
-
         <PDFDownloadLink
           document={<ResultReportPdf result={result} principal={principal} />}
           fileName="result.pdf"
@@ -50,15 +50,11 @@ const ResultDownload = () => {
             </button>
           )}
         </PDFDownloadLink>
-
       </div>
 
       <div className="report-sheet">
-
         {/* ================= HEADER ================= */}
-
         <div className="report-header">
-
           <img src={logo} className="school-logo" alt="logo" />
 
           <h1>NASHIB ALI ACADEMY</h1>
@@ -74,15 +70,11 @@ const ResultDownload = () => {
             <span>SESSION: {result.academicSession}</span>
             <div className="line-short"></div>
           </div>
-
         </div>
 
         {/* ================= STUDENT SECTION ================= */}
-
         <div className="student-section">
-
           <div className="student-info">
-
             <Info label="Name" value={capitalizeWords(result.name)} />
             <Info label="Father's Name" value={capitalizeWords(result.fatherName)} />
             <Info label="Mother's Name" value={capitalizeWords(result.motherName)} />
@@ -95,7 +87,6 @@ const ResultDownload = () => {
             )}
 
             <Info label="Rank" value={result.rank || "-"} />
-
           </div>
 
           <div className="photo-frame">
@@ -104,17 +95,12 @@ const ResultDownload = () => {
               alt="student"
             />
           </div>
-
         </div>
 
         {/* ================= TABLE ================= */}
-
-        <div className="table-title">
-          Marks Details
-        </div>
+        <div className="table-title">Marks Details</div>
 
         <table className="marks-table">
-
           <thead>
             <tr>
               <th>SUBJECT</th>
@@ -125,37 +111,37 @@ const ResultDownload = () => {
           </thead>
 
           <tbody>
-
-            {result.marks.map((m, i) => (
-              <tr key={i}>
-                <td>{m.subject.toUpperCase()}</td>
-                <td>{result.maxMarksPerSubject}</td>
-                <td>{m.mark}</td>
-                <td>{calculateGrade(m.mark)}</td>
+            {/* ✅ SAFE MAP */}
+            {result?.marks?.length > 0 ? (
+              result.marks.map((m, i) => (
+                <tr key={i}>
+                  <td>{m?.subject?.toUpperCase()}</td>
+                  <td>{result.maxMarksPerSubject}</td>
+                  <td>{m?.mark ?? "-"}</td>
+                  <td>{calculateGrade(m?.mark)}</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4">No marks available</td>
               </tr>
-            ))}
-
+            )}
           </tbody>
-
         </table>
 
         {/* ================= SUMMARY ================= */}
-
         <div className="summary-section">
-
-          <div>Marks Obtained: {result.totalMarks}/{MAX_MARKS_SUM}</div>
-          <div>Percentage: {result.percentage}%</div>
-          <div>Grade: {result.grade}</div>
-          <div>Result: {result.resultStatus}</div>
-
+          <div>
+            Marks Obtained: {result.totalMarks || 0}/{MAX_MARKS_SUM}
+          </div>
+          <div>Percentage: {result.percentage || 0}%</div>
+          <div>Grade: {result.grade || "-"}</div>
+          <div>Result: {result.resultStatus || "-"}</div>
         </div>
 
         {/* ================= FOOTER ================= */}
-
         <div className="report-footer">
-
           <div className="principal-sign">
-
             {principal?.signature?.url && (
               <img
                 src={principal.signature.url}
@@ -169,11 +155,9 @@ const ResultDownload = () => {
             <div className="principal-name">
               ({principal?.name || "-"})
             </div>
-
           </div>
 
           <div className="school-contact">
-
             <div className="divider-footer">
               <span>NASHIB ALI ACADEMY</span>
             </div>
@@ -181,16 +165,9 @@ const ResultDownload = () => {
             <div>Mahachara, Kachumara, Barpeta, Assam - 781127</div>
             <div>www.nashibaliacademy.in</div>
             <div>nashibaliacademy.offl@gmail.com | +91-60014-16724</div>
-
           </div>
-
         </div>
-
       </div>
-
-      {/* ================= DOWNLOAD BUTTON ================= */}
-
-
     </div>
   );
 };
