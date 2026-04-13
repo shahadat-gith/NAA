@@ -37,6 +37,7 @@
    ───────────────────────────────────────────── */
 .student-list-scroll {
   overflow-y: auto;
+  overflow-x: auto;
   flex: 1;
   /* Smooth scrolling for touch devices */
   -webkit-overflow-scrolling: touch;
@@ -66,6 +67,7 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
+  min-width: 500px;
 }
 
 .student-list-table thead th {

@@ -107,7 +107,7 @@ const ResultDetails = () => {
             <div className="rd-section-line" />
           </div>
 
-          <div className="rd-marks-wrapper">
+          <div className="rd-marks-table-wrapper">
             <table className="rd-marks-table">
               <thead>
                 <tr>

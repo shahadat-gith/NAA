@@ -229,25 +229,26 @@ const Admissions = () => {
       </div>
 
       {/* ================= TABLE ================= */}
-      <table className="admissions-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Class</th>
-            <th>Medium</th>
-            <th>Stream</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {filteredAdmissions.length ===
-          0 ? (
+      <div className="admissions-table-container">
+        <table className="admissions-table">
+          <thead>
             <tr>
-              <td colSpan="7">
-                No admissions found
+              <th>#</th>
+              <th>Name</th>
+              <th>Class</th>
+              <th>Medium</th>
+              <th>Stream</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {filteredAdmissions.length ===
+            0 ? (
+              <tr>
+                <td colSpan="7">
+                  No admissions found
               </td>
             </tr>
           ) : (
@@ -310,7 +311,8 @@ const Admissions = () => {
             )
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 };

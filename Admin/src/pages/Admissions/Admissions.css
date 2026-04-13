@@ -71,13 +71,19 @@
 /* ─────────────────────────────────────────────
    Admissions Table
    ───────────────────────────────────────────── */
+.admissions-table-container {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .admissions-table {
   width: 100%;
   border-collapse: collapse;
   background-color: var(--bg-surface);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-default);
-  overflow: hidden;
+  min-width: 600px;
 }
 
 .admissions-table thead tr {

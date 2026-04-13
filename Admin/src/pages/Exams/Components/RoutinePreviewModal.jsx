@@ -55,18 +55,19 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails, authorities 
         </div>
 
         {/* TABLE */}
-        <table className="rpm-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Subject</th>
-              <th>Date</th>
-              <th>Shift</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {routine.exams.map((exam, index) => (
+        <div className="rpm-table-wrapper">
+          <table className="rpm-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Date</th>
+                <th>Shift</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {routine.exams.map((exam, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{exam.subject}</td>
@@ -78,8 +79,9 @@ const RoutinePreviewModal = ({ open, onClose, routine, examDetails, authorities 
                 <td>{exam.time}</td>
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
 
         {/* ACTIONS */}
         <div className="rpm-actions">

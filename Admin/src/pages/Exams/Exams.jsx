@@ -236,24 +236,25 @@ const Exams = () => {
       </div>
 
       {/* Table */}
-      <table className="act-table">
-        <thead>
-          <tr>
-            <th>Class</th>
-            <th>Medium</th>
-            <th>Exam Routine</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredAdmitCards.length === 0 ? (
+      <div className="act-table-wrapper">
+        <table className="act-table">
+          <thead>
             <tr>
-              <td colSpan="6" style={{ textAlign: "center", opacity: 0.7 }}>
-                No exam schedules found
-              </td>
+              <th>Class</th>
+              <th>Medium</th>
+              <th>Exam Routine</th>
+              <th>Action</th>
             </tr>
-          ) : (
-            filteredAdmitCards.map((s) => (
+          </thead>
+          <tbody>
+            {filteredAdmitCards.length === 0 ? (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center", opacity: 0.7 }}>
+                  No exam schedules found
+                </td>
+              </tr>
+            ) : (
+              filteredAdmitCards.map((s) => (
               <tr key={s._id}>
                 <td>{s.class.toUpperCase()}</td>
                 <td style={{ textTransform: "capitalize" }}>
@@ -291,7 +292,8 @@ const Exams = () => {
             ))
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
 
       {/* Modals */}
       <RoutineModal

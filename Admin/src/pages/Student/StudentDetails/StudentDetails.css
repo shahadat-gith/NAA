@@ -113,9 +113,15 @@
 /* ─────────────────────────────────────────────
    Grid-style Details Table
    ───────────────────────────────────────────── */
+.naa-details-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .naa-details-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 400px;
 }
 
 .naa-details-table td {

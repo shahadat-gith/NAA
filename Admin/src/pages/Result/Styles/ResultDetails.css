@@ -131,9 +131,15 @@
   background-color: var(--border-default);
 }
 
+.rd-marks-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
 .rd-marks-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 500px;
 }
 
 .rd-marks-table th {

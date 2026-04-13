@@ -115,84 +115,90 @@ const StudentDetails = () => {
         {/* -------- Academic Information -------- */}
         <div className="naa-details-section">
           <h4>Academic Information</h4>
-          <table className="naa-details-table">
-            <tbody>
-              <tr>
-                <td>Class</td>
-                <td>{student.class}</td>
-                <td>Medium</td>
-                <td>{capitalizeFirst(student.medium) || "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Stream</td>
-                <td>{capitalizeFirst(student.stream) || "N/A"}</td>
-                <td>Registration No</td>
-                <td>{student.registrationNo}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="naa-details-table-wrapper">
+            <table className="naa-details-table">
+              <tbody>
+                <tr>
+                  <td>Class</td>
+                  <td>{student.class}</td>
+                  <td>Medium</td>
+                  <td>{capitalizeFirst(student.medium) || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td>Stream</td>
+                  <td>{capitalizeFirst(student.stream) || "N/A"}</td>
+                  <td>Registration No</td>
+                  <td>{student.registrationNo}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* -------- Personal Information -------- */}
         <div className="naa-details-section">
           <h4>Personal Information</h4>
-          <table className="naa-details-table">
-            <tbody>
-              <tr>
-                <td>Father's Name</td>
-                <td>{capitalizeWords(student.fatherName) || "N/A"}</td>
-                <td>Mother's Name</td>
-                <td>{capitalizeWords(student.motherName) || "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Date of Birth</td>
-                <td>{student.dob || "N/A"}</td>
-                <td>Gender</td>
-                <td>{student.gender || "N/A"}</td>
-              </tr>
-              <tr>
-                <td>Phone</td>
-                <td>{student.phone || "N/A"}</td>
-                <td>Aadhar</td>
-                <td>{student.aadhar || "N/A"}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="naa-details-table-wrapper">
+            <table className="naa-details-table">
+              <tbody>
+                <tr>
+                  <td>Father's Name</td>
+                  <td>{capitalizeWords(student.fatherName) || "N/A"}</td>
+                  <td>Mother's Name</td>
+                  <td>{capitalizeWords(student.motherName) || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td>Date of Birth</td>
+                  <td>{student.dob || "N/A"}</td>
+                  <td>Gender</td>
+                  <td>{student.gender || "N/A"}</td>
+                </tr>
+                <tr>
+                  <td>Phone</td>
+                  <td>{student.phone || "N/A"}</td>
+                  <td>Aadhar</td>
+                  <td>{student.aadhar || "N/A"}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* -------- Address Information -------- */}
         <div className="naa-details-section">
           <h4>Address Information</h4>
-          <table className="naa-details-table">
-            <tbody>
-              <tr>
-                <td>Village</td>
-                <td>{capitalizeFirst(student?.address?.village) || "N/A"}</td>
-                <td>Post Office</td>
-                <td>
-                  {capitalizeFirst(student?.address?.postOffice) || "N/A"}
-                </td>
-              </tr>
-              <tr>
-                <td>Police Station</td>
-                <td>
-                  {capitalizeFirst(student?.address?.policeStation) || "N/A"}
-                </td>
-                <td>District</td>
-                <td>
-                  {capitalizeFirst(student?.address?.district) || "N/A"}
-                </td>
-              </tr>
-              <tr>
-                <td>Pincode</td>
-                <td>{student?.address?.pincode || "N/A"}</td>
-                <td>State</td>
-                <td>
-                  {capitalizeFirst(student?.address?.state) || "N/A"}
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="naa-details-table-wrapper">
+            <table className="naa-details-table">
+              <tbody>
+                <tr>
+                  <td>Village</td>
+                  <td>{capitalizeFirst(student?.address?.village) || "N/A"}</td>
+                  <td>Post Office</td>
+                  <td>
+                    {capitalizeFirst(student?.address?.postOffice) || "N/A"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Police Station</td>
+                  <td>
+                    {capitalizeFirst(student?.address?.policeStation) || "N/A"}
+                  </td>
+                  <td>District</td>
+                  <td>
+                    {capitalizeFirst(student?.address?.district) || "N/A"}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Pincode</td>
+                  <td>{student?.address?.pincode || "N/A"}</td>
+                  <td>State</td>
+                  <td>
+                    {capitalizeFirst(student?.address?.state) || "N/A"}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

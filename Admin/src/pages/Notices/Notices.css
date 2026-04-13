@@ -46,12 +46,14 @@
   background-color: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-default);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .notices-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px;
 }
 
 .notices-table thead tr {

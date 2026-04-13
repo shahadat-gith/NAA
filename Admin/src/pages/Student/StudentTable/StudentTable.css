@@ -3,11 +3,11 @@
    ───────────────────────────────────────────── */
 
 .student-table {
-  width: 100%;
   background-color: var(--bg-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-default);
-  overflow: hidden; /* Round the table corners */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: 10px;
 }
 
@@ -16,6 +16,7 @@ table {
   border-collapse: collapse;
   text-align: left;
   font-size: 0.9rem;
+  min-width: 600px;
 }
 
 /* ─────────────────────────────────────────────

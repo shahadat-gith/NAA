@@ -76,10 +76,16 @@
 }
 
 /* TABLE */
+.rpm-table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(90vh - 200px);
+}
+
 .rpm-table {
   width: 100%;
   border-collapse: collapse;
-  overflow-y: auto;
+  min-width: 500px;
 }
 
 .rpm-table th {
