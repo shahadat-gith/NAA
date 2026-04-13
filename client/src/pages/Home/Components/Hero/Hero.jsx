@@ -43,7 +43,7 @@ const Hero = () => {
         </div>
 
         {/* This stays centered while slides move underneath */}
-        <CountdownTimer />
+        {/* <CountdownTimer /> */}
       </div>
 
       {/* Admission Notice */}
