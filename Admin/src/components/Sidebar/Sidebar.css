@@ -1,4 +1,6 @@
-
+/* ─────────────────────────────────────────────
+   Sidebar Container
+   ───────────────────────────────────────────── */
 .admin-sidebar {
   height: 100%;
   padding: 20px 12px;
@@ -6,22 +8,50 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  scrollbar-width: none; 
+  scrollbar-width: none;
 }
 
+.admin-sidebar::-webkit-scrollbar {
+  display: none;
+}
 
 /* ─────────────────────────────────────────────
-   Sidebar Menu List
+   Sidebar Sections
+   ───────────────────────────────────────────── */
+.sidebar-section {
+  margin-bottom: 14px;
+}
+
+.sidebar-section:not(:first-child) {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 12px;
+}
+
+/* Section Titles */
+.sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  padding: 8px 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  opacity: 0.8;
+}
+
+/* ─────────────────────────────────────────────
+   Menu List
    ───────────────────────────────────────────── */
 .sidebar-menu {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  margin: 0;
+  padding: 0;
 }
 
 /* ─────────────────────────────────────────────
-   Sidebar Individual Items
+   Sidebar Items
    ───────────────────────────────────────────── */
 .sidebar-item {
   display: flex;
@@ -35,36 +65,49 @@
   border-radius: var(--radius-md);
   transition: all var(--transition-base);
   border: 1px solid transparent;
+  position: relative;
 }
 
-/* Hover State */
+/* Hover */
 .sidebar-item:hover {
-  background-color: var(--bg-surface-3);
-  color: var(--text-primary);
-  transform: translateX(4px);
+  background-color: var(--color-primary-subtle);
+  box-shadow: 0 0 12px var(--color-primary-glow);
 }
 
-/* Active State (React Router NavLink) */
+/* Active */
 .sidebar-item.active {
   background-color: var(--color-primary-subtle);
-  color: var(--color-primary-bright);
-  border: 1px solid var(--border-strong);
-  box-shadow: 0 0 15px var(--color-primary-glow);
+  box-shadow: 0 0 12px var(--color-primary-glow);
 }
 
+
+/* Icons */
 .sidebar-item i {
   font-size: 1.1rem;
-  width: 20px; /* Consistent icon alignment */
+  width: 20px;
   text-align: center;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
+  opacity: 0.85;
+}
+
+.sidebar-item:hover i {
+  transform: scale(1.1);
+  opacity: 1;
 }
 
 .sidebar-item.active i {
   color: var(--color-primary-bright);
+  opacity: 1;
+}
+
+/* Text */
+.sidebar-item span {
+  flex: 1;
+  white-space: nowrap;
 }
 
 /* ─────────────────────────────────────────────
-   Badge (For future-proofing notifications)
+   Badge
    ───────────────────────────────────────────── */
 .badge {
   margin-left: auto;
@@ -77,34 +120,51 @@
 }
 
 /* ─────────────────────────────────────────────
-   Sections Dividers (Optional addition)
+   Focus Accessibility
    ───────────────────────────────────────────── */
-.sidebar-menu li:nth-child(2),
-.sidebar-menu li:nth-child(7),
-.sidebar-menu li:nth-child(9) {
-  /* You can add margin here if you want to group links visually */
-  margin-top: 10px;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .admin-sidebar {
-    width: 260px;
-    padding: 90px 10px 16px;
-  }
-
-  .sidebar-item {
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .sidebar-item i {
-    font-size: 16px;
-  }
-}
-
-/* Focus States for Accessibility */
 .sidebar-item:focus-visible {
   outline: 2px solid #4a9eff;
   outline-offset: 2px;
+}
+
+/* ─────────────────────────────────────────────
+   Mobile Responsive
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 260px;
+    padding: 80px 10px 16px;
+  }
+
+  .sidebar-section-title {
+    font-size: 0.65rem;
+    padding: 6px 12px;
+  }
+
+  .sidebar-item {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  .sidebar-item i {
+    font-size: 15px;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Optional: Smooth fade-in animation
+   ───────────────────────────────────────────── */
+.sidebar-item {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
