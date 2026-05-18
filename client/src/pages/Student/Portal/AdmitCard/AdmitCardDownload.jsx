@@ -1,7 +1,9 @@
-import { useLocation } from "react-router-dom";
-import "./Styles/AdmitCard.css"
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { PDFDownloadLink } from '@react-pdf/renderer';
+import { TbArrowLeft } from "react-icons/tb";
 import AdmitCardPdf from "./admitCardPdf";
+import "./AdmitCardDownload.css";
 
 const formatDate = (dateInput) => {
   if (!dateInput) return "-";
@@ -28,8 +30,7 @@ const formatDate = (dateInput) => {
   return `${day}${getOrdinal(day)} ${month} ${year} (${weekday})`;
 };
 
-
-const AdmitCard = () => {
+const AdmitCardDownload = () => {
   const SCHOOL_DETAILS = {
     name: "NASHIB ALI ACADEMY",
     logo: "/logo.png",
@@ -40,9 +41,18 @@ const AdmitCard = () => {
   };
 
   const location = useLocation();
+  const navigate = useNavigate();
+  
   const { admitCard, examDetails, principal, student } = location?.state?.data || {};
 
+  // Force safety fallback redirection to prevent component crashes if user manually refreshes page empty
+  useEffect(() => {
+    if (!student) {
+      navigate("/student/portal/admit-card");
+    }
+  }, [student, navigate]);
 
+  if (!student) return null;
 
   const groupedExams = {};
   admitCard?.exams?.forEach((exam) => {
@@ -55,9 +65,10 @@ const AdmitCard = () => {
 
   return (
     <div className="admit-page">
+
       <div className="download-wrapper">
         <PDFDownloadLink
-        className="download-btn"
+          className="download-btn"
           document={
             <AdmitCardPdf
               student={student}
@@ -66,11 +77,10 @@ const AdmitCard = () => {
               principal={principal}
             />
           }
-          fileName={`admit_card_${student.registrationNo}.pdf`}
+          fileName={`admit_card_${student?.registrationNo || "student"}.pdf`}
         >
-          {({ loading }) => loading ? "Generating..." : "Download Admit Card"}
+          {({ loading }) => loading ? "Generating Document..." : "Download Admit Card PDF"}
         </PDFDownloadLink>
-
       </div>
 
       <div className="admit-card-container">
@@ -79,9 +89,7 @@ const AdmitCard = () => {
 
             {/* ================= HEADER ================= */}
             <div className="admit-header">
-              {/* Logo now sits independently at the top for easy centering */}
               <img src={SCHOOL_DETAILS.logo} alt="logo" className="school-logo" />
-
               <h1 className="school-name">{SCHOOL_DETAILS.name}</h1>
 
               <div className="divider-wrapper">
@@ -102,34 +110,30 @@ const AdmitCard = () => {
             {/* ================= STUDENT DETAILS ================= */}
             <div className="student-section">
               <div className="student-info">
-                <p><strong>Name:</strong> <span className="data-text">{student?.name || "shehzin hassan"}</span></p>
-                <p><strong>Father's Name:</strong> <span className="data-text">{student?.fatherName || "mahmadul hassan"}</span></p>
-                <p><strong>Mother's Name:</strong> <span className="data-text">{student?.motherName || "shahanaz khatun"}</span></p>
-                <p>
-                  <strong>Class:</strong> <span className="data-text">{student?.class || "nursery"}</span>
-                </p>
-                <p>
-                  <strong>Medium:</strong> <span className="data-text">{student?.medium || "english"}</span></p>
-                {student.stream &&
-                  <p> <strong>Stream:</strong> <span className="data-text">{student?.stream || "Arts"}</span></p>
-
-                }
-                <p> <strong>Registration No:</strong> <span className="data-text">{student?.registrationNo || "N/A"}</span></p>
+                <p><strong>Name:</strong> <span className="data-text">{student?.name}</span></p>
+                <p><strong>Father's Name:</strong> <span className="data-text">{student?.fatherName}</span></p>
+                <p><strong>Mother's Name:</strong> <span className="data-text">{student?.motherName}</span></p>
+                <p><strong>Class:</strong> <span className="data-text">{student?.class}</span></p>
+                <p><strong>Medium:</strong> <span className="data-text">{student?.medium}</span></p>
+                {student?.stream && (
+                  <p><strong>Stream:</strong> <span className="data-text">{student.stream}</span></p>
+                )}
+                <p><strong>Registration No:</strong> <span className="data-text">{student?.registrationNo}</span></p>
               </div>
               <div className="photo-frame">
-                <img src={student?.image?.url || "/user.png"} alt="student" />
+                <img src={student?.image?.url || "/user.png"} alt="student profile" />
               </div>
             </div>
 
-            {/* ================= EXAM DETAILS ================= */}
+            {/* ================= EXAM DETAILS TABLE ================= */}
             <div className="exam-section">
               <div className="table-header-box">Exam Details</div>
               <table className="exam-table">
                 <thead>
                   <tr>
                     <th>DATE</th>
-                    <th>MORNING <br />( <span style={{ color: "#ddd" }}>{examDetails.time.morning || "9:00 AM - 12:00 PM"} )</span></th>
-                    <th>AFTERNOON <br />( <span style={{ color: "#ddd" }}>{examDetails.time.afternoon || "1:00 PM - 4:00 PM"} )</span></th>
+                    <th>MORNING <br />( <span style={{ color: "#ddd" }}>{examDetails?.time?.morning || "9:00 AM - 12:00 PM"} )</span></th>
+                    <th>AFTERNOON <br />( <span style={{ color: "#ddd" }}>{examDetails?.time?.afternoon || "1:00 PM - 4:00 PM"} )</span></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -142,7 +146,7 @@ const AdmitCard = () => {
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan="3">No exams scheduled</td></tr>
+                    <tr><td colSpan="3" style={{ textAlign: "center" }}>No exams scheduled</td></tr>
                   )}
                 </tbody>
               </table>
@@ -160,11 +164,8 @@ const AdmitCard = () => {
               </ul>
             </div>
 
-
-            {/* ================= FOOTER (Signature Left, Details Right) ================= */}
+            {/* ================= FOOTER ================= */}
             <div className="footer-layout">
-
-              {/* Left Side: Signature */}
               <div className="signature-container">
                 <div className="signature-wrapper">
                   {principal?.signature?.url ? (
@@ -179,7 +180,6 @@ const AdmitCard = () => {
                 </div>
               </div>
 
-              {/* Right Side: School Contact */}
               <div className="school-contact-area">
                 <div className="footer-school-line">
                   <span className="line"></span>
@@ -190,7 +190,6 @@ const AdmitCard = () => {
                 <p>{SCHOOL_DETAILS.website}</p>
                 <p>{SCHOOL_DETAILS.email} | {SCHOOL_DETAILS.contact}</p>
               </div>
-
             </div>
 
           </div>
@@ -200,4 +199,4 @@ const AdmitCard = () => {
   );
 };
 
-export default AdmitCard;
+export default AdmitCardDownload;

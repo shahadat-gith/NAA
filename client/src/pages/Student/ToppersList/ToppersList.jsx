@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { AppContext } from "../../context/AppContext";
-import "./Styles/StudentPortal.css";
-import { CLASS_OPTIONS } from "../../Utils/utility";
+import { AppContext } from "../../../context/AppContext";
+import "./ToppersList.css";
+import { CLASS_OPTIONS } from "../../../Utils/utility";
 import { FiStar, FiTrendingUp } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
@@ -27,48 +27,12 @@ const classLabel = (cls) => {
     : `Class ${cls}`;
 };
 
-const StudentPortal = () => {
+const ToppersList = () => {
   const { backendUrl } = useContext(AppContext);
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({ toppers: [], schoolToppers: [] });
 
   const navigate = useNavigate();
-
-  const [query, setQuery] = useState("");
-  const [searching, setSearching] = useState(false);
-
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-
-    const registrationNo = query.replace(/\s+/g, "");
-
-    if (!registrationNo) {
-      return toast.error("Please enter registration number");
-    }
-
-    setSearching(true);
-
-    try {
-      const res = await axios.post(
-        `${backendUrl}/api/student/search`,
-        { registrationNo }
-      );
-
-      if (res.data.success) {
-        navigate(`/student/dashboard/${res.data.studentId}`);
-      } else {
-        toast.error(res.data.message || "Student not found");
-      }
-
-    } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Something went wrong"
-      );
-    } finally {
-      setSearching(false);
-    }
-  };
 
   useEffect(() => {
     const fetchToppers = async () => {
@@ -108,23 +72,6 @@ const StudentPortal = () => {
             Honoring our brightest minds and their remarkable academic journeys.
           </p>
 
-
-          <div className="sp-header-search">
-            <form className="sp-search-bar" onSubmit={handleSearch}>
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value.toUpperCase())}
-                placeholder="Enter Registration No."
-                className="sp-search-input"
-              />
-
-              <button type="submit" className="sp-search-btn" disabled={searching}>
-                {searching ? "..." : "Search"}
-              </button>
-            </form>
-
-          </div>
         </div>
       </div>
 
@@ -238,4 +185,4 @@ const StudentPortal = () => {
   );
 };
 
-export default StudentPortal;
+export default ToppersList;

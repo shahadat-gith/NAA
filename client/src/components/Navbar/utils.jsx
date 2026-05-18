@@ -43,14 +43,15 @@ export function highlight(text, query) {
       items: [
         { label: "Overview", to: "/academics" },
         { label: "Curriculum", to: "/curriculum?type=kinder" },
-        { label: "Teachers", to: "/teachers" },
+        { label: "Staffs", to: "/staffs" },
       ],
     },
     {
       title: "Students",
       items: [
-        { label: "Student Portal", to: "/student" },
-        { label: "Results", to: "/result" },
+        { label: "Toppers list", to: "/student/toppers" },
+        { label: "Portal", to: "/student/portal" },
+        { label: "Profile", to: "/student/profile" },
       ],
     },
     {

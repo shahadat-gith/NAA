@@ -1,10 +1,10 @@
 import React, { useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/AppContext';
 import { Helmet } from 'react-helmet-async';
-import './Teachers.css';
-import { TeacherCard } from './TeacherCard';
+import './Staffs.css';
+import { StaffCard } from './StaffCard';
 
-const Teachers = () => {
+const Staffs = () => {
   const { teachers } = useContext(AppContext);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -78,7 +78,7 @@ const Teachers = () => {
           {filteredTeachers.length > 0 ? (
             <div className="te-teachers-grid">
               {filteredTeachers.map((teacher, index) => (
-                <TeacherCard key={teacher.id || index} teacher={teacher} />
+                <StaffCard key={teacher.id || index} teacher={teacher} />
               ))}
             </div>
           ) : (
@@ -93,4 +93,4 @@ const Teachers = () => {
   );
 };
 
-export default Teachers;
+export default Staffs;

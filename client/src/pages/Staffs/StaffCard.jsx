@@ -1,4 +1,4 @@
-export const TeacherCard = ({ teacher }) => {
+export const StaffCard = ({ teacher }) => {
   const formatSubjects = (mappings) => {
     if (!mappings || mappings.length === 0) return 'N/A';
     return mappings.map((m) => m.subject).join(', ');

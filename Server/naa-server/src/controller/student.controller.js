@@ -81,8 +81,9 @@ export const getStudentById = async (req, res) => {
 
 export const SearchStudent = async (req, res) => {
   try {
-    const { registrationNo } = req.body;
+    const { registrationNo, key } = req.body;
 
+    // 1. Initial Input Validation
     if (!registrationNo || !registrationNo.trim()) {
       return res.status(400).json({
         success: false,
@@ -90,11 +91,13 @@ export const SearchStudent = async (req, res) => {
       });
     }
 
+    // 2. Fetch Core Student Document First
     const student = await Student.findOne({
-      registrationNo,
+      registrationNo: registrationNo.trim(),
       isActive: true,
     }).lean();
 
+    // 3. Confirm Existence Before Accessing Properties or Sub-Queries
     if (!student) {
       return res.status(404).json({
         success: false,
@@ -102,20 +105,55 @@ export const SearchStudent = async (req, res) => {
       });
     }
 
+    // 4. Handle Conditional Logic Based on Client Key Intent
+    if (key === "admitCard") {
+      const [principal, admitCard, examDetails, services] = await Promise.all([
+        authorityModel
+          .findOne({ role: /principal/i })
+          .select("name designation signature")
+          .lean(),
+
+        AdmitCard.findOne({
+          class: student.class,
+          medium: student.medium,
+          stream: student.stream || "",
+        }).lean(),
+
+        Exam.findOne().lean(),
+        ServiceSettings.findOne().lean(),
+      ]);
+
+      // Return Student Document appended with relational Admit Card models
+      return res.status(200).json({
+        success: true,
+        student,
+        principal: principal || null,
+        admitCard: admitCard || null,
+        examDetails: examDetails || null,
+        services: services || null
+      });
+    }
+    if(key === "fees"){
+      // For fee related lookups, we can add more queries here in the future (e.g., FeePaymentHistory)
+    }
+
+    // 5. Default Response fallback (e.g., Profile Lookups)
     return res.status(200).json({
       success: true,
-      studentId: student._id,
+      student,
     });
 
   } catch (error) {
-    console.error("SearchStudentByRegNo error:", error);
+    console.error("SearchStudent error:", error);
     return res.status(500).json({
       success: false,
-      message: "Error fetching student",
+      message: "An internal server error occurred while fetching student data",
       error: error.message,
     });
   }
 };
+
+
 
 export const deleteStudent = async (req, res) => {
   try {

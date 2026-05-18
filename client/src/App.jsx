@@ -10,23 +10,39 @@ import { AppContext } from "./context/AppContext";
 /* ===== Public Pages ===== */
 import Home from "./pages/Home/Home";
 import About from "./pages/About/About";
-import Teachers from "./pages/Teachers/Teachers";
+import Staffs from "./pages/Staffs/Staffs";
 import Academics from "./pages/Academics/Academics";
 import Contact from "./pages/Contact/Contact";
 import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
-/* ===== Student Pages ===== */
-import StudentPortal from "./pages/Student/StudentPortal";
-import Dashboard from "./pages/Student/Dashboard";
+/* ===== Portal pages ===== */
+import Portal from "./pages/Student/Portal/Portal";
 import Admission from "./pages/Admission/Admission";
-import AdmitCard from "./pages/Student/AdmitCard";
+
+import Result from "./pages/Student/Portal/Result/Result";
+import ResultDownload from "./pages/Student/Portal/Result/ResultDownload";
+
+import AdmitCard from "./pages/Student/Portal/AdmitCard/AdmitCard";
+import AdmitCardDownload from "./pages/Student/Portal/AdmitCard/AdmitCardDownload";
+
+import IdCard from "./pages/Student/Portal/IdCard/IdCard";
+import IdCardDownload from "./pages/Student/Portal/IdCard/IdCardDownload";
+
+
+/* ===== Student pages ===== */
+import ToppersList from "./pages/Student/ToppersList/ToppersList";
+import Profile from "./pages/Student/Profile/Profile";
+
 
 
 import PageNotFound from "./components/404/PageNotFound";
-import Result from "./pages/Result/Result";
-import ResultDownload from "./pages/Result/ResultDownload";
 import Notices from "./pages/Notices/Notices";
+
+
+
+
+
 
 
 
@@ -54,7 +70,7 @@ const App = () => {
           {/* Public */}
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/staffs" element={<Staffs />} />
           <Route path="/curriculum" element={<CurriculumDetails />} />
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />
@@ -63,13 +79,15 @@ const App = () => {
           <Route path="/notices" element={<Notices />} />
 
           {/* Portal */}
-
-          <Route path="/student" element={<StudentPortal />} />
-          <Route path="/student/dashboard/:studentId" element={<Dashboard />} />
-          <Route path="/student/dashboard/admitcard" element={<AdmitCard />} />
-          {/* <Route path="/student-corner" element={<StudentCorner />} /> */}
-          <Route path="/result" element={<Result />} />
-          <Route path="/result/download" element={<ResultDownload />} />
+          <Route path="/student/toppers" element={<ToppersList />} />
+          <Route path="/student/profile" element={<Profile />} />
+          <Route path="/student/portal" element={<Portal />} />
+          <Route path="/student/portal/result" element={<Result />} />
+          <Route path="/student/portal/result/download" element={<ResultDownload />} />
+          <Route path="/student/portal/admit-card" element={<AdmitCard />} />
+          <Route path="/student/portal/admit-card/download" element={<AdmitCardDownload />} />
+          <Route path="/student/portal/id-card" element={<IdCard />} />
+          <Route path="/student/portal/id-card/download" element={<IdCardDownload/>} />
 
           {/* Fallback */}
           <Route path="*" element={<PageNotFound />} />
