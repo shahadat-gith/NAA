@@ -119,11 +119,6 @@ export const ADDRESS_FIELDS = [
 
 
 
-/**
- * Capitalizes the first letter of each word in a sentence
- * @param {string} text
- * @returns {string}
- */
 const capitalizeWords = (text = "") => {
   return text
     .toLowerCase()
