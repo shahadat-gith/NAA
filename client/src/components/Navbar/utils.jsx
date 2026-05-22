@@ -60,6 +60,7 @@ export function highlight(text, query) {
         { label: "Gallery", to: "/gallery" },
         { label: "About", to: "/about" },
         { label: "Contact", to: "/contact" },
+        { label: "Developer", to: "/developer" },
       ],
     },
   ];

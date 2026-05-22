@@ -13,6 +13,7 @@ import About from "./pages/About/About";
 import Staffs from "./pages/Staffs/Staffs";
 import Academics from "./pages/Academics/Academics";
 import Contact from "./pages/Contact/Contact";
+import Developer from "./pages/Developer/Developer";
 import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
 
@@ -75,6 +76,7 @@ const App = () => {
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/developer" element={<Developer />} />
           <Route path="/admission" element={<Admission />} />
           <Route path="/notices" element={<Notices />} />
 
