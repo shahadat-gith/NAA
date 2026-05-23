@@ -1,183 +1,335 @@
+/* ─── Profile Layout Structures ──────────────────────────────── */
 .teacher-profile-page {
-  max-width: 1120px;
   margin: 0 auto;
-  padding: 28px 20px;
-  color: #1f2937;
+  padding: 32px 24px;
 }
 
-.teacher-profile-header,
-.teacher-dashboard-header {
+.teacher-profile-header {
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 20px;
+  align-items: center;
   margin-bottom: 28px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 24px;
 }
 
 .teacher-dashboard-tag {
-  color: #6366f1;
+  font-size: 0.75rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  color: #e94560;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 4px 0;
 }
 
 .teacher-dashboard-title {
-  font-size: clamp(2rem, 2.5vw, 2.5rem);
-  margin: 0 0 8px;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a202c;
+  margin: 0;
 }
 
-.teacher-dashboard-subtitle {
-  color: #4b5563;
-  line-height: 1.6;
-  max-width: 680px;
-}
-
-.teacher-profile-logout,
-.teacher-profile-action,
-.teacher-button-primary,
-.teacher-button-secondary,
-.teacher-dashboard-action {
-  border: none;
-  border-radius: 12px;
-  padding: 12px 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.teacher-profile-logout,
-.teacher-dashboard-action,
-.teacher-button-primary {
-  background: #4338ca;
-  color: #fff;
-}
-
-.teacher-profile-logout:hover,
-.teacher-dashboard-action:hover,
-.teacher-button-primary:hover {
-  background: #3730a3;
-}
-
-.teacher-button-secondary {
-  background: #f3f4f6;
-  color: #111827;
-}
-
-.teacher-button-secondary:hover {
-  background: #e5e7eb;
-}
-
+/* ─── Main Form Shell Layout ─────────────────────────────────── */
 .teacher-profile-body {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
-  gap: 24px;
-}
-
-.teacher-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 24px;
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-}
-
-.teacher-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
+  width: 100%;
 }
 
 .teacher-profile-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 28px;
 }
 
-.teacher-form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-.teacher-form-grid label {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-weight: 600;
-  color: #374151;
-}
-
-.teacher-form-grid input {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  color: #111827;
+.teacher-card {
+  background: #ffffff;
+  border: 1px solid #e9ecf0;
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.01);
 }
 
-.teacher-form-meta {
-  display: grid;
-  gap: 16px;
+.teacher-card h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0;
 }
 
-.teacher-meta-label {
-  color: #6b7280;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-}
-
-.teacher-tags-row {
+.teacher-card-header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.teacher-tag {
-  display: inline-flex;
+/* ─── Profile Image / Avatar Section ────────────────────────── */
+.teacher-profile-avatar-sec {
+  padding: 24px;
+}
+
+.teacher-avatar-uploader {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  width: 100%;
+}
+
+.teacher-avatar-frame {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e9ecf0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.teacher-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teacher-avatar-label-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #eef2ff;
-  color: #4338ca;
-  font-size: 0.9rem;
+  font-size: 0.72rem;
   font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.teacher-form-actions {
+.teacher-avatar-frame:hover .teacher-avatar-label-overlay {
+  opacity: 1;
+}
+
+.teacher-avatar-meta-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.2rem;
+  color: #1a202c;
+  font-weight: 700;
+}
+
+.teacher-avatar-meta-text p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.teacher-edit-trigger-btn {
+  margin-left: auto;
+}
+
+/* ─── Form Inputs & Grid Layout ──────────────────────────────── */
+.teacher-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.teacher-form-label {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.teacher-form-label input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.95rem;
+  color: #1a202c;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.teacher-form-label input:focus {
+  outline: none;
+  border-color: #e94560;
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+.teacher-form-label input:disabled {
+  background-color: #f8fafc;
+  color: #64748b;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+/* ─── Read-Only Subject Array Mapping Display ────────────────── */
+.teacher-mapping-stack {
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.teacher-alert {
-  background: #fef3c7;
-  color: #92400e;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 20px;
-  border: 1px solid #fde68a;
-}
-
-.teacher-profile-grid {
-  display: grid;
-  gap: 18px;
-}
-
-.teacher-profile-grid div {
+.teacher-mapping-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background: #f8fafc;
-  border-radius: 16px;
-  padding: 16px;
+  border: 1px solid #e2e8f0;
+  padding: 12px 18px;
+  border-radius: 8px;
+  gap: 16px;
 }
 
-.teacher-profile-sidebar h2 {
-  margin-top: 0;
+.teacher-mapping-subject {
+  font-weight: 600;
+  color: #1a202c;
+  font-size: 0.95rem;
 }
 
-@media (max-width: 900px) {
-  .teacher-profile-body,
-  .teacher-dashboard-header {
+.teacher-mapping-classes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.teacher-class-tag {
+  background: rgba(233, 69, 96, 0.06);
+  color: #e94560;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(233, 69, 96, 0.12);
+}
+
+.teacher-tag-empty {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ─── Status Alerts ──────────────────────────────────────────── */
+.teacher-alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.teacher-alert--warning {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fef3c7;
+}
+
+.teacher-alert--error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fee2e2;
+}
+
+/* ─── Interaction Action Layout ──────────────────────────────── */
+.teacher-form-actions-sticky {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e9ecf0;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.teacher-button-primary {
+  background-color: #e94560;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(233, 69, 96, 0.2);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.teacher-button-primary:hover {
+  background-color: #d63652;
+}
+
+.teacher-button-primary:disabled {
+  background-color: #cbd5e1;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.teacher-button-secondary {
+  background-color: #ffffff;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.teacher-button-secondary:hover {
+  color: #1a202c;
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.teacher-button-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.teacher-profile-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ─── Responsive Viewports ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .teacher-profile-page {
+    padding: 20px 16px;
+  }
+
+  .teacher-avatar-uploader {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .teacher-edit-trigger-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .teacher-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .teacher-mapping-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }

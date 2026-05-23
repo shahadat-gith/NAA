@@ -1,5 +1,10 @@
 import React, { useEffect, useContext } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -46,6 +51,8 @@ import TeacherLayout from "./teachers/pages/TeacherLayout";
 import Dashboard from "./teachers/pages/Dashboard";
 import TeacherLogin from "./teachers/pages/TeacherLogin";
 import TeacherProfile from "./teachers/pages/TeacherProfile";
+import Payments from "./teachers/pages/Payments";
+import Attendance from "./teachers/pages/Attendance";
 
 const App = () => {
   const location = useLocation();
@@ -58,17 +65,30 @@ const App = () => {
     });
   }, [location.pathname]);
 
+  const teacherToken = localStorage.getItem("teacher-token");
 
   /* ===== TEACHER APP ===== */
   if (location.pathname.startsWith("/teacher")) {
     return (
       <>
         <Toaster position="top-center" />
+
         <Routes>
-          <Route path="/teacher/*" element={<TeacherLayout />}>
+          {/* Login route */}
+          <Route
+            path="/teacher/login"
+            element={teacherToken ? (<Navigate to="/teacher" replace />) : (<TeacherLogin />)}
+          />
+
+          {/* Protected Teacher Routes */}
+          <Route
+            path="/teacher/*"
+            element={teacherToken ? (<TeacherLayout />) : (<Navigate to="/teacher/login" replace />)}
+          >
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<TeacherProfile />} />
-            <Route path="login" element={<TeacherLogin />} />
+            <Route path="payments" element={<Payments />} />
+            <Route path="attendance" element={<Attendance />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
@@ -87,7 +107,6 @@ const App = () => {
       <Navbar />
       <Toaster position="top-center" />
 
-      {/* MAIN CONTENT */}
       <main className="app-content">
         <Routes>
           {/* Public */}

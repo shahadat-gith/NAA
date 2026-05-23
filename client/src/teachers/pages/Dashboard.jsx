@@ -44,57 +44,7 @@ const Dashboard = () => {
             Here's an overview of your schedule, classes, and statements.
           </p>
         </div>
-        <button 
-          className="teacher-attendance-action-btn"
-          onClick={() => navigate("attendance")}
-        >
-          <i className="fa-solid fa-calendar-check"></i>
-          Mark Attendance
-        </button>
       </div>
-
-      <div className="teacher-summary-cards">
-        <article className="teacher-summary-card">
-          <div className="summary-icon-wrapper">
-            <i className="fa-solid fa-book-bookmark"></i>
-          </div>
-          <div className="summary-info">
-            <span>Subjects</span>
-            <strong>{subjectCount}</strong>
-          </div>
-        </article>
-
-        <article className="teacher-summary-card">
-          <div className="summary-icon-wrapper">
-            <i className="fa-solid fa-chalkboard-user"></i>
-          </div>
-          <div className="summary-info">
-            <span>Total Classes</span>
-            <strong>{classCount}</strong>
-          </div>
-        </article>
-
-        <article className="teacher-summary-card">
-          <div className="summary-icon-wrapper">
-            <i className="fa-solid fa-briefcase"></i>
-          </div>
-          <div className="summary-info">
-            <span>Experience</span>
-            <strong>{teacher?.experience || 0} Years</strong>
-          </div>
-        </article>
-
-        <article className="teacher-summary-card">
-          <div className="summary-icon-wrapper">
-            <i className="fa-solid fa-receipt"></i>
-          </div>
-          <div className="summary-info">
-            <span>Payment Records</span>
-            <strong>{paymentHistory.length}</strong>
-          </div>
-        </article>
-      </div>
-
       <div className="teacher-dashboard-grid">
         <section className="teacher-card">
           <div className="teacher-card-header">

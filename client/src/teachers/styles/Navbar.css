@@ -1,144 +1,259 @@
+:root {
+  --nav-bg: #ffffff;
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.92);
+  --nav-border: #e9ecf0;
+  --nav-accent: #e94560;
+  --nav-accent-light: rgba(233, 69, 96, 0.1);
+  --nav-accent-glow: rgba(233, 69, 96, 0.2);
+  --nav-text: #1a202c;
+  --nav-muted: #64748b;
+  --nav-link-hover-bg: #f1f5f9;
+  --nav-active-bg: rgba(233, 69, 96, 0.08);
+  --nav-height: 68px;
+  --nav-radius: 10px;
+  --nav-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Shell ─────────────────────────────────────────────────── */
 .teacher-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 32px;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
   position: sticky;
   top: 0;
   z-index: 100;
-  box-sizing: border-box;
+  width: 100%;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  transition: box-shadow var(--nav-transition), background var(--nav-transition);
 }
 
-.teacher-nav-brand {
+.teacher-nav--scrolled {
+  background: var(--nav-bg-scrolled);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.teacher-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ─── Left Side: Brand (Logo + Stacked Text) ───────────────── */
+.teacher-nav__brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
-}
-
-.teacher-nav-logo {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.teacher-nav-title {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.3px;
-}
-
-.teacher-nav-subtitle {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #64748b;
-  margin-top: 1px;
-}
-
-
-
-/* Focus color updated to matching tone */
-.search-wrapper input:focus {
-  outline: none;
-  background-color: #ffffff;
-  border-color: #e94560;
-  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
-}
-
-.teacher-nav-links {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.teacher-nav-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
   text-decoration: none;
-  color: #475569;
-  font-size: 0.92rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-.teacher-nav-link:hover {
-  background-color: #f1f5f9;
-  color: #0f172a;
+.teacher-nav__logo-container {
+  height: 42px;
+  display: flex;
+  align-items: center;
 }
 
-/* Selected Tab uses transparent version of e94560 */
-.teacher-nav-link.active {
-  background-color: rgba(233, 69, 96, 0.08);
-  color: #e94560;
+.teacher-nav__logo-img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  display: block;
 }
 
-.nav-link-icon {
-  font-size: 1rem;
+.teacher-nav__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
 }
 
-/* Logout Button styling safely matching theme rules */
-.teacher-nav-logout-btn {
+.teacher-nav__academy {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--nav-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.teacher-nav__left-teacher-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--nav-text);
+  opacity: 0.85;
+}
+
+/* ─── Right Side: Profile Action Block ─────────────────────── */
+.teacher-nav__right {
+  position: relative;
+}
+
+.teacher-nav__profile-trigger {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: rgba(233, 69, 96, 0.06);
-  border: 1px solid rgba(233, 69, 96, 0.15);
-  color: #e94560;
-  font-size: 0.92rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: 8px;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 6px;
+  border-radius: 30px;
+  transition: background var(--nav-transition);
 }
 
-.teacher-nav-logout-btn:hover {
-  background-color: #e94560;
+.teacher-nav__profile-trigger:hover {
+  background: var(--nav-link-hover-bg);
+}
+
+/* Avatar Border Frame */
+.teacher-nav__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--nav-accent);
+  box-shadow: 0 0 0 3px var(--nav-accent-glow);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: transform var(--nav-transition);
+}
+
+.teacher-nav__profile-trigger:hover .teacher-nav__avatar {
+  transform: scale(1.03);
+}
+
+.teacher-nav__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Animated Chevron Icon Indicator */
+.teacher-nav__arrow {
+  display: flex;
+  align-items: center;
+  color: var(--nav-muted);
+  transition: transform var(--nav-transition), color var(--nav-transition);
+}
+
+.teacher-nav__profile-trigger:hover .teacher-nav__arrow {
+  color: var(--nav-text);
+}
+
+/* Rotates icon 180 degrees backwards when user clicks and menu deploys */
+.teacher-nav__arrow--open {
+  transform: rotate(-180deg);
+  color: var(--nav-accent);
+}
+
+/* ─── Dropdown Overlay Menu Container ─────────────────────── */
+.teacher-nav__dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 220px;
+  background: #ffffff;
+  border: 1px solid var(--nav-border);
+  border-radius: var(--nav-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 110;
+  animation: dropdownFadeIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dropdown User Identity Block */
+.teacher-nav__dropdown-header {
+  padding: 8px 14px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.teacher-nav__dropdown-user-title {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--nav-muted);
+  font-weight: 600;
+}
+
+.teacher-nav__dropdown-user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--nav-text);
+}
+
+/* Menu Items & Links */
+.teacher-nav__dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: calc(var(--nav-radius) - 2px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--nav-muted);
+  text-decoration: none;
+  text-align: left;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: 
+    color var(--nav-transition), 
+    background var(--nav-transition);
+}
+
+.teacher-nav__dropdown-item:hover {
+  color: var(--nav-text);
+  background: var(--nav-link-hover-bg);
+}
+
+.teacher-nav__dropdown-item--active {
+  color: var(--nav-accent) !important;
+  background: var(--nav-active-bg) !important;
+  font-weight: 600;
+}
+
+/* Section Separation Rule */
+.teacher-nav__dropdown-divider {
+  height: 1px;
+  background: var(--nav-border);
+  margin: 6px 4px;
+}
+
+/* Logout System Call Styling */
+.teacher-nav__dropdown-logout {
+  color: var(--nav-accent);
+  font-weight: 600;
+}
+
+.teacher-nav__dropdown-logout:hover {
   color: #ffffff;
-  border-color: #e94560;
+  background: var(--nav-accent);
 }
 
-/* --- Responsive Adaptations --- */
-@media (max-width: 900px) {
-  .teacher-nav {
-    padding: 14px 20px;
+/* ─── Responsive Adjustments ────────────────────────────────── */
+@media (max-width: 640px) {
+  .teacher-nav__inner {
+    padding: 0 16px;
   }
-
-}
-
-@media (max-width: 768px) {
-  .teacher-nav {
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px 5px;
-  }
-  .teacher-nav-brand {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .teacher-nav-links {
-    width: 100%;
-    justify-content: center;
-    order: 2;
-  }
-}
-
-@media (max-width: 480px) {
-  .teacher-nav-link span,
-  .teacher-nav-logout-btn span {
-    display: none;
-  }
-  .teacher-nav-link, 
-  .teacher-nav-logout-btn {
-    padding: 10px 14px;
+  
+  /* Hides sub-label on mobile viewports so name text stacks cleanly */
+  .teacher-nav__left-teacher-name {
+    font-size: 0.78rem;
   }
 }

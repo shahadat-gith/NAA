@@ -12,6 +12,7 @@ const TeacherLogin = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -55,15 +56,12 @@ const TeacherLogin = () => {
     >
       <div className="teacher-login-card">
         <header className="teacher-login-header">
-          <h1>Welcome back</h1>
-          <p className="teacher-login-description">
-            Enter your contact number and password to access the teacher portal.
-          </p>
+          <h1>Teacher Login</h1>
+          
         </header>
 
         <form className="teacher-login-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="contact">Contact number</label>
             <div className="input-wrapper">
               <i className="fa-solid fa-phone input-icon"></i>
               <input
@@ -78,7 +76,6 @@ const TeacherLogin = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
             <div className="input-wrapper">
               <i className="fa-solid fa-lock input-icon"></i>
               <input

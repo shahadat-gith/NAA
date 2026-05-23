@@ -14,6 +14,8 @@ const Navbar = () => {
   const navRef = useRef(null);
   const navigate = useNavigate();
 
+  const teacherToken = localStorage.getItem("teacher-token");
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -43,7 +45,9 @@ const Navbar = () => {
   // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isMobileMenuOpen]);
 
   // Close dropdown on Escape key
@@ -68,11 +72,14 @@ const Navbar = () => {
       <nav className="navbar" ref={navRef}>
         <div className="navbar-container">
           <div className="navbar-content">
-
             {/* ── LOGO ── */}
             <div className="logo-container">
               <div className="logo-wrapper" onClick={() => navigate("/")}>
-                <img src={logo} alt="Nashib Ali Academy" className="logo-image" />
+                <img
+                  src={logo}
+                  alt="Nashib Ali Academy"
+                  className="logo-image"
+                />
                 <div className="school-info">
                   <h2 className="school-title">Nashib Ali</h2>
                   <span className="school-subtitle">Academy</span>
@@ -122,14 +129,15 @@ const Navbar = () => {
 
             {/* ── RIGHT ── */}
             <div className="navbar-right">
-              {serviceSettings?.admission && (
-                <NavLink to="/admission" className="nav-admission-btn">
-                  Apply Now
+              {teacherToken ? (
+                <NavLink to="/teacher" className="nav-teacher-btn">
+                  Dashborad
+                </NavLink>
+              ) : (
+                <NavLink to="/teacher/login" className="nav-teacher-btn">
+                  Login as Teacher
                 </NavLink>
               )}
-              <NavLink to="/teacher/login" className="nav-teacher-btn">
-                Login as Teacher
-              </NavLink>
 
               <div className="mobile-menu-button">
                 <button
@@ -138,11 +146,12 @@ const Navbar = () => {
                   aria-label="Toggle menu"
                   aria-expanded={isMobileMenuOpen}
                 >
-                  <i className={`fas ${isMobileMenuOpen ? "fa-times" : "fa-bars"}`} />
+                  <i
+                    className={`fas ${isMobileMenuOpen ? "fa-times" : "fa-bars"}`}
+                  />
                 </button>
               </div>
             </div>
-
           </div>
         </div>
       </nav>
@@ -158,7 +167,6 @@ const Navbar = () => {
           role="dialog"
           aria-label="Navigation menu"
         >
-
           {/* Header */}
           <div className="mobile-menu-header">
             <div className="mobile-brand">
@@ -211,17 +219,6 @@ const Navbar = () => {
           </div>
 
           {/* Footer CTA */}
-          {serviceSettings?.admission && (
-            <div className="mobile-footer">
-              <NavLink
-                to="/admission"
-                className="mobile-admission-btn"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Apply for Admission
-              </NavLink>
-            </div>
-          )}
           <div className="mobile-footer">
             <NavLink
               to="/teacher/login"
@@ -231,7 +228,6 @@ const Navbar = () => {
               Login as Teacher
             </NavLink>
           </div>
-
         </div>
       </div>
     </>

@@ -55,53 +55,6 @@
   transform: scale(0.98);
 }
 
-/* Summary Grid Row Metrics Cards */
-.teacher-summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-.teacher-summary-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
-}
-
-.summary-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  background-color: rgba(233, 69, 96, 0.08);
-  color: #e94560;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-}
-
-.summary-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.summary-info span {
-  font-size: 0.88rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.summary-info strong {
-  font-size: 1.5rem;
-  color: #0f172a;
-  font-weight: 700;
-}
 
 /* Panel Layout Cards Data Split viewports */
 .teacher-dashboard-grid {

@@ -31,6 +31,6 @@
 /* --- Responsive Layout Content Spacing --- */
 @media (max-width: 768px) {
   .teacher-page-content {
-    padding: 20px 16px;
+    padding: 20px 0;
   }
 }

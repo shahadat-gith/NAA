@@ -13,6 +13,9 @@ const TeacherLayout = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("teacher-token");
+  if(!token){
+    navigate("/teacher/login")
+  }
 
   useEffect(() => {
     const loadTeacher = async () => {
@@ -53,18 +56,7 @@ const TeacherLayout = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="teacher-error-card">
-        <i className="fa-solid fa-triangle-exclamation error-icon"></i>
-        <h2>Access Denied</h2>
-        <p>{error}</p>
-        <button onClick={() => navigate("/teacher/login")} className="teacher-accent-button">
-          Go to Login
-        </button>
-      </div>
-    );
-  }
+
 
   return (
     <div className="teacher-layout">

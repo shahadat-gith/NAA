@@ -1,107 +1,122 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AppContext } from "../../context/AppContext";
-import { useNavigate } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import "../styles/TeacherProfile.css";
 
 const TeacherProfile = () => {
   const { backendUrl } = useContext(AppContext);
-  const [teacher, setTeacher] = useState(null);
-  const [form, setForm] = useState({});
+  const [teacher, setTeacher] = useOutletContext();
+  
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    contact: "",
+    degree: "",
+    experience: "",
+  });
+
+  // Dedicated states for asset uploads and binary layout strings
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+
   const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("teacherToken");
-  const navigate = useNavigate();
+  
+  const token = localStorage.getItem("teacher-token");
 
+  // Sync state configurations on mount or contextual updates
   useEffect(() => {
-    const loadTeacher = async () => {
-      if (!token) {
-        setError("Please log in as a teacher to access your profile.");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await axios.get(`${backendUrl}/api/auth/teacher/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        setTeacher(response.data.data);
-        setForm({
-          name: response.data.data.name || "",
-          email: response.data.data.email || "",
-          contact: response.data.data.contact || "",
-          degree: response.data.data.degree || "",
-          experience: response.data.data.experience || "",
-        });
-      } catch (err) {
-        setError(
-          err.response?.data?.message ||
-            "Unable to load teacher profile. Please check your login and try again."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (backendUrl) {
-      loadTeacher();
+    if (teacher) {
+      setForm({
+        name: teacher.name || "",
+        email: teacher.email || "N/A",
+        contact: teacher.contact || "",
+        degree: teacher.degree || "",
+        experience: teacher.experience !== undefined ? teacher.experience : "",
+      });
+      setImagePreview(teacher.image || "");
+      setImageFile(null);
     }
-  }, [backendUrl, token]);
+  }, [teacher]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = (event) => {
+  // Intercept selected local file and paint temporary binary preview context
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSave = async (event) => {
     event.preventDefault();
-    setTeacher((prev) => ({
-      ...prev,
-      name: form.name,
-      email: form.email,
-      contact: form.contact,
-      degree: form.degree,
-      experience: Number(form.experience),
-    }));
-    setEditMode(false);
+    setLoading(true);
+    setError(null);
+
+    try {
+      // Compiled payload inside multi-part standard format to handle image transfer
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("contact", form.contact);
+      formData.append("degree", form.degree);
+      formData.append("experience", Number(form.experience));
+      
+      if (imageFile) {
+        formData.append("image", imageFile);
+      }
+
+      const response = await axios.put(
+        `${backendUrl}/api/teacher/update-profile`,
+        formData,
+        {
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setTeacher(response.data.updatedTeacher);
+        setEditMode(false);
+      } else {
+        setError(response.data.message || "Failed to update profile details.");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "An error occurred while saving profile.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
-    setForm({
-      name: teacher.name || "",
-      email: teacher.email || "",
-      contact: teacher.contact || "",
-      degree: teacher.degree || "",
-      experience: teacher.experience || "",
-    });
+    if (teacher) {
+      setForm({
+        name: teacher.name || "",
+        email: teacher.email || "",
+        contact: teacher.contact || "",
+        degree: teacher.degree || "",
+        experience: teacher.experience || "",
+      });
+      setImagePreview(teacher.image || "");
+      setImageFile(null);
+    }
+    setError(null);
     setEditMode(false);
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("teacherToken");
-    navigate("/teacher/login");
-  };
-
-  const missingFields = [
-    !form.email && "Email",
-    !form.contact && "Contact",
-    !form.degree && "Degree",
-    form.experience === "" && "Experience",
-  ].filter(Boolean);
-
-  if (loading) {
-    return <div className="teacher-empty-card">Loading profile...</div>;
-  }
-
-  if (error) {
+  if (!teacher) {
     return (
-      <div className="teacher-error-card">
-        <h2>Unable to load profile</h2>
-        <p>{error}</p>
+      <div className="teacher-profile-loading">
+        <p>Loading profile configurations...</p>
       </div>
     );
   }
@@ -112,132 +127,110 @@ const TeacherProfile = () => {
         <div>
           <p className="teacher-dashboard-tag">My Profile</p>
           <h1 className="teacher-dashboard-title">{teacher.name}</h1>
-          <p className="teacher-dashboard-subtitle">
-            Update any missing details and keep your profile current.
-          </p>
         </div>
-        <button className="teacher-profile-logout" onClick={handleLogout}>
-          Logout
-        </button>
       </div>
 
       <div className="teacher-profile-body">
-        <section className="teacher-card teacher-profile-summary">
-          <div className="teacher-card-header">
-            <h2>Details</h2>
-            <button
-              className="teacher-button-secondary"
-              type="button"
-              onClick={() => setEditMode((prev) => !prev)}
-            >
-              {editMode ? "Preview" : "Edit profile"}
-            </button>
-          </div>
+        <form className="teacher-profile-form" onSubmit={handleSave}>
+          
+          {/* Avatar Profile Box */}
+          <section className="teacher-card teacher-profile-avatar-sec">
+            <div className="teacher-avatar-uploader">
+              <div className="teacher-avatar-frame">
+                <img src={imagePreview || "/logo.png"} alt="Profile Preview" className="teacher-avatar-img" />
+                {editMode && (
+                  <label className="teacher-avatar-label-overlay">
+                    <span>Change Photo</span>
+                    <input type="file" accept="image/*" onChange={handleImageChange} hidden disabled={loading} />
+                  </label>
+                )}
+              </div>
+              <div className="teacher-avatar-meta-text">
+                <h3>{form.name || "Teacher Profile"}</h3>
+                <p>{form.degree || "Degree credentials assignment"}</p>
+              </div>
+              
+              {!editMode && (
+                <button
+                  className="teacher-button-secondary teacher-edit-trigger-btn"
+                  type="button"
+                  onClick={() => setEditMode(true)}
+                >
+                  Edit Profile
+                </button>
+              )}
+            </div>
+          </section>
 
-          {missingFields.length > 0 && !editMode && (
-            <div className="teacher-alert">
-              Missing details: {missingFields.join(", ")}. Click edit to update.
+          {/* Account Form Data Fields */}
+          <section className="teacher-card">
+            <div className="teacher-card-header">
+              <h2>Account Details</h2>
+            </div>
+
+            {error && <div className="teacher-alert teacher-alert--error">{error}</div>}
+
+            <div className="teacher-form-grid">
+              <label className="teacher-form-label">
+                Name
+                <input type="text" name="name" value={form.name} onChange={handleChange} disabled={!editMode || loading} required />
+              </label>
+              <label className="teacher-form-label">
+                Email
+                <input type="email" name="email" value={form.email} onChange={handleChange} disabled={!editMode || loading} />
+              </label>
+              <label className="teacher-form-label">
+                Contact
+                <input type="text" name="contact" value={form.contact} onChange={handleChange} disabled={!editMode || loading} required />
+              </label>
+              <label className="teacher-form-label">
+                Degree
+                <input type="text" name="degree" value={form.degree} onChange={handleChange} disabled={!editMode || loading} required />
+              </label>
+              <label className="teacher-form-label">
+                Experience (Years)
+                <input type="number" min="0" name="experience" value={form.experience} onChange={handleChange} disabled={!editMode || loading} required />
+              </label>
+            </div>
+          </section>
+
+          {/* Read-Only Subject & Class Tracking Mapping Section (Admin Controlled) */}
+          <section className="teacher-card">
+            <div className="teacher-card-header">
+              <h2>Assigned Subjects & Classes</h2>
+            </div>
+
+            <div className="teacher-mapping-stack">
+              {teacher.subjectClassMappings && teacher.subjectClassMappings.length > 0 ? (
+                teacher.subjectClassMappings.map((mapping, idx) => (
+                  <div key={idx} className="teacher-mapping-row">
+                    <span className="teacher-mapping-subject">{mapping.subject}</span>
+                    <div className="teacher-mapping-classes">
+                      {mapping.classes.map((cls, cIdx) => (
+                        <span key={cIdx} className="teacher-class-tag">Class {cls}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <span className="teacher-tag-empty">No subjects or classes assigned yet.</span>
+              )}
+            </div>
+          </section>
+
+          {/* Persistent Action Save Options Layout */}
+          {editMode && (
+            <div className="teacher-form-actions-sticky">
+              <button type="button" className="teacher-button-secondary" onClick={handleCancel} disabled={loading}>
+                Cancel Changes
+              </button>
+              <button type="submit" className="teacher-button-primary" disabled={loading}>
+                {loading ? "Processing..." : "Save All Updates"}
+              </button>
             </div>
           )}
 
-          <form className="teacher-profile-form" onSubmit={handleSave}>
-            <div className="teacher-form-grid">
-              <label>
-                Name
-                <input
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </label>
-              <label>
-                Email
-                <input
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </label>
-              <label>
-                Contact
-                <input
-                  name="contact"
-                  value={form.contact}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </label>
-              <label>
-                Degree
-                <input
-                  name="degree"
-                  value={form.degree}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </label>
-              <label>
-                Experience
-                <input
-                  type="number"
-                  min="0"
-                  name="experience"
-                  value={form.experience}
-                  onChange={handleChange}
-                  disabled={!editMode}
-                />
-              </label>
-            </div>
-
-            <div className="teacher-form-meta">
-              <div>
-                <p className="teacher-meta-label">Assigned subjects</p>
-                <div className="teacher-tags-row">
-                  {teacher.subjectClassMappings?.map((mapping, index) => (
-                    <span key={index} className="teacher-tag">
-                      {mapping.subject}
-                    </span>
-                  )) || <span className="teacher-tag">No subjects assigned</span>}
-                </div>
-              </div>
-            </div>
-
-            {editMode && (
-              <div className="teacher-form-actions">
-                <button type="button" className="teacher-button-secondary" onClick={handleCancel}>
-                  Cancel
-                </button>
-                <button type="submit" className="teacher-button-primary">
-                  Save changes
-                </button>
-              </div>
-            )}
-          </form>
-        </section>
-
-        <section className="teacher-card teacher-profile-sidebar">
-          <h2>Profile snapshot</h2>
-          <div className="teacher-profile-grid">
-            <div>
-              <p className="teacher-meta-label">Teacher ID</p>
-              <strong>{teacher._id}</strong>
-            </div>
-            <div>
-              <p className="teacher-meta-label">Experience</p>
-              <strong>{teacher.experience} years</strong>
-            </div>
-            <div>
-              <p className="teacher-meta-label">Contact</p>
-              <strong>{teacher.contact}</strong>
-            </div>
-            <div>
-              <p className="teacher-meta-label">Subjects</p>
-              <strong>{teacher.subjectClassMappings?.length || 0}</strong>
-            </div>
-          </div>
-        </section>
+        </form>
       </div>
     </div>
   );
