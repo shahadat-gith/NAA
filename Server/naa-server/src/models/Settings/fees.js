@@ -1,60 +1,52 @@
 import mongoose from "mongoose";
 
-// Reusable structure for every class
-const FeeDetail = {
-  monthlyFee: { type: Number, default: 0 },
-  admissionFee: { type: Number, default: 0 },
-};
-
-const feesSettingsSchema = new mongoose.Schema(
+const feeSchema = new mongoose.Schema(
   {
-    hostelFee: FeeDetail,
+    /* ---------- ENGLISH MEDIUM ---------- */
+    english: {
+      nursery: { type: Number, default: 0 },
+      kg: { type: Number, default: 0 },
+      "1": { type: Number, default: 0 },
+      "2": { type: Number, default: 0 },
+      "3": { type: Number, default: 0 },
+      "4": { type: Number, default: 0 },
+      "5": { type: Number, default: 0 },
+      "6": { type: Number, default: 0 },
+      "7": { type: Number, default: 0 },
+      "8": { type: Number, default: 0 },
+      "9": { type: Number, default: 0 },
+      "10": { type: Number, default: 0 },
+    },
 
-    classFees: {
-      /* ---------- ENGLISH MEDIUM ---------- */
-      english: {
-        nursery: FeeDetail,
-        kg: FeeDetail,
-        "1": FeeDetail,
-        "2": FeeDetail,
-        "3": FeeDetail,
-        "4": FeeDetail,
-        "5": FeeDetail,
-        "6": FeeDetail,
-        "7": FeeDetail,
-        "8": FeeDetail,
-        "9": FeeDetail,
-        "10": FeeDetail,
+    /* ---------- ASSAMESE MEDIUM ---------- */
+    assamese: {
+      ankur: { type: Number, default: 0 },
+      mukul: { type: Number, default: 0 },
+      "1": { type: Number, default: 0 },
+      "2": { type: Number, default: 0 },
+      "3": { type: Number, default: 0 },
+      "4": { type: Number, default: 0 },
+      "5": { type: Number, default: 0 },
+      "6": { type: Number, default: 0 },
+      "7": { type: Number, default: 0 },
+      "8": { type: Number, default: 0 },
+      "9": { type: Number, default: 0 },
+      "10": { type: Number, default: 0 },
+      
+      // Higher Secondary (Stream-based)
+      "11": {
+        science: { type: Number, default: 0 },
+        arts: { type: Number, default: 0 },
       },
-
-      /* ---------- ASSAMESE MEDIUM ---------- */
-      assamese: {
-        ankur: FeeDetail,
-        mukul: FeeDetail,
-        "1": FeeDetail,
-        "2": FeeDetail,
-        "3": FeeDetail,
-        "4": FeeDetail,
-        "5": FeeDetail,
-        "6": FeeDetail,
-        "7": FeeDetail,
-        "8": FeeDetail,
-        "9": FeeDetail,
-        "10": FeeDetail,
-        
-        // Higher Secondary (Stream-based)
-        "11": {
-          science: FeeDetail,
-          arts: FeeDetail,
-        },
-        "12": {
-          science: FeeDetail,
-          arts: FeeDetail,
-        },
+      "12": {
+        science: { type: Number, default: 0 },
+        arts: { type: Number, default: 0 },
       },
     },
   },
   { timestamps: true }
 );
 
-export default mongoose.models.FeesSettings || mongoose.model("FeesSettings", feesSettingsSchema);
+const Fee = mongoose.models.Fee || mongoose.model("Fee", feeSchema);
+
+export default Fee;

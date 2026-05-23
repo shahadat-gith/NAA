@@ -1,4 +1,4 @@
-import { teacherModel } from "../models/Academic/teacher.js";
+import { teacherModel } from "../models/Teacher/teacher.js";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import cloudinary from "../config/cloudinary.js";
@@ -90,9 +90,6 @@ export const addTeacher = async (req, res) => {
   }
 };
 
-/* ===============================
-   UPDATE TEACHER
-================================ */
 
 export const updateTeacherDetails = async (req, res) => {
   try {
@@ -145,9 +142,6 @@ export const updateTeacherDetails = async (req, res) => {
   }
 };
 
-/* ===============================
-   DELETE TEACHER
-================================ */
 
 export const deleteTeacher = async (req, res) => {
   try {
@@ -181,10 +175,6 @@ export const deleteTeacher = async (req, res) => {
   }
 };
 
-/* ===============================
-   GET ALL TEACHERS
-================================ */
-
 export const getAllTeachers = async (req, res) => {
   try {
     const teachers = await teacherModel.find().sort({ createdAt: -1 });
@@ -204,11 +194,7 @@ export const getAllTeachers = async (req, res) => {
   }
 };
 
-/* ===============================
-   GET ONE TEACHER
-================================ */
-
-export const getOneTeacher = async (req, res) => {
+export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.params;
 

@@ -1,17 +1,53 @@
 import Razorpay from "razorpay";
-import Payment from "../models/Student/payment.js";
+import Payment from "./payment.js"; // Capitalized to match model export standards
 import Student from "../models/Student/student.js";
 import Dues from "../models/Student/dues.js";
-import Admission from "../models/Student/admission.js";
+import { teacherModel } from "../models/Teacher/teacher.js";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import { getAmountForClass } from "../utils/utility.js";
+import Fee from "../models/Settings/fees.js";
 
-const rzp_instance = new Razorpay({
+export const getAmountForClass = async (studentClass,medium,stream = null) => {
+  try {
+    const feesSettings = await Fee.findOne().lean();
+    if (!feesSettings) {
+      throw new Error("Fees settings not found");
+    }
+
+    /* ---------- VALIDATE MEDIUM ---------- */
+    if (!feesSettings[medium]) {
+      throw new Error("Invalid medium selection");
+    }
+
+    let amount;
+
+    /* ---------- HANDLE HIGHER SECONDARY ---------- */
+    if (studentClass === "11" || studentClass === "12") {
+      if (!stream) {
+        throw new Error("Stream is required for class 11 and 12");
+      }
+
+      amount = feesSettings[medium]?.[studentClass]?.[stream];
+    }
+    /* ---------- NORMAL CLASSES ---------- */
+    else {
+      amount = feesSettings[medium]?.[studentClass];
+    }
+
+    if (amount === undefined) {
+      throw new Error("Invalid class configurations for selected medium");
+    }
+
+    return amount || 0;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
   key_secret: process.env.RAZORPAY_SECRET_KEY,
 });
-
 
 export const createOrder = async (req, res) => {
   try {
@@ -25,12 +61,12 @@ export const createOrder = async (req, res) => {
     );
 
     const options = {
-      amount: amount * 100,
+      amount: amount * 100, // Razorpay works in paise
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };
 
-    const order = await rzp_instance.orders.create(options);
+    const order = await razorpay.orders.create(options);
 
     res.status(200).json({
       success: true,
@@ -57,9 +93,8 @@ export const paymentVerification = async (req, res) => {
       razorpay_payment_id,
       razorpay_signature,
       studentId,
-      academicSession,
-      feeType,
-      month,
+      month, // e.g., "May"
+      year,  // e.g., 2026
     } = req.body;
 
     /* ---------- VERIFY SIGNATURE ---------- */
@@ -76,13 +111,13 @@ export const paymentVerification = async (req, res) => {
       });
     }
 
-    /* ---------- CHECK DUPLICATE PAYMENT ---------- */
+    /* ---------- CHECK DUPLICATE PAYMENT (UPDATED) ---------- */
     const alreadyPaid = await Payment.findOne(
       {
-        student: studentId,
-        academicSession,
-        feeType,
-        ...(feeType === "monthlyFee" ? { month } : {}),
+        userType: "Student",
+        user: studentId,
+        month,
+        year,
         status: "success",
       },
       null,
@@ -93,7 +128,7 @@ export const paymentVerification = async (req, res) => {
       await session.abortTransaction();
       return res.status(400).json({
         success: false,
-        message: "Fee already paid",
+        message: "Fee for this month and year has already been paid",
       });
     }
 
@@ -107,22 +142,22 @@ export const paymentVerification = async (req, res) => {
       });
     }
 
-    /* ---------- CALCULATE AMOUNT (SECURITY) ---------- */
+    /* ---------- CALCULATE AMOUNT ---------- */
     const amount = await getAmountForClass(
       student.class,
       student.medium,
-      feeType,
       student.stream
     );
 
-    /* ---------- SAVE PAYMENT ---------- */
-    const [payment] = await Payment.create(
+    /* ---------- SAVE PAYMENT RECORD (UPDATED) ---------- */
+    const [paymentRecord] = await Payment.create(
       [
         {
-          student: studentId,
-          academicSession,
-          feeType,
-          month: feeType === "monthlyFee" ? month : null,
+          userType: "Student",
+          user: studentId,
+          transactionType: "income",
+          month,
+          year,
           amount,
           paymentMode: "online",
           razorpayOrderId: razorpay_order_id,
@@ -136,27 +171,17 @@ export const paymentVerification = async (req, res) => {
 
     /* ---------- UPDATE DUES ---------- */
     await Dues.findOneAndUpdate(
-      { student: studentId, type: feeType },
+      { student: studentId },
       { dueAmount: 0, lastUpdated: new Date() },
       { session }
     );
 
-    /* ---------- UPDATE ADMISSION ---------- */
-    if (feeType === "admissionFee") {
-      await Admission.findOneAndUpdate(
-        { student: studentId, academicSession },
-        { isAdmissionFeePaid: true },
-        { session }
-      );
-    }
-
     await session.commitTransaction();
 
-    /* ---------- SEND DATA TO FRONTEND ---------- */
     return res.status(200).json({
       success: true,
       message: "Payment verified and recorded successfully",
-      payment,
+      payment: paymentRecord,
       student,
     });
 

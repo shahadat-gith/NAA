@@ -4,7 +4,7 @@ import {
   addTeacher,
   getAllTeachers,
   deleteTeacher,
-  getOneTeacher,
+  getTeacherById,
   updateTeacherDetails,
 } from "../controller/teacher.controller.js";
 import { authMiddleware } from "../middleware/auth.js";
@@ -25,7 +25,7 @@ teacherRouter.get("/all-teachers", getAllTeachers);
 teacherRouter.get(
   "/teacher/:id",
   authMiddleware,
-  getOneTeacher
+  getTeacherById
 );
 
 

@@ -2,20 +2,17 @@ import Student from '../models/Student/student.js';
 import Admission from '../models/Student/admission.js';
 import Result from '../models/Student/result.js';
 
-import { teacherModel } from "../models/Academic/teacher.js";
+import { teacherModel } from "../models/Teacher/teacher.js";
 import Achievers from '../models/Academic/achievers.js';
-import gallery from '../models/Academic/gallery.js';
+import Gallery from '../models/Academic/gallery.js';
 import { authorityModel } from '../models/Academic/authorities.js';
 
 import AdmitCard from '../models/Settings/admitcard.js';
 import Exam from '../models/Settings/exam.js';
 import HeroImage from '../models/Settings/heroImages.js';
-import services from '../models/Settings/services.js';
-import FeesSettings from '../models/Settings/fees.js';
+import ServiceSettings from '../models/Settings/services.js';
+import Fee from '../models/Settings/fees.js';
 import Notice from '../models/Academic/notices.js';
-
-
-
 
 
 export const initialData = async (req, res) => {
@@ -26,13 +23,13 @@ export const initialData = async (req, res) => {
             Admission.find({}).exec(),
             teacherModel.find({}).exec(),
             Achievers.find({}).exec(),
-            gallery.find({}).exec(),
+            Gallery.find({}).exec(),
             authorityModel.find({}).exec(),
             AdmitCard.find({}).exec(),
             Exam.find({}).exec(),
             HeroImage.find({}).exec(),
-            services.find({}).exec(),
-            FeesSettings.find({}).exec(),
+            ServiceSettings.find({}).exec(),
+            Fee.find({}).exec(),
             Notice.find({}).exec()
         ]);
         res.status(200).json({

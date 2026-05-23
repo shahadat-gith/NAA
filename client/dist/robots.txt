@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Disallow: /portal
+Disallow: /portal/
+Disallow: /login
+
+Sitemap: https://nashibaliacademy.in/sitemap.xml

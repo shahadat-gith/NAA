@@ -8,11 +8,6 @@ const dueSchema = new mongoose.Schema({
   },
 
   dueAmount: { type: Number, default: 0, min: 0 },
-  type: {
-    type: String,
-    enum: ["monthlyFee", "admissionFee"],
-    required: true,
-  },
   month: { type: String }, 
 
 });

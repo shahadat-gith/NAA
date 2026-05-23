@@ -18,12 +18,11 @@ const teacherSchema = new mongoose.Schema(
     password: { type: String, default: null }, 
     verificationOtp: { type: String, default: null }, 
     verifyOtpExpireAt: { type: Date, default: null },
-
+    isActive: { type: Boolean, default: true },
   },
-);
+  { timestamps: true });
 
 
 
 // Create model
-export const teacherModel =
-  mongoose.models.Teacher || mongoose.model("Teacher", teacherSchema);
+export const teacherModel = mongoose.models.Teacher || mongoose.model("Teacher", teacherSchema);

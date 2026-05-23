@@ -127,6 +127,9 @@ const Navbar = () => {
                   Apply Now
                 </NavLink>
               )}
+              <NavLink to="/teacher/login" className="nav-teacher-btn">
+                Login as Teacher
+              </NavLink>
 
               <div className="mobile-menu-button">
                 <button
@@ -219,6 +222,15 @@ const Navbar = () => {
               </NavLink>
             </div>
           )}
+          <div className="mobile-footer">
+            <NavLink
+              to="/teacher/login"
+              className="mobile-teacher-btn"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Login as Teacher
+            </NavLink>
+          </div>
 
         </div>
       </div>

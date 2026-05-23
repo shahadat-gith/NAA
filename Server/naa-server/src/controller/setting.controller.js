@@ -1,5 +1,5 @@
 import ServiceSettings from "../models/Settings/services.js";
-import FeesSettings from "../models/Settings/fees.js";
+import Fee from "../models/Settings/fees.js";
 import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
 import HeroImage from "../models/Settings/heroImages.js";
@@ -12,7 +12,7 @@ export const getSettings = async (req, res) => {
   try {
     const [serviceSettings, feesSettings, admitCards, exams, heroImages, authorities] = await Promise.all([
       ServiceSettings.findOne(),
-      FeesSettings.findOne(),
+      Fee.findOne(),
       AdmitCard.find(),
       Exam.find(),
       HeroImage.find().sort({ createdAt: 1 }),

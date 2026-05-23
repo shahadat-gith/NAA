@@ -1,0 +1,217 @@
+
+.legal-layout {
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 20px;
+}
+
+
+.legal-page {
+  width: 100%;
+}
+
+.legal-section {
+  width: 100%;
+}
+
+.legal-container {
+  width: 100%;
+  margin: 0 auto;
+
+  padding: 48px;
+
+}
+
+/* =========================
+   Header
+========================= */
+
+.legal-header {
+  margin-bottom: 48px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: center;
+}
+
+.legal-title {
+  margin: 0 0 14px;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #e94560;
+  letter-spacing: -0.04em;
+}
+
+.legal-updated {
+  margin: 0 0 18px;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.legal-intro {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #475569;
+}
+
+/* =========================
+   Content Blocks
+========================= */
+
+.legal-block {
+  margin-bottom: 42px;
+}
+
+.legal-block:last-child {
+  margin-bottom: 0;
+}
+
+.legal-heading {
+  margin: 0 0 18px;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #e94560;
+}
+
+.legal-text {
+  margin: 0 0 18px;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #334155;
+}
+
+.legal-text:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================
+   Lists
+========================= */
+
+.legal-list {
+  margin: 0;
+  padding-left: 24px;
+}
+
+.legal-list-item {
+  margin-bottom: 14px;
+  color: #334155;
+  font-size: 1rem;
+  line-height: 1.85;
+}
+
+.legal-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.legal-list-item strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* =========================
+   Contact Box
+========================= */
+
+.legal-contact {
+  margin-top: 60px;
+}
+
+.legal-contact-box {
+  margin-top: 20px;
+  padding: 22px 24px;
+}
+
+.legal-contact-item {
+  margin: 0 0 10px;
+  color: #334155;
+  line-height: 1.8;
+  word-break: break-word;
+}
+
+.legal-contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.legal-contact-item strong {
+  color: #0f172a;
+}
+
+/* =========================
+
+
+/* =========================
+   Selection
+========================= */
+
+.legal-page ::selection {
+  background: #e94560;
+  color: #0f172a;
+}
+
+
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+  .legal-layout {
+    padding: 56px 14px;
+  }
+
+  .legal-container {
+    padding: 32px 22px;
+    border-radius: 20px;
+  }
+
+  .legal-header {
+    margin-bottom: 38px;
+    padding-bottom: 22px;
+  }
+
+  .legal-title {
+    font-size: 2rem;
+  }
+
+  .legal-heading {
+    font-size: 1.2rem;
+  }
+
+  .legal-text,
+  .legal-list-item,
+  .legal-intro {
+    font-size: 0.96rem;
+    line-height: 1.8;
+  }
+
+  .legal-contact-box {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .legal-layout {
+    padding: 40px 10px;
+  }
+
+  .legal-container {
+    padding: 26px 18px;
+    border-radius: 18px;
+  }
+
+  .legal-title {
+    font-size: 1.75rem;
+  }
+
+  .legal-heading {
+    font-size: 1.08rem;
+  }
+
+  .legal-list {
+    padding-left: 20px;
+  }
+}

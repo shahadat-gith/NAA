@@ -1,4 +1,4 @@
-import { teacherModel } from "../models/Academic/teacher.js";
+import { teacherModel } from "../models/Teacher/teacher.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js";
@@ -12,24 +12,24 @@ const generateOTP = () => {
 export const teacherLogin = async (req, res) => {
   const { contact, password } = req.body;
   if (!contact || !password) {
-    return res.json({ success: false, message: "All fields are required!" });
+    return res.status(400).json({ success: false, message: "All fields are required!" });
   }
 
   try {
     const teacher = await teacherModel.findOne({ contact });
     if (!teacher) {
-      return res.json({ success: false, message: "Your account does not exist! Create a new account!" });
+      return res.status(401).json({ success: false, message: "Your account does not exist! Create a new account!" });
     }
 
     const isMatch = await bcrypt.compare(password, teacher.password);
     if (!isMatch) {
-      return res.json({ success: false, message: "Wrong password! Please enter a correct password!" });
+      return res.status(401).json({ success: false, message: "Wrong password! Please enter a correct password!" });
     }
 
     const token = jwt.sign({ id: teacher._id, role: "teacher" }, process.env.JWT_SECRET, { expiresIn: "365d" });
-    return res.json({ success: true, token, message: "You have successfully logged in!" });
+    return res.status(200).json({ success: true, token, message: "You have successfully logged in!" });
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -38,7 +38,7 @@ export const adminLogin = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.json({
+    return res.status(400).json({
       success: false,
       message: "All fields are required!",
     });
@@ -57,14 +57,14 @@ export const adminLogin = async (req, res) => {
       { expiresIn: "365d" }
     );
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       token,
       message: "You have successfully logged in!",
     });
   }
 
-  return res.json({
+  return res.status(401).json({
     success: false,
     message: "Wrong email or password!",
   });
@@ -75,7 +75,7 @@ export const getTeacherProfile = async (req, res) => {
   try {
     const teacher = await teacherModel.findById(req.user.id).select("-password");
     if (!teacher) return res.status(404).json({ success: false, message: "Teacher not found" });
-    return res.json({ success: true, data: teacher });
+    return res.status(200).json({ success: true, data: teacher });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -89,12 +89,12 @@ export const forgotPasswordTeacher = async (req, res) => {
     // Step 1: Send OTP
     if (action === "send-otp") {
       if (!email) {
-        return res.json({ success: false, message: "Email is required" });
+        return res.status(400).json({ success: false, message: "Email is required" });
       }
 
       const teacher = await teacherModel.findOne({ email });
       if (!teacher) {
-        return res.json({ success: false, message: "Teacher with this email does not exist" });
+        return res.status(404).json({ success: false, message: "Teacher with this email does not exist" });
       }
 
       const otp = generateOTP();
@@ -123,47 +123,44 @@ export const forgotPasswordTeacher = async (req, res) => {
       };
 
       await transporter.sendMail(mailOptions);
-      return res.json({ success: true, message: "OTP sent to your email" });
+      return res.status(200).json({ success: true, message: "OTP sent to your email" });
     }
 
     // Step 2: Verify OTP
     else if (action === "verify-otp") {
       if (!email || !otp) {
-        return res.json({ success: false, message: "Email and OTP are required" });
+        return res.status(400).json({ success: false, message: "Email and OTP are required" });
       }
 
       const teacher = await teacherModel.findOne({ email });
       if (!teacher) {
-        return res.json({ success: false, message: "Teacher with this email does not exist" });
+        return res.status(404).json({ success: false, message: "Teacher with this email does not exist" });
       }
 
       if (!teacher.verificationOtp || teacher.verifyOtpExpireAt < Date.now()) {
-        return res.json({ success: false, message: "OTP is invalid or expired" });
+        return res.status(400).json({ success: false, message: "OTP is invalid or expired" });
       }
 
       if (teacher.verificationOtp !== otp) {
-        return res.json({ success: false, message: "Incorrect OTP" });
+        return res.status(401).json({ success: false, message: "Incorrect OTP" });
       }
 
-      // Simulate OTP verification delay (for consistency with frontend)
-      setTimeout(() => {
-        return res.json({ success: true, message: "OTP verified successfully" });
-      }, 2000);
+      return res.status(200).json({ success: true, message: "OTP verified successfully" });
     }
 
     // Step 3: Reset Password
     else if (action === "reset-password") {
       if (!email || !newPassword) {
-        return res.json({ success: false, message: "Email and new password are required" });
+        return res.status(400).json({ success: false, message: "Email and new password are required" });
       }
 
       const teacher = await teacherModel.findOne({ email });
       if (!teacher) {
-        return res.json({ success: false, message: "Teacher with this email does not exist" });
+        return res.status(404).json({ success: false, message: "Teacher with this email does not exist" });
       }
 
       if (!teacher.verificationOtp || teacher.verifyOtpExpireAt < Date.now()) {
-        return res.json({ success: false, message: "OTP is invalid or expired. Please request a new OTP" });
+        return res.status(400).json({ success: false, message: "OTP is invalid or expired. Please request a new OTP" });
       }
 
       // Hash the new password
@@ -176,16 +173,13 @@ export const forgotPasswordTeacher = async (req, res) => {
       teacher.verifyOtpExpireAt = null;
       await teacher.save();
 
-      // Simulate password reset delay (for consistency with frontend)
-      setTimeout(() => {
-        return res.json({ success: true, message: "Password reset successfully" });
-      }, 2000);
+      return res.status(200).json({ success: true, message: "Password reset successfully" });
     }
 
     else {
-      return res.json({ success: false, message: "Invalid action" });
+      return res.status(400).json({ success: false, message: "Invalid action" });
     }
   } catch (error) {
-    return res.json({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 };

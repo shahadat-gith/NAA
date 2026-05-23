@@ -10,7 +10,6 @@ import settingsRouter from "./routes/setting.routes.js";
 import galleryRouter from "./routes/gallery.routes.js";
 import achieversRouter from "./routes/achiever.routes.js";
 import studentRouter from "./routes/student.routes.js";
-import paymentRouter from "./routes/payment.routes.js";
 import resultRouter from "./routes/result.routes.js";
 import admissionRouter from "./routes/admission.routes.js";
 import adminRouter from "./routes/admin.routes.js";
@@ -28,22 +27,14 @@ const app = express();
 
 // TOP of middleware (before routes)
 app.use(cors({
-  origin: "*", // or your frontend URL
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
+  credentials: false
 }));
 
-// Explicit preflight handler (VERY IMPORTANT)
+// Explicit preflight handler
 app.options("*", cors());
-
-// 2. Optional cors middleware (fine to keep)
-app.use(
-  cors({
-    origin: true,
-    credentials: true,
-  })
-);
 
 /* ================= MIDDLEWARE ================= */
 
@@ -60,7 +51,6 @@ app.use("/api/gallery", galleryRouter);
 app.use("/api/achievers", achieversRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/results", resultRouter);
-app.use("/api/payment", paymentRouter);
 app.use("/api/admission", admissionRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/notices", noticeRouter);
