@@ -20,8 +20,25 @@ const serverlessHandler = serverless(app, {
 export const handler = async (event, context) => {
   context.callbackWaitsForEmptyEventLoop = false;
 
-  await connectDB();
-  console.log("✅ DB connected");
+  try {
+    await connectDB();
+    console.log("✅ DB connected");
+  } catch (error) {
+    console.error("DB connection failed:", error);
+    return {
+      statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS"
+      },
+      body: JSON.stringify({
+        success: false,
+        message: "Database connection failed",
+        error: error?.message || "Unknown error"
+      })
+    };
+  }
 
   // ✅ Handle OPTIONS at top level (failsafe)
   if (event.httpMethod === "OPTIONS") {

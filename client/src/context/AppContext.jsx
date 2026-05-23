@@ -32,6 +32,9 @@ export const AppContextProvider = (props) => {
       }
     } catch (error) {
       console.error("Error fetching home data:", error);
+      if (error.response) {
+        console.error("Backend response:", error.response.status, error.response.data);
+      }
     } finally {
       setLoading(false);
     }

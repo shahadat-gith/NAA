@@ -18,7 +18,7 @@ import noticeRouter from "./routes/notice.routes.js";
 /* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
 import { authorityModel } from "./models/Academic/authorities.js";
-import { teacherModel } from "./models/Academic/teacher.js";
+import { teacherModel } from "./models/Teacher/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
 import Notice from "./models/Academic/notices.js";
@@ -90,5 +90,14 @@ app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is working!" });
 });
 
+// ERROR HANDLER
+app.use((err, req, res, next) => {
+  console.error("Express error:", err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+    error: process.env.NODE_ENV === "production" ? undefined : err.stack
+  });
+});
 
 export default app;

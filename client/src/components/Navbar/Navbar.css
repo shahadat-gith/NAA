@@ -510,6 +510,7 @@
   .desktop-nav { display: none; }
   .navbar-search-inline { display: none; }
   .nav-admission-btn { display: none; }
+  .nav-teacher-btn {display: none;}
   .mobile-menu-button { display: flex; }
   .mobile-menu-overlay { display: block; }
 }
