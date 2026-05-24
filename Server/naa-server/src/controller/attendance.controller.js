@@ -97,12 +97,17 @@ export const expireAttendanceQR = async (req, res) => {
   }
 };
 
+           
+
 export const markAttendance = async (req, res) => {
   try {
     const { token, markedBy, status } = req.body;
     const teacherId = req.user.id;
-    const today = getIndianDateString();
+    
+    // Assuming getIndianDateString() returns "YYYY-MM-DD" matching your schema format
+    const today = getIndianDateString(); 
 
+    // 1. Verify the QR token validity
     const qrDoc = await AttendanceQR.findOne({
       date: today,
       token,
@@ -116,6 +121,7 @@ export const markAttendance = async (req, res) => {
       });
     }
 
+    // 2. Prevent double check-ins
     const existingAttendance = await TeacherAttendance.findOne({
       teacher: teacherId,
       date: today,
@@ -128,6 +134,7 @@ export const markAttendance = async (req, res) => {
       });
     }
 
+    // 3. Construct and save the new attendance documentation entry
     const newAttendance = new TeacherAttendance({
       teacher: teacherId,
       date: today,
@@ -138,13 +145,31 @@ export const markAttendance = async (req, res) => {
 
     await newAttendance.save();
 
-    const updatedAttendanceList = await TeacherAttendance.find({ date: today })
+    // 4. Safely compile the current month range variables for history sync
+    const now = new Date();
+    const currentMonth = now.getMonth() + 1; // 1-indexed (1 - 12)
+    const currentYear = now.getFullYear();
 
+    const startDate = `${currentYear}-${String(currentMonth).padStart(2, "0")}-01`;
+    
+    // Pass currentMonth explicitly instead of the undeclared 'month' variable
+    const lastDay = new Date(currentYear, currentMonth, 0).getDate();
+    const endDate = `${currentYear}-${String(currentMonth).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
+    // 5. Query context strictly limited to this specific logged-in teacher
+    const historyQuery = {
+      teacher: teacherId,
+      date: { $gte: startDate, $lte: endDate }
+    };
+
+    // Fetch updated monthly records so your React UI calendar colors immediately
+    const attendanceHistory = await TeacherAttendance.find(historyQuery).sort({ date: 1 }); 
     return res.status(200).json({
       success: true,
       message: "Attendance marked successfully",
-      attendance: updatedAttendanceList,
+      attendance: attendanceHistory, 
     });
+
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -153,6 +178,7 @@ export const markAttendance = async (req, res) => {
     });
   }
 };
+
 
 export const getTeacherAttendanceHistory = async (req, res) => {
   try {

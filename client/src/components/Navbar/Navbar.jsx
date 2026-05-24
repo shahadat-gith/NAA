@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "/logo.png";
 import "./Navbar.css";
@@ -8,8 +8,7 @@ import { navGroups } from "./utils";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [openGroup, setOpenGroup] = useState(null); // tracks which dropdown is open
-  const { serviceSettings } = useContext(AppContext);
+  const [openGroup, setOpenGroup] = useState(null);
   const mobileMenuRef = useRef(null);
   const navRef = useRef(null);
   const navigate = useNavigate();
@@ -220,13 +219,15 @@ const Navbar = () => {
 
           {/* Footer CTA */}
           <div className="mobile-footer">
-            <NavLink
-              to="/teacher/login"
-              className="mobile-teacher-btn"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Login as Teacher
-            </NavLink>
+            {teacherToken ? (
+              <NavLink to="/teacher" className="nav-teacher-btn">
+                Dashborad
+              </NavLink>
+            ) : (
+              <NavLink to="/teacher/login" className="nav-teacher-btn">
+                Login as Teacher
+              </NavLink>
+            )}
           </div>
         </div>
       </div>

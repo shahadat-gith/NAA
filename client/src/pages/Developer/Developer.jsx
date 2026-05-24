@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { developerInfo } from "./data";
 import "./Developer.css";
 import Skills from "./Skills";

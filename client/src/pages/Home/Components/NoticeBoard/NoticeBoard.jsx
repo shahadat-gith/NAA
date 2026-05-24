@@ -1,14 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import "./NoticeBoard.css";
 import { AppContext } from "../../../../context/AppContext";
 import Countdown from "../../../../components/Countdown/Countdown";
 
 const NoticeBoard = () => {
   const { notices } = useContext(AppContext);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
 
   const getNoticeIcon = (type) => {
@@ -98,8 +95,6 @@ const NoticeBoard = () => {
         ) : (
           <ul className="notice-list">
             {sortedNotices.map((notice) => {
-              const isFuture =
-                notice.targetDate && new Date(notice.targetDate) > new Date();
 
               return (
                 <li key={notice._id} className="notice-item">
