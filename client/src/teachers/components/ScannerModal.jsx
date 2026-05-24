@@ -1,77 +1,35 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import { Scanner } from "@yudiel/react-qr-scanner";
 import "../styles/ScannerModal.css";
-import { Html5QrcodeScanner } from "html5-qrcode";
 import toast from "react-hot-toast";
 import { FiX } from "react-icons/fi";
 
 const ScannerModal = ({ isOpen, onClose, onScanSuccess }) => {
-  const scannerRef = useRef(null);
 
-  useEffect(() => {
-    if (!isOpen) return;
+  const handleScan = (result) => {
+    if (result?.[0]?.rawValue) {
+      
+      try {
+        const decodedText = result[0].rawValue;
+        const parsedData = JSON.parse(decodedText);
 
-    const initializeScanner = () => {
-      const readerElement = document.getElementById("reader");
-      if (!readerElement) return;
-
-      if (scannerRef.current) {
-        scannerRef.current.clear();
-      }
-
-      const scanner = new Html5QrcodeScanner(
-        "reader",
-        {
-          fps: 15,
-          qrbox: { width: 280, height: 280 },
-          aspectRatio: 1.0,
-          rememberLastUsedCamera: true,
-          videoConstraints: {
-            facingMode: "environment",
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          showTorchButtonIfSupported: true,
-          showZoomSliderIfSupported: false,
-        },
-        false
-      );
-
-      scannerRef.current = scanner;
-
-      scanner.render(
-        async (decodedText) => {
-          scanner.clear();
+        if (parsedData.token) {
+          onScanSuccess(parsedData.token);
           onClose();
-
-          try {
-            const parsedData = JSON.parse(decodedText);
-            if (parsedData.token) {
-              onScanSuccess(parsedData.token);
-            } else {
-              toast.error("Invalid QR Code");
-            }
-          } catch (e) {
-            console.error(e);
-            toast.error("Failed to read QR Code");
-          }
-        },
-        (error) => {
-          if (!error?.startsWith("NotFoundException")) {
-            console.warn(error);
-          }
+        } else {
+          toast.error("Invalid QR Code");
         }
-      );
-    };
-
-    setTimeout(initializeScanner, 150);
-
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.clear();
-        scannerRef.current = null;
+      } catch (e) {
+        console.error(e);
+        toast.error("Failed to read QR Code");
       }
-    };
-  }, [isOpen, onClose, onScanSuccess]);
+    }
+  };
+
+  const handleError = (error) => {
+    console.warn(error);
+    // Don't show error toast for every frame
+  };
 
   if (!isOpen) return null;
 
@@ -80,19 +38,38 @@ const ScannerModal = ({ isOpen, onClose, onScanSuccess }) => {
       <div className="qr-scanner-overlay">
         <div className="qr-scanner-container">
           
+          {/* Close Button */}
           <button className="close-modal-btn" onClick={onClose}>
-            <FiX size={26} />
+            <FiX size={28} />
           </button>
 
           <div className="scanner-header">
             <h2>Scan QR Code</h2>
-            <p>Position the code clearly within the frame</p>
+            <p>Position the QR code inside the frame</p>
           </div>
 
+          {/* Scanner */}
           <div className="scanner-wrapper">
-            <div id="reader" className="scanner-reader"></div>
+            <Scanner
+              onScan={handleScan}
+              onError={handleError}
+              constraints={{
+                facingMode: "environment",   // Back Camera
+              }}
+              styles={{
+                container: { 
+                  width: "100%",
+                  height: "380px",
+                  borderRadius: "16px",
+                },
+                video: {
+                  borderRadius: "16px",
+                },
+              }}
+              scanDelay={300}
+              allowMultiple={false}
+            />
           </div>
-
         </div>
       </div>
     </div>

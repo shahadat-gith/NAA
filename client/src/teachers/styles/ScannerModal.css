@@ -6,25 +6,23 @@
   align-items: center;
   justify-content: center;
   z-index: 3000;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
 }
 
 .qr-scanner-overlay {
   width: 100%;
-  max-width: 480px;
+  max-width: 460px;
   padding: 20px;
 }
 
 .qr-scanner-container {
-  background: #ffffff;
+  background: white;
   border-radius: 24px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
   position: relative;
-  padding: 32px 24px 40px;
-  overflow: hidden;
+  padding: 32px 24px 36px;
 }
 
-/* Close Button */
 .close-modal-btn {
   position: absolute;
   top: 20px;
@@ -39,8 +37,8 @@
   justify-content: center;
   color: #1e2937;
   cursor: pointer;
-  z-index: 10;
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 .close-modal-btn:hover {
@@ -49,17 +47,16 @@
   transform: rotate(90deg);
 }
 
-/* Header */
 .scanner-header {
   text-align: center;
   margin-bottom: 24px;
 }
 
 .scanner-header h2 {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
   font-weight: 700;
-  color: #1e2937;
   margin: 0 0 8px 0;
+  color: #1e2937;
 }
 
 .scanner-header p {
@@ -68,56 +65,28 @@
   font-size: 1rem;
 }
 
-/* Scanner Area */
 .scanner-wrapper {
   background: #0f172a;
   border-radius: 20px;
-  padding: 16px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
-  margin-bottom: 10px;
+  padding: 12px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+  margin-bottom: 16px;
 }
 
-.scanner-reader {
-  border-radius: 16px;
-  overflow: hidden;
-  border: 3px solid #334155;
+.scanner-footer {
+  text-align: center;
 }
 
-/* Hide library controls */
-#reader select,
-#reader button:not(.close-modal-btn),
-#reader .html5-qrcode-anchor {
-  display: none !important;
+.scan-instruction {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0;
 }
 
 /* Responsive */
-@media (max-width: 520px) {
-  .qr-scanner-overlay {
-    padding: 12px;
-  }
-  
+@media (max-width: 500px) {
   .qr-scanner-container {
-    padding: 24px 18px 32px;
+    padding: 24px 18px 28px;
     border-radius: 20px;
   }
-
-  .scanner-wrapper {
-    padding: 10px;
-  }
-}
-
-#reader__dashboard_section_csr{
-  display: none !important;
-}
-
-#qr-shaded-region{
-  border-color: #e6dfdf !important;
-}
-
-#reader__dashboard_section{
-  display: none !important;
-}
-
-#reader img{
-  display: none;
 }
