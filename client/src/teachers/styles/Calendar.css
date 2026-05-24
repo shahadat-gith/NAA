@@ -1,0 +1,218 @@
+.calendar-wrapper-pane {
+  width: 100%;
+  max-width: 560px; 
+  max-height: 600px;    
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;        
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   INTEGRATED PASTEL SUMMARY DECK
+   ========================================================================== */
+.calendar-summary-deck {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 8px;
+  width: 100%;
+}
+
+.summary-tile {
+  padding: 8px 4px; 
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.summary-tile h3 {
+  font-size: 1.15rem;
+  margin: 0 0 2px 0;
+  font-weight: 700;
+}
+
+.summary-tile p {
+  margin: 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+/* Color Tint Profiles */
+.summary-tile.present { background-color: #ecfdf5; color: #065f46; }
+.summary-tile.leave { background-color: #fef9c3; color: #854d0e; }
+.summary-tile.absent { background-color: #fef2f2; color: #991b1b; }
+.summary-tile.highlight { background-color: #e0e7ff; color: #3730a3; }
+
+/* ==========================================================================
+   CALENDAR CORE GRID PLATFORM
+   ========================================================================== */
+.calendar-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+  padding: 16px; 
+  width: 100%;
+  box-sizing: border-box;
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; 
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.month-year-display {
+  display: flex;
+  gap: 4px;
+  background-color: #f3f4f6;
+  padding: 2px 8px;
+  border-radius: 30px;
+}
+
+.calendar-select {
+  border: none;
+  background: transparent;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1f2937;
+  padding: 2px 4px;
+  cursor: pointer;
+  outline: none;
+}
+
+.calendar-select:hover {
+  background-color: #e5e7eb;
+}
+
+.nav-btn {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: #f9fafb;
+  color: #111827;
+  border-color: #cbd5e1;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  flex: 1;
+  align-items: center; /* Centers circle items vertically inside grid tracks */
+  justify-items: center; /* Centers circle items horizontally inside grid tracks */
+  row-gap: 4px;
+}
+
+.calendar-header {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #9ca3af;
+  padding-bottom: 6px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.sunday-header {
+  color: #cbd5e1;
+}
+
+/* ==========================================================================
+   PERFECT CIRCLE DAY TOKENS
+   ========================================================================== */
+.calendar-day {
+  width: 100%;
+  max-width: 36px;       /* Set explicit size constraint for circle */
+  aspect-ratio: 1;       /* Ensures width matches height perfectly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;    /* Turns the 1:1 box into a perfect geometric circle */
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  background-color: #f9fafb;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.calendar-day.empty {
+  background: transparent;
+}
+
+/* ==========================================================================
+   INTERACTIVE GRID DAY COLORS 
+   ========================================================================== */
+.calendar-day.status-green {
+  background-color: #22c55e !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.status-yellow {
+  background-color: #fde047 !important;
+  color: #713f12 !important;
+}
+
+.calendar-day.status-red {
+  background-color: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.calendar-day.sunday {
+  background-color: #75b2ef !important;
+  color: #13161b !important;
+  font-weight: 400;
+}
+
+
+/* Footnote System Legend UI */
+.calendar-legend {
+  max-width: 90%;
+  display: flex;
+  justify-content:space-around;
+  gap: 20px;
+  margin: 12px auto;
+  padding-top: 8px;
+  border-top: 1px solid #f3f4f6;
+  font-size: 0.65rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-dot.green { background-color: #22c55e; }
+.legend-dot.yellow { background-color: #fde047; }
+.legend-dot.red { background-color: #ef4444; }
+.legend-dot.gray { background-color: #75b2ef; border: 1px solid #cbd5e1; }

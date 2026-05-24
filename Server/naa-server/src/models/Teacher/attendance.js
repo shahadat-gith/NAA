@@ -22,7 +22,7 @@ const attendanceSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Present", "Absent", "On-Leave", "Late"],
+      enum: ["Present", "Absent", "On-Leave"],
       default: "Present",
     },
 
@@ -31,25 +31,10 @@ const attendanceSchema = new mongoose.Schema(
       enum: ["Teacher", "Admin"],
       required: true,
     },
+  });
 
-    note: {
-      type: String,
-      default: "",
-    },
-
-    deviceInfo: {
-      ipAddress: String,
-      userAgent: String,
-    },
-  },
-  { timestamps: true }
-);
-
-/* Compound Index: One attendance per teacher per day */
+  
 attendanceSchema.index({ teacher: 1, date: 1 }, { unique: true });
-
-/* Index for sorting */
-attendanceSchema.index({ teacher: 1, checkInTime: -1 });
 
 const TeacherAttendance = mongoose.models.TeacherAttendance || 
                          mongoose.model("TeacherAttendance", attendanceSchema);

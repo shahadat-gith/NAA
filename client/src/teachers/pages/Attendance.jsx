@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
-import { Html5QrcodeScanner } from 'html5-qrcode';
-import '../styles/Attendance.css';
-import { AppContext } from '../../context/AppContext';
-import { useContext } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import "../styles/Attendance.css";
+import { AppContext } from "../../context/AppContext";
+import { useContext } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import ScannerModal from "../components/ScannerModal";
+import { BsQrCodeScan } from "react-icons/bs";
+import Calendar from "../components/Calendar";
+import Loader from "../../components/Loader/Loader";
 
 const Attendance = () => {
   const { backendUrl } = useContext(AppContext);
@@ -12,204 +15,125 @@ const Attendance = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [scanning, setScanning] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const [marking, setMarking] = useState(false);
 
-  const scannerRef = useRef(null);
-  const token = typeof window !== 'undefined' ? localStorage.getItem('teacher-token') : null;
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  useEffect(() => {
-    fetchHistory();
-  }, [backendUrl]);
+  const token = localStorage.getItem("teacher-token");
 
-  const fetchHistory = async () => {
+  // Fetch Attendance for Selected Month
+  const fetchMonthlyAttendance = useCallback(async () => {
     if (!backendUrl) return;
     setLoading(true);
+    setError(null);
     try {
       const res = await axios.get(`${backendUrl}/api/attendance/history/me`, {
         headers: { Authorization: `Bearer ${token}` },
+        params: {
+          month: selectedMonth + 1,
+          year: selectedYear,
+        },
       });
+
       if (res.data?.success) {
         setHistory(res.data.attendance || []);
       }
     } catch (err) {
-      setError(err.response?.data?.message || err.message);
+      const errorMsg = err.response?.data?.message || err.message;
+      setError(errorMsg);
+      setHistory([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [backendUrl, token, selectedMonth, selectedYear]);
 
-  const startScanning = () => {
-    setScanning(true);
-    // Increased delay to ensure modal + #reader div is fully rendered
-    setTimeout(() => {
-      initializeScanner();
-    }, 500);
-  };
+  // Hook into timeline state mutations
+  useEffect(() => {
+    fetchMonthlyAttendance();
+  }, [fetchMonthlyAttendance]);
 
-  const initializeScanner = () => {
-    const readerElement = document.getElementById("reader");
-    if (!readerElement) {
-      toast.error("Scanner container not found");
-      setScanning(false);
-      return;
-    }
-
-    if (scannerRef.current) {
-      scannerRef.current.clear();
-    }
-
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      {
-        fps: 12,
-        qrbox: { width: 280, height: 280 },
-        aspectRatio: 1.0,
-        rememberLastUsedCamera: true,
-        showTorchButtonIfSupported: true,
-      },
-      false
-    );
-
-    scannerRef.current = scanner;
-
-    scanner.render(
-      async (decodedText) => {
-        // Success
-        scanner.clear();
-        setScanning(false);
-        try {
-          const parsedData = JSON.parse(decodedText);
-          if (parsedData.token) {
-            toast.success("QR Code Detected!");
-            await markAttendance(parsedData.token);
-          } else {
-            toast.error("Invalid QR Code");
-          }
-        } catch (e) {
-          toast.error("Failed to read QR Code");
-        }
-      },
-      (error) => {
-        // Ignore continuous "NotFoundException" spam
-        if (!error?.startsWith("NotFoundException")) {
-          console.warn(error);
-        }
-      }
-    );
-  };
-
-  const stopScanning = () => {
-    if (scannerRef.current) {
-      scannerRef.current.clear();
-      scannerRef.current = null;
-    }
-    setScanning(false);
-  };
-
+  // Scan and register check-in token strings
   const markAttendance = async (qrToken) => {
     setMarking(true);
-    const toastId = toast.loading("Marking your attendance...");
-
     try {
-      const res = await axios.post(
-        `${backendUrl}/api/attendance/mark-attendance`,
+      const res = await axios.post(`${backendUrl}/api/attendance/mark-attendance`,
         {
           token: qrToken,
           markedBy: "Teacher",
           status: "Present",
-          note: "Scanned via app",
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data.success) {
-        toast.success("✅ Attendance Marked Successfully!", { id: toastId });
-        fetchHistory();
+        toast.success("Attendance Marked!")
+        setHistory(res.data.attendance || []);
       }
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to mark attendance";
-      toast.error(`❌ ${msg}`, { id: toastId });
+      toast.error(msg);
     } finally {
       setMarking(false);
     }
   };
 
+// 1. Get today's date elements
+const today = new Date();
+const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+// Check if any single record in the history array matches today's date string
+const isTodayAttendanceMarked = history.some((att) => att.date === todayStr);
+
   return (
     <div className="teacher-attendance-page">
-      <Toaster position="top-center" richColors closeButton />
-
+      {/* Control Top Header */}
       <div className="teacher-attendance-header">
         <div>
-          <h1>Attendance History</h1>
-          <p className="teacher-sub">Your personal attendance logs</p>
+          <h1>Attendance</h1>
+          <p className="teacher-sub font-medium">Monthly Overview</p>
         </div>
-        <button 
-          className="teacher-btn primary" 
-          onClick={startScanning}
-          disabled={scanning || marking}
+
+        <button
+          className="teacher-scan-icon-btn"
+          onClick={() => setShowScanner(true)}
+          disabled={marking || isTodayAttendanceMarked}
+          aria-label="Scan QR Code"
         >
-          {marking ? "Processing..." : "Scan QR Code"}
+          <BsQrCodeScan size={24} />
         </button>
       </div>
 
-      <section className="teacher-att-card">
-        {loading ? (
-          <div className="teacher-loading">Loading attendance history...</div>
-        ) : error ? (
-          <div className="teacher-error">{error}</div>
-        ) : history.length === 0 ? (
-          <div className="teacher-empty">No records found yet.</div>
-        ) : (
-          <div className="teacher-log-list">
-            {history.map((item) => (
-              <div key={item._id} className="teacher-log-item">
-                <div className="teacher-log-left">
-                  <div className="teacher-log-date">
-                    {new Date(item.date).toLocaleDateString('en-GB', { 
-                      day: '2-digit', month: 'short', year: 'numeric' 
-                    })}
-                  </div>
-                  <div className="teacher-log-time">
-                    {item.checkInTime 
-                      ? new Date(item.checkInTime).toLocaleTimeString('en-IN', { 
-                          hour: '2-digit', minute: '2-digit', hour12: true 
-                        })
-                      : '-- : --'
-                    }
-                  </div>
-                </div>
-                <div className="teacher-log-main">
-                  <div className="teacher-log-text">Attendance Marked</div>
-                  {item.note && <div className="teacher-log-note">{item.note}</div>}
-                </div>
-                <div className={`teacher-log-status ${item.status?.toLowerCase() || 'present'}`}>
-                  {item.status || 'Present'}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+      {/* Loading Ring */}
+      {loading && <Loader text="Loading attendance records..." />}
 
-      {/* QR Scanner Modal */}
-      {scanning && (
-        <div className="qr-scanner-modal">
-          <div className="qr-scanner-overlay">
-            <div className="qr-scanner-container">
-              <h3>Scan Attendance QR Code</h3>
-              <div id="reader" style={{ width: "100%", maxWidth: "420px", margin: "20px auto" }}></div>
-              
-              <button 
-                className="teacher-btn cancel-btn" 
-                onClick={stopScanning}
-              >
-                Cancel Scanning
-              </button>
-            </div>
-          </div>
+      {/* Network Alert Message */}
+      {error && !loading && (
+        <div className="error-message">
+          <p>Error: {error}</p>
         </div>
       )}
+
+      {/* Integrated Workspace Module */}
+      {!loading && !error && (
+        <div className="calendar-container-pane">
+          <Calendar
+            history={history}
+            selectedMonth={selectedMonth}
+            selectedYear={selectedYear}
+            onMonthChange={setSelectedMonth}
+            onYearChange={setSelectedYear}
+          />
+        </div>
+      )}
+
+      {/* Scanner Overlay */}
+      <ScannerModal
+        isOpen={showScanner}
+        onClose={() => setShowScanner(false)}
+        onScanSuccess={markAttendance}
+      />
     </div>
   );
 };

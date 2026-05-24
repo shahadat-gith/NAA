@@ -17,7 +17,7 @@ export const generateAttendanceQR = async (req, res) => {
     const qrDoc = await AttendanceQR.findOneAndUpdate(
       { date: today },
       { token, qrCodeBase64: qrImageString, isExpired: false },
-      { new: true, upsert: true, runValidators: true }
+      { new: true, upsert: true, runValidators: true },
     );
 
     return res.status(200).json({
@@ -73,7 +73,7 @@ export const expireAttendanceQR = async (req, res) => {
     const qrDoc = await AttendanceQR.findOneAndUpdate(
       { date: today },
       { isExpired: true },
-      { new: true }
+      { new: true },
     );
 
     if (!qrDoc) {
@@ -99,7 +99,7 @@ export const expireAttendanceQR = async (req, res) => {
 
 export const markAttendance = async (req, res) => {
   try {
-    const { token, markedBy, status, note } = req.body;
+    const { token, markedBy, status } = req.body;
     const teacherId = req.user.id;
     const today = getIndianDateString();
 
@@ -134,18 +134,16 @@ export const markAttendance = async (req, res) => {
       checkInTime: new Date(),
       status: status || "Present",
       markedBy: markedBy || "Teacher",
-      note: note || "",
-      deviceInfo: {
-        ipAddress: req.ip,
-        userAgent: req.headers["user-agent"],
-      },
     });
 
     await newAttendance.save();
 
+    const updatedAttendanceList = await TeacherAttendance.find({ date: today })
+
     return res.status(200).json({
       success: true,
       message: "Attendance marked successfully",
+      attendance: updatedAttendanceList,
     });
   } catch (error) {
     return res.status(500).json({
@@ -158,15 +156,24 @@ export const markAttendance = async (req, res) => {
 
 export const getTeacherAttendanceHistory = async (req, res) => {
   try {
-    let teacherId;
+    let teacherId = req.user.id || req.params.teacherId;
 
-    if (req.params.teacherId === "me" || !req.params.teacherId) {
-      teacherId = req.user.id;
-    } else {
-      teacherId = req.params.teacherId;
+    const { month, year } = req.query;
+
+    let query = { teacher: teacherId };
+
+    // Filter by month & year if provided
+    if (month && year) {
+      const startDate = `${year}-${String(month).padStart(2, "0")}-01`;
+
+      // This automatically finds the exact last day of any month (e.g., 28, 29, 30, or 31)
+      const lastDay = new Date(year, month, 0).getDate();
+      const endDate = `${year}-${String(month).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
+      query.date = { $gte: startDate, $lte: endDate };
     }
 
-    const attendanceRecords = await TeacherAttendance.find({ teacher: teacherId })
+    const attendanceRecords = await TeacherAttendance.find(query)
       .populate("teacher", "name image")
       .sort({ date: -1 });
 
@@ -183,6 +190,10 @@ export const getTeacherAttendanceHistory = async (req, res) => {
   }
 };
 
+
+
+
+//for admin only
 export const getTodaysAttendanceHistory = async (req, res) => {
   try {
     const today = getIndianDateString();

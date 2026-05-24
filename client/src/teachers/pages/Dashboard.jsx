@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
-  // Grabbing data directly sent down from parent TeacherLayout
-  const [teacher] = useOutletContext();
   const [greeting, setGreeting] = useState("Welcome");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -27,11 +23,7 @@ const Dashboard = () => {
     { id: 3, month: "March 2026", present: 23, absent: 3, late: 0 },
   ];
 
-  const classCount = teacher?.subjectClassMappings?.reduce(
-    (sum, mapping) => sum + (mapping.classes?.length || 0),
-    0
-  );
-  const subjectCount = teacher?.subjectClassMappings?.length || 0;
+
 
   return (
     <div className="teacher-dashboard-page">

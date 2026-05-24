@@ -1,20 +1,10 @@
-// Loader.jsx
 import React from "react";
 import "./Loader.css";
-import logo from "/logo.png";
 
-const Loader = ({ text = "Loading..." }) => {
+const Loader = () => {
   return (
     <div className="loader-container">
-      <div className="loader-wrapper">
-        {/* Circular Spinner */}
-        <div className="loader-spinner"></div>
-
-        {/* Fixed Logo */}
-        <img src={logo} alt="NAA Logo" className="loader-logo" />
-      </div>
-
-      <p className="loader-text">{text}</p>
+      <div className="spinner"></div>
     </div>
   );
 };
