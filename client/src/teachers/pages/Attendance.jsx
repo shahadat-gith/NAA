@@ -4,6 +4,7 @@ import { Html5QrcodeScanner } from 'html5-qrcode';
 import '../styles/Attendance.css';
 import { AppContext } from '../../context/AppContext';
 import { useContext } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Attendance = () => {
   const { backendUrl } = useContext(AppContext);
@@ -19,7 +20,6 @@ const Attendance = () => {
 
   useEffect(() => {
     fetchHistory();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [backendUrl]);
 
   const fetchHistory = async () => {
@@ -43,10 +43,24 @@ const Attendance = () => {
   // Start QR Scanner
   const startScanning = () => {
     setScanning(true);
+    // Small delay to ensure DOM is updated
+    setTimeout(() => {
+      initializeScanner();
+    }, 300);
+  };
+
+  const initializeScanner = () => {
+    if (scannerRef.current) {
+      scannerRef.current.clear();
+    }
 
     const scanner = new Html5QrcodeScanner(
       "reader",
-      { fps: 10, qrbox: { width: 250, height: 250 } },
+      { 
+        fps: 10, 
+        qrbox: { width: 260, height: 260 },
+        rememberLastUsedCamera: true
+      },
       false
     );
 
@@ -54,24 +68,24 @@ const Attendance = () => {
 
     scanner.render(
       async (decodedText) => {
-        // Stop scanning after successful scan
         scanner.clear();
         setScanning(false);
 
         try {
           const parsedData = JSON.parse(decodedText);
           if (parsedData.token && parsedData.date) {
+            toast.success("QR Code Scanned Successfully!");
             await markAttendance(parsedData.token);
           } else {
-            alert("Invalid QR Code format");
+            toast.error("Invalid QR Code format");
           }
         } catch (e) {
-          console.log(e)
-          alert("Invalid QR Code");
+          toast.error("Invalid QR Code");
         }
       },
-      (error) => {
-        console.warn(error);
+      (errorMessage) => {
+        // Optional: You can log but not show every frame error
+        console.warn("Scan error:", errorMessage);
       }
     );
   };
@@ -80,13 +94,16 @@ const Attendance = () => {
   const stopScanning = () => {
     if (scannerRef.current) {
       scannerRef.current.clear();
+      scannerRef.current = null;
     }
     setScanning(false);
   };
 
-  // Mark Attendance after scanning
+  // Mark Attendance
   const markAttendance = async (qrToken) => {
     setMarking(true);
+    const toastId = toast.loading("Marking attendance...");
+
     try {
       const res = await axios.post(
         `${backendUrl}/api/attendance/mark-attendance`,
@@ -102,12 +119,12 @@ const Attendance = () => {
       );
 
       if (res.data.success) {
-        alert("✅ Attendance marked successfully!");
-        fetchHistory(); // Refresh history
+        toast.success("✅ Attendance marked successfully!", { id: toastId });
+        fetchHistory(); // Refresh list
       }
     } catch (err) {
       const message = err.response?.data?.message || "Failed to mark attendance";
-      alert(`❌ ${message}`);
+      toast.error(`❌ ${message}`, { id: toastId });
     } finally {
       setMarking(false);
     }
@@ -115,6 +132,8 @@ const Attendance = () => {
 
   return (
     <div className="teacher-attendance-page">
+      <Toaster position="top-center" richColors />
+
       <div className="teacher-attendance-header">
         <div>
           <h1>Attendance History</h1>
@@ -126,18 +145,18 @@ const Attendance = () => {
             onClick={startScanning}
             disabled={scanning || marking}
           >
-            {marking ? "Marking..." : "Scan QR"}
+            {marking ? "Processing..." : "Scan QR Code"}
           </button>
         </div>
       </div>
 
       <section className="teacher-att-card">
         {loading ? (
-          <div className="teacher-loading">Loading attendance…</div>
+          <div className="teacher-loading">Loading attendance history...</div>
         ) : error ? (
           <div className="teacher-error">{error}</div>
         ) : history.length === 0 ? (
-          <div className="teacher-empty">No attendance records found.</div>
+          <div className="teacher-empty">No attendance records found yet.</div>
         ) : (
           <div className="teacher-log-list">
             {history.map((item) => {
@@ -185,9 +204,8 @@ const Attendance = () => {
               <button 
                 className="teacher-btn cancel-btn" 
                 onClick={stopScanning}
-                style={{ marginTop: '15px' }}
               >
-                Cancel Scanning
+                Cancel
               </button>
             </div>
           </div>
