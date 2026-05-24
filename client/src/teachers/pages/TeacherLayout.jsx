@@ -4,39 +4,53 @@ import Navbar from "../components/Navbar";
 import "../styles/TeacherLayout.css";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
+import Loader from "../../components/Loader/Loader";
+import toast from "react-hot-toast";
 
 const TeacherLayout = () => {
   const { backendUrl } = useContext(AppContext);
   const [teacher, setTeacher] = useState(null);
+  const [fetching, setFetching] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const token = localStorage.getItem("teacher-token");
-  if(!token){
-    navigate("/teacher/login")
-  }
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/teacher/login", { replace: true });
+    }
+  }, [navigate, token]);
 
   useEffect(() => {
     const loadTeacher = async () => {
       if (!token) {
-        setError("Please log in as a teacher to view the portal.");
+        toast.error("Please log in as a teacher to view the portal.");
         setLoading(false);
         return;
       }
 
       try {
-        const response = await axios.get(`${backendUrl}/api/auth/teacher/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${backendUrl}/api/auth/teacher/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
         setTeacher(response.data.data);
       } catch (err) {
-        setError(
+        const message =
           err.response?.data?.message ||
-            "Unable to load teacher data. Please log in again."
-        );
+          "Unable to load teacher data. Please log in again.";
+
+        toast.error(message);
+        if (err.response?.status === 401) {
+          localStorage.removeItem("teacher-token");
+          navigate("/teacher/login", { replace: true });
+        }
       } finally {
         setLoading(false);
       }
@@ -45,24 +59,16 @@ const TeacherLayout = () => {
     if (backendUrl) {
       loadTeacher();
     }
-  }, [backendUrl, token]);
-
-  if (loading) {
-    return (
-      <div className="teacher-loading-container">
-        <div className="teacher-spinner"></div>
-        <p>Loading teacher portal...</p>
-      </div>
-    );
-  }
-
-
+  }, [backendUrl, token, navigate]);
 
   return (
-    <div className="teacher-layout">
-      <Navbar teacher = {teacher} />
+    <div className="teacher-layout loader-parent">
+      {(loading || fetching) && <Loader />}
+
+      <Navbar teacher={teacher} />
+
       <main className="teacher-page-content">
-        <Outlet context={[teacher, setTeacher]} />
+        <Outlet context={{ teacher, setTeacher, fetching, setFetching }} />
       </main>
     </div>
   );

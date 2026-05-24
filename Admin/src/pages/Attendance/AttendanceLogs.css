@@ -1,0 +1,173 @@
+.atd-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.atd-panel-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.atd-total-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-surface-2);
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.atd-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.atd-refresh-btn {
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.atd-refresh-btn:hover:not(:disabled) {
+  background-color: var(--bg-surface-2);
+}
+
+/* Embedded Structural Data Table */
+.atd-table-wrapper {
+  overflow-x: auto;
+  border-radius: calc(var(--radius-lg) - 2px);
+}
+
+.atd-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.atd-table thead tr {
+  background-color: var(--bg-surface-2);
+}
+
+.atd-table th,
+.atd-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border-default);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.atd-table th {
+  text-align: left;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.atd-table tbody tr:hover {
+  background-color: var(--bg-surface-3);
+}
+
+.atd-td {
+  font-size: 0.95rem;
+}
+
+.atd-faculty-profile-cell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.atd-faculty-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-default);
+  background-color: var(--bg-surface-2);
+}
+
+.atd-faculty-avatar-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-primary-bg);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: 1px solid var(--border-default);
+}
+
+.atd-faculty-meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.faculty-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.faculty-dept {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.time-cell {
+  min-width: 160px;
+}
+
+.no-time {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Status Flags styling */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.status-present { color: #155724; background-color: #d4edda; }
+.status-late { color: #856404; background-color: #fff3cd; }
+.status-onleave { color: #004085; background-color: #cce5ff; }
+.status-default { color: var(--text-secondary); background-color: var(--bg-surface-2); }
+
+.atd-empty-table-state {
+  text-align: center;
+  padding: 32px;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-default);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+@media (max-width: 820px) {
+  .atd-panel-header { flex-direction: column; align-items: flex-start; }
+  .atd-panel-actions { width: 100%; justify-content: space-between; }
+}

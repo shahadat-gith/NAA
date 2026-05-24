@@ -1,16 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import "../styles/TeacherProfile.css";
 import ProfileUpdateModal from "../components/ProfileUpdateModal";
 
 const TeacherProfile = () => {
-  const [teacher, setTeacher] = useOutletContext();
+  const { teacher, setTeacher } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   if (!teacher) {
     return (
-      <div className="teacher-profile-loading">
-        <p>Loading profile configurations...</p>
+      <div className="teacher-profile-page">
+        <p>Loading profile...</p>
       </div>
     );
   }

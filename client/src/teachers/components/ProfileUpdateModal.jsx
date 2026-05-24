@@ -79,7 +79,7 @@ const ProfileUpdateModal = ({isOpen,onClose,teacherData,onUpdateSuccess}) => {
 
     await new Promise((resolve, reject) => {
       image.onload = resolve;
-      image.onerror = (err) =>
+      image.onerror = () =>
         reject(
           new Error(
             "Failed to load image asset for cropping. Check CORS configuration.",
@@ -127,7 +127,8 @@ const ProfileUpdateModal = ({isOpen,onClose,teacherData,onUpdateSuccess}) => {
       setImagePreview(croppedImage.preview);
 
       setShowCropModal(false);
-    } catch (error) {
+    } catch (e) {
+      console.log(e)
       toast.error("Failed to crop image");
     }
   };

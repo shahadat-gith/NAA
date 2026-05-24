@@ -7,13 +7,12 @@ import toast, { Toaster } from "react-hot-toast";
 import ScannerModal from "../components/ScannerModal";
 import { BsQrCodeScan } from "react-icons/bs";
 import Calendar from "../components/Calendar";
-import Loader from "../../components/Loader/Loader";
+import { useOutletContext } from "react-router-dom";
 
 const Attendance = () => {
   const { backendUrl } = useContext(AppContext);
-
+  const { fetching, setFetching } = useOutletContext();
   const [history, setHistory] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showScanner, setShowScanner] = useState(false);
   const [marking, setMarking] = useState(false);
@@ -26,7 +25,7 @@ const Attendance = () => {
   // Fetch Attendance for Selected Month
   const fetchMonthlyAttendance = useCallback(async () => {
     if (!backendUrl) return;
-    setLoading(true);
+    setFetching(true);
     setError(null);
     try {
       const res = await axios.get(`${backendUrl}/api/attendance/history/me`, {
@@ -45,9 +44,9 @@ const Attendance = () => {
       setError(errorMsg);
       setHistory([]);
     } finally {
-      setLoading(false);
+      setFetching(false);
     }
-  }, [backendUrl, token, selectedMonth, selectedYear]);
+  }, [backendUrl, token, selectedMonth, selectedYear, setFetching]);
 
   // Hook into timeline state mutations
   useEffect(() => {
@@ -58,17 +57,18 @@ const Attendance = () => {
   const markAttendance = async (qrToken) => {
     setMarking(true);
     try {
-      const res = await axios.post(`${backendUrl}/api/attendance/mark-attendance`,
+      const res = await axios.post(
+        `${backendUrl}/api/attendance/mark-attendance`,
         {
           token: qrToken,
           markedBy: "Teacher",
           status: "Present",
         },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       if (res.data.success) {
-        toast.success("Attendance Marked!")
+        toast.success("Attendance Marked!");
         setHistory(res.data.attendance || []);
       }
     } catch (err) {
@@ -79,12 +79,12 @@ const Attendance = () => {
     }
   };
 
-// 1. Get today's date elements
-const today = new Date();
-const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  // 1. Get today's date elements
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
-// Check if any single record in the history array matches today's date string
-const isTodayAttendanceMarked = history.some((att) => att.date === todayStr);
+  // Check if any single record in the history array matches today's date string
+  const isTodayAttendanceMarked = history.some((att) => att.date === todayStr);
 
   return (
     <div className="teacher-attendance-page">
@@ -105,18 +105,15 @@ const isTodayAttendanceMarked = history.some((att) => att.date === todayStr);
         </button>
       </div>
 
-      {/* Loading Ring */}
-      {loading && <Loader text="Loading attendance records..." />}
-
       {/* Network Alert Message */}
-      {error && !loading && (
+      {error && !fetching && (
         <div className="error-message">
           <p>Error: {error}</p>
         </div>
       )}
 
       {/* Integrated Workspace Module */}
-      {!loading && !error && (
+      {!fetching && !error && (
         <div className="calendar-container-pane">
           <Calendar
             history={history}
