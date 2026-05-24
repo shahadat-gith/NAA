@@ -25,6 +25,7 @@ import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
 import TeacherDetails from "./pages/Teacher/TeacherDetails";
 import Notices from "./pages/Notices/Notices";
+import Attendance from "./pages/Attendance/Attendance";
 
 
 /* ===============================
@@ -86,6 +87,7 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/teachers" element={<Teacher />} />
                   <Route path="/teachers/:teacherId" element={<TeacherDetails />} />
+                  <Route path="/attendance" element={<Attendance />} />
 
                   <Route path="/students" element={<Student />} />
                   <Route path="/student/images" element={<StudentImages />} />

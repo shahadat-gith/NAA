@@ -17,7 +17,7 @@
    ───────────────────────────────────────────── */
 .main-content {
   flex: 1;
-  padding: 35px 24px;
+  padding: 35px 10px;
   margin-top: 75px; 
   transition: margin-left var(--transition-base);
   width: 100%;

@@ -1,4 +1,3 @@
-
 .teacher-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -26,6 +25,16 @@
   animation: scaleIn 0.25s ease;
   overflow-y: auto;
   max-height: 95vh;
+  scrollbar-width: thin;
+}
+
+.teacher-modal-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.teacher-modal-card::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 20px;
 }
 
 /* =========================
@@ -78,25 +87,24 @@
 }
 
 /* =========================
-   Avatar Upload
+   Avatar
 ========================= */
 
 .teacher-modal-avatar-uploader {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 22px;
-  flex-wrap: wrap;
+  gap: 18px;
 }
 
 .teacher-modal-avatar-frame {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  border-radius: 24px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
   overflow: hidden;
   border: 4px solid #f1f5f9;
-  flex-shrink: 0;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
 }
 
 .teacher-modal-avatar-img {
@@ -105,47 +113,56 @@
   object-fit: cover;
 }
 
-.teacher-modal-avatar-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.55);
-  color: white;
-  font-size: 0.92rem;
-  font-weight: 600;
+.teacher-avatar-actions {
   display: flex;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
   justify-content: center;
-  opacity: 0;
+}
+
+/* Upload Button */
+
+.teacher-upload-btn {
+  border: none;
+  background: #e94560;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 10px 24px rgba(233, 69, 96, 0.25);
+}
+
+.teacher-upload-btn:hover {
+  background: #d73754;
+  transform: translateY(-2px);
+}
+
+/* Crop Button */
+
+.teacher-crop-btn {
+  border: 1px solid #dbe3ee;
+  background: white;
+  color: #0f172a;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
   cursor: pointer;
   transition: 0.25s ease;
 }
 
-.teacher-modal-avatar-frame:hover .teacher-modal-avatar-overlay {
-  opacity: 1;
-}
-
-.teacher-modal-uploader-text {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.upload-title {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.upload-subtitle {
-  font-size: 0.9rem;
-  color: #64748b;
-  margin: 0;
-  line-height: 1.5;
+.teacher-crop-btn:hover {
+  border-color: #e94560;
+  color: #e94560;
+  background: rgba(233, 69, 96, 0.05);
 }
 
 /* =========================
-   Inputs Grid
+   Inputs
 ========================= */
 
 .teacher-modal-inputs-grid {
@@ -181,11 +198,6 @@
   box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.12);
 }
 
-.teacher-form-label input:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 /* =========================
    Actions
 ========================= */
@@ -194,11 +206,8 @@
   display: flex;
   justify-content: flex-end;
   gap: 14px;
-  margin-top: 10px;
   flex-wrap: wrap;
 }
-
-/* Secondary Button */
 
 .teacher-button-secondary {
   border: 1px solid #e2e8f0;
@@ -215,10 +224,7 @@
 .teacher-button-secondary:hover {
   border-color: #e94560;
   color: #e94560;
-  background: rgba(233, 69, 96, 0.05);
 }
-
-/* Primary Button */
 
 .teacher-button-primary {
   border: none;
@@ -238,11 +244,56 @@
   transform: translateY(-2px);
 }
 
-.teacher-button-primary:disabled,
-.teacher-button-secondary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
+/* =========================
+   Crop Modal
+========================= */
+
+.crop-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  z-index: 1200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.crop-modal-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.2);
+}
+
+.crop-container {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  background: #0f172a;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.crop-controls {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.crop-controls input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+.crop-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
 /* =========================
@@ -253,6 +304,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -263,6 +315,7 @@
     opacity: 0;
     transform: scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -277,11 +330,7 @@
   .teacher-modal-card {
     padding: 24px;
     border-radius: 22px;
-  }
-
-  .teacher-modal-avatar-uploader {
-    flex-direction: column;
-    align-items: flex-start;
+    max-height: 85vh;
   }
 
   .teacher-modal-actions {
@@ -292,23 +341,54 @@
   .teacher-button-secondary {
     width: 100%;
   }
+
+  .teacher-modal-avatar-frame {
+    width: 115px;
+    height: 115px;
+  }
 }
 
 @media (max-width: 480px) {
   .teacher-modal-card {
-    padding: 20px;
+    padding: 18px;
+    border-radius: 20px;
+    max-height: 82vh;
   }
 
   .teacher-modal-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
   .teacher-modal-inputs-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .teacher-modal-avatar-frame {
     width: 100px;
     height: 100px;
+  }
+
+  .teacher-avatar-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .teacher-upload-btn,
+  .teacher-crop-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .crop-container {
+    height: 300px;
+  }
+
+  .crop-buttons {
+    flex-direction: column;
+  }
+
+  .crop-buttons button {
+    width: 100%;
   }
 }

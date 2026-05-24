@@ -14,6 +14,7 @@ export const navSections = [
     title: "Staff",
     links: [
       { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
+      { to: "/attendance", icon: "fas fa-clipboard-check", label: "Attendance" },
     ],
   },
   {

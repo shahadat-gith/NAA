@@ -56,12 +56,12 @@ const TeacherProfile = () => {
               <span className="teacher-info-value">{teacher.contact}</span>
             </div>
             <div className="teacher-info-field">
-              <span className="teacher-info-label">Degree / Credentials</span>
+              <span className="teacher-info-label">Degree</span>
               <span className="teacher-info-value">{teacher.degree}</span>
             </div>
             <div className="teacher-info-field">
-              <span className="teacher-info-label">Experience Tier</span>
-              <span className="teacher-info-value">{teacher.experience} Years Active</span>
+              <span className="teacher-info-label">Experience</span>
+              <span className="teacher-info-value">{teacher.experience} Years</span>
             </div>
           </div>
         </section>

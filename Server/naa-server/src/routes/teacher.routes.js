@@ -11,36 +11,14 @@ import { authMiddleware } from "../middleware/auth.js";
 
 const teacherRouter = express.Router();
 
-teacherRouter.post(
-  "/add-teacher",
-  authMiddleware,
-  upload.single("image"),
-  addTeacher
-);
-
+teacherRouter.post("/add-teacher",authMiddleware,upload.single("image"),addTeacher);
 
 teacherRouter.get("/all-teachers", getAllTeachers);
 
+teacherRouter.get("/teacher/:id",authMiddleware,getTeacherById);
 
-teacherRouter.get(
-  "/teacher/:id",
-  authMiddleware,
-  getTeacherById
-);
+teacherRouter.put("/update-teacher/:id",authMiddleware,upload.single("image"),updateTeacherDetails);
 
-
-teacherRouter.put(
-  "/update-teacher/:id",
-  authMiddleware,
-  upload.single("image"),
-  updateTeacherDetails
-);
-
-
-teacherRouter.delete(
-  "/delete-teacher/:id",
-  authMiddleware,
-  deleteTeacher
-);
+teacherRouter.delete("/delete-teacher/:id",authMiddleware,deleteTeacher);
 
 export default teacherRouter;

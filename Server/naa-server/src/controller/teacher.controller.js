@@ -1,4 +1,5 @@
 import { teacherModel } from "../models/Teacher/teacher.js";
+import Timetable from "../models/Teacher/timetable.js";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import cloudinary from "../config/cloudinary.js";
@@ -94,6 +95,7 @@ export const addTeacher = async (req, res) => {
 export const updateTeacherDetails = async (req, res) => {
   try {
     const { id } = req.params;
+
     const teacher = await teacherModel.findById(id);
 
     if (!teacher) {
@@ -102,6 +104,8 @@ export const updateTeacherDetails = async (req, res) => {
         message: "Teacher not found",
       });
     }
+
+    // Image update
 
     if (req.file) {
       if (teacher.imagePublicId) {
@@ -113,17 +117,33 @@ export const updateTeacherDetails = async (req, res) => {
       teacher.imagePublicId = uploadedImage.public_id;
     }
 
+    // Password update
+
     if (req.body.password) {
-      teacher.password = await bcrypt.hash(req.body.password, 10);
+      teacher.password = await bcrypt.hash(req.body.password,10);
     }
+
+    // Subject mapping update
 
     if (req.body.subjectClassMappings) {
-      teacher.subjectClassMappings = JSON.parse(
-        req.body.subjectClassMappings
-      );
+      teacher.subjectClassMappings = JSON.parse(req.body.subjectClassMappings);
     }
 
-    Object.assign(teacher, req.body);
+    // Partial field updates
+
+    const allowedFields = [
+      "name",
+      "email",
+      "contact",
+      "degree",
+      "experience",
+    ];
+
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        teacher[field] = req.body[field];
+      }
+    });
 
     await teacher.save();
 
@@ -133,7 +153,11 @@ export const updateTeacherDetails = async (req, res) => {
       teacher,
     });
   } catch (error) {
-    console.error("updateTeacherDetails error:", error);
+    console.error(
+      "updateTeacherDetails error:",
+      error
+    );
+
     return res.status(500).json({
       success: false,
       message: "Error updating teacher",
@@ -141,7 +165,6 @@ export const updateTeacherDetails = async (req, res) => {
     });
   }
 };
-
 
 export const deleteTeacher = async (req, res) => {
   try {
@@ -220,3 +243,41 @@ export const getTeacherById = async (req, res) => {
     });
   }
 };
+
+
+export const updateTimetable = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { schedule } = req.body;
+    const teacher = await teacherModel.findById(id);
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: "Teacher not found",
+      });
+    }
+
+    // Update the timetable
+    const timetable = await Timetable.findOneAndUpdate(
+      { teacherId: id },
+      { schedule },
+      { new: true, upsert: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Timetable updated successfully",
+      timetable,
+    });
+  } catch (error) {
+    console.error("updateTimetable error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating timetable",
+      error: error.message,
+    });
+  }
+};
+
+

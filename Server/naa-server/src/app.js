@@ -14,6 +14,7 @@ import resultRouter from "./routes/result.routes.js";
 import admissionRouter from "./routes/admission.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import noticeRouter from "./routes/notice.routes.js";
+import attendanceRouter from "./routes/attendance.routes.js";
 
 /* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
@@ -54,7 +55,7 @@ app.use("/api/results", resultRouter);
 app.use("/api/admission", admissionRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/notices", noticeRouter);
-
+app.use("/api/attendance", attendanceRouter);
 /* ================= CUSTOM API ================= */
 
 app.get("/api/home-data", async (req, res, next) => {
