@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import './TeacherPayments.css';
-import CashPaymentModal from './CashPaymentModal';
-import UpdateDuesModal from './UpdateDuesModal';
+import ManageDuesModal from './ManageDuesModal';
 
 const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDuesModalOpen, setIsDuesModalOpen] = useState(false); 
+  const [isManageModalOpen, setIsManageModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('clear'); // 'clear' or 'update'
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [selectedMonthData, setSelectedMonthData] = useState(null);
   const [expandedTeacherRow, setExpandedTeacherRow] = useState(null);
 
-  // Use the backend list directly under a cleaner naming scheme
   const teachersList = teacherDues;
 
-  const initiatePayoutWorkflow = (teacher, targetMonthObj) => {
+  // Open modal in 'clear' mode when clicking a specific month's pay button
+  const handleOpenForClear = (teacher, dueBlock) => {
     setSelectedTeacher(teacher);
-    setSelectedMonthData(targetMonthObj);
-    setIsModalOpen(true);
+    setSelectedMonthData(dueBlock);
+    setModalMode('clear');
+    setIsManageModalOpen(true);
+  };
+
+  // Open modal in 'update' mode for a specific teacher via the new action column
+  const handleOpenForUpdate = (teacher) => {
+    setSelectedTeacher(teacher);
+    setSelectedMonthData(null);
+    setModalMode('update');
+    setIsManageModalOpen(true);
   };
 
   const toggleTeacherRowExpansion = (teacherId) => {
@@ -34,15 +42,6 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
         <h2 className="teacher-section-title">
           <i className="fas fa-wallet"></i> Payroll Management
         </h2>
-        <div className="header-action-button-group">
-          <button 
-            className="teacher-create-dues-btn"
-            style={{ marginBottom: "15px" }}
-            onClick={() => setIsDuesModalOpen(true)}
-          >
-            <i className="fas fa-calendar-plus"></i> Update Due
-          </button>
-        </div>
       </div>
 
       {/* 2. MASTER PAYROLL WORKSHEET TABLE */}
@@ -57,7 +56,7 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
             <tr>
               <th>Teacher</th>
               <th>Outstanding Liability</th>
-              <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -71,6 +70,7 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
                     <tr 
                       className={`teacher-master-row ${hasDues ? 'has-liabilities' : 'cleared'} ${isExpanded ? 'row-expanded' : ''}`}
                       onClick={() => hasDues && toggleTeacherRowExpansion(teacher._id)}
+                      style={{ cursor: hasDues ? 'pointer' : 'default' }}
                     >
                       <td>
                         <div className="teacher-profile-cell-block">
@@ -84,20 +84,23 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
                         </span>
                       </td>
                       <td>
-                        {hasDues ? (
-                          <span className="due-months-count-badge">
-                            {(teacher.dueMonths || []).length} Month(s) Pending
-                          </span>
-                        ) : (
-                          <span className="payment-status-badge teacher-status-paid">Fully Settled</span>
-                        )}
+                        <button 
+                          className="teacher-create-dues-btn"
+                          style={{ margin: 0, padding: "6px 12px", fontSize: "0.85rem" }}
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevents collapsing/expanding the row
+                            handleOpenForUpdate(teacher);
+                          }}
+                        >
+                          <i className="fas fa-calendar-plus"></i> Update Due
+                        </button>
                       </td>
                     </tr>
 
                     {/* Collapsible Due Month Breakdowns */}
                     {hasDues && isExpanded && (
                       <tr className="collapsible-subtable-nested-row">
-                        <td colSpan="3">
+                        <td colSpan="4">
                           <div className="nested-due-months-wrapper">
                             <div className="due-months-grid-flex">
                               {(teacher.dueMonths || []).map((dueBlock, keyIdx) => (
@@ -110,14 +113,11 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
                                       {formatCurrency(dueBlock.amount)}
                                     </span>
                                   </div>
-                                  {dueBlock.description && (
-                                    <p className="due-block-desc">"{dueBlock.description}"</p>
-                                  )}
                                   <button 
                                     className="disburse-cash-cta-btn"
                                     onClick={(e) => {
                                       e.stopPropagation(); 
-                                      initiatePayoutWorkflow(teacher, dueBlock);
+                                      handleOpenForClear(teacher, dueBlock);
                                     }}
                                   >
                                     <i className="fas fa-money-bill-wave"></i> Pay
@@ -134,47 +134,32 @@ const TeacherPayments = ({ teacherDues = [], onPaymentSuccess }) => {
               })
             ) : (
               <tr>
-                <td colSpan="3" className="empty-table-fallback">No employee profiles found.</td>
+                <td colSpan="4" className="empty-table-fallback">No employee profiles found.</td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
 
-      {/* 3. Centralized Cash Payment Action Modal Context Hook */}
-      {isModalOpen && selectedTeacher && selectedMonthData && (
-        <CashPaymentModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedTeacher(null);
-            setSelectedMonthData(null);
-          }}
-          onPaymentSuccess={() => {
-            setIsModalOpen(false);
-            setSelectedTeacher(null);
-            setSelectedMonthData(null);
-            onPaymentSuccess?.(); 
-          }}
-          teacherId={selectedTeacher._id}
-          teacherName={selectedTeacher.name}
-          salaryMonth={selectedMonthData.month}
-          amountDue={selectedMonthData.amount}
-        />
-      )}
-
-      {/* 4. Dynamic Create Dues Context Modal Hook */}
-      {isDuesModalOpen && (
-        <UpdateDuesModal
-          isOpen={isDuesModalOpen}
-          onClose={() => setIsDuesModalOpen(false)}
-          onDuesCreatedSuccess={() => {
-            setIsDuesModalOpen(false);
-            onPaymentSuccess?.(); 
-          }}
-          teachersList={teachersList} 
-        />
-      )}
+      {/* 3. Unified Dues Management Modal Hook */}
+      <ManageDuesModal
+        isOpen={isManageModalOpen}
+        onClose={() => {
+          setIsManageModalOpen(false);
+          setSelectedTeacher(null);
+          setSelectedMonthData(null);
+        }}
+        onSuccess={() => {
+          setIsManageModalOpen(false);
+          setSelectedTeacher(null);
+          setSelectedMonthData(null);
+          onPaymentSuccess?.(); 
+        }}
+        teachersList={teachersList}
+        initialTeacher={selectedTeacher}
+        initialMonthBlock={selectedMonthData}
+        defaultMode={modalMode}
+      />
     </div>
   );
 };
