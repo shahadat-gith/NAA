@@ -40,13 +40,24 @@
    HEADER
 ======================================== */
 
+/* ========================================
+   SBC HEADER
+======================================== */
+
 .sbc-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
-  margin-bottom: 20px;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  margin-bottom: 22px;
 }
+
+/* ========================================
+   TITLE
+======================================== */
 
 .sbc-title {
   margin: 0;
@@ -55,7 +66,23 @@
   font-weight: 700;
 
   color: var(--text-main);
+
+  line-height: 1.4;
 }
+
+
+/* ========================================
+   VALUE
+======================================== */
+
+.sbc-totaldue-value {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--accent-color);
+}
+
+
 
 /* ========================================
    TABLE CONTAINER

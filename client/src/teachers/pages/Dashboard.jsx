@@ -81,29 +81,6 @@ const Dashboard = () => {
 
         </div>
 
-        {/* Salary Overview */}
-        <div className="db-metric-card">
-
-          <div className="db-metric-info">
-
-            <span className="db-metric-label">
-              Pending Salary (Owed by School)
-            </span>
-
-            <h2
-              className={`db-metric-value ${
-                dues.totalDue > 0
-                  ? "db-pending-amount"
-                  : "db-settled-amount"
-              }`}
-            >
-              ₹{dues.totalDue.toLocaleString("en-IN")}
-            </h2>
-
-          </div>
-
-        </div>
-
       </div>
 
       {/* GRID */}
