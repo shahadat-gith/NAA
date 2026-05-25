@@ -7,6 +7,7 @@ import { Readable } from "stream";
 
 
 
+
 const uploadToCloudinary = async (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -279,5 +280,40 @@ export const updateTimetable = async (req, res) => {
     });
   }
 };
+
+
+export const getTimetable = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const teacher = await teacherModel.findById(id);
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: "Teacher not found",
+      });
+    }
+    const timetable = await Timetable.findOne({ teacher: id });
+    if (!timetable) {
+      return res.status(404).json({
+        success: false,
+        message: "Timetable not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      timetable,
+    });
+  } catch (error) {
+    console.error("getTimetable error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching timetable",
+      error: error.message,
+    });
+  }
+};
+
+
 
 

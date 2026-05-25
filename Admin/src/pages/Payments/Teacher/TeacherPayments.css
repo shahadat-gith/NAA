@@ -1,0 +1,560 @@
+/* ─────────────────────────────────────────────
+   Main Layout Container
+   ───────────────────────────────────────────── */
+.teacher-payments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ─────────────────────────────────────────────
+   1. Dynamic Section Header Block
+   ───────────────────────────────────────────── */
+.teacher-payment-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 4px;
+}
+
+.teacher-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.teacher-section-title i {
+  color: var(--color-primary);
+}
+
+.header-action-button-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.teacher-create-dues-btn {
+  background-color: var(--color-success);
+  color: var(--bg-base);
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none; /* Ensures no default native browser border outlines interfere */
+  border-radius: 6666px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Added a simple interactive hover state since the gradient shift is gone */
+.teacher-create-dues-btn:hover {
+  background-color: var(--color-accent);
+}
+
+
+.roster-count-badge {
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.roster-count-badge i {
+  color: var(--color-accent);
+}
+
+/* ─────────────────────────────────────────────
+   2. KPI Analytical Summary Grid
+   ───────────────────────────────────────────── */
+.teacher-stats-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.teacher-stat-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.teacher-stat-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.teacher-card-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.teacher-stat-card h3 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 12px 0 6px 0;
+}
+
+.teacher-sub-text {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────
+   3. Custom Inline Charts Grid Rows
+   ───────────────────────────────────────────── */
+.teacher-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .teacher-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.teacher-chart-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.teacher-chart-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 12px;
+}
+
+.teacher-chart-title i {
+  color: var(--color-accent);
+}
+
+/* Horizontal Bar Chart Items */
+.teacher-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.teacher-chart-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.teacher-bar-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  width: 65px;
+  flex-shrink: 0;
+}
+
+.teacher-bar-container {
+  flex-grow: 1;
+  background-color: var(--bg-base);
+  border: 1px solid var(--border-default);
+  height: 24px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.teacher-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--bg-surface-3) 0%, var(--color-primary-glow) 100%);
+  border-right: 2px solid var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  transition: width var(--transition-slow);
+}
+
+.teacher-bar-fill span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary-bright);
+}
+
+.teacher-bar-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  width: 90px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Payout Channels Breakdown Grid */
+.teacher-method-breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.teacher-method-card {
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.teacher-method-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
+}
+
+.teacher-method-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.teacher-method-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.teacher-method-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0 10px 0;
+}
+
+.teacher-method-amount {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* ─────────────────────────────────────────────
+   4. Master Payroll Worksheet Table
+   ───────────────────────────────────────────── */
+.teacher-payments-table-container {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.table-header-titleblock {
+  padding: 20px 24px;
+  background-color: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.table-header-titleblock h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.table-header-titleblock h3 i {
+  color: var(--color-primary);
+}
+
+.table-header-titleblock p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.teacher-payments-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.teacher-payments-table th {
+  background-color: var(--bg-surface-2);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border-default);
+}
+
+.teacher-payments-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-default);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* Row Conditional Design Alternations */
+.teacher-master-row {
+  transition: background-color var(--transition-fast);
+}
+
+.teacher-master-row.has-liabilities {
+  cursor: pointer;
+}
+
+.teacher-master-row.has-liabilities:hover {
+  background-color: var(--bg-surface-2);
+}
+
+.teacher-master-row.row-expanded {
+  background-color: var(--bg-surface-2);
+}
+
+.teacher-master-row.cleared {
+  background-color: rgba(11, 22, 40, 0.4);
+}
+
+/* Cell Elements Profiles */
+.teacher-profile-cell-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.teacher-display-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.teacher-display-subtext {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.teacher-display-subtext i {
+  font-size: 11px;
+  margin-right: 4px;
+  color: var(--text-muted);
+}
+
+/* Balances and liability configurations */
+.balance-text {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.balance-text.due-alert {
+  color: var(--color-error);
+}
+
+.balance-text.clean-settled {
+  color: var(--color-success);
+}
+
+.due-months-count-badge {
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  color: var(--color-warning);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+.payment-status-badge.teacher-status-paid {
+  background-color: var(--color-success-bg);
+  border: 1px solid var(--color-success-border);
+  color: var(--color-success);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: inline-block;
+}
+
+.expand-action-trigger-btn {
+  background-color: var(--bg-surface-3);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.expand-action-trigger-btn:hover {
+  background-color: var(--bg-surface-2);
+  border-color: var(--border-strong);
+}
+
+.settled-checkmark-badge {
+  color: var(--color-success);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* ─────────────────────────────────────────────
+   5. Expandable Nested Due Months Segment
+   ───────────────────────────────────────────── */
+.collapsible-subtable-nested-row {
+  background-color: var(--bg-base);
+}
+
+.collapsible-subtable-nested-row td {
+  padding: 0 !important; /* Forces layout tracking to flow nicely */
+}
+
+.nested-due-months-wrapper {
+  padding: 20px 24px 24px 24px;
+  border-left: 4px solid var(--color-primary);
+  animation: slideDown var(--transition-fast);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nested-due-months-wrapper h5 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.nested-due-months-wrapper h5 strong {
+  color: var(--text-primary);
+}
+
+.due-months-grid-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.nested-month-action-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  min-width: 210px;
+  flex: 0 1 calc(25% - 14px); /* Scales rows cleanly */
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1200px) {
+  .nested-month-action-card { flex: 0 1 calc(33.33% - 14px); }
+}
+@media (max-width: 768px) {
+  .nested-month-action-card { flex: 1 1 100%; }
+}
+
+.month-metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.cal-month {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cal-month i {
+  color: var(--text-secondary);
+}
+
+.cal-amount {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-error);
+}
+
+.due-block-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0 0 14px 0;
+  background-color: var(--bg-surface-2);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border-left: 2px solid var(--text-muted);
+}
+
+.disburse-cash-cta-btn {
+  width: 100%;
+  background-color: var(--bg-surface-3);
+  border: 1px solid var(--color-success-border);
+  color: var(--color-success);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: auto; /* Forces element button alignment inside variable cards descriptions layouts */
+}
+
+.disburse-cash-cta-btn:hover {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success);
+  transform: translateY(-1px);
+}
+
+/* ─────────────────────────────────────────────
+   Fallback/Placeholder States
+   ───────────────────────────────────────────── */
+.empty-chart-notice {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 40px 20px;
+  width: 100%;
+}
+
+.empty-table-fallback {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 48px !important;
+  font-size: 14px;
+}

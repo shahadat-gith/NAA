@@ -1,4 +1,3 @@
-
 export const navSections = [
   {
     title: "Students & Academics",
@@ -14,21 +13,25 @@ export const navSections = [
     title: "Staff",
     links: [
       { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
-      { to: "/attendance", icon: "fas fa-clipboard-check", label: "Attendance" },
+      {
+        to: "/teachers/attendance",
+        icon: "fas fa-clipboard-check",
+        label: "Attendance",
+      },
     ],
   },
   {
-    title: "Content & Media",
+    title: "Payments",
     links: [
-      { to: "/achievers", icon: "fas fa-trophy", label: "Achievers" },
-      { to: "/gallery", icon: "fas fa-images", label: "Gallery" },
-      { to: "/notices", icon: "fas fa-bullhorn", label: "Notices" },
+      {
+        to: "/payments",
+        icon: "fas fa-money-bill-wave",
+        label: "Payment Dashboard",
+      },
     ],
   },
   {
     title: "System",
-    links: [
-      { to: "/settings", icon: "fas fa-cogs", label: "Settings" },
-    ],
+    links: [{ to: "/settings", icon: "fas fa-cogs", label: "Settings" }],
   },
 ];
