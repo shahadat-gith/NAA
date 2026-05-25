@@ -20,7 +20,7 @@ const TeacherDetails = () => {
       setLoading(true);
 
       const { data } = await axios.get(
-        `${backendUrl}/api/teacher/teacher/${teacherId}`,
+        `${backendUrl}/api/teacher/details/${teacherId}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }

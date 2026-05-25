@@ -1,103 +1,130 @@
 import React, { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+
+// Components
+import TimetableCard from "../components/TimetableCard";
+import SalaryBreakdownCard from "../components/SalaryBreakdownCard";
+import AttendanceLogCard from "../components/AttendanceLogCard";
+import PaymentsCard from "../components/PaymentsCard";
+
+// Styles
 import "../styles/Dashboard.css";
 
 const Dashboard = () => {
+
+  const { dashboard, setDashboard, loading } = useOutletContext();
+
   const [greeting, setGreeting] = useState("Welcome");
 
+  // Greeting logic
   useEffect(() => {
+
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 16) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
+
+    if (hour < 12) {
+      setGreeting("Good morning");
+    } else if (hour < 16) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good evening");
+    }
+
   }, []);
 
-  const paymentHistory = [
-    { id: 1, date: "2026-05-20", amount: "Rs 18,500", status: "Paid", note: "April salary" },
-    { id: 2, date: "2026-04-20", amount: "Rs 18,500", status: "Paid", note: "March salary" },
-    { id: 3, date: "2026-03-20", amount: "Rs 18,500", status: "Paid", note: "February salary" },
-  ];
+  // Loading state
+  if (loading) {
+    return (
+      <div className="db-loading">
+        Loading your dashboard data...
+      </div>
+    );
+  }
 
-  const attendanceHistory = [
-    { id: 1, month: "May 2026", present: 24, absent: 2, late: 1 },
-    { id: 2, month: "April 2026", present: 22, absent: 4, late: 0 },
-    { id: 3, month: "March 2026", present: 23, absent: 3, late: 0 },
-  ];
+  // Dashboard data
+  const {
+    teacher,
+    timetable,
+    attendance,
+    payments,
+    dues,
+  } = dashboard;
 
+  // Refresh timetable state
+  const refreshTimetableState = (newScheduleArray) => {
 
+    setDashboard((prev) => ({
+      ...prev,
+      timetable: {
+        ...prev.timetable,
+        schedule: newScheduleArray,
+      },
+    }));
+
+  };
 
   return (
-    <div className="teacher-dashboard-page">
-      <div className="teacher-dashboard-header">
-        <div className="header-greeting-block">
-          <h1 className="teacher-dashboard-title">
-            {greeting}!
-          </h1>
-          <p className="teacher-dashboard-subtitle">
-            Here's an overview of your schedule, classes, and statements.
-          </p>
-        </div>
-      </div>
-      <div className="teacher-dashboard-grid">
-        <section className="teacher-card">
-          <div className="teacher-card-header">
-            <h2><i className="fa-solid fa-credit-card section-title-icon"></i> Payment History</h2>
-          </div>
-          <div className="teacher-table-container">
-            <table className="teacher-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Amount</th>
-                  <th>Status</th>
-                  <th>Note</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paymentHistory.map((payment) => (
-                  <tr key={payment.id}>
-                    <td>{payment.date}</td>
-                    <td className="payment-amount">{payment.amount}</td>
-                    <td>
-                      <span className="status-badge paid">
-                        {payment.status}
-                      </span>
-                    </td>
-                    <td className="table-note">{payment.note}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+    <div className="db-page">
 
-        <section className="teacher-card">
-          <div className="teacher-card-header">
-            <h2><i className="fa-solid fa-clock-rotate-left section-title-icon"></i> Attendance History</h2>
+      {/* HEADER */}
+      <div className="db-header">
+
+        <div className="db-greeting-block">
+
+          <h1 className="db-title">
+            {greeting}, {teacher?.name || "Teacher"}!
+          </h1>
+
+          <p className="db-subtitle">
+            Here's a live overview of your schedule,
+            attendance data, and earnings statements.
+          </p>
+
+        </div>
+
+        {/* Salary Overview */}
+        <div className="db-metric-card">
+
+          <div className="db-metric-info">
+
+            <span className="db-metric-label">
+              Pending Salary (Owed by School)
+            </span>
+
+            <h2
+              className={`db-metric-value ${
+                dues.totalDue > 0
+                  ? "db-pending-amount"
+                  : "db-settled-amount"
+              }`}
+            >
+              ₹{dues.totalDue.toLocaleString("en-IN")}
+            </h2>
+
           </div>
-          <div className="teacher-table-container">
-            <table className="teacher-table">
-              <thead>
-                <tr>
-                  <th>Month</th>
-                  <th>Present</th>
-                  <th>Absent</th>
-                  <th>Late</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attendanceHistory.map((row) => (
-                  <tr key={row.id}>
-                    <td className="attendance-month">{row.month}</td>
-                    <td className="count-present">{row.present} d</td>
-                    <td className="count-absent">{row.absent} d</td>
-                    <td className="count-late">{row.late} d</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
+
+        </div>
+
       </div>
+
+      {/* GRID */}
+      <div className="db-grid">
+
+        <TimetableCard
+          timetableData={timetable}
+          onRefreshDashboard={refreshTimetableState}
+        />
+
+        <SalaryBreakdownCard
+          dues={dues}
+        />
+
+        <AttendanceLogCard
+          attendance={attendance}
+        />
+        <PaymentsCard payments={payments}/>
+
+      </div>
+
     </div>
   );
 };

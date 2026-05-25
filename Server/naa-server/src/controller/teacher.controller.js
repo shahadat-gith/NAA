@@ -4,6 +4,9 @@ import bcrypt from "bcryptjs";
 import validator from "validator";
 import cloudinary from "../config/cloudinary.js";
 import { Readable } from "stream";
+import TeacherPayment from "../models/Teacher/payment.js";
+import TeacherDues from "../models/Teacher/dues.js";
+import TeacherAttendance from "../models/Teacher/attendance.js";
 
 
 
@@ -95,7 +98,7 @@ export const addTeacher = async (req, res) => {
 
 export const updateTeacherDetails = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.user;
 
     const teacher = await teacherModel.findById(id);
 
@@ -248,22 +251,31 @@ export const getTeacherById = async (req, res) => {
 
 export const updateTimetable = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.user; 
     const { schedule } = req.body;
-    const teacher = await teacherModel.findById(id);
 
-    if (!teacher) {
-      return res.status(404).json({
+    // 1. Array Validation Safeguard
+    if (!schedule || !Array.isArray(schedule)) {
+      return res.status(400).json({
         success: false,
-        message: "Teacher not found",
+        message: "Invalid schedule data payload. It must be an array.",
       });
     }
 
-    // Update the timetable
+    // 2. Verify the teacher exists in the system
+    const teacher = await teacherModel.findById(id);
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: "Teacher profile not found",
+      });
+    }
+
+    // 3. Atomically update or insert (upsert) the timetable documentation
     const timetable = await Timetable.findOneAndUpdate(
-      { teacherId: id },
+      { teacher: id },
       { schedule },
-      { new: true, upsert: true }
+      { new: true, upsert: true, runValidators: true } // runValidators ensures the schema rules are checked
     );
 
     return res.status(200).json({
@@ -309,6 +321,48 @@ export const getTimetable = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error fetching timetable",
+      error: error.message,
+    });
+  }
+};
+
+
+export const getTeacherDashboard = async (req, res) => {
+  try {
+    const { id } = req.user;
+    
+    // 1. Verify teacher quickly
+    const teacher = await teacherModel.findById(id).select("-password");
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: "Teacher not found",
+      });
+    }
+
+    // 2. Fetch dependencies concurrently with optimization safeguards
+    const [timetable, attendance, payments, dues] = await Promise.all([
+      Timetable.findOne({ teacher: id }),
+      TeacherAttendance.find({ teacher: id }).sort({ createdAt: -1 }).limit(30),
+      TeacherPayment.find({ teacher: id }).sort({ createdAt: -1 }).limit(10),
+      TeacherDues.findOne({ teacher: id }),
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      dashboard: {
+        teacher,
+        timetable: timetable || { schedule: [] },
+        attendance,
+        payments,
+        dues: dues || { totalDue: 0, dueMonths: [] },
+      },
+    });
+  } catch (error) {
+    console.error("getTeacherDashboard error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching dashboard",
       error: error.message,
     });
   }

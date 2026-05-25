@@ -186,9 +186,8 @@ const handleSubmit = async (event) => {
       return;
     }
 
-    const response = await axios.put(
-      `${backendUrl}/api/teacher/update-teacher/${teacherData._id}`,
-      formData,
+    const response = await axios.post(
+      `${backendUrl}/api/teacher/update`,formData,
       {
         headers: {
           Authorization: `Bearer ${token}`,

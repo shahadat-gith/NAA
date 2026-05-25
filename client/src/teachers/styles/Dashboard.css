@@ -1,251 +1,254 @@
-/* Dashboard Main Wrapper setup */
-.teacher-dashboard-page {
+/* ========================================
+   ROOT VARIABLES
+======================================== */
+
+:root {
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+
+  --accent-color: #e94560;
+  --accent-hover: #d2334c;
+
+  --border-light: #e2e8f0;
+
+  --shadow-card:
+    0 4px 10px rgba(15, 23, 42, 0.04);
+
+  --color-success: #10b981;
+  --bg-success: #ecfdf5;
+
+  --color-danger: #ef4444;
+  --bg-danger: #fef2f2;
+}
+
+/* ========================================
+   PAGE
+======================================== */
+
+.db-page {
+  min-height: 100vh;
+
   padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
+
+  background: var(--bg-primary);
+
+  color: var(--text-main);
 }
 
-/* Header Greeting Block layout */
-.teacher-dashboard-header {
+/* ========================================
+   HEADER
+======================================== */
+
+.db-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
 
-.teacher-dashboard-title {
-  font-size: 2rem;
-  color: #0f172a;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-.teacher-dashboard-subtitle {
-  font-size: 0.95rem;
-  color: #64748b;
-  margin: 6px 0 0 0;
-}
-
-/* Accent Branded Primary Action Button */
-.teacher-attendance-action-btn {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #e94560;
-  color: #ffffff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
-  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.2);
-}
-
-.teacher-attendance-action-btn:hover {
-  background-color: #c12c45;
-}
-
-.teacher-attendance-action-btn:active {
-  transform: scale(0.98);
-}
-
-
-/* Panel Layout Cards Data Split viewports */
-.teacher-dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
   gap: 24px;
+  flex-wrap: wrap;
+
+  margin-bottom: 30px;
 }
 
-.teacher-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
-  overflow: hidden;
+/* ========================================
+   GREETING
+======================================== */
+
+.db-greeting-block {
+  flex: 1;
+  min-width: 260px;
 }
 
-.teacher-card-header {
-  padding: 20px 24px;
-  border-bottom: 1px solid #e2e8f0;
+.db-title {
+  margin: 0 0 8px 0;
+
+  font-size: 30px;
+  font-weight: 800;
+
+  line-height: 1.2;
+
+  color: var(--text-main);
 }
 
-.teacher-card-header h2 {
-  font-size: 1.1rem;
-  color: #1e293b;
+.db-subtitle {
   margin: 0;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+
+  max-width: 720px;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  color: var(--text-muted);
 }
 
-.section-title-icon {
-  color: #64748b;
+/* ========================================
+   METRIC CARD
+======================================== */
+
+.db-metric-card {
+  background: var(--bg-card);
+
+  border: 1px solid var(--border-light);
+  border-left: 4px solid var(--accent-color);
+
+  border-radius: 14px;
+
+  padding: 18px 24px;
+
+  min-width: 280px;
+
+  box-shadow: var(--shadow-card);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* Clean UI Light Table Presentation styles */
-.teacher-table-container {
-  width: 100%;
-  overflow-x: auto;
+.db-metric-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
-.teacher-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.92rem;
-}
-
-.teacher-table th {
-  background-color: #f8fafc;
-  color: #475569;
-  font-weight: 600;
-  padding: 14px 24px;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.teacher-table td {
-  padding: 16px 24px;
-  border-bottom: 1px solid #e2e8f0;
-  color: #334155;
-}
-
-.teacher-table tr:last-child td {
-  border-bottom: none;
-}
-
-.teacher-table tr:hover td {
-  background-color: #f8fafc;
-}
-
-/* Custom Table Row/Badge Accent Styling */
-.payment-amount {
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border-radius: 20px;
-}
-
-.status-badge.paid {
-  background-color: #dcfce7;
-  color: #15803d;
-}
-
-.table-note {
-  color: #64748b;
-}
-
-.attendance-month {
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.count-present {
-  color: #16a34a;
-  font-weight: 600;
-}
-.count-absent {
-  color: #dc2626;
-  font-weight: 600;
-}
-.count-late {
-  color: #d97706;
-  font-weight: 600;
-}
-
-/* Dashboard Fallback states views */
-.teacher-loading-container {
+.db-metric-info {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 6px;
+}
+
+.db-metric-label {
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  color: var(--text-muted);
+}
+
+.db-metric-value {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  line-height: 1.2;
+}
+
+.db-pending-amount {
+  color: var(--accent-color);
+}
+
+.db-settled-amount {
+  color: var(--color-success);
+}
+
+/* ========================================
+   GRID
+======================================== */
+
+.db-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 24px;
+
+  align-items: start;
+}
+
+/* ========================================
+   LOADING
+======================================== */
+
+.db-loading {
+  min-height: 100vh;
+
+  display: flex;
   align-items: center;
-  min-height: 280px;
-  gap: 16px;
-  color: #64748b;
-}
+  justify-content: center;
 
-.teacher-spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #e2e8f0;
-  border-top-color: #e94560;
-  border-radius: 50%;
-  animation: dashboardSpin 0.8s linear infinite;
-}
-
-@keyframes dashboardSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.teacher-error-card {
-  text-align: center;
-  padding: 48px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  max-width: 480px;
-  margin: 40px auto;
-}
-
-.error-icon {
-  font-size: 2.5rem;
-  color: #dc2626;
-  margin-bottom: 16px;
-}
-
-.teacher-error-card h2 {
-  margin: 0 0 10px 0;
-  color: #0f172a;
-}
-.teacher-error-card p {
-  color: #64748b;
-  margin-bottom: 24px;
-}
-
-.teacher-accent-button {
-  background-color: #e94560;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
+  font-size: 16px;
   font-weight: 600;
+
+  color: var(--text-muted);
+
+  background: var(--bg-primary);
 }
 
-/* --- Responsive Adjustments --- */
-@media (max-width: 768px) {
-  .teacher-dashboard-page {
-    padding: 20px 10px;
-   
-  }
+/* ========================================
+   RESPONSIVE
+======================================== */
 
-  .teacher-dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
+@media (max-width: 1100px) {
 
-  .teacher-attendance-action-btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .teacher-dashboard-grid {
+  .db-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .db-page {
+    padding: 20px;
+  }
+
+  .db-header {
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .db-title {
+    font-size: 24px;
+  }
+
+  .db-subtitle {
+    font-size: 13px;
+  }
+
+  .db-metric-card {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .db-metric-value {
+    font-size: 24px;
+  }
+
+  .db-grid {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .db-page {
+    padding: 16px;
+  }
+
+  .db-title {
+    font-size: 21px;
+  }
+
+  .db-subtitle {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .db-metric-card {
+    padding: 16px 18px;
+    border-radius: 12px;
+  }
+
+  .db-metric-value {
+    font-size: 22px;
+  }
+
+  .db-grid {
+    gap: 18px;
   }
 }

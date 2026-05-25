@@ -1,0 +1,273 @@
+/* Backdrop Dim Overlay */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.4); /* Softer backdrop dim */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+/* Modal Content Container */
+.timetable-modal-content {
+  background: #ffffff;
+  width: 90%;
+  max-width: 750px;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); /* Smoother light shadow */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #f1f5f9;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  font-size: 20px;
+  color: #1e293b;
+  font-weight: 600;
+  margin: 0;
+}
+
+.close-x-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s ease;
+}
+
+.close-x-btn:hover {
+  color: #e94560; /* Lights up with accent on hover */
+}
+
+/* Form Grid System */
+.form-row-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-row-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.form-group input, 
+.form-group select {
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1e293b;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Smooth Focus Rings matching your Accent Color */
+.form-group input:focus, 
+.form-group select:focus {
+  outline: none;
+  border-color: #e94560;
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
+}
+
+/* "Add Slot to Stack" Button */
+.add-slot-row-btn {
+  background-color: #e94560; /* Updated to your color */
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.add-slot-row-btn:hover {
+  background-color: #d2334c; /* Darker accent hue */
+}
+
+.add-slot-row-btn:active {
+  transform: scale(0.98);
+}
+
+.modal-divider {
+  border: 0;
+  height: 1px;
+  background: #e2e8f0;
+  margin: 20px 0;
+}
+
+/* Preview Section Lists */
+.modal-schedule-preview-area h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+  margin: 0 0 10px 0;
+}
+
+.empty-preview-text {
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 13px;
+  padding: 20px 0;
+}
+
+.preview-items-scrollbox {
+  max-height: 180px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+/* Custom Scrollbar for preview items */
+.preview-items-scrollbox::-webkit-scrollbar {
+  width: 5px;
+}
+
+.preview-items-scrollbox::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 10px;
+}
+
+.preview-items-scrollbox::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* Preview List Items */
+.preview-item-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #e94560; /* Updated indicator line */
+}
+
+.pill-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill-day {
+  background: #eddfe2; /* Soft muted variation of your accent color */
+  color: #e94560; /* Updated text color */
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pill-details {
+  font-size: 13px;
+  color: #334155;
+}
+
+.remove-pill-btn {
+  background: none;
+  border: none;
+  color: #ef4444; /* Standard alert/danger color kept for deletion */
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px;
+  transition: opacity 0.2s;
+}
+
+.remove-pill-btn:hover {
+  opacity: 0.7;
+}
+
+/* Footer Modal Actions Controls */
+.modal-actions-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+}
+
+/* "Save & Sync Changes" Button */
+.save-submit-btn {
+  background-color: #e94560; /* Updated to your color */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.save-submit-btn:hover {
+  background-color: #d2334c; /* Darker accent hue */
+}
+
+.save-submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* Disabled/Submitting State Constraints */
+.save-submit-btn:disabled, 
+.cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}

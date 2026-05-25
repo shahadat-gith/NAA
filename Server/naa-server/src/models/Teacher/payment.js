@@ -34,7 +34,7 @@ const teacherPaymentSchema = new mongoose.Schema(
       enum: ["Pending", "Paid", "Failed"],
       default: "Pending",
     },
-  });
+  },{ timestamps: true });
 
   teacherPaymentSchema.index({ teacher: 1, salaryMonth: 1 });
 

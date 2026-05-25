@@ -9,13 +9,19 @@ import toast from "react-hot-toast";
 
 const TeacherLayout = () => {
   const { backendUrl } = useContext(AppContext);
-  const [teacher, setTeacher] = useState(null);
-  const [fetching, setFetching] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   const token = localStorage.getItem("teacher-token");
+  const [loading, setLoading] = useState(true);
+  
+  const [dashboard, setDashboard] = useState({
+    teacher: {},
+    timetable: { schedule: [] },
+    attendance: [],
+    payments: [],
+    dues: { totalDue: 0, dueMonths: [] },
+  });
 
+  // Redirection guard if token doesn't exist
   useEffect(() => {
     if (!token) {
       navigate("/teacher/login", { replace: true });
@@ -23,7 +29,7 @@ const TeacherLayout = () => {
   }, [navigate, token]);
 
   useEffect(() => {
-    const loadTeacher = async () => {
+    const fetchDashboardData = async () => {
       if (!token) {
         toast.error("Please log in as a teacher to view the portal.");
         setLoading(false);
@@ -31,22 +37,23 @@ const TeacherLayout = () => {
       }
 
       try {
-        const response = await axios.get(
-          `${backendUrl}/api/auth/teacher/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${backendUrl}/api/teacher/dashboard`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        setTeacher(response.data.data);
+        if (response.data.success) {
+          setDashboard(response.data.dashboard);
+        }
       } catch (err) {
         const message =
           err.response?.data?.message ||
-          "Unable to load teacher data. Please log in again.";
+          "Unable to load dashboard data. Please log in again.";
 
         toast.error(message);
+        
+        // Handle token expiration or invalidity
         if (err.response?.status === 401) {
           localStorage.removeItem("teacher-token");
           navigate("/teacher/login", { replace: true });
@@ -56,19 +63,19 @@ const TeacherLayout = () => {
       }
     };
 
-    if (backendUrl) {
-      loadTeacher();
+    if (backendUrl && token) {
+      fetchDashboardData();
     }
   }, [backendUrl, token, navigate]);
 
   return (
     <div className="teacher-layout loader-parent">
-      {(loading || fetching) && <Loader />}
+      {loading && <Loader />}
 
-      <Navbar teacher={teacher} />
+      <Navbar teacher={dashboard.teacher} />
 
       <main className="teacher-page-content">
-        <Outlet context={{ teacher, setTeacher, fetching, setFetching }} />
+        <Outlet context={{ dashboard, setDashboard, loading }} />
       </main>
     </div>
   );

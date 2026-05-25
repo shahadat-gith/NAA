@@ -6,6 +6,8 @@ import {
   deleteTeacher,
   getTeacherById,
   updateTeacherDetails,
+  getTeacherDashboard,
+  updateTimetable,
 } from "../controller/teacher.controller.js";
 
 import { authMiddleware } from "../middleware/auth.js";
@@ -16,9 +18,11 @@ teacherRouter.post("/add-teacher",authMiddleware,upload.single("image"),addTeach
 
 teacherRouter.get("/all-teachers", getAllTeachers);
 
-teacherRouter.get("/teacher/:id",authMiddleware,getTeacherById);
+teacherRouter.get("/details/:id",authMiddleware,getTeacherById);
+teacherRouter.get("/dashboard",authMiddleware, getTeacherDashboard);
+teacherRouter.put("/timetable/update",authMiddleware,updateTimetable);
 
-teacherRouter.put("/update-teacher/:id",authMiddleware,upload.single("image"),updateTeacherDetails);
+teacherRouter.post("/update",authMiddleware,upload.single("image"),updateTeacherDetails);
 
 teacherRouter.delete("/delete-teacher/:id",authMiddleware,deleteTeacher);
 

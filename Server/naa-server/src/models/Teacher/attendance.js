@@ -31,7 +31,7 @@ const attendanceSchema = new mongoose.Schema(
       enum: ["Teacher", "Admin"],
       required: true,
     },
-  });
+  },{ timestamps: true });
 
   
 attendanceSchema.index({ teacher: 1, date: 1 }, { unique: true });
