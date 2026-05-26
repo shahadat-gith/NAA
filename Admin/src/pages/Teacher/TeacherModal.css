@@ -1,11 +1,13 @@
-/* ─────────────────────────────────────────────
-   Teacher Modal Overlay & Container
-   ───────────────────────────────────────────── */
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Modal Shell & Animation Setup
+   ───────────────────────────────────────────────────────────────────────── */
 .tm-teacher-modal-overlay {
   position: fixed;
   inset: 0;
   background-color: rgba(5, 13, 26, 0.85);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,231 +21,281 @@
   border: 1px solid var(--border-default);
   width: 100%;
   max-width: 750px;
-  max-height: 90vh;
+  max-height: 85vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modalSlideUp 0.3s ease-out;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Header Alignment ── */
+/* Header styling alignment */
 .tm-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 24px;
+  padding: 18px 24px;
   background-color: var(--bg-surface-2);
   border-bottom: 1px solid var(--border-default);
 }
 
 .tm-modal-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: var(--text-primary);
-  font-weight: 700;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .tm-close-button {
   background: var(--bg-surface-3);
   border: 1px solid var(--border-default);
   color: var(--text-secondary);
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--transition-fast);
+  font-size: 0.9rem;
 }
 
-.tm-close-button:hover {
+.tm-close-button:hover:not(:disabled) {
   color: var(--color-error);
   background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
 }
 
-/* ── Form Body ── */
+/* ─────────────────────────────────────────────────────────────────────────
+   Form Layout Mechanics
+   ───────────────────────────────────────────────────────────────────────── */
 .tm-teacher-form {
   padding: 24px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
 }
 
+/* Error banner messaging block */
+.tm-form-error {
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
+  color: #f87171;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: fadeIn 0.2s ease;
+}
+
+/* Section Divider Headers */
+.tm-section-separator-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primary-bright);
+  border-bottom: 1px solid var(--border-default);
+  padding-bottom: 6px;
+  margin-top: 4px;
+}
+
+/* Grid Layout definitions */
 .tm-form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
-/* Universal Input Styling */
+.tm-grid-three-cols {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.tm-grid-full-width {
+  grid-column: span 2;
+}
+
+/* Form Entry Elements Control (inputs/selects) */
 .tm-form-grid input,
-.tm-subject-mapping-card select {
+.tm-form-grid select {
+  width: 100%;
   padding: 12px 14px;
   background-color: var(--bg-base);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  transition: border-color var(--transition-fast);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.tm-form-grid input:focus,
-.tm-subject-mapping-card select:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
-/* File Input Restyling */
-.tm-form-grid input[type="file"] {
-  padding: 8px;
-  background-color: var(--bg-surface-2);
-  border: 1px dashed var(--border-strong);
-  cursor: pointer;
-}
-
-.tm-form-grid input[type="file"]::file-selector-button {
-  background-color: var(--color-primary-subtle);
-  color: var(--color-primary-bright);
-  border: 1px solid var(--color-primary);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  margin-right: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-/* ─────────────────────────────────────────────
-   Subject & Class Mapping Section
-   ───────────────────────────────────────────── */
-.tm-form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* The "Add Subject" Button */
-.tm-add-subject-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  background-color: var(--bg-surface-2);
-  color: var(--color-primary-bright);
-  border: 2px dashed var(--color-primary-subtle);
-  border-radius: var(--radius-md);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.tm-add-subject-btn:hover {
-  background-color: var(--color-primary-subtle);
-  border-style: solid;
-}
-
-/* Mapping Card Container */
-.tm-subject-mapping-card {
-  background-color: var(--bg-surface-2);
-  padding: 20px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-default);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  position: relative;
-  animation: fadeIn var(--transition-fast);
-}
-
-/* Improved Select inside Card */
-.tm-subject-mapping-card select {
-  width: 100%;
+.tm-form-grid select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%237d9bc1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   padding-right: 40px;
 }
 
-/* Classes Grid & Buttons */
-.tm-classes-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-  gap: 8px;
-}
-
-.tm-class-btn {
-  padding: 8px 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background-color: var(--bg-base);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.tm-class-btn.tm-selected {
-  background-color: var(--color-primary);
-  color: white;
+.tm-form-grid input:focus,
+.tm-form-grid select:focus {
+  outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
-/* ─────────────────────────────────────────────
-   Remove Button (High Contrast)
-   ───────────────────────────────────────────── */
-.tm-remove-btn {
-  align-self: flex-end;
-  background-color: var(--color-error-bg);
-  color: var(--color-error);
-  border: 1px solid var(--color-error-border);
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
+.tm-form-grid input:disabled,
+.tm-form-grid select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Avatar Asset Center Uploader UI
+   ───────────────────────────────────────────────────────────────────────── */
+.tm-media-upload-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.tm-avatar-box {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: var(--bg-base);
+  border: 2px dashed var(--border-strong);
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
   transition: all var(--transition-fast);
 }
 
-.tm-remove-btn:hover {
-  background-color: var(--color-error);
-  color: white;
+.tm-avatar-box:hover {
+  border-color: var(--color-primary);
+  background-color: var(--bg-surface-2);
 }
 
-/* ── Submit Button ── */
+.tm-img-preview-tag {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tm-camera-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  gap: 4px;
+}
+
+.tm-upload-icon {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+}
+
+.tm-media-subtext {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin: 8px 0 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Action Footer Control Bar
+   ───────────────────────────────────────────────────────────────────────── */
+.tm-action-footer-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border-default);
+  padding-top: 20px;
+  margin-top: 8px;
+}
+
+.tm-cancel-action-btn {
+  background-color: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.tm-cancel-action-btn:hover:not(:disabled) {
+  background-color: var(--bg-surface-2);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
 .tm-submit-btn {
   background-color: var(--color-primary);
   color: white;
   border: none;
-  padding: 16px;
+  padding: 12px 28px;
   border-radius: var(--radius-sm);
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  margin-top: 10px;
+  transition: background-color var(--transition-fast);
 }
 
-.tm-submit-btn:disabled {
-  opacity: 0.6;
+.tm-submit-btn:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.tm-submit-btn:disabled,
+.tm-cancel-action-btn:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Keyframe Animations & Responsive Adjustments
+   ───────────────────────────────────────────────────────────────────────── */
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 600px) {
-  .tm-form-grid {
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Responsive Queries for smaller break layouts */
+@media (max-width: 680px) {
+  .tm-form-grid, 
+  .tm-grid-three-cols {
     grid-template-columns: 1fr;
+  }
+  .tm-grid-full-width {
+    grid-column: span 1;
+  }
+  .tm-teacher-modal-container {
+    max-height: 95vh;
+  }
+  .tm-action-footer-row {
+    flex-direction: column-reverse;
+  }
+  .tm-cancel-action-btn,
+  .tm-submit-btn {
+    width: 100%;
   }
 }

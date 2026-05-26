@@ -9,8 +9,6 @@ import TeacherDues from "../models/Teacher/dues.js";
 import TeacherAttendance from "../models/Teacher/attendance.js";
 
 
-
-
 const uploadToCloudinary = async (fileBuffer) => {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
@@ -25,71 +23,113 @@ const uploadToCloudinary = async (fileBuffer) => {
 };
 
 
+
+
 export const addTeacher = async (req, res) => {
   try {
     const {
       name,
       email,
       contact,
+      gender,
+      address,          // Passed down from frontend as an absolute JSON string via FormData
+      subjectTaught,
       degree,
       experience,
-      subjectClassMappings,
     } = req.body;
 
-    let password = "12345";
+    // Default generic starting credential password for a manually added teacher profile
+    let defaultPassword = "12345";
 
-    if (!name || !contact || !degree || !experience) {
+    // --- Validation Guards ---
+    if (!name || !contact || !gender || !address || !subjectTaught || !degree || experience === undefined) {
       return res.status(400).json({
         success: false,
-        message: "Required fields missing",
+        message: "All structural required parameters must be completed.",
       });
     }
 
     if (email && email !== "N/A" && !validator.isEmail(email)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid email",
+        message: "Please enter a valid email address sequence.",
       });
     }
 
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "Teacher image is required",
+        message: "Teacher profile image attachment file is required.",
       });
     }
 
-    const uploadedImage = await uploadToCloudinary(req.file.buffer);
-
-    let hashedPassword = null;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, 10);
+    // --- Address Parsing Execution ---
+    let parsedAddress;
+    try {
+      parsedAddress = typeof address === "string" ? JSON.parse(address) : address;
+    } catch (parseError) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid formatting structure received for address elements.",
+      });
     }
 
+    // Confirm structural children inside the address object block
+    const { village, po, ps, pin, district, state } = parsedAddress;
+    if (!village || !po || !ps || !pin || !district || !state) {
+      return res.status(400).json({
+        success: false,
+        message: "Complete address specifications (Village, P.O, P.S, PIN, District, State) are mandatory.",
+      });
+    }
+
+    // --- Media Storage & Encryption Processing ---
+    const uploadedImage = await uploadToCloudinary(req.file.buffer);
+
+    const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+
+    // --- Database Engine Execution ---
     const teacher = await teacherModel.create({
       name,
-      email,
+      email: email || "N/A",
       contact,
+      gender,
+      address: {
+        village,
+        po,
+        ps,
+        pin,
+        district,
+        state,
+      },
+      subjectTaught,
       degree,
-      experience,
-      image: uploadedImage.secure_url,
-      imagePublicId: uploadedImage.public_id,
-      subjectClassMappings: subjectClassMappings
-        ? JSON.parse(subjectClassMappings)
-        : [],
+      experience: Number(experience),
+      image: {
+        url: uploadedImage.secure_url,
+        publicId: uploadedImage.public_id,
+      },
       password: hashedPassword,
+      // Manually inserted profiles from the Admin panel bypass onboarding review queues
+      status: "Active", 
     });
 
     return res.status(201).json({
       success: true,
-      message: "Teacher added successfully",
-      teacher,
+      message: "Teacher account configured and added successfully.",
+      teacher: {
+        _id: teacher._id,
+        name: teacher.name,
+        contact: teacher.contact,
+        subjectTaught: teacher.subjectTaught,
+        status: teacher.status,
+      },
     });
   } catch (error) {
-    console.error("addTeacher error:", error);
+    console.error("addTeacher error profile sequence:", error);
     return res.status(500).json({
       success: false,
-      message: "Error adding teacher",
+      message: "Server runtime breakdown encountered while adding teacher record.",
       error: error.message,
     });
   }
@@ -98,77 +138,110 @@ export const addTeacher = async (req, res) => {
 
 export const updateTeacherDetails = async (req, res) => {
   try {
-    const { id } = req.user;
+    const { id } = req.user; // Pulled dynamically from auth validation middleware
 
     const teacher = await teacherModel.findById(id);
 
     if (!teacher) {
       return res.status(404).json({
         success: false,
-        message: "Teacher not found",
+        message: "Teacher profile data trace not found.",
       });
     }
 
-    // Image update
-
+    // --- Asset Cloud Media Refactoring & Garbage Cleanup ---
     if (req.file) {
-      if (teacher.imagePublicId) {
-        await cloudinary.uploader.destroy(teacher.imagePublicId);
+      // Look for the historical asset token inside the newly structured nested document path
+      if (teacher.image && teacher.image.publicId) {
+        await cloudinary.v2.uploader.destroy(teacher.image.publicId);
       }
 
       const uploadedImage = await uploadToCloudinary(req.file.buffer);
-      teacher.image = uploadedImage.secure_url;
-      teacher.imagePublicId = uploadedImage.public_id;
+      teacher.image = {
+        url: uploadedImage.secure_url,
+        publicId: uploadedImage.public_id,
+      };
     }
 
-    // Password update
-
+    // --- Secured Access Token Configurations ---
     if (req.body.password) {
-      teacher.password = await bcrypt.hash(req.body.password,10);
+      teacher.password = await bcrypt.hash(req.body.password, 10);
     }
 
-    // Subject mapping update
+    // --- Nested Address Parsing Engine ---
+    if (req.body.address) {
+      try {
+        const parsedAddress = typeof req.body.address === "string" 
+          ? JSON.parse(req.body.address) 
+          : req.body.address;
 
-    if (req.body.subjectClassMappings) {
-      teacher.subjectClassMappings = JSON.parse(req.body.subjectClassMappings);
+        // Perform granular field tracking so the client can perform partial mutations on the address block
+        const addressFields = ["village", "po", "ps", "pin", "district", "state"];
+        
+        addressFields.forEach((field) => {
+          if (parsedAddress[field] !== undefined) {
+            teacher.address[field] = parsedAddress[field];
+          }
+        });
+      } catch (parseError) {
+        return res.status(400).json({
+          success: false,
+          message: "Malformed data structural parsing layout received for address updates.",
+        });
+      }
     }
 
-    // Partial field updates
-
+    // --- Basic & Professional Fields Mapping Stream ---
     const allowedFields = [
       "name",
       "email",
       "contact",
+      "gender",
+      "subjectTaught", // Upgraded to track single department stream parameter
       "degree",
-      "experience",
+      "experience"
     ];
 
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
-        teacher[field] = req.body[field];
+        // Cast numerical constraints accurately
+        if (field === "experience") {
+          teacher[field] = Number(req.body[field]);
+        } else {
+          teacher[field] = req.body[field];
+        }
       }
     });
 
+    // Mongoose execution fires active document pre-save structural layout validation hooks automatically
     await teacher.save();
 
     return res.status(200).json({
       success: true,
-      message: "Teacher updated successfully",
-      teacher,
+      message: "Profile information parameters saved and modified successfully.",
+      teacher: {
+        _id: teacher._id,
+        name: teacher.name,
+        email: teacher.email,
+        contact: teacher.contact,
+        gender: teacher.gender,
+        address: teacher.address,
+        subjectTaught: teacher.subjectTaught,
+        degree: teacher.degree,
+        experience: teacher.experience,
+        image: teacher.image,
+      },
     });
   } catch (error) {
-    console.error(
-      "updateTeacherDetails error:",
-      error
-    );
-
+    console.error("updateTeacherDetails runtime anomaly sequence:", error);
     return res.status(500).json({
       success: false,
-      message: "Error updating teacher",
+      message: "An operational breakdown was encountered while committing profile updates.",
       error: error.message,
     });
   }
 };
+
 
 export const deleteTeacher = async (req, res) => {
   try {
@@ -204,7 +277,7 @@ export const deleteTeacher = async (req, res) => {
 
 export const getAllTeachers = async (req, res) => {
   try {
-    const teachers = await teacherModel.find().sort({ createdAt: -1 });
+    const teachers = await teacherModel.find().sort({ experience: -1 });
 
     return res.status(200).json({
       success: true,
@@ -250,20 +323,43 @@ export const getTeacherById = async (req, res) => {
 
 
 export const updateTimetable = async (req, res) => {
-  try {
-    const { id } = req.user; 
-    const { schedule } = req.body;
 
-    // 1. Array Validation Safeguard
-    if (!schedule || !Array.isArray(schedule)) {
+  try {
+
+    const { id } = req.user;
+    const { day, schedule } = req.body;
+
+    // Validate day
+
+    const validDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    if (!day || !validDays.includes(day)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid schedule data payload. It must be an array.",
+        message: "Invalid day provided",
       });
     }
 
-    // 2. Verify the teacher exists in the system
+    // Validate schedule array
+
+    if (!schedule || !Array.isArray(schedule)) {
+      return res.status(400).json({
+        success: false,
+        message: "Schedule must be an array",
+      });
+    }
+
+    // Verify teacher exists
+
     const teacher = await teacherModel.findById(id);
+
     if (!teacher) {
       return res.status(404).json({
         success: false,
@@ -271,20 +367,45 @@ export const updateTimetable = async (req, res) => {
       });
     }
 
-    // 3. Atomically update or insert (upsert) the timetable documentation
-    const timetable = await Timetable.findOneAndUpdate(
-      { teacher: id },
-      { schedule },
-      { new: true, upsert: true, runValidators: true } // runValidators ensures the schema rules are checked
-    );
+    // Find existing timetable
+
+    let timetable = await Timetable.findOne({
+      teacher: id,
+    });
+
+    // Create empty timetable if not exists
+
+    if (!timetable) {
+
+      timetable = await Timetable.create({
+        teacher: id,
+        schedule: {
+          Monday: [],
+          Tuesday: [],
+          Wednesday: [],
+          Thursday: [],
+          Friday: [],
+          Saturday: [],
+        },
+      });
+    }
+
+    // Update only selected day
+
+    timetable.schedule[day] = schedule;
+
+    await timetable.save();
 
     return res.status(200).json({
       success: true,
-      message: "Timetable updated successfully",
+      message: `${day} timetable updated successfully`,
       timetable,
     });
+
   } catch (error) {
+
     console.error("updateTimetable error:", error);
+
     return res.status(500).json({
       success: false,
       message: "Error updating timetable",
@@ -293,18 +414,24 @@ export const updateTimetable = async (req, res) => {
   }
 };
 
-
 export const getTimetable = async (req, res) => {
   try {
+
     const { id } = req.params;
+
+    // Verify teacher exists
     const teacher = await teacherModel.findById(id);
+
     if (!teacher) {
       return res.status(404).json({
         success: false,
         message: "Teacher not found",
       });
     }
+
+    // Fetch timetable
     const timetable = await Timetable.findOne({ teacher: id });
+
     if (!timetable) {
       return res.status(404).json({
         success: false,
@@ -316,8 +443,10 @@ export const getTimetable = async (req, res) => {
       success: true,
       timetable,
     });
+
   } catch (error) {
     console.error("getTimetable error:", error);
+
     return res.status(500).json({
       success: false,
       message: "Error fetching timetable",

@@ -65,7 +65,7 @@ app.get("/api/home-data", async (req, res, next) => {
     const [heroImages, authorities, teachers, galleryImages, serviceSettings, notices] = await Promise.all([
       HeroImage.find({}),
       authorityModel.find({ role: { $in: ["Principal", "Managing Director"] } }),
-      teacherModel.find({}).select("name email contact degree experience image subjectClassMappings"),
+      teacherModel.find({}).sort({ experience: -1 }),
       Image.find({}),
       ServiceSettings.findOne({}),
       Notice.find({}).sort({ createdAt: -1 })

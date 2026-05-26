@@ -1,42 +1,37 @@
-
-
 .teacher-profile-page {
   padding: 32px;
-  background: #f4f7fb;
+  background: var(--bg-primary);
   min-height: 100vh;
-  color: #1e293b;
-  font-family: "Inter", sans-serif;
+  color: var(--text-main);
 }
 
 /* =========================
-   Loading State
-========================= */
-
-.teacher-profile-loading {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f4f7fb;
-}
-
-.teacher-profile-loading p {
-  font-size: 1rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-/* =========================
-   Header
-========================= */
-
+   Header Layout Components
+   ========================= */
 .teacher-profile-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 28px;
   flex-wrap: wrap;
+}
+
+.teacher-profile-header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* New round avatar preview thumbnail */
+.teacher-profile-avatar-thumb {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  background: var(--bg-card);
 }
 
 .teacher-dashboard-tag {
@@ -44,88 +39,104 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #e94560;
-  margin-bottom: 8px;
+  color: var(--accent-color);
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Monospaced inline ID pill badge */
+.teacher-id-pill {
+  font-size: 0.75rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  padding: 2px 10px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-family: monospace;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 .teacher-dashboard-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-main);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 /* =========================
-   Edit Button
-========================= */
-
+   Action Triggers
+   ========================= */
 .teacher-edit-trigger-btn {
   border: none;
   outline: none;
-  padding: 12px 22px;
+  padding: 12px 24px;
   border-radius: 14px;
-  background: #e94560;
-  color: white;
+  background: var(--accent-color);
+  color: var(--bg-card);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: 0.25s ease;
-  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.18);
+  box-shadow: var(--shadow-card);
 }
 
 .teacher-edit-trigger-btn:hover {
-  background: #ae5a68;
+  background: var(--accent-hover);
   transform: translateY(-2px);
 }
 
 /* =========================
-   Layout Body
-========================= */
-
+   Layout Body & Card Systems
+   ========================= */
 .teacher-profile-body {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-/* =========================
-   Cards
-========================= */
-
 .teacher-card {
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 24px;
   padding: 28px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
 }
 
 .teacher-card-header {
   margin-bottom: 24px;
   padding-bottom: 16px;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .teacher-card-header h2 {
   margin: 0;
   font-size: 1.25rem;
-  color: #0f172a;
+  color: var(--text-main);
   font-weight: 700;
 }
 
 /* =========================
-   Info Grid
-========================= */
-
+   Data Display Grid Architecture
+   ========================= */
 .teacher-details-display-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 22px;
 }
 
+/* Enforcing a clean 3-column setup for standard desktop address views */
+.tp-address-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .teacher-info-field {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
   border-radius: 18px;
   padding: 18px;
   display: flex;
@@ -135,7 +146,7 @@
 }
 
 .teacher-info-field:hover {
-  border-color: #bfdbfe;
+  border-color: var(--accent-color);
   transform: translateY(-2px);
 }
 
@@ -144,79 +155,62 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #64748b;
+  color: var(--text-muted);
 }
 
 .teacher-info-value {
   font-size: 1rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--text-main);
   word-break: break-word;
 }
 
-/* =========================
-   Subject Mapping
-========================= */
-
-.teacher-mapping-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+/* Highlighted emphasis for the single subject design */
+.teacher-subject-highlight {
+  color: var(--accent-color);
+  font-size: 1.1rem;
 }
 
-.teacher-mapping-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
-  flex-wrap: wrap;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  padding: 18px;
-  transition: 0.25s ease;
-}
-
-.teacher-mapping-row:hover {
-  border-color: #bfdbfe;
-}
-
-.teacher-mapping-subject {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #1e293b;
-  min-width: 120px;
-}
-
-.teacher-mapping-classes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.teacher-class-tag {
-  background: #dbeafe;
-  color: #e94560;
-  font-size: 0.88rem;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid #bfdbfe;
-}
-
-.teacher-tag-empty {
-  font-size: 0.95rem;
-  color: #64748b;
-  font-weight: 500;
+/* Postal code monospace type rules */
+.tp-pin-font {
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  font-size: 1.05rem;
 }
 
 /* =========================
-   Responsive
-========================= */
+   Status Badge Layout Contexts
+   ========================= */
+.status-tag-active {
+  color: #10b981 !important;
+}
+
+.status-tag-pending {
+  color: #f59e0b !important;
+}
+
+.status-tag-suspended,
+.status-tag-inactive {
+  color: #ef4444 !important;
+}
+
+/* =========================
+   Responsive Breakpoints
+   ========================= */
+@media (max-width: 992px) {
+  .tp-address-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media (max-width: 768px) {
   .teacher-profile-page {
     padding: 20px;
+  }
+
+  .teacher-profile-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .teacher-dashboard-title {
@@ -228,17 +222,21 @@
     border-radius: 20px;
   }
 
-  .teacher-mapping-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .teacher-edit-trigger-btn {
-    width: 100%;
-  }
-
+  .teacher-edit-trigger-btn,
   .edit-tbn {
     width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .teacher-profile-header-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .tp-address-grid {
+    grid-template-columns: 1fr;
   }
 }
 

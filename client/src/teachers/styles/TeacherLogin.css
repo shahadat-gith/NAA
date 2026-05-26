@@ -18,7 +18,7 @@
   max-width: 440px;
   padding: 40px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-card);
   border: 1px solid rgba(255, 255, 255, 0.8);
   box-sizing: border-box;
 }
@@ -30,7 +30,7 @@
 
 .teacher-login-header h1 {
   font-size: 2rem;
-  color: #1e293b;
+  color: var(--text-main);
   margin: 0 0 12px 0;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -38,7 +38,7 @@
 
 .teacher-login-description {
   font-size: 0.95rem;
-  color: #64748b;
+  color: var(--text-muted);
   line-height: 1.5;
   margin: 0;
 }
@@ -57,7 +57,7 @@
 .form-group label {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #334155;
+  color: var(--text-muted);
   margin-bottom: 8px;
 }
 
@@ -71,7 +71,7 @@
   position: absolute;
   left: 16px;
   font-size: 1rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   pointer-events: none;
   display: flex;
   align-items: center;
@@ -84,23 +84,23 @@
   width: 100%;
   padding: 14px 14px 14px 46px;
   font-size: 0.95rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
-  color: #0f172a;
+  color: var(--text-main);
   transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 .input-wrapper input::placeholder {
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 /* Focused elements now emphasize your branding color */
 .input-wrapper input:focus {
   outline: none;
-  border-color: #e94560;
-  background-color: #ffffff;
+  border-color: var(--accent-color);
+  background-color: var(--bg-card);
   box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.15);
 }
 
@@ -117,32 +117,34 @@
   padding: 0;
   font-size: 0.87rem;
   font-weight: 500;
-  color: #e94560;
+  color: var(--accent-color);
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
 .teacher-forgot-button:hover {
-  color: #c12c45;
+  color: var(--accent-hover);
   text-decoration: underline;
 }
 
-/* Primary Button with color #e94560 */
+/* Primary Button */
 .teacher-login-button {
   width: 100%;
   padding: 14px;
-  background-color: #e94560;
-  color: #ffffff;
+  background-color: var(--accent-color);
+  color: var(--bg-card);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.1s ease;
 }
 
 .teacher-login-button:hover {
-  background-color: #c12c45;
+  background-color: var(--accent-hover);
 }
 
 .teacher-login-button:active {
@@ -150,7 +152,7 @@
 }
 
 .teacher-login-button:disabled {
-  background-color: #94a3b8;
+  background-color: var(--text-muted);
   cursor: not-allowed;
   transform: none;
 }
@@ -160,6 +162,7 @@
     padding: 24px;
     border-radius: 12px;
   }
+
   .teacher-login-header h1 {
     font-size: 1.75rem;
   }

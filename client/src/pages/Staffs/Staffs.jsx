@@ -8,15 +8,22 @@ const Staffs = () => {
   const { teachers } = useContext(AppContext);
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Enhanced filtering logic syncing with the updated schema layout
   const filteredTeachers = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
 
-    // If search is empty, show everyone
+    // If search field is empty, seamlessly list everyone
     if (!term) return teachers;
 
-    return teachers.filter((teacher) =>
-      teacher.name?.toLowerCase().includes(term)
-    );
+    return teachers.filter((teacher) => {
+      const matchName = teacher.name?.toLowerCase().includes(term);
+      
+      // Match against the single string property from your updated schema layout
+      const matchSubject = teacher.subjectTaught?.toLowerCase().includes(term);
+
+      // Return true if either condition matches
+      return matchName || matchSubject;
+    });
   }, [teachers, searchTerm]);
 
   return (
@@ -45,7 +52,7 @@ const Staffs = () => {
               <input
                 id="teacher-search"
                 type="text"
-                placeholder="Search by name"
+                placeholder="Search by name or subject..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="te-search-input"
@@ -65,7 +72,7 @@ const Staffs = () => {
               <span>
                 {searchTerm
                   ? `Filtered by "${searchTerm}"`
-                  : 'Search by teacher name'}
+                  : 'Search by teacher name or subject department'}
               </span>
             </div>
           </div>
@@ -78,13 +85,13 @@ const Staffs = () => {
           {filteredTeachers.length > 0 ? (
             <div className="te-teachers-grid">
               {filteredTeachers.map((teacher, index) => (
-                <StaffCard key={teacher.id || index} teacher={teacher} />
+                <StaffCard key={teacher._id || index} teacher={teacher} />
               ))}
             </div>
           ) : (
             <div className="te-no-results">
               <h3>No teachers found</h3>
-              <p>Try a different search term like "Science" or "English".</p>
+              <p>Try a different search term like "Mathematics", "Social Studies", or another department name.</p>
             </div>
           )}
         </div>

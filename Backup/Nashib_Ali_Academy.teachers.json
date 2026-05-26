@@ -1,0 +1,950 @@
+[{
+  "_id": {
+    "$oid": "6868df6a40d596f898a62a67"
+  },
+  "name": "Anchari Tosar Uddin",
+  "email": "tosaruddinanchari@gmail.com",
+  "contact": "8638871014",
+  "degree": "B.A",
+  "experience": 20,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751703401/teachers/teacher_1751703401024.jpg",
+  "imagePublicId": "teachers/teacher_1751703401024",
+  "subjectClassMappings": [
+    {
+      "subject": "Social Studies",
+      "classes": [
+        "Class 4",
+        "Class 5",
+        "Class 6"
+      ],
+      "_id": {
+        "$oid": "6868df6a40d596f898a62a68"
+      }
+    }
+  ],
+  "password": "$2b$10$q0z8cGNzCQLRAEYBCDN86O7qhhykt92ZKXaJhfU9NELbzn8TFQvAG",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868e56e40d596f898a62b5c"
+  },
+  "name": "Pashan Ali Ahmed",
+  "email": "pashanaliahmed565667@gmail.com",
+  "contact": "9954152489",
+  "degree": "HS",
+  "experience": 10,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751704941/teachers/teacher_1751704941331.jpg",
+  "imagePublicId": "teachers/teacher_1751704941331",
+  "subjectClassMappings": [
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 5",
+        "Class 4"
+      ],
+      "_id": {
+        "$oid": "6868e56e40d596f898a62b5d"
+      }
+    },
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 8"
+      ],
+      "_id": {
+        "$oid": "6868e56e40d596f898a62b5e"
+      }
+    },
+    {
+      "subject": "General Science",
+      "classes": [
+        "Class 7"
+      ],
+      "_id": {
+        "$oid": "6868e56e40d596f898a62b5f"
+      }
+    }
+  ],
+  "password": "$2b$10$700heXD4z7Kq/2W5FYQHcezpyURGe9WAl01nZYVPoiAwdPJkQAZgy",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868c21ae1e0cb290f5c8d22"
+  },
+  "name": "Mohor Ali",
+  "email": "mohorali481@gmail.com",
+  "contact": "6900570258",
+  "degree": "M.Sc, PGDCA",
+  "experience": 1,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751695897/teachers/teacher_1751695897341.jpg",
+  "imagePublicId": "teachers/teacher_1751695897341",
+  "subjectClassMappings": [
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 12",
+        "Class 11",
+        "Class 10"
+      ],
+      "_id": {
+        "$oid": "6868c21ae1e0cb290f5c8d23"
+      }
+    },
+    {
+      "subject": "Advanced Mathematics",
+      "classes": [
+        "Class 10"
+      ],
+      "_id": {
+        "$oid": "6868c21ae1e0cb290f5c8d24"
+      }
+    }
+  ],
+  "password": "$2b$10$dhdfhg3oX/i2opJUv0PKBueEZnWwqHEQa4XH.tl5di.5iriT5VU/K",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868cd2f40d596f898a628d4"
+  },
+  "name": "Zinna Abdul Hai",
+  "email": "zinna123@gmail.com",
+  "contact": "6003314490",
+  "degree": "M.A",
+  "experience": 25,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751698734/teachers/teacher_1751698733729.jpg",
+  "imagePublicId": "teachers/teacher_1751698733729",
+  "subjectClassMappings": [
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868cd2f40d596f898a628d5"
+      }
+    },
+    {
+      "subject": "Advance Assamese",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868cd2f40d596f898a628d6"
+      }
+    }
+  ],
+  "password": "$2b$10$U345LxhsjWuh40N8y52l4.ZBIsxE7fZhp0YJWxl3jiOOp2UUISpPm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868de8640d596f898a62a49"
+  },
+  "name": "Anchari Shamsul Hoque",
+  "email": "ancharishamsulhoque1@gmail.com",
+  "contact": "7896710605",
+  "degree": "B.A, D.El.Ed",
+  "experience": 30,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751703173/teachers/teacher_1751703173079.jpg",
+  "imagePublicId": "teachers/teacher_1751703173079",
+  "subjectClassMappings": [
+    {
+      "subject": "English",
+      "classes": [
+        "Class 3",
+        "Class 4",
+        "Class 5",
+        "Class 6"
+      ],
+      "_id": {
+        "$oid": "6868de8640d596f898a62a4a"
+      }
+    }
+  ],
+  "password": "$2b$10$1U1FNwbQCOn1Exb9ISGhT.treeFnj6GBdFEF0l8YHYKxYjj9QSdJC",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868e49940d596f898a62b34"
+  },
+  "name": "Dimple Rafika",
+  "email": "dimplerofika1989@gmail.com",
+  "contact": "8474889456",
+  "degree": "B.A, D.El.Ed",
+  "experience": 9,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751704728/teachers/teacher_1751704727711.jpg",
+  "imagePublicId": "teachers/teacher_1751704727711",
+  "subjectClassMappings": [
+    {
+      "subject": "Arabic",
+      "classes": [
+        "Class 3",
+        "Class 4",
+        "Class 5"
+      ],
+      "_id": {
+        "$oid": "6868e49940d596f898a62b35"
+      }
+    }
+  ],
+  "password": "$2b$10$r.7wKR/y5Dr.gmeJ0PHuCuP2BxErHs5jWD6mDLKk.UOlpFJ9kp9/y",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868ba8be1e0cb290f5c8c4a"
+  },
+  "name": "Amir Hussain",
+  "email": "amirbpcc@gmail.com",
+  "contact": "8099485348",
+  "degree": "M.A, B.Ed",
+  "experience": 8,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751693962/teachers/teacher_1751693962107.jpg",
+  "imagePublicId": "teachers/teacher_1751693962107",
+  "subjectClassMappings": [
+    {
+      "subject": "English",
+      "classes": [
+        "Class 9",
+        "Class 10",
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868ba8be1e0cb290f5c8c4b"
+      }
+    }
+  ],
+  "password": "$2b$10$PL0hM0FnXy/HUE7Xb0VJxuBod1b.aYhSdkWZkmKmylfuBpDR0srFm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868d13040d596f898a6291e"
+  },
+  "name": "Emdadul Islam",
+  "email": "mdemdadulislam2016@gmail.com",
+  "contact": "9864294930",
+  "degree": "B.Com",
+  "experience": 10,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751699759/teachers/teacher_1751699759204.jpg",
+  "imagePublicId": "teachers/teacher_1751699759204",
+  "subjectClassMappings": [
+    {
+      "subject": "Social Studies",
+      "classes": [
+        "Class 2",
+        "Class 1",
+        "Class 3",
+        "Class 4",
+        "Class 5",
+        "Class 6"
+      ],
+      "_id": {
+        "$oid": "6868d13040d596f898a6291f"
+      }
+    },
+    {
+      "subject": "GK",
+      "classes": [
+        "Class 4"
+      ],
+      "_id": {
+        "$oid": "6868d13040d596f898a62920"
+      }
+    }
+  ],
+  "password": "$2b$10$Xj8n20RLhbWi27EU9V0mK.kZ2/N.e1CeMwK/5.0DUBZVv7WpebNeS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868c022e1e0cb290f5c8ce0"
+  },
+  "name": "Ibrahim Ali",
+  "email": "ibrahimali813384@gmail.com",
+  "contact": "6002241200",
+  "degree": "M.Sc",
+  "experience": 5,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751695393/teachers/teacher_1751695393240.jpg",
+  "imagePublicId": "teachers/teacher_1751695393240",
+  "subjectClassMappings": [
+    {
+      "subject": "Biology",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868c022e1e0cb290f5c8ce1"
+      }
+    },
+    {
+      "subject": "General Science",
+      "classes": [
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868c022e1e0cb290f5c8ce2"
+      }
+    }
+  ],
+  "password": "$2b$10$CR7Oz4ie.Wc5XmtNESgtO.Ycn46sulK6s2CTmPPzCR0FDTZV4SlQ.",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868af4d43b7d794e6286a73"
+  },
+  "name": "Shahidul Islam",
+  "email": "shahidul241024@gmail.com",
+  "contact": "9678888080",
+  "degree": "B.A in Geography",
+  "experience": 25,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751691084/teachers/teacher_1751691083860.jpg",
+  "imagePublicId": "teachers/teacher_1751691083860",
+  "subjectClassMappings": [
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 10",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868af4d43b7d794e6286a74"
+      }
+    }
+  ],
+  "password": "$2b$10$DdY21EAknwMhEDr8lKSmTOh2rzJ2LAiNHL5GIJTBSj2xl7eTD771S",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6868b1f543b7d794e6286ad9"
+  },
+  "name": "Shahinur Alom",
+  "email": "ariyanreings@gmail.com",
+  "contact": "6000072903",
+  "degree": "B.Sc in Mathematics",
+  "experience": 2,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751691764/teachers/teacher_1751691764286.jpg",
+  "imagePublicId": "teachers/teacher_1751691764286",
+  "subjectClassMappings": [
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 10",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868b1f543b7d794e6286ada"
+      }
+    },
+    {
+      "subject": "Advanced Mathematics",
+      "classes": [
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868b1f543b7d794e6286adb"
+      }
+    }
+  ],
+  "password": "$2b$10$L5GRpP3KevzpFLRAuFtaj.MVRgb3V.fUw9lKk31MQde/P5yyWLBmS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868bd4fe1e0cb290f5c8ccc"
+  },
+  "name": "Baharul Islam",
+  "email": "baharulislam0003@gmail.com",
+  "contact": "7002198860",
+  "degree": "M.A , B.Ed",
+  "experience": 6,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751694670/teachers/teacher_1751694669848.jpg",
+  "imagePublicId": "teachers/teacher_1751694669848",
+  "subjectClassMappings": [
+    {
+      "subject": "Geography",
+      "classes": [
+        "Class 12",
+        "Class 11"
+      ],
+      "_id": {
+        "$oid": "6868bd4fe1e0cb290f5c8ccd"
+      }
+    }
+  ],
+  "password": "$2b$10$b32HaANEGjxw1M8a4agXXusBjABYFRgPCwSxKzxyN/i5Gl./Xoe.a",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868c473e1e0cb290f5c8d4f"
+  },
+  "name": "Tazmol Hoque",
+  "email": "tazmolhoque0101@gmail.com",
+  "contact": "9365836467",
+  "degree": "M.Sc",
+  "experience": 1,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751696499/teachers/teacher_1751696498407.jpg",
+  "imagePublicId": "teachers/teacher_1751696498407",
+  "subjectClassMappings": [
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 4",
+        "Class 5",
+        "Class 6",
+        "Class 7"
+      ],
+      "_id": {
+        "$oid": "6868c473e1e0cb290f5c8d50"
+      }
+    },
+    {
+      "subject": "Chemistry",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868c473e1e0cb290f5c8d51"
+      }
+    }
+  ],
+  "password": "$2b$10$5L7xNJ5Qb1zLjh4.upHDLeffLnahbaQfSO0/w0KBHUT70vzEdu1EC",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868db2240d596f898a62a0f"
+  },
+  "name": "Abu Taher",
+  "email": "taher.offl9957@gmail.com",
+  "contact": "9957027898",
+  "degree": "HS",
+  "experience": 18,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751702306/teachers/teacher_1751702305562.jpg",
+  "imagePublicId": "teachers/teacher_1751702305562",
+  "subjectClassMappings": [
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 4",
+        "Class 5",
+        "Class 6"
+      ],
+      "_id": {
+        "$oid": "6868db2240d596f898a62a10"
+      }
+    },
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 3"
+      ],
+      "_id": {
+        "$oid": "6868db2240d596f898a62a11"
+      }
+    }
+  ],
+  "password": "$2b$10$eUPilwGSv1ain2Pez2nHmOlljPa9OAT3SE7qkLVR.xlS.1Y2.VMrG",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868b752e1e0cb290f5c8be5"
+  },
+  "name": "Md Badshah Miah",
+  "email": "badshahmiah748@gmail.com",
+  "contact": "8011735636",
+  "degree": "B.A , DElEd",
+  "experience": 18,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751693137/teachers/teacher_1751693136819.jpg",
+  "imagePublicId": "teachers/teacher_1751693136819",
+  "subjectClassMappings": [
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 8",
+        "Class 7"
+      ],
+      "_id": {
+        "$oid": "6868b752e1e0cb290f5c8be6"
+      }
+    },
+    {
+      "subject": "Social Studies",
+      "classes": [
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868b752e1e0cb290f5c8be7"
+      }
+    }
+  ],
+  "password": "$2b$10$QKZZB/FRithKyQ5TToyHMuTjs3rGiHm56VDEMTKkGS7e0CZRispd6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868e3dc40d596f898a62b0d"
+  },
+  "name": "Shaiqul hussain",
+  "email": "hussainshaiqul@gmail.com",
+  "contact": "9101999930",
+  "degree": "B.Sc",
+  "experience": 7,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751704539/teachers/teacher_1751704539281.jpg",
+  "imagePublicId": "teachers/teacher_1751704539281",
+  "subjectClassMappings": [
+    {
+      "subject": "Mathematics",
+      "classes": [
+        "Class 7",
+        "Class 6",
+        "Class 8"
+      ],
+      "_id": {
+        "$oid": "6868e3dc40d596f898a62b0e"
+      }
+    }
+  ],
+  "password": "$2b$10$l.QF09KERfhWKfyGPEoVnO5WZ8I1V7uXm75Q.YruuNNFm9Kn8ellC",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0,
+  "isActive": true,
+  "updatedAt": {
+    "$date": "2026-05-26T16:31:41.634Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6868e03340d596f898a62a86"
+  },
+  "name": "Roshupa Parbin",
+  "email": "roshupaparbin@gmail.com",
+  "contact": "6003962079",
+  "degree": "B.A",
+  "experience": 1,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751703602/teachers/teacher_1751703602407.jpg",
+  "imagePublicId": "teachers/teacher_1751703602407",
+  "subjectClassMappings": [
+    {
+      "subject": "Arabic",
+      "classes": [
+        "Class 6",
+        "Class 5",
+        "Class 7",
+        "Class 8"
+      ],
+      "_id": {
+        "$oid": "6868e03340d596f898a62a87"
+      }
+    }
+  ],
+  "password": "$2b$10$F2P9M9ewX7FulbIg.7LCLOAc.6Q0Ttb0SbnoT36bEPh3t30WGxoSm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868abf843b7d794e6286a53"
+  },
+  "name": "Md Monser Ali",
+  "email": "monserali343@gmail.com",
+  "contact": "9365140372",
+  "degree": "M.A , DEleD",
+  "experience": 10,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751690231/teachers/teacher_1751690231168.jpg",
+  "imagePublicId": "teachers/teacher_1751690231168",
+  "subjectClassMappings": [
+    {
+      "subject": "Education",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "6868abf843b7d794e6286a54"
+      }
+    },
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Class 3",
+        "Class 4"
+      ],
+      "_id": {
+        "$oid": "6868abf843b7d794e6286a55"
+      }
+    }
+  ],
+  "password": "$2b$10$C5SKuvy9wgkKNY9Y8M0MKucSdQeYTt0wVUEDp2Aj1g5xxmGZHTlUK",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868e17940d596f898a62ac2"
+  },
+  "name": "Rijuana Sultana",
+  "email": "rijuanasultana27@gmail.com",
+  "contact": "8811020642",
+  "degree": "B.Sc",
+  "experience": 2,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751703928/teachers/teacher_1751703928105.jpg",
+  "imagePublicId": "teachers/teacher_1751703928105",
+  "subjectClassMappings": [
+    {
+      "subject": "General Science",
+      "classes": [
+        "Class 5",
+        "Class 6",
+        "Class 8",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868e17940d596f898a62ac3"
+      }
+    }
+  ],
+  "password": "$2b$10$dKzS3XukzbF0diBAVlkjrOkKltHpaD/iiuRqfW9Xxls7mv5o.nczu",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868acfd43b7d794e6286a5e"
+  },
+  "name": "Hashem Ali",
+  "email": "hashem4399@gmail.com",
+  "contact": "9365145364",
+  "degree": "M.A, B.Ed",
+  "experience": 5,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751690492/teachers/teacher_1751690492146.jpg",
+  "imagePublicId": "teachers/teacher_1751690492146",
+  "subjectClassMappings": [
+    {
+      "subject": "Political Science",
+      "classes": [
+        "Class 12",
+        "Class 11"
+      ],
+      "_id": {
+        "$oid": "6868acfd43b7d794e6286a5f"
+      }
+    },
+    {
+      "subject": "Social Studies",
+      "classes": [
+        "Class 4",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "6868acfd43b7d794e6286a60"
+      }
+    }
+  ],
+  "password": "$2b$10$dyWI93ha9fzZYIzAJqJGRO4upqMDs0jZUlUS9CMxXrHbEDG4d2JP6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6868e2d240d596f898a62ae3"
+  },
+  "name": "Nur Mohammad Ali",
+  "email": "nurmohammadali@gmail.com",
+  "contact": "6003622841",
+  "degree": "B.Com , PGDC",
+  "experience": 1,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1751704273/teachers/teacher_1751704273042.jpg",
+  "imagePublicId": "teachers/teacher_1751704273042",
+  "subjectClassMappings": [
+    {
+      "subject": "Assamese",
+      "classes": [
+        "Ankur"
+      ],
+      "_id": {
+        "$oid": "6868e2d240d596f898a62ae4"
+      }
+    },
+    {
+      "subject": "English",
+      "classes": [
+        "Mukul"
+      ],
+      "_id": {
+        "$oid": "6868e2d240d596f898a62ae5"
+      }
+    },
+    {
+      "subject": "EVS",
+      "classes": [
+        "Class 1"
+      ],
+      "_id": {
+        "$oid": "6868e2d240d596f898a62ae6"
+      }
+    },
+    {
+      "subject": "GK",
+      "classes": [
+        "Class 1"
+      ],
+      "_id": {
+        "$oid": "6868e2d240d596f898a62ae7"
+      }
+    },
+    {
+      "subject": "Drawing/Handwriting",
+      "classes": [
+        "Class 1"
+      ],
+      "_id": {
+        "$oid": "6868e2d240d596f898a62ae8"
+      }
+    }
+  ],
+  "password": "$2b$10$dImh9g/v4VEPvyJIxD4aNOc3.Ft0C/l2I8XPPJqJobJcPQ7R/EJbu",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695cb09c504004e09dd00a80"
+  },
+  "name": "Elizabeth Surong",
+  "email": "",
+  "contact": "9366829798",
+  "degree": "B.A",
+  "experience": 9,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1779604518/teachers/d3fuvgcanfdydgjove8c.jpg",
+  "imagePublicId": "teachers/d3fuvgcanfdydgjove8c",
+  "subjectClassMappings": [
+    {
+      "subject": "English",
+      "classes": [
+        "Class 3",
+        "Class 4",
+        "Class 5",
+        "Class 6",
+        "Class 7"
+      ],
+      "_id": {
+        "$oid": "695cb09c504004e09dd00a81"
+      }
+    }
+  ],
+  "password": "$2b$10$wDfBihaAVLA4CJFU.2wMTuaylG314rJHiNe/2B2xG4uR3Siss7loq",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0,
+  "isActive": true,
+  "updatedAt": {
+    "$date": "2026-05-24T06:35:18.755Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "695cb2b1504004e09dd00b76"
+  },
+  "name": "Khayrul Alom",
+  "email": "khayrulalomxyz@gmail.com",
+  "contact": "9678964756",
+  "degree": "MSc",
+  "experience": 2,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767682736/teachers/cf5cbsnrysydjuqe7pcl.jpg",
+  "imagePublicId": "teachers/cf5cbsnrysydjuqe7pcl",
+  "subjectClassMappings": [
+    {
+      "subject": "Physics",
+      "classes": [
+        "Class 11",
+        "Class 12",
+        "Class 8",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "695cb2b1504004e09dd00b77"
+      }
+    }
+  ],
+  "password": "$2b$10$F2844yblcUbPMKQbgPRE/u0uzDaXo3i4MArISNkHEcPE1f3q8/3Eu",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695cb44e504004e09dd00c4b"
+  },
+  "name": "Amir Uddin",
+  "email": "amiruddin8638@gmail.com",
+  "contact": "8638979521",
+  "degree": "MSc",
+  "experience": 7,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767683149/teachers/brjqsxoswzuckkyuy8pb.jpg",
+  "imagePublicId": "teachers/brjqsxoswzuckkyuy8pb",
+  "subjectClassMappings": [
+    {
+      "subject": "Physics",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "695cb44e504004e09dd00c4c"
+      }
+    },
+    {
+      "subject": "Advanced Mathematics",
+      "classes": [
+        "Class 10",
+        "Class 9"
+      ],
+      "_id": {
+        "$oid": "695cb44e504004e09dd00c4d"
+      }
+    }
+  ],
+  "password": "$2b$10$iOSxqUEPu.vooEBmqH4kw.HBtazAUajaXzPYUo.yFsXMskw.IWvdu",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695cb6e0ec9f16462a1eeb9c"
+  },
+  "name": "MOIDUL I SLAM",
+  "email": "moidulislam707@gmail.com",
+  "contact": "7002830818",
+  "degree": "M.Sc",
+  "experience": 10,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767683804/teachers/kdt2yimog1qiuibzpfa7.jpg",
+  "imagePublicId": "teachers/kdt2yimog1qiuibzpfa7",
+  "subjectClassMappings": [
+    {
+      "subject": "Chemistry",
+      "classes": [
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "695cb6e0ec9f16462a1eeb9d"
+      }
+    }
+  ],
+  "password": "$2b$10$yKc9TanReDa7p4XlEqxEZeJQiaBZONfQoLhbUHijFB5pSyKybyp2a",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695cbd0db4297dabbc602b9a"
+  },
+  "name": "Ajahar Ali ",
+  "email": "aliajahar923@gmail.com",
+  "contact": "6002183587",
+  "degree": "M.A",
+  "experience": 6,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767685388/teachers/mo1b8i11yoahiqoaybxm.jpg",
+  "imagePublicId": "teachers/mo1b8i11yoahiqoaybxm",
+  "subjectClassMappings": [
+    {
+      "subject": "English",
+      "classes": [
+        "Class 9",
+        "Class 10",
+        "Class 11",
+        "Class 12"
+      ],
+      "_id": {
+        "$oid": "695cbd0db4297dabbc602b9b"
+      }
+    }
+  ],
+  "password": "$2b$10$qK7iZ/ti0igyRXoSGwfzVuJhEeJMLnL.Z2NKoaosrGSBUP3LdS8Km",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695cbd85b4297dabbc602bc9"
+  },
+  "name": "Mohidul Islam",
+  "email": "islammohidul184@gmail.com",
+  "contact": "6001341570",
+  "degree": "M.A",
+  "experience": 3,
+  "image": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767685508/teachers/obu5mdaqrmbit3vi3v8l.jpg",
+  "imagePublicId": "teachers/obu5mdaqrmbit3vi3v8l",
+  "subjectClassMappings": [
+    {
+      "subject": "History",
+      "classes": [
+        "Class 9",
+        "Class 10",
+        "Class 11",
+        "Class 12",
+        "Class 4"
+      ],
+      "_id": {
+        "$oid": "695cbd85b4297dabbc602bca"
+      }
+    }
+  ],
+  "password": "$2b$10$9Cp.dJF19OQqPMeAWGi82e4GmCiaQQf9aL2krFyRzzlQjcjs2MHJO",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "__v": 0
+}]

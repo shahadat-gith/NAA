@@ -12,16 +12,36 @@ const Footer = () => {
             Dedicated to shaping future leaders.
           </p>
           <div className="social-links">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+            >
               <i className="fab fa-facebook-f"></i>
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+            >
               <i className="fab fa-twitter"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+            >
               <i className="fab fa-instagram"></i>
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon">
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-icon"
+            >
               <i className="fab fa-linkedin-in"></i>
             </a>
           </div>
@@ -30,22 +50,82 @@ const Footer = () => {
         <div className="footer-section">
           <h4 className="footer-subtitle">Quick Links</h4>
           <ul className="footer-links">
-            <li><Link to="/" className="footer-link">Home</Link></li>
-            <li><a href="https://site.sebaonline.org/" className="footer-link" target="_blank" rel="noopener noreferrer">SEBA Website</a></li>
-            <li><a href="https://site.sebaonline.org/downloads/" className="footer-link" target="_blank" rel="noopener noreferrer">Download SQP</a></li>
-            <li><a href="https://site.sebaonline.org/results/" className="footer-link" target="_blank" rel="noopener noreferrer">SEBA Result Page</a></li>
-            <li><a href="https://www.sebaonline.info/studentcorner/main.php" className="footer-link" target="_blank" rel="noopener noreferrer">Resources Lists</a></li>
+            <li>
+              <Link to="/" className="footer-link">
+                Home
+              </Link>
+            </li>
+            <li>
+              <a
+                href="https://site.sebaonline.org/"
+                className="footer-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                SEBA Website
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://site.sebaonline.org/downloads/"
+                className="footer-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download SQP
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://site.sebaonline.org/results/"
+                className="footer-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                SEBA Result Page
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.sebaonline.info/studentcorner/main.php"
+                className="footer-link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resources Lists
+              </a>
+            </li>
           </ul>
         </div>
 
         <div className="footer-section">
-          <h4 className="footer-subtitle">Legal</h4>
+          <h4 className="footer-subtitle">School & Policies</h4>
           <ul className="footer-links">
-            <li><Link to="/legal/privacy" className="footer-link">Privacy Policy</Link></li>
-            <li><Link to="/legal/terms" className="footer-link">Terms &amp; Conditions</Link></li>
-            <li><Link to="/legal/refund" className="footer-link">Refund Policy</Link></li>
-            <li><Link to="/legal/data-policy" className="footer-link">Data Policy</Link></li>
-            <li><Link to="/legal/cookies" className="footer-link">Cookies Policy</Link></li>
+            <li>
+              <Link to="/legal/privacy" className="footer-link">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/terms" className="footer-link">
+                Terms &amp; Conditions
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/refund" className="footer-link">
+                Refund Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/data-policy" className="footer-link">
+                Data Policy
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal/cookies" className="footer-link">
+                Cookies Policy
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -66,6 +146,12 @@ const Footer = () => {
             </li>
           </ul>
         </div>
+      </div>
+
+      <div className="footer-staff-onboarding">
+        <Link to="/staff/onboard" className="onboard-link">
+          Join us as teacher
+        </Link>
       </div>
 
       <div className="footer-bottom">

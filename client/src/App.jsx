@@ -22,6 +22,7 @@ import Contact from "./pages/Contact/Contact";
 import Developer from "./pages/Developer/Developer";
 import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
+import StaffOnboarding from "./pages/StaffOnboarding/StaffOnboarding"
 
 /* Legal pages */
 import Legal from "./pages/Legal/Legal";
@@ -53,6 +54,7 @@ import TeacherLogin from "./teachers/pages/TeacherLogin";
 import TeacherProfile from "./teachers/pages/TeacherProfile";
 import Payments from "./teachers/pages/Payments";
 import Attendance from "./teachers/pages/Attendance";
+import Timetable from "./teachers/pages/Timetable";
 
 const App = () => {
   const location = useLocation();
@@ -89,6 +91,7 @@ const App = () => {
             <Route path="profile" element={<TeacherProfile />} />
             <Route path="payments" element={<Payments />} />
             <Route path="attendance" element={<Attendance />} />
+            <Route path="timetable" element={<Timetable />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
@@ -122,6 +125,7 @@ const App = () => {
           <Route path="/legal/:page" element={<Legal />} />
           <Route path="/admission" element={<Admission />} />
           <Route path="/notices" element={<Notices />} />
+          <Route path="/staff/onboard" element={<StaffOnboarding />} />
 
           {/* Portal */}
           <Route path="/student/toppers" element={<ToppersList />} />

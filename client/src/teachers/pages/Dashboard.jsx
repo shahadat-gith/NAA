@@ -9,45 +9,26 @@ import PaymentsCard from "../components/PaymentsCard";
 
 // Styles
 import "../styles/Dashboard.css";
-
 const Dashboard = () => {
 
-  const { dashboard, setDashboard, loading } = useOutletContext();
-
+  const { dashboard, setDashboard } = useOutletContext();
   const [greeting, setGreeting] = useState("Welcome");
 
   // Greeting logic
   useEffect(() => {
-
     const hour = new Date().getHours();
-
     if (hour < 12) {
-      setGreeting("Good morning");
+      setGreeting("Good Morning");
     } else if (hour < 16) {
-      setGreeting("Good afternoon");
+      setGreeting("Good Afternoon");
     } else {
-      setGreeting("Good evening");
+      setGreeting("Good Evening");
     }
 
   }, []);
 
-  // Loading state
-  if (loading) {
-    return (
-      <div className="db-loading">
-        Loading your dashboard data...
-      </div>
-    );
-  }
-
   // Dashboard data
-  const {
-    teacher,
-    timetable,
-    attendance,
-    payments,
-    dues,
-  } = dashboard;
+  const {teacher,timetable,attendance,payments,dues} = dashboard;
 
   // Refresh timetable state
   const refreshTimetableState = (newScheduleArray) => {
@@ -67,25 +48,16 @@ const Dashboard = () => {
 
       {/* HEADER */}
       <div className="db-header">
-
         <div className="db-greeting-block">
-
           <h1 className="db-title">
-            {greeting}, {teacher?.name || "Teacher"}!
+            <span style={{color:"#e94560"}}>{greeting}</span>, {teacher?.name || "Teacher"}!
           </h1>
-
-          <p className="db-subtitle">
-            Here's a live overview of your schedule,
-            attendance data, and earnings statements.
-          </p>
-
         </div>
 
       </div>
 
       {/* GRID */}
       <div className="db-grid">
-
         <TimetableCard
           timetableData={timetable}
           onRefreshDashboard={refreshTimetableState}
@@ -98,6 +70,7 @@ const Dashboard = () => {
         <AttendanceLogCard
           attendance={attendance}
         />
+
         <PaymentsCard payments={payments}/>
 
       </div>

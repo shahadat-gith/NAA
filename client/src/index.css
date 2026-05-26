@@ -3,6 +3,29 @@
 @import "tailwindcss";
 
 
+:root {
+  --bg-primary: #f8fafc;
+  --bg-card: #ffffff;
+
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+
+  --accent-color: #e94560;
+  --accent-hover: #d2334c;
+
+  --border-light: #e2e8f0;
+
+  --shadow-card:
+    0 4px 10px rgba(15, 23, 42, 0.04);
+
+  --color-success: #10b981;
+  --bg-success: #ecfdf5;
+
+  --color-danger: #ef4444;
+  --bg-danger: #fef2f2;
+}
+
+
 body {
     font-family: "Poppins", sans-serif;
     background-color: #f4f4f4;

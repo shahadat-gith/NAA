@@ -140,10 +140,7 @@ const Teacher = () => {
                     <td>
                       <div className="teacher-info">
                         <img
-                          src={
-                            teacher.image ||
-                            "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                          }
+                          src= {teacher.image.url ||"/user.png"}
                           alt={
                             teacher.name ||
                             "Teacher"

@@ -1,32 +1,18 @@
-:root {
-  --nav-bg: #ffffff;
-  --nav-bg-scrolled: rgba(255, 255, 255, 0.92);
-  --nav-border: #e9ecf0;
-  --nav-accent: #e94560;
-  --nav-accent-light: rgba(233, 69, 96, 0.1);
-  --nav-accent-glow: rgba(233, 69, 96, 0.2);
-  --nav-text: #1a202c;
-  --nav-muted: #64748b;
-  --nav-link-hover-bg: #f1f5f9;
-  --nav-active-bg: rgba(233, 69, 96, 0.08);
-  --nav-height: 68px;
-  --nav-radius: 10px;
-  --nav-transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 /* ─── Shell ─────────────────────────────────────────────────── */
 .teacher-nav {
   position: sticky;
   top: 0;
   z-index: 100;
   width: 100%;
-  background: var(--nav-bg);
-  border-bottom: 1px solid var(--nav-border);
-  transition: box-shadow var(--nav-transition), background var(--nav-transition);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-light);
+  transition:
+    box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .teacher-nav--scrolled {
-  background: var(--nav-bg-scrolled);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
@@ -36,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: var(--nav-height);
+  height: 68px;
   margin: 0 auto;
   padding: 0 28px;
 }
@@ -72,7 +58,7 @@
 .teacher-nav__academy {
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--nav-accent);
+  color: var(--accent-color);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -80,7 +66,7 @@
 .teacher-nav__left-teacher-name {
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--nav-text);
+  color: var(--text-main);
   opacity: 0.85;
 }
 
@@ -98,11 +84,11 @@
   cursor: pointer;
   padding: 6px;
   border-radius: 30px;
-  transition: background var(--nav-transition);
+  transition: background 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .teacher-nav__profile-trigger:hover {
-  background: var(--nav-link-hover-bg);
+  background: var(--bg-primary);
 }
 
 /* Avatar Border Frame */
@@ -110,11 +96,11 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid var(--nav-accent);
-  box-shadow: 0 0 0 3px var(--nav-accent-glow);
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.2);
   overflow: hidden;
   flex-shrink: 0;
-  transition: transform var(--nav-transition);
+  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .teacher-nav__profile-trigger:hover .teacher-nav__avatar {
@@ -132,128 +118,19 @@
 .teacher-nav__arrow {
   display: flex;
   align-items: center;
-  color: var(--nav-muted);
-  transition: transform var(--nav-transition), color var(--nav-transition);
+  color: var(--text-muted);
+  transition:
+    transform 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .teacher-nav__profile-trigger:hover .teacher-nav__arrow {
-  color: var(--nav-text);
+  color: var(--text-main);
 }
 
 /* Rotates icon 180 degrees backwards when user clicks and menu deploys */
 .teacher-nav__arrow--open {
   transform: rotate(-180deg);
-  color: var(--nav-accent);
+  color: var(--accent-color);
 }
 
-/* ─── Dropdown Overlay Menu Container ─────────────────────── */
-.teacher-nav__dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  width: 220px;
-  background: #ffffff;
-  border: 1px solid var(--nav-border);
-  border-radius: var(--nav-radius);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  padding: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  z-index: 110;
-  animation: dropdownFadeIn 0.18s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes dropdownFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Dropdown User Identity Block */
-.teacher-nav__dropdown-header {
-  padding: 8px 14px 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.teacher-nav__dropdown-user-title {
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--nav-muted);
-  font-weight: 600;
-}
-
-.teacher-nav__dropdown-user-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--nav-text);
-}
-
-/* Menu Items & Links */
-.teacher-nav__dropdown-item {
-  display: block;
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: calc(var(--nav-radius) - 2px);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--nav-muted);
-  text-decoration: none;
-  text-align: left;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  box-sizing: border-box;
-  transition: 
-    color var(--nav-transition), 
-    background var(--nav-transition);
-}
-
-.teacher-nav__dropdown-item:hover {
-  color: var(--nav-text);
-  background: var(--nav-link-hover-bg);
-}
-
-.teacher-nav__dropdown-item--active {
-  color: var(--nav-accent) !important;
-  background: var(--nav-active-bg) !important;
-  font-weight: 600;
-}
-
-/* Section Separation Rule */
-.teacher-nav__dropdown-divider {
-  height: 1px;
-  background: var(--nav-border);
-  margin: 6px 4px;
-}
-
-/* Logout System Call Styling */
-.teacher-nav__dropdown-logout {
-  color: var(--nav-accent);
-  font-weight: 600;
-}
-
-.teacher-nav__dropdown-logout:hover {
-  color: #ffffff;
-  background: var(--nav-accent);
-}
-
-/* ─── Responsive Adjustments ────────────────────────────────── */
-@media (max-width: 640px) {
-  .teacher-nav__inner {
-    padding: 0 16px;
-  }
-  
-  /* Hides sub-label on mobile viewports so name text stacks cleanly */
-  .teacher-nav__left-teacher-name {
-    font-size: 0.78rem;
-  }
-}

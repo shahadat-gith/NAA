@@ -481,7 +481,7 @@
   border-top: 1px solid var(--border-light);
 }
 
-.mobile-admission-btn {
+.mobile-nav-footer-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -500,7 +500,7 @@
   box-shadow: 0 3px 14px rgba(233, 69, 96, 0.28);
 }
 
-.mobile-admission-btn:hover {
+.mobile-nav-footer-btn:hover {
   background: var(--accent-hover);
   box-shadow: 0 4px 22px rgba(233, 69, 96, 0.38);
 }

@@ -55,10 +55,8 @@ const TeacherDetails = () => {
     );
   }
 
-  const formatSubjects = (mappings) => {
-    if (!mappings || mappings.length === 0) return "N/A";
-    return mappings.map((m) => m.subject).join(", ");
-  };
+  // Helper safely pulling image URL from nested asset scheme
+  const profileImageUrl = teacher.image?.url || "/user.png";
 
   return (
     <div className="td-container">
@@ -67,7 +65,7 @@ const TeacherDetails = () => {
         <div className="td-avatar-content">
           <div className="td-avatar-img">
             <img
-              src={teacher.image}
+              src={profileImageUrl}
               alt={teacher.name}
               className="td-avatar-image"
               onError={(e) => (e.target.src = "/default-avatar.png")}
@@ -75,18 +73,24 @@ const TeacherDetails = () => {
           </div>
 
           <div className="td-avatar-name">
-            <h1 className="td-teacher-name">{teacher.name}</h1>
+            <div className="td-name-badge-row">
+              <h1 className="td-teacher-name">{teacher.name}</h1>
+              <span className={`td-status-badge td-status-${teacher.status?.toLowerCase() || "pending"}`}>
+                {teacher.status || "Pending"}
+              </span>
+            </div>
             <p className="td-teacher-title">
-              {teacher.degree || "Qualification not available"}
+              {teacher.designation || "Assistant Teacher"} — <span className="td-highlight-text">{teacher.degree}</span>
             </p>
           </div>
 
           <div className="td-teacher-experience">
             <h4>
-              {teacher.experience
-                ? `${teacher.experience} years experience`
+              {teacher.experience !== undefined
+                ? `${teacher.experience} Years Experience`
                 : "Experience not specified"}
             </h4>
+            <p className="td-meta-id">ID: {teacher.teacherId || "Unassigned"}</p>
           </div>
         </div>
       </div>
@@ -95,123 +99,120 @@ const TeacherDetails = () => {
       <div className="td-nav">
         <ul className="td-nav-tabs">
           <li className={activeTab === "overview" ? "td-active" : ""}>
-            <button onClick={() => setActiveTab("overview")}>
-              Overview
-            </button>
+            <button onClick={() => setActiveTab("overview")}>Overview</button>
+          </li>
+          <li className={activeTab === "address" ? "td-active" : ""}>
+            <button onClick={() => setActiveTab("address")}>Address Info</button>
           </li>
         </ul>
       </div>
 
       {/* ===== CONTENT ===== */}
       <div className="td-content">
-        {activeTab === "overview" && (
-          <OverviewTab
-            teacher={{
-              ...teacher,
-              subjects: formatSubjects(teacher.subjectClassMappings),
-            }}
-          />
-        )}
+        {activeTab === "overview" && <OverviewTab teacher={teacher} />}
+        {activeTab === "address" && <AddressTab address={teacher.address} />}
       </div>
     </div>
   );
 };
 
-/* =====================================================
-   Overview Tab Component
-===================================================== */
 
 const OverviewTab = ({ teacher }) => {
-  const formatSubjectClassMappings = (mappings) => {
-    if (!mappings || mappings.length === 0) return "N/A";
-
-    return mappings
-      .map(
-        (mapping) =>
-          `${mapping.subject} (${mapping.classes.join(", ")})`
-      )
-      .join(" | ");
-  };
-
   return (
     <div className="td-overview-tab">
-      {/* ===== Teacher Information ===== */}
       <div className="td-card td-teacher-info-card">
-        <h2 className="td-card-title">Teacher Information</h2>
+        <h2 className="td-card-title">Professional & Academic Information</h2>
 
         <div className="td-card-content">
           <div className="td-info-table">
             <div className="td-info-row">
-              <span className="td-info-label">Subjects & Classes</span>
-              <span className="td-info-value">
-                {formatSubjectClassMappings(
-                  teacher.subjectClassMappings
-                )}
+              <span className="td-info-label">Subject</span>
+              <span className="td-info-value td-value-highlight">
+                {teacher.subjectTaught || "N/A"}
               </span>
             </div>
 
             <div className="td-info-row">
-              <span className="td-info-label">Qualification</span>
-              <span className="td-info-value">
-                {teacher.degree || "N/A"}
-              </span>
+              <span className="td-info-label">Current Designation</span>
+              <span className="td-info-value">{teacher.designation || "Assistant Teacher"}</span>
             </div>
 
             <div className="td-info-row">
-              <span className="td-info-label">Experience</span>
-              <span className="td-info-value">
-                {teacher.experience
-                  ? `${teacher.experience} years`
-                  : "N/A"}
-              </span>
+              <span className="td-info-label">Qualifications</span>
+              <span className="td-info-value">{teacher.degree || "N/A"}</span>
             </div>
 
             <div className="td-info-row">
-              <span className="td-info-label">Email</span>
+              <span className="td-info-label">Total Experience</span>
+              <span className="td-info-value">{teacher.experience} Years</span>
+            </div>
+
+            <div className="td-info-row">
+              <span className="td-info-label">Email Address</span>
               <span className="td-info-value">
-                {teacher.email && teacher.email !== "N/A"
+                {teacher.email && teacher.email !== "not available" && teacher.email !== "n/a"
                   ? teacher.email
-                  : "Not Available"}
+                  : "Not Provided"}
               </span>
             </div>
 
             <div className="td-info-row">
-              <span className="td-info-label">Contact</span>
-              <span className="td-info-value">
-                {teacher.contact || "N/A"}
-              </span>
+              <span className="td-info-label">Contact Number</span>
+              <span className="td-info-value">{teacher.contact || "N/A"}</span>
+            </div>
+
+            <div className="td-info-row">
+              <span className="td-info-label">Gender</span>
+              <span className="td-info-value">{teacher.gender || "N/A"}</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
 
-      {/* ===== Quick Summary ===== */}
-      <div className="td-stats-grid">
-        <div className="td-card td-stats-card">
-          <span className="td-stats-card-title">Subjects</span>
-          <span className="td-stats-card-value">
-            {teacher.subjectClassMappings?.length || 0}
-          </span>
-          <span className="td-stats-card-label">Assigned</span>
-        </div>
 
-        <div className="td-card td-stats-card">
-          <span className="td-stats-card-title">Handles</span>
-          <span className="td-stats-card-value">
-            {teacher.subjectClassMappings?.reduce(
-              (total, m) => total + m.classes.length,
-              0
-            ) || 0}
-          </span>
-          <span className="td-stats-card-label">Classes</span>
-        </div>
+const AddressTab = ({ address }) => {
+  if (!address) {
+    return (
+      <div className="td-card">
+        <p className="td-no-data">No residential addresses mapped to database file records.</p>
+      </div>
+    );
+  }
 
-        <div className="td-card td-stats-card">
-          <span className="td-stats-card-title">Experience</span>
-          <span className="td-stats-card-value">
-            {teacher.experience || 0}
-          </span>
-          <span className="td-stats-card-label">Years</span>
+  return (
+    <div className="td-address-tab">
+      <div className="td-card">
+        <h2 className="td-card-title">Residential Address</h2>
+        <div className="td-card-content">
+          <div className="td-info-table">
+            <div className="td-info-row">
+              <span className="td-info-label">Village / Town</span>
+              <span className="td-info-value">{address.village || "N/A"}</span>
+            </div>
+            <div className="td-info-row">
+              <span className="td-info-label">Post Office (P.O.)</span>
+              <span className="td-info-value">{address.po || "N/A"}</span>
+            </div>
+            <div className="td-info-row">
+              <span className="td-info-label">Police Station (P.S.)</span>
+              <span className="td-info-value">{address.ps || "N/A"}</span>
+            </div>
+            <div className="td-info-row">
+              <span className="td-info-label">District</span>
+              <span className="td-info-value">{address.district || "N/A"}</span>
+            </div>
+            <div className="td-info-row">
+              <span className="td-info-label">PIN Code</span>
+              <span className="td-info-value td-pin-code">{address.pin || "N/A"}</span>
+            </div>
+            <div className="td-info-row">
+              <span className="td-info-label">State</span>
+              <span className="td-info-value">{address.state || "Assam"}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>

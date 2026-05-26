@@ -16,7 +16,7 @@
 }
 
 .qr-scanner-container {
-  background: white;
+  background: var(--bg-card);
   border-radius: 24px;
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
   position: relative;
@@ -27,7 +27,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  background: #f1f5f9;
+  background: var(--bg-primary);
   border: none;
   width: 46px;
   height: 46px;
@@ -35,15 +35,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #1e2937;
+  color: var(--text-main);
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
 }
 
 .close-modal-btn:hover {
-  background: #fee2e2;
-  color: #ef4444;
+  background: var(--bg-danger);
+  color: var(--color-danger);
   transform: rotate(90deg);
 }
 
@@ -56,17 +56,17 @@
   font-size: 1.55rem;
   font-weight: 700;
   margin: 0 0 8px 0;
-  color: #1e2937;
+  color: var(--text-main);
 }
 
 .scanner-header p {
-  color: #64748b;
+  color: var(--text-muted);
   margin: 0;
   font-size: 1rem;
 }
 
 .scanner-wrapper {
-  background: #0f172a;
+  background: var(--text-main);
   border-radius: 20px;
   padding: 12px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
@@ -78,7 +78,7 @@
 }
 
 .scan-instruction {
-  color: #64748b;
+  color: var(--text-muted);
   font-size: 0.95rem;
   margin: 0;
 }

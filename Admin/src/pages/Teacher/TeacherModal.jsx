@@ -7,19 +7,34 @@ import { AdminContext } from "../../context/AdminContext";
 const TeacherModal = ({ isOpen, onClose }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
+  // --- Form States mapped to final database schema ---
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [degree, setDegree] = useState("");
   const [contact, setContact] = useState("");
+  const [gender, setGender] = useState("");
+
+  // Residential Address Object Block
+  const [village, setVillage] = useState("");
+  const [po, setPo] = useState("");
+  const [ps, setPs] = useState("");
+  const [pin, setPin] = useState("");
+  const [district, setDistrict] = useState("");
+  const [state, setState] = useState("Assam"); // Default fallback schema matching token
+
+  // Academic Credentials
+  const [subjectTaught, setSubjectTaught] = useState("");
+  const [degree, setDegree] = useState("");
   const [experience, setExperience] = useState("");
+  
+  // Asset Management
   const [teacherImage, setTeacherImage] = useState(null);
-  const [subjectClassMappings, setSubjectClassMappings] = useState([]);
+  const [imagePreview, setImagePreview] = useState("");
+
+  // UX Lifecycle Hooks
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
 
   const fileInputRef = useRef(null);
-
-  /* ================= SUBJECT & CLASS ================= */
 
   const subjects = [
     "Mathematics", "Advanced Mathematics", "Physics", "Chemistry", "Biology",
@@ -29,69 +44,33 @@ const TeacherModal = ({ isOpen, onClose }) => {
     "Drawing/Handwriting", "General Science", "GK", "EVS", "Hindi", "Retail Management"
   ];
 
-  const classes = [
-    "Nursery", "KG", "Ankur", "Mukul", "Class 1", "Class 2", "Class 3", "Class 4",
-    "Class 5", "Class 6", "Class 7", "Class 8", "Class 9", "Class 10", "Class 11", "Class 12"
-  ];
-
-  const addSubjectClassMapping = () => {
-    setSubjectClassMappings([
-      ...subjectClassMappings,
-      { subject: "", classes: [] },
-    ]);
-  };
-
-  const removeSubjectClassMapping = (index) => {
-    setSubjectClassMappings(subjectClassMappings.filter((_, i) => i !== index));
-  };
-
-  const updateSubjectInMapping = (index, subject) => {
-    const updated = [...subjectClassMappings];
-    updated[index].subject = subject;
-    setSubjectClassMappings(updated);
-  };
-
-  const toggleClassInMapping = (index, className) => {
-    const updated = [...subjectClassMappings];
-    updated[index].classes = updated[index].classes.includes(className)
-      ? updated[index].classes.filter((c) => c !== className)
-      : [...updated[index].classes, className];
-    setSubjectClassMappings(updated);
-  };
-
-  /* ================= IMAGE ================= */
-
+  /* ================= IMAGE CAPTURE HANDLERS ================= */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file || !file.type.startsWith("image/")) {
-      setFormError("Valid teacher image is required");
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setFormError("Please upload a valid image file.");
       return;
     }
+    setFormError("");
     setTeacherImage(file);
+    setImagePreview(URL.createObjectURL(file));
   };
 
-  /* ================= SUBMIT ================= */
-
+  /* ================= SUBMIT DATA ACTION ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
+    setFormError("");
 
     if (!teacherImage) {
-      setFormError("Teacher image is required");
+      setFormError("Teacher profile picture asset attachment is mandatory.");
       return;
     }
 
-    if (!subjectClassMappings.length) {
-      setFormError("Add at least one subject & class");
-      return;
-    }
-
-    const validMappings = subjectClassMappings.every(
-      (m) => m.subject && m.classes.length > 0
-    );
-
-    if (!validMappings) {
-      setFormError("Complete all subject & class mappings");
+    if (!/^\d{6}$/.test(pin)) {
+      setFormError("Please supply a structurally complete 6-digit PIN code layout.");
       return;
     }
 
@@ -99,16 +78,24 @@ const TeacherModal = ({ isOpen, onClose }) => {
 
     try {
       const formData = new FormData();
+      
+      // Basic Info Packets
       formData.append("name", name);
-      formData.append("email", email);
+      formData.append("email", email || "N/A");
       formData.append("contact", contact);
+      formData.append("gender", gender);
+
+      // Address elements packed securely to avoid FormData payload parsing drops
+      const addressData = { village, po, ps, pin, district, state };
+      formData.append("address", JSON.stringify(addressData));
+
+      // Academics Parameters
+      formData.append("subjectTaught", subjectTaught);
       formData.append("degree", degree);
-      formData.append("experience", experience);
+      formData.append("experience", Number(experience));
+      
+      // Binary Media
       formData.append("image", teacherImage);
-      formData.append(
-        "subjectClassMappings",
-        JSON.stringify(subjectClassMappings)
-      );
 
       const { data } = await axios.post(
         `${backendUrl}/api/teacher/add-teacher`,
@@ -121,20 +108,26 @@ const TeacherModal = ({ isOpen, onClose }) => {
       );
 
       if (data.success) {
-        toast.success("Teacher added successfully");
+        toast.success("Teacher account created successfully!");
+        
+        // Comprehensive Local Variable Cleanup Form Sweep
+        setName(""); setEmail(""); setContact(""); setGender("");
+        setVillage(""); setPo(""); setPs(""); setPin(""); setDistrict(""); setState("Assam");
+        setSubjectTaught(""); setDegree(""); setExperience("");
+        setTeacherImage(null); setImagePreview("");
+        
         onClose();
       } else {
-        setFormError(data.message || "Failed to add teacher");
+        setFormError(data.message || "Failed to create teacher entry record.");
       }
     } catch (error) {
-      setFormError(error.response?.data?.message || "Error adding teacher");
+      setFormError(error.response?.data?.message || "An administrative routing server error popped up.");
     } finally {
       setLoading(false);
     }
   };
 
-  /* ================= SCROLL LOCK ================= */
-
+  /* ================= SCROLL LAYOUT CONTROL LOCK ================= */
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
     return () => {
@@ -151,59 +144,95 @@ const TeacherModal = ({ isOpen, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="tm-modal-header">
-          <h2>Add New Teacher</h2>
-          <button onClick={onClose} className="tm-close-button">✕</button>
+          <h2>Add New Teacher Profile</h2>
+          <button onClick={onClose} className="tm-close-button" disabled={loading}>✕</button>
         </div>
 
-        {formError && <div className="tm-form-error">{formError}</div>}
-
         <form onSubmit={handleSubmit} className="tm-teacher-form">
-          {/* ===== BASIC INFO ===== */}
-          <div className="tm-form-grid">
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required />
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" />
-            <input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact Number" required />
-            <input value={degree} onChange={(e) => setDegree(e.target.value)} placeholder="Qualification / Degree" required />
-            <input value={experience} onChange={(e) => /^\d*$/.test(e.target.value) && setExperience(e.target.value)} placeholder="Experience (Years)" required />
-            <input type="file" ref={fileInputRef} accept="image/*" onChange={handleImageChange} required />
-          </div>
-
-          {/* ===== SUBJECTS ===== */}
-          <div className="tm-form-section">
-            <button type="button" className="tm-add-subject-btn" onClick={addSubjectClassMapping}>
-              + Add Subject
-            </button>
-
-            {subjectClassMappings.map((mapping, index) => (
-              <div key={index} className="tm-subject-mapping-card">
-                <select value={mapping.subject} onChange={(e) => updateSubjectInMapping(index, e.target.value)}>
-                  <option value="">Select Subject</option>
-                  {subjects.map((s) => <option key={s}>{s}</option>)}
-                </select>
-
-                <div className="tm-classes-grid">
-                  {classes.map((c) => (
-                    <button
-                      type="button"
-                      key={c}
-                      className={`tm-class-btn ${mapping.classes.includes(c) ? "tm-selected" : ""}`}
-                      onClick={() => toggleClassInMapping(index, c)}
-                    >
-                      {c}
-                    </button>
-                  ))}
+          {formError && <div className="tm-form-error">{formError}</div>}
+          
+          {/* IMAGE PREVIEW COMPONENT */}
+          <div className="tm-media-upload-center">
+            <div className="tm-avatar-box" onClick={() => !loading && fileInputRef.current.click()}>
+              {imagePreview ? (
+                <img src={imagePreview} alt="Portrait preview" className="tm-img-preview-tag" />
+              ) : (
+                <div className="tm-camera-icon-wrapper">
+                  <span>Upload Photo</span>
                 </div>
-
-                <button type="button" className="tm-remove-btn" onClick={() => removeSubjectClassMapping(index)}>
-                  Remove
-                </button>
-              </div>
-            ))}
+              )}
+            </div>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              accept="image/*" 
+              onChange={handleImageChange} 
+              hidden 
+              disabled={loading}
+            />
+            <p className="tm-media-subtext">JPEG, PNG up to 5MB (Required)</p>
           </div>
 
-          <button type="submit" disabled={loading} className="tm-submit-btn">
-            {loading ? "Saving..." : "Add Teacher"}
-          </button>
+          {/* SECTION I: PERSONAL DETAILS */}
+          <div className="tm-section-separator-title">Personal Data</div>
+          <div className="tm-form-grid">
+            <div className="tm-input-group">
+              <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Identity Name *" required disabled={loading} />
+            </div>
+            <div className="tm-input-group">
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address" disabled={loading} />
+            </div>
+            <div className="tm-input-group">
+              <input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Active Contact Number *" required disabled={loading} />
+            </div>
+            <div className="tm-input-group">
+              <select value={gender} onChange={(e) => setGender(e.target.value)} required disabled={loading}>
+                <option value="">Select Gender *</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          {/* SECTION II: RESIDENTIAL ADDRESS  */}
+          <div className="tm-section-separator-title">Address Details</div>
+          <div className="tm-form-grid tm-grid-three-cols">
+            <input value={village} onChange={(e) => setVillage(e.target.value)} placeholder="Village / Town *" required disabled={loading} />
+            <input value={po} onChange={(e) => setPo(e.target.value)} placeholder="Post Office (P.O.) *" required disabled={loading} />
+            <input value={ps} onChange={(e) => setPs(e.target.value)} placeholder="Police Station (P.S.) *" required disabled={loading} />
+            <input value={pin} maxLength={6} onChange={(e) => /^\d*$/.test(e.target.value) && setPin(e.target.value)} placeholder="6-Digit PIN Code *" required disabled={loading} />
+            <input value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="District *" required disabled={loading} />
+            <input value={state} onChange={(e) => setState(e.target.value)} placeholder="State Default" required disabled={loading} />
+          </div>
+
+          {/* SECTION III: EDUCATION & DEPARTMENTS */}
+          <div className="tm-section-separator-title">Academic Details</div>
+          <div className="tm-form-grid">
+            <div className="tm-input-group">
+              <select value={subjectTaught} onChange={(e) => setSubjectTaught(e.target.value)} required disabled={loading}>
+                <option value="">Select Subject *</option>
+                {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+            <div className="tm-input-group">
+              <input value={degree} onChange={(e) => setDegree(e.target.value)} placeholder="Qualification / Degrees *" required disabled={loading} />
+            </div>
+            <div className="tm-input-group tm-grid-full-width">
+              <input type="number" min="0" value={experience} onChange={(e) => setExperience(e.target.value)} placeholder="Teaching Experience (Total Years) *" required disabled={loading} />
+            </div>
+          </div>
+
+          {/* EXECUTE OPERATION CONTROL BAR */}
+          <div className="tm-action-footer-row">
+            <button type="button" onClick={onClose} className="tm-cancel-action-btn" disabled={loading}>
+              Cancel
+            </button>
+            <button type="submit" disabled={loading} className="tm-submit-btn">
+              {loading ? "Submitting..." : "Submit Profile"}
+            </button>
+          </div>
+
         </form>
       </div>
     </div>

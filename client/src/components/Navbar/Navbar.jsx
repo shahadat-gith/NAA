@@ -220,11 +220,11 @@ const Navbar = () => {
           {/* Footer CTA */}
           <div className="mobile-footer">
             {teacherToken ? (
-              <NavLink to="/teacher" className="nav-teacher-btn">
+              <NavLink to="/teacher" className="mobile-nav-footer-btn">
                 Dashborad
               </NavLink>
             ) : (
-              <NavLink to="/teacher/login" className="nav-teacher-btn">
+              <NavLink to="/teacher/login" className="mobile-nav-footer-btn">
                 Login as Teacher
               </NavLink>
             )}

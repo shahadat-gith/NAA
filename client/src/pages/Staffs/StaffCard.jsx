@@ -1,26 +1,32 @@
-export const StaffCard = ({ teacher }) => {
-  const formatSubjects = (mappings) => {
-    if (!mappings || mappings.length === 0) return 'N/A';
-    return mappings.map((m) => m.subject).join(', ');
-  };
+import React from 'react';
 
-  const experience = teacher.experience ? `${teacher.experience} years` : 'N/A';
+export const StaffCard = ({ teacher }) => {
+  const experienceText = teacher.experience !== undefined ? `${teacher.experience} years` : 'N/A';
+  
+  // Safely grab the image URL from your nested asset schema layout
+  const profileImage = teacher.image?.url || '/user.png';
 
   return (
     <div className="te-teacher-card">
       <div className="te-teacher-card-media">
         <img
-          src={teacher.image}
+          src={profileImage}
           alt={teacher.name}
           className="te-teacher-card-image"
           loading="lazy"
+          onError={(e) => {
+            e.target.src = '/default-avatar.png';
+          }}
         />
       </div>
       <div className="te-teacher-card-body">
         <div className="te-teacher-card-top">
           <h3 className="te-teacher-card-name">{teacher.name}</h3>
-          <p className="te-teacher-card-degree">{teacher.degree || 'N/A'}</p>
+          <p className="te-teacher-card-degree">
+            {teacher.designation || 'Assistant Teacher'} • <span style={{ opacity: 0.85 }}>{teacher.degree || 'N/A'}</span>
+          </p>
         </div>
+        
         <p className="te-teacher-card-subjects">
           <span
             style={{
@@ -33,14 +39,20 @@ export const StaffCard = ({ teacher }) => {
               marginBottom: "2px"
             }}
           >
-            Subjects taught
+            Subject Taught
           </span>
           <span style={{ color: "var(--te-accent-dark)", fontWeight: "600" }}>
-            {formatSubjects(teacher.subjectClassMappings)}
+            {teacher.subjectTaught || 'N/A'}
           </span>
         </p>
+
         <div className="te-teacher-card-meta">
-          <span className="te-teacher-chip">Experience: {experience}</span>
+          <span className="te-teacher-chip">Experience: {experienceText}</span>
+          {teacher.status && teacher.status !== 'Active' && (
+            <span className={`te-status-badge-inline status-${teacher.status.toLowerCase()}`}>
+              {teacher.status}
+            </span>
+          )}
         </div>
       </div>
     </div>
