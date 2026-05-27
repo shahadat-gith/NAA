@@ -21,150 +21,156 @@ const ResultDownload = () => {
   const result = state?.result;
   const principal = state?.principal;
 
-  // ✅ SAFE calculation
+  // SAFE calculation
   const MAX_MARKS_SUM =
     (result?.marks?.length || 0) * (result?.maxMarksPerSubject || 0);
 
   if (!result) {
     return (
-      <div className="report-page">
-        <p>No result data found.</p>
-        <button onClick={() => navigate("/result")}>
-          Back to Result Portal
-        </button>
+      <div className="rep-page">
+        <div className="rep-empty-state">
+          <p>No result data found.</p>
+          <button onClick={() => navigate("/result")} className="rep-fallback-btn">
+            Back to Result Portal
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="report-page">
-      {/* ================= ACTION ================= */}
-      <div className="actions-container">
+    <div className="rep-page">
+      {/* ================= ACTIONS BAR ================= */}
+      <div className="rep-actions-container">
         <PDFDownloadLink
           document={<ResultReportPdf result={result} principal={principal} />}
-          fileName="result.pdf"
+          fileName={`Result-${result.registrationNo || "Student"}.pdf`}
         >
           {({ loading }) => (
-            <button className="download-btn" disabled={loading}>
+            <button className="rep-download-btn" disabled={loading}>
               {loading ? "Generating PDF..." : "Download"}
             </button>
           )}
         </PDFDownloadLink>
       </div>
 
-      <div className="report-sheet">
-        {/* ================= HEADER ================= */}
-        <div className="report-header">
-          <img src={logo} className="school-logo" alt="logo" />
+      {/* ================= PRINT SHEET SURFACE ================= */}
+      <div className="rep-sheet">
+        <div className="rep-outer-border">
+          <div className="rep-inner-border">
+            
+            {/* ================= HEADER ================= */}
+            <div className="rep-header">
+              <img src={logo} className="rep-school-logo" alt="school-logo" />
 
-          <h1>NASHIB ALI ACADEMY</h1>
+              <h1>NASHIB ALI ACADEMY</h1>
 
-          <div className="header-divider">
-            <span>{result.examName || "RESULT"}</span>
-          </div>
+              <div className="rep-header-divider">
+                <span>{result.examName || "RESULT"}</span>
+              </div>
 
-          <h2>REPORT CARD</h2>
+              <h2>REPORT CARD</h2>
 
-          <div className="session-row">
-            <div className="line-short"></div>
-            <span>SESSION: {result.academicSession}</span>
-            <div className="line-short"></div>
-          </div>
-        </div>
+              <div className="rep-session-row">
+                <div className="rep-line-short"></div>
+                <span>SESSION: {result.academicSession}</span>
+                <div className="rep-line-short"></div>
+              </div>
+            </div>
 
-        {/* ================= STUDENT SECTION ================= */}
-        <div className="student-section">
-          <div className="student-info">
-            <Info label="Name" value={capitalizeWords(result.name)} />
-            <Info label="Father's Name" value={capitalizeWords(result.fatherName)} />
-            <Info label="Mother's Name" value={capitalizeWords(result.motherName)} />
-            <Info label="Class" value={capitalizeWords(result.class)} />
-            <Info label="Medium" value={capitalizeWords(result.medium)} />
-            <Info label="Registration No" value={result.registrationNo} />
+            {/* ================= STUDENT PROFILE SECTION ================= */}
+            <div className="rep-student-section">
+              <div className="rep-student-info">
+                <Info label="Name" value={capitalizeWords(result.name)} />
+                <Info label="Father's Name" value={capitalizeWords(result.fatherName)} />
+                <Info label="Mother's Name" value={capitalizeWords(result.motherName)} />
+                <Info label="Class" value={capitalizeWords(result.class)} />
+                <Info label="Medium" value={capitalizeWords(result.medium)} />
+                <Info label="Registration No" value={result.registrationNo} />
 
-            {(result.class === "11" || result.class === "12") && (
-              <Info label="Stream" value={capitalizeWords(result.stream)} />
-            )}
+                {(result.class === "11" || result.class === "12") && (
+                  <Info label="Stream" value={capitalizeWords(result.stream)} />
+                )}
 
-            <Info label="Rank" value={result.rank || "-"} />
-          </div>
+                <Info label="Rank" value={result.rank || "-"} />
+              </div>
 
-          <div className="photo-frame">
-            <img
-              src={result?.image?.url || userImg}
-              alt="student"
-            />
-          </div>
-        </div>
+              <div className="rep-photo-frame">
+                <img
+                  src={result?.image?.url || userImg}
+                  alt="student-avatar"
+                />
+              </div>
+            </div>
 
-        {/* ================= TABLE ================= */}
-        <div className="table-title">Marks Details</div>
+            {/* ================= RECORD DATA TABLE ================= */}
+            <div className="rep-table-title">Marks Details</div>
 
-        <table className="marks-table">
-          <thead>
-            <tr>
-              <th>SUBJECT</th>
-              <th>MAX MARKS</th>
-              <th>OBTAINED</th>
-              <th>GRADE</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {/* ✅ SAFE MAP */}
-            {result?.marks?.length > 0 ? (
-              result.marks.map((m, i) => (
-                <tr key={i}>
-                  <td>{m?.subject?.toUpperCase()}</td>
-                  <td>{result.maxMarksPerSubject}</td>
-                  <td>{m?.mark ?? "-"}</td>
-                  <td>{calculateGrade(m?.mark)}</td>
+            <table className="rep-marks-table">
+              <thead>
+                <tr>
+                  <th>SUBJECT</th>
+                  <th>MAX MARKS</th>
+                  <th>OBTAINED</th>
+                  <th>GRADE</th>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">No marks available</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </thead>
 
-        {/* ================= SUMMARY ================= */}
-        <div className="summary-section">
-          <div>
-            Marks Obtained: {result.totalMarks || 0}/{MAX_MARKS_SUM}
-          </div>
-          <div>Percentage: {result.percentage || 0}%</div>
-          <div>Grade: {result.grade || "-"}</div>
-          <div>Result: {result.resultStatus || "-"}</div>
-        </div>
+              <tbody>
+                {result?.marks?.length > 0 ? (
+                  result.marks.map((m, i) => (
+                    <tr key={i}>
+                      <td>{m?.subject?.toUpperCase()}</td>
+                      <td>{result.maxMarksPerSubject}</td>
+                      <td>{m?.mark ?? "-"}</td>
+                      <td>{calculateGrade(m?.mark)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">No marks available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
 
-        {/* ================= FOOTER ================= */}
-        <div className="report-footer">
-          <div className="principal-sign">
-            {principal?.signature?.url && (
-              <img
-                src={principal.signature.url}
-                className="principal-sign-img"
-                alt="principal-sign"
-              />
-            )}
-
-            <div className="sign-line"></div>
-            <span>Principal</span>
-            <div className="principal-name">
-              ({principal?.name || "-"})
-            </div>
-          </div>
-
-          <div className="school-contact">
-            <div className="divider-footer">
-              <span>NASHIB ALI ACADEMY</span>
+            {/* ================= SCORE SUMMARY METRICS ================= */}
+            <div className="rep-summary-section">
+              <div className="rep-summary-total">
+                Marks Obtained: {result.totalMarks || 0} / {MAX_MARKS_SUM}
+              </div>
+              <div>Percentage: {result.percentage || 0}%</div>
+              <div>Grade: {result.grade || "-"}</div>
+              <div>Result: {result.resultStatus || "-"}</div>
             </div>
 
-            <div>Mahachara, Kachumara, Barpeta, Assam - 781127</div>
-            <div>www.nashibaliacademy.in</div>
-            <div>nashibaliacademy.offl@gmail.com | +91-60014-16724</div>
+            {/* ================= FOOTER / SIGNATURES ================= */}
+            <div className="rep-footer">
+              <div className="rep-principal-sign">
+                {principal?.signature?.url && (
+                  <img
+                    src={principal.signature.url}
+                    className="rep-principal-sign-img"
+                    alt="principal-signature"
+                  />
+                )}
+                <div className="rep-sign-line"></div>
+                <span>Principal</span>
+                <div className="rep-principal-name">
+                  ({principal?.name || "-"})
+                </div>
+              </div>
+
+              <div className="rep-school-contact">
+                <div className="rep-divider-footer">
+                  <span>NASHIB ALI ACADEMY</span>
+                </div>
+                <div>Mahachara, Kachumara, Barpeta, Assam — 781127</div>
+                <div>www.nashibaliacademy.in</div>
+                <div>nashibaliacademy.offl@gmail.com | +91-60014-16724</div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -172,16 +178,16 @@ const ResultDownload = () => {
   );
 };
 
-/* ================= HELPER COMPONENT ================= */
+/* ================= HELPER CELL COMPONENT ================= */
 
 const Info = ({ label, value }) => (
-  <div className="info-row">
-    <span className="info-label">{label}:</span>
-    <span className="info-value">{value || "-"}</span>
+  <div className="rep-info-row">
+    <span className="rep-info-label">{label}:</span>
+    <span className="rep-info-value">{value || "-"}</span>
   </div>
 );
 
-/* ================= GRADE FUNCTION ================= */
+/* ================= GRADE ALGORITHM ================= */
 
 const calculateGrade = (marks) => {
   const m = parseInt(marks);

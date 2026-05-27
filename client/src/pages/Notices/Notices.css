@@ -1,164 +1,197 @@
-/* Page */
-.notices-page-container {
+/* ==========================================================================
+   NOTICES LAYOUT SYSTEM (PREFIX: ntc-)
+   ========================================================================== */
+
+/* Page Outer Shell */
+.ntc-page-container {
   padding: 30px;
-  background: #f7f8fb;
-  min-height: 30vh;
+  background: var(--bg-primary);
+  min-height: 40vh; /* Bumped slightly for layout breathing room */
   margin-bottom: 30px;
+  transition: background var(--transition-normal);
 }
 
-/* Header */
-.notices-page-header {
-  margin-bottom: 20px;
+/* Header Text Blocks */
+.ntc-page-header {
+  margin-bottom: 24px;
 }
 
-.notices-page-header h1 {
-  font-size: 1.5rem;
-  color: #1a1a2e;
-  font-weight: 600;
+.ntc-page-header h1 {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
-.notices-page-header p {
-  color: #777;
+.ntc-page-header p {
+  color: var(--text-muted);
   font-size: 0.9rem;
+  margin-top: 4px;
 }
 
-/* List Container */
-.notices-list-container {
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(233, 69, 96, 0.08);
+/* ==========================================================================
+   LIST ARCHITECTURE
+   ========================================================================== */
+
+/* Outer Surface Box Card */
+.ntc-list-container {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
   overflow: hidden;
 }
 
-/* List */
-.notices-list {
+.ntc-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Item */
-.notice-row {
+/* Individual Row Items */
+.ntc-row {
   display: flex;
   gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid #d7c0c0;
-  transition: all 0.25s ease;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border-light);
+  transition: background-color var(--transition-fast) ease, border-color var(--transition-fast) ease;
   cursor: pointer;
 }
 
-.notice-row:last-child {
+.ntc-row:last-child {
   border-bottom: none;
 }
 
-.notice-row:hover {
-  background: #fafafa;
+.ntc-row:hover {
+  background: var(--bg-secondary);
 }
 
-/* Icon */
-.notice-icon {
+/* ==========================================================================
+   INTERNAL CONTENT CELLS
+   ========================================================================== */
+
+/* Functional Indicator Icon Box */
+.ntc-icon {
   min-width: 38px;
   height: 38px;
-  border-radius: 10px;
-  background: rgba(233, 69, 96, 0.08);
-  color: #e94560;
+  border-radius: var(--radius-sm);
+  background: var(--accent-light);
+  color: var(--accent-color);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.95rem;
-  transition: 0.3s ease;
+  transition: background-color var(--transition-fast) ease, color var(--transition-fast) ease;
 }
 
-.notice-row:hover .notice-icon {
-  background: #e94560;
-  color: white;
+.ntc-row:hover .ntc-icon {
+  background: var(--accent-color);
+  color: var(--text-white);
 }
 
-/* Content */
-.notice-main {
+/* Main Text Segment */
+.ntc-main {
   flex: 1;
 }
 
-/* Top Row */
-.notice-top {
+/* Metadata Structural Row */
+.ntc-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 4px;
+  gap: 12px;
 }
 
-.notice-date {
+.ntc-date {
   font-size: 0.75rem;
-  color: #999;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 
-/* Title */
-.notice-title {
-  font-size: 0.95rem;
-  color: #1a1a2e;
-  font-weight: 500;
+/* Notice Interactive Anchors */
+.ntc-title {
+  font-size: 0.975rem;
+  color: var(--text-main);
+  font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
   text-decoration: none;
+  transition: color var(--transition-fast) ease;
 }
 
-.notice-title:hover {
-  color: #e94560;
+.ntc-row:hover .ntc-title {
+  color: var(--accent-color);
 }
 
-/* Description */
-.notice-desc {
-  font-size: 0.8rem;
-  color: #666;
-  margin-top: 3px;
+/* Snippet Subtext Summary */
+.ntc-desc {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-top: 4px;
 }
 
-/* Right Action */
-.notice-action-icon {
+/* Arrow Navigation Icon */
+.ntc-action-icon {
   font-size: 0.75rem;
-  opacity: 0.6;
-  transition: 0.2s;
+  color: var(--text-muted);
+  opacity: 0.5;
+  transition: transform var(--transition-fast) ease, opacity var(--transition-fast) ease;
 }
 
-.notice-row:hover .notice-action-icon {
+.ntc-row:hover .ntc-action-icon {
   opacity: 1;
-  transform: translateX(2px);
+  color: var(--accent-color);
+  transform: translateX(3px);
 }
 
-/* Badge Row */
-.notice-badges {
+/* Badging Flex Layout */
+.ntc-badges {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* New Badge */
-.new-badge {
-  background: #e94560;
-  color: white;
-  font-size: 0.6rem;
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-weight: 600;
+/* Alert Flashing Micro Badge */
+.ntc-new-badge {
+  background: var(--accent-color);
+  color: var(--text-white);
+  font-size: 0.65rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
-/* Empty */
-.no-notices {
-  padding: 40px;
+/* Null / Fallback Placeholder Layout */
+.ntc-no-data {
+  padding: 60px 40px;
   text-align: center;
-  color: #888;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-/* Mobile */
+/* ==========================================================================
+   RESPONSIVE LAYOUT CONSTRAINTS
+   ========================================================================== */
 @media (max-width: 768px) {
-  .notices-page-container {
+  .ntc-page-container {
     padding: 20px 12px;
   }
 
-  .notice-row {
-    padding: 14px;
+  .ntc-row {
+    padding: 16px 14px;
+    gap: 12px;
+  }
+  
+  .ntc-icon {
+    min-width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
   }
 }

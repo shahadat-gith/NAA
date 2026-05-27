@@ -1,153 +1,155 @@
+/* ==========================================================================
+   REUSABLE RECOGNITION QUERY INPUT MODULE (PREFIX: sch-)
+   ========================================================================== */
 
-:root {
-  --color-dark: #111827;
-  --color-muted: #64748b;
-  --color-accent: #e94560;
-  --color-accent-hover: #d23b54;
-  --color-input-bg: #f8fafc;
-  --color-border: #e2e8f0;
+.sch-card-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  box-shadow: var(--shadow-card);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* Master card container styling */
-.search-card-wrapper {
-  background: #ffffff;
-  width: 100%;
-  max-width: 500px;
-  padding: 3rem 2.5rem;
-  border-radius: 20px;
-  border: 1px solid var(--color-border);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04), 
-              0 1px 3px rgba(0, 0, 0, 0.01);
-  margin: 0 auto;
+/* ─── Header Typography ─── */
+.sch-card-header {
+  margin-bottom: 2rem;
   text-align: center;
 }
 
-/* Header & Typography structure */
-.search-card-header {
-  margin-bottom: 2.25rem;
-}
-
-.search-card-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--color-dark);
+.sch-card-title {
+  font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  color: var(--text-main);
   letter-spacing: -0.02em;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 6px 0;
 }
 
-.search-card-subtitle {
-  font-size: 0.85rem;
-  color: var(--color-muted);
-  line-height: 1.5;
-  max-width: 360px;
-  margin: 0 auto;
+.sch-card-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
 }
 
-/* Form controls layout layout */
-.search-card-form {
+/* ==========================================================================
+   FORM COMPONENTS & CONTROL ELEMENTS
+   ========================================================================== */
+
+.sch-card-form {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 
-.search-field-group {
+/* Input Icon Container Shell */
+.sch-field-group {
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.search-field-icon {
+.sch-field-icon {
   position: absolute;
-  left: 16px;
-  color: #94a3b8;
+  left: 14px;
   font-size: 1.25rem;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   pointer-events: none;
-  transition: color 0.2s ease;
 }
 
-/* Refined input field styling with dynamic animation */
-.search-field-input {
+.sch-field-input {
   width: 100%;
-  padding: 1rem 1rem 1rem 48px;
-  font-size: 0.95rem;
+  padding: 14px 14px 14px 44px;
+  font-size: 1rem;
   font-weight: 500;
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  color: var(--color-dark);
-  background: var(--color-input-bg);
+  color: var(--text-main);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
   outline: none;
-  font-family: var(--font-body);
-  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+  letter-spacing: 0.5px;
+  transition: border-color var(--transition-fast) ease, box-shadow var(--transition-fast) ease;
 }
 
-.search-field-input:focus {
-  border-color: var(--color-accent);
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1);
+.sch-field-input:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
 }
 
-.search-field-input:focus + .search-field-icon {
-  color: var(--color-accent);
+.sch-field-input::placeholder {
+  color: var(--text-muted);
+  letter-spacing: normal;
 }
 
-.search-field-input:disabled {
-  background: #e2e8f0;
-  color: #94a3b8;
+.sch-field-input:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
+  background: var(--bg-secondary);
 }
 
-/* Premium Primary Theme Button Design */
-.search-prime-btn {
-  background: var(--color-accent);
-  color: #ffffff;
-  border: none;
-  padding: 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 14px;
-  cursor: pointer;
-  display: flex;
+/* ─── Interactive Primary Action Button ─── */
+.sch-prime-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  letter-spacing: 0.01em;
-  transition: background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
-              transform 0.1s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-white);
+  background: var(--accent-color);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast) ease, transform var(--transition-fast) ease, opacity var(--transition-fast) ease;
 }
 
-.search-prime-btn:hover:not(:disabled) {
-  background-color: var(--color-accent-hover);
-  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.2);
+.sch-prime-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-.search-prime-btn:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.search-prime-btn:disabled {
-  background: #cbd5e1;
-  color: #94a3b8;
+.sch-prime-btn:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Precise Loader Keyframe Rotation Loop */
-.search-spinner {
-  font-size: 1.2rem;
-  animation: rotateSpin 0.8s linear infinite;
+/* ─── Loading Status Spinner ─── */
+.sch-spinner {
+  font-size: 1.25rem;
+  animation: schSpin 0.6s linear infinite;
 }
 
-@keyframes rotateSpin {
-  from { transform: rotate(0deg); }
+@keyframes schSpin {
   to { transform: rotate(360deg); }
 }
 
-/* Responsive Scaling Constraints */
+/* ==========================================================================
+   MOBILE VIEWPORT CONSTRAINTS
+   ========================================================================== */
 @media (max-width: 480px) {
-  .search-card-wrapper {
-    padding: 2.25rem 1.5rem;
-    border-radius: 16px;
+  .sch-card-wrapper {
+    padding: 1.5rem 1.25rem;
+  }
+  
+  .sch-field-input,
+  .sch-prime-btn {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .sch-field-input {
+    padding-left: 40px;
+  }
+  
+  .sch-field-icon {
+    left: 12px;
+    font-size: 1.15rem;
   }
 }

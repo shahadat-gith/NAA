@@ -136,15 +136,15 @@ const Admission = () => {
   };
 
   return (
-    <div className="admission-page">
-      {/* ================= FORM ================= */}
-      <div className="admission-form-container">
-        <h2>New Student Admission</h2>
+    <div className="adm-admission-page">
+      {/* ================= FORM CONTAINER ================= */}
+      <div className="adm-form-container">
+        <h2 className="adm-page-title">New Student Admission</h2>
 
-        <form className="admission-form" onSubmit={handleSubmit}>
-          <div className="form-grid">
+        <form className="adm-form" onSubmit={handleSubmit}>
+          <div className="adm-form-grid">
             {FORM_FIELDS.map((field) => (
-              <div className="form-field" key={field.name}>
+              <div className="adm-form-field" key={field.name}>
                 <label>
                   {field.label} {field.isRequired && "*"}
                 </label>
@@ -152,8 +152,8 @@ const Admission = () => {
               </div>
             ))}
 
-            {/* CLASS */}
-            <div className="form-field">
+            {/* CLASS SELECT */}
+            <div className="adm-form-field">
               <label>Class *</label>
               <select
                 name="class"
@@ -174,10 +174,10 @@ const Admission = () => {
               </select>
             </div>
 
-            {/* STREAM */}
+            {/* STREAM SELECT */}
             {formData.medium === "assamese" &&
               ["11", "12"].includes(formData.class) && (
-                <div className="form-field">
+                <div className="adm-form-field">
                   <label>Stream *</label>
                   <select
                     name="stream"
@@ -196,11 +196,11 @@ const Admission = () => {
               )}
           </div>
 
-          {/* ADDRESS */}
-          <h3 className="address-title">Address Details</h3>
-          <div className="address-grid">
+          {/* ADDRESS SECTION */}
+          <h3 className="adm-address-title">Address Details</h3>
+          <div className="adm-address-grid">
             {ADDRESS_FIELDS.map(({ label, name, isRequired }) => (
-              <div className="form-field" key={name}>
+              <div className="adm-form-field" key={name}>
                 <label>
                   {label} {isRequired && "*"}
                 </label>
@@ -214,30 +214,31 @@ const Admission = () => {
             ))}
           </div>
 
+          {/* SUBMIT INTERFACE ACTION */}
           <button
             type="submit"
-            className="admission-submit-btn"
+            className="adm-submit-btn"
             disabled={loading}
           >
-            {loading ? "Submitting..." : "Submit"}
+            {loading ? "Submitting Application..." : "Submit Application"}
           </button>
         </form>
       </div>
 
-      {/* ================= SUCCESS MODAL ================= */}
+      {/* ================= SUCCESS STATUS MODAL ================= */}
       {showSuccessModal && (
-        <div className="admission-modal-overlay">
-          <div className="admission-modal success">
+        <div className="adm-modal-overlay">
+          <div className="adm-modal adm-success-card">
             <h2>🎉 Admission Successful</h2>
 
-            <p style={{ marginBottom: "10px" }}>
+            <p className="adm-modal-text">
               Please visit the Principal’s Chamber and pay the admission fee to
               get the <strong>Admission Confirmation Receipt</strong>.
             </p>
 
-            <div className="admission-modal-actions">
+            <div className="adm-modal-actions">
               <button
-                className="admission-btn primary"
+                className="adm-btn adm-btn-primary"
                 onClick={() => navigate("/")}
               >
                 Okay

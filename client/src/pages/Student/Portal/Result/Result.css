@@ -1,72 +1,90 @@
-:root {
-  --color-bg-base: #f8fafc;
-  --color-dark: #111827;
-  --color-muted: #64748b;
-  --color-accent: #e94560;
-  --color-border: #e2e8f0;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fee2e2;
-  --color-error-text: #ef4444;
-  --color-info-bg: #fffbeb;
-  --color-info-border: #fef3c7;
-  --color-info-text: #d97706;
-}
+/* ==========================================================================
+   ACADEMIC RESULT QUERY PLATFORM (PREFIX: res-)
+   ========================================================================== */
 
-/* ================= PAGE LAYOUT ================= */
-.result-page {
-  background-color: var(--color-bg-base);
-  min-height: 70vh;
-  padding: 4rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  box-sizing: border-box;
-}
-
-/* ================= MESSAGES CONTAINER ================= */
-.result-messages-container {
+.res-page {
   width: 100%;
-  max-width: 500px; /* Perfectly matches the Search card width */
-  margin-top: 1.5rem;
+  min-height: 80vh;
+  padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-normal);
 }
 
-/* ================= MESSAGE BANNERS ================= */
-.error-message, 
-.info-message {
-  padding: 1rem 1.25rem;
-  border-radius: 14px;
-  font-size: 0.9rem;
+.res-container {
+  width: 100%;
+  max-width: 600px; /* Constrained single-input module card context bounds */
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   CONTEXT RESTRUCTURING NOTIFICATION MESSAGES
+   ========================================================================== */
+
+.res-messages-container {
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+.res-messages-container[data-active="true"] {
+  animation: resFadeIn var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ─── Base Alert Block ─── */
+.res-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 1px solid transparent;
+}
+
+.res-alert i {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.res-alert p {
+  font-size: 0.95rem;
   font-weight: 500;
-  line-height: 1.5;
-  text-align: center;
-  border: 1px solid;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  line-height: 1.6;
+  margin: 0;
 }
 
-/* Error Banner Style */
-.error-message {
-  background-color: var(--color-error-bg);
-  border-color: var(--color-error-border);
-  color: var(--color-error-text);
+/* ─── Context State Overrides ─── */
+.res-alert-danger {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger, #dc2626);
 }
 
-/* Warning / Fees Block Info Banner Style */
-.info-message {
-  background-color: var(--color-info-bg);
-  border-color: var(--color-info-border);
-  color: var(--color-info-text);
+.res-alert-danger i {
+  color: var(--color-danger, #dc2626);
 }
 
-/* ================= ANIMATION ================= */
-@keyframes slideDown {
+.res-alert-info {
+  background: rgba(217, 119, 6, 0.06);
+  border-color: rgba(217, 119, 6, 0.15);
+  color: var(--color-warning, #d97706); /* Styled beautifully as a secure barrier notice */
+}
+
+.res-alert-info i {
+  color: var(--color-warning, #d97706);
+}
+
+/* ==========================================================================
+   LAYOUT STRUCTURAL ANIMATION TIMELINES
+   ========================================================================== */
+
+@keyframes resFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -74,15 +92,18 @@
   }
 }
 
-/* ================= RESPONSIVE ADJUSTMENTS ================= */
+/* ─── Media Responsive Support Breaks ─── */
 @media (max-width: 480px) {
-  .result-page {
-    padding: 2.5rem 1rem;
+  .res-page {
+    padding: 1.5rem 1rem;
   }
   
-  .error-message, 
-  .info-message {
-    font-size: 0.85rem;
-    padding: 0.85rem 1rem;
+  .res-alert {
+    padding: 1rem 1.25rem;
+    gap: 10px;
+  }
+  
+  .res-alert p {
+    font-size: 0.9rem;
   }
 }

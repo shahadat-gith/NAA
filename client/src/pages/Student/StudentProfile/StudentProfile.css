@@ -1,0 +1,231 @@
+/* ==========================================================================
+   STUDENT PROFILE VIEWER DASHBOARD (PREFIX: prof-)
+   ========================================================================== */
+
+.prof-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(2rem, 6vw, 4.5rem) 1.5rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  color: var(--text-main);
+  transition: background var(--transition-normal);
+}
+
+.prof-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ─── Center Constrained Landing Form State ─── */
+.prof-search-landing-context {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prof-search-landing-context .prof-container {
+  max-width: 600px;
+}
+
+/* ─── Navigation Sub-Bar ─── */
+.prof-navigation-bar {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.prof-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-fast) ease;
+}
+
+.prof-back-btn:hover {
+  border-color: var(--accent-border);
+  color: var(--accent-color);
+  transform: translateX(-2px);
+}
+
+.prof-back-btn svg {
+  font-size: 1.15rem;
+}
+
+/* ─── Card Wrapper Matrix Grids ─── */
+.prof-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.prof-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: var(--shadow-card);
+}
+
+.prof-card-header {
+  margin-bottom: 2rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.prof-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ==========================================================================
+   HEADER AVATAR USER BLOCK
+   ========================================================================== */
+
+.prof-profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.prof-avatar-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.prof-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-light);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prof-avatar svg {
+  font-size: 2.5rem;
+  color: var(--text-muted);
+}
+
+.prof-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.prof-student-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   DATA FIELD COLUMNS MATRIX
+   ========================================================================== */
+
+.prof-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 1.25rem;
+}
+
+.prof-grid-two-cols {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.prof-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prof-info-label {
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.prof-info-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ─── Inline Warning System Context Alerts ─── */
+.prof-inline-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid var(--color-danger, #ef4444);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  margin-top: 1.5rem;
+  animation: profFadeIn 0.3s ease;
+}
+
+.prof-error-warn-icon {
+  font-size: 1.3rem;
+  color: var(--color-danger, #ef4444);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.prof-inline-error p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-danger, #ef4444);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   ANIMATION & RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+@keyframes profFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 850px) {
+  .prof-info-grid,
+  .prof-grid-two-cols {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .prof-info-grid,
+  .prof-grid-two-cols {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .prof-card {
+    padding: 1.5rem 1.25rem;
+  }
+}

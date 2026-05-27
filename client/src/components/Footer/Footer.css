@@ -1,6 +1,6 @@
 /* --- Premium Footer Container --- */
 .footer-premium {
-   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: var(--footer-bg); 
   border-top: 1px solid var(--border-light);
   color: var(--text-main);
   padding: 4rem 2rem 1.5rem 2rem;
@@ -52,7 +52,7 @@
 .footer-text {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 /* --- Navigation & Links --- */
@@ -67,9 +67,9 @@
 
 .footer-link {
   text-decoration: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 0.95rem;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color var(--transition-fast), transform var(--transition-fast);
   display: inline-block;
 }
 
@@ -93,7 +93,7 @@
   align-items: flex-start;
   gap: 0.75rem;
   font-size: 0.95rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   line-height: 1.4;
 }
 
@@ -118,19 +118,19 @@
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: 50%;
-  background-color: var(--bg-primary);
+  border-radius: var(--radius-full);
+  background-color: var(--bg-card); /* Pops elegantly off the bg-secondary footer field */
   color: var(--text-muted);
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all var(--transition-normal);
   border: 1px solid var(--border-light);
 }
 
 .social-icon:hover {
   background-color: var(--accent-color);
-  color: #ffffff;
+  color: var(--text-white);
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.25);
+  box-shadow: var(--shadow-accent);
   border-color: var(--accent-color);
 }
 
@@ -140,8 +140,9 @@
   margin: 3rem auto 1.5rem auto;
   padding: 1.5rem;
   border: 1px dashed var(--color-success);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   text-align: center;
+
 }
 
 .onboard-link {
@@ -152,7 +153,7 @@
   color: var(--color-success);
   font-weight: 600;
   font-size: 1rem;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-fast);
 }
 
 .onboard-link:hover {
@@ -162,7 +163,7 @@
 .onboard-link::after {
   content: '→';
   font-size: 1.1rem;
-  transition: transform 0.2s ease;
+  transition: transform var(--transition-fast);
 }
 
 .onboard-link:hover::after {

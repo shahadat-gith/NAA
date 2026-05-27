@@ -28,7 +28,7 @@ import StaffOnboarding from "./pages/StaffOnboarding/StaffOnboarding"
 import Legal from "./pages/Legal/Legal";
 
 /* ===== Portal pages ===== */
-import Portal from "./pages/Student/Portal/Portal";
+import StudentPortal from "./pages/Student/Portal/StudentPortal";
 import Admission from "./pages/Admission/Admission";
 
 import Result from "./pages/Student/Portal/Result/Result";
@@ -42,7 +42,7 @@ import IdCardDownload from "./pages/Student/Portal/IdCard/IdCardDownload";
 
 /* ===== Student pages ===== */
 import ToppersList from "./pages/Student/ToppersList/ToppersList";
-import Profile from "./pages/Student/Profile/Profile";
+import StudentProfile from "./pages/Student/StudentProfile/StudentProfile";
 
 import PageNotFound from "./components/404/PageNotFound";
 import Notices from "./pages/Notices/Notices";
@@ -129,8 +129,8 @@ const App = () => {
 
           {/* Portal */}
           <Route path="/student/toppers" element={<ToppersList />} />
-          <Route path="/student/profile" element={<Profile />} />
-          <Route path="/student/portal" element={<Portal />} />
+          <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/portal" element={<StudentPortal />} />
 
           <Route path="/student/portal/result" element={<Result />} />
           <Route

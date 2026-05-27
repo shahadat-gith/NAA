@@ -21,21 +21,15 @@ const TeacherLayout = () => {
     dues: { totalDue: 0, dueMonths: [] },
   });
 
-  // Redirection guard if token doesn't exist
   useEffect(() => {
+    // 1. Unified Route Protection Check
     if (!token) {
+      toast.error("Please log in as a teacher to view the portal.");
       navigate("/teacher/login", { replace: true });
+      return;
     }
-  }, [navigate, token]);
 
-  useEffect(() => {
     const fetchDashboardData = async () => {
-      if (!token) {
-        toast.error("Please log in as a teacher to view the portal.");
-        setLoading(false);
-        return;
-      }
-
       try {
         const response = await axios.get(`${backendUrl}/api/teacher/dashboard`, {
           headers: {
@@ -53,7 +47,7 @@ const TeacherLayout = () => {
 
         toast.error(message);
         
-        // Handle token expiration or invalidity
+        // Handle token expiration or invalidity immediately
         if (err.response?.status === 401) {
           localStorage.removeItem("teacher-token");
           navigate("/teacher/login", { replace: true });
@@ -63,14 +57,18 @@ const TeacherLayout = () => {
       }
     };
 
-    if (backendUrl && token) {
+    // 2. Fire fetch only if context is ready, otherwise let the application resolve context
+    if (backendUrl) {
       fetchDashboardData();
     }
   }, [backendUrl, token, navigate]);
 
+  // If there's no token, return null to completely prevent any flashing of unauthenticated UI elements
+  if (!token) return null;
+
   return (
     <div className="teacher-layout loader-parent">
-      {loading && <Loader />}
+      {loading && <Loader overlay={false} />}
 
       <Navbar teacher={dashboard.teacher} />
 

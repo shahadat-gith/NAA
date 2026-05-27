@@ -1,410 +1,435 @@
-/* ================= GLOBAL VIEW BASE ================= */
-.admit-page {
-  background-color: #f4f7f6;
-  padding: 40px 15px;
+/* ==========================================================================
+   OFFICIAL ADMIT CARD VIEW & DOWNLOAD CANVAS (PREFIX: adc-dl-)
+   ========================================================================== */
+
+.adc-dl-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  padding: clamp(2rem, 5vw, 3.5rem) 16px 60px;
+  background: var(--bg-primary);
+  min-height: 100vh;
+  transition: background var(--transition-normal);
 }
 
-
-
-/* ================= DOWNLOAD CONTROL BUTTON ================= */
-.download-wrapper {
-  margin-bottom: 25px;
-}
-
-.download-btn {
-  background-color: #2d5a4c; /* Deep core branding theme green */
-  color: white;
-  text-decoration: none;
-  padding: 12px 25px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 14px;
-  transition: background 0.3s ease;
-  border: none;
-  cursor: pointer;
-  display: inline-block;
-}
-
-.download-btn:hover {
-  background-color: #1a3a32;
-}
-
-/* ================= ADMIT CARD STATIONERY PRINT CONTAINER ================= */
-.admit-card-container {
-  background-color: white;
-  width: 100%;
-  max-width: 800px;
-  padding: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-/* Structural Double Framing Layout Borders */
-.outer-border {
-  border: 3px solid #004632;              /* Bold institutional dark forest green */
-  padding: 6px;
-  background: #ffffff;
-  border-radius: 6px;
-  box-shadow: 0 0 0 2px #d8e6df;           /* Soft outer contrast ring */
-}
-
-.inner-border {
-  border: 1.5px solid #004632;            /* Secondary concentric boundary border */
-  padding: 40px;
-  min-height: 1000px;                     /* Emulates clean A4 visual print height boundaries */
+/* ─── Download Action Command Control Bar ─── */
+.adc-dl-actions-wrapper {
+  margin-bottom: 24px;
   display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  background: linear-gradient(
-    to bottom,
-    #ffffff 0%,
-    #f7fbf9 100%
-  );
-  box-sizing: border-box;
-}
-
-/* ================= INSTITUTIONAL BRAND HEADER ================= */
-.admit-header {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.school-logo {
-  width: 70px;
-  height: auto;
-  margin-bottom: 10px;
-}
-
-.school-name {
-  font-size: 28px;
-  color: #1a3a5a; /* Traditional heavy slate blue dark contrast tone */
-  margin: 0 0 8px 0;
-  letter-spacing: 1px;
-}
-
-.divider-wrapper, .session-wrapper {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  gap: 15px;
 }
 
-.line {
-  height: 1px;
-  background-color: #999;
-  flex-grow: 1;
-  max-width: 25%;
-}
-
-.line.short {
-  max-width: 60px;
-}
-
-.exam-name {
-  font-size: 14px;
-  color: #444;
+.adc-dl-download-btn {
+  background: var(--accent-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 12px 36px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast), transform var(--transition-fast);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 
-.admit-title {
-  font-size: 34px;
-  font-weight: bold;
-  margin: 15px 0;
-  letter-spacing: 3px;
+.adc-dl-download-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-.session-text {
-  font-size: 16px;
-  font-weight: bold;
+/* ==========================================================================
+   OFFICIAL A4 PRINT SHEET PHYSICAL CONTAINER
+   ========================================================================== */
+
+.adc-dl-card-container {
+  width: 794px; /* Standard A4 paper width scale benchmark alignment */
+  background: #ffffff; /* Maintained clinical sheet white contrast for printing clarity */
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  color: #000000; /* Rich print black typography execution */
+}
+
+/* ─── Traditional Institutional Double Borders ─── */
+.adc-dl-outer-border {
+  border: 2px solid #000000;
+  padding: 6px;
+  border-radius: calc(var(--radius-md) - 2px);
+}
+
+.adc-dl-inner-border {
+  border: 1px solid #000000;
+  padding: 24px;
+  border-radius: calc(var(--radius-md) - 6px);
+}
+
+/* ==========================================================================
+   HEADER INSTITUTIONAL STACK
+   ========================================================================== */
+
+.adc-dl-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.adc-dl-school-logo {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+  margin-bottom: 6px;
+}
+
+.adc-dl-school-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #000000;
   margin: 0;
 }
 
-/* ================= STUDENT PERSONAL ATTRIBUTE FIELDS ================= */
-.student-section {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 40px;
-  align-items: flex-start;
-  width: 100%;
+.adc-dl-title {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin: 6px 0 0;
+  color: #000000;
 }
 
-.student-info p {
-  font-size: 16px;
-  margin: 12px 0;
-  color: #333;
-}
-
-.data-text {
-  text-transform: capitalize;
-  font-weight: normal;
-  margin-left: 5px;
-}
-
-.photo-frame {
-  width: 120px;
-  height: 140px;
-  border: 1px solid #ccc;
-  padding: 3px;
+/* Linear Text Track Divider Rows: line | text | line */
+.adc-dl-divider-wrapper,
+.adc-dl-session-wrapper {
   display: flex;
   align-items: center;
+  width: 100%;
+  margin: 4px 0;
+}
+
+.adc-dl-divider-wrapper::before,
+.adc-dl-divider-wrapper::after,
+.adc-dl-session-wrapper::before,
+.adc-dl-session-wrapper::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000000;
+}
+
+.adc-dl-exam-name {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0 10px;
+  white-space: nowrap;
+}
+
+.adc-dl-session-wrapper {
   justify-content: center;
-  border-radius: 4px;
-  background: #ffffff;
+  width: auto;
+  margin: 4px auto;
+  gap: 8px;
 }
 
-.photo-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.adc-dl-line {
+  display: block;
 }
 
-/* ================= ACADEMIC SCHEDULE TIMETABLE ================= */
-.exam-section {
-  margin-top: 30px;
-  width: 100%;
+.adc-dl-short {
+  width: 45px;
+  border-bottom: 1px solid #000000;
 }
 
-.table-header-box {
-  background-color: #1a3a32; /* Contrast dark top cap boundary block */
-  color: white;
-  text-align: center;
-  padding: 8px;
-  font-weight: bold;
-  font-size: 18px;
-  border: 1px solid #1a3a32;
+.adc-dl-session-text {
+  font-size: 9px;
+  font-weight: 600;
+  white-space: nowrap;
+  margin: 0;
 }
 
-.exam-table {
-  width: 100%;
-  border-collapse: collapse;
+/* ==========================================================================
+   STUDENT IDENTIFICATION SECTION
+   ========================================================================== */
+
+.adc-dl-student-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 16px 0;
 }
 
-.exam-table th {
-  background-color: #2d5a4c; /* Intermediate clean forest variant tint */
-  color: white;
-  border: 1px solid #1a3a32;
-  padding: 12px;
-  font-size: 13px;
+.adc-dl-student-info {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.exam-table td {
-  border: 1px solid #1a3a32;
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  color: #333;
+.adc-dl-student-info p {
+  font-size: 10px;
+  margin: 0;
+  color: #000000;
 }
 
-.subject-cell {
+.adc-dl-student-info strong {
+  display: inline-block;
+  width: 120px;
+  font-weight: 700;
+}
+
+.adc-dl-data-text {
   font-weight: 500;
 }
 
-/* ================= STATUTORY HALL INSTRUCTIONS ================= */
-.instruction-section {
-  margin-top: 30px;
+/* Passport Photo Frame Box */
+.adc-dl-photo-frame {
+  width: 90px;
+  height: 110px;
+  border: 1px solid #000000;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f8fafc;
+}
+
+.adc-dl-photo-frame img {
   width: 100%;
-  text-align: left;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.instruction-section h4 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  text-decoration: underline;
-  color: #111827;
+/* ==========================================================================
+   SCHEDULE TIMETABLE COMPONENTS
+   ========================================================================== */
+
+.adc-dl-exam-section {
+  margin-top: 14px;
 }
 
-.instruction-list {
-  padding-left: 20px;
+.adc-dl-table-header-box {
+  border: 1px solid #000000;
+  padding: 5px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.adc-dl-exam-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+}
+
+.adc-dl-exam-table thead tr th,
+.adc-dl-exam-table tbody tr td {
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  padding: 6px 4px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.adc-dl-exam-table thead tr th:last-child,
+.adc-dl-exam-table tbody tr td:last-child {
+  border-right: none;
+}
+
+.adc-dl-exam-table thead tr th {
+  font-weight: 700;
+  background: #f8fafc;
+  line-height: 1.3;
+}
+
+.adc-dl-time-sub {
+  font-size: 8.5px;
+  font-weight: 500;
+}
+
+.adc-dl-subject-cell {
+  font-weight: 500;
+}
+
+.adc-dl-empty-table-cell {
+  font-weight: 500;
+  color: #475569;
+}
+
+/* ==========================================================================
+   EXAM CODES & INSTRUCTIONS RULES
+   ========================================================================== */
+
+.adc-dl-instruction-section {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px dashed #000000;
+  border-radius: var(--radius-sm);
+  background: #fafafa;
+}
+
+.adc-dl-instruction-section h4 {
+  font-size: 10.5px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  text-transform: uppercase;
+}
+
+.adc-dl-instruction-list {
   margin: 0;
+  padding-left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.instruction-list li {
-  font-size: 13px;
-  margin-bottom: 6px;
-  line-height: 1.5;
-  color: #444;
+.adc-dl-instruction-list li {
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #1e293b;
 }
 
-/* ================= MANAGEMENT DISCHARGE AUTHORIZATION FOOTER ================= */
-.footer-layout {
+/* ==========================================================================
+   FOOTER AUTHORIZATIONS SIGNATURES
+   ========================================================================== */
+
+.adc-dl-footer-layout {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: auto; /* Drops footer absolutely onto bottom margins of print frame */
-  padding-bottom: 10px;
-  width: 100%;
+  margin-top: 36px;
 }
 
-.signature-container {
-  width: 40%;
+/* Signature Node Blocks */
+.adc-dl-signature-container {
+  width: 35%;
 }
 
-.signature-wrapper {
-  text-align: center;
+.adc-dl-signature-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.signature-img {
-  width: 150px;
-  height: auto;
-  margin-bottom: -10px; /* Slight realistic handwriting overlap */
+.adc-dl-signature-img {
+  width: 90px;
+  height: 35px;
+  object-fit: contain;
+  margin-bottom: 2px;
 }
 
-.signature-placeholder {
-  height: 60px;
+.adc-dl-signature-placeholder {
+  height: 37px;
 }
 
-.principal-label {
-  font-size: 22px;
-  color: #2e5a88; /* Traditional authorization security blue ink hue */
-  font-weight: bold;
+.adc-dl-signature-labels {
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid #000000;
+  padding-top: 4px;
+}
+
+.adc-dl-principal-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
   margin: 0;
 }
 
-.principal-name {
-  font-size: 14px;
-  margin: 5px 0 0 0;
+.adc-dl-principal-name {
+  font-size: 9px;
+  font-weight: 500;
+  margin: 1px 0 0 0;
 }
 
-/* Legal Contact Side Column block */
-.school-contact-area {
+/* Contact Info Layout block */
+.adc-dl-school-contact-area {
+  width: 58%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.adc-dl-school-contact-area p {
+  font-size: 8px;
   text-align: center;
-  width: 55%;
+  font-weight: 500;
+  margin: 0;
 }
 
-.footer-school-line {
+.adc-dl-footer-school-line {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  width: 100%;
+  margin-bottom: 4px;
 }
 
-.footer-school-name {
-  font-size: 14px;
-  font-weight: bold;
+.adc-dl-footer-school-line::before,
+.adc-dl-footer-school-line::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #000000;
+}
+
+.adc-dl-footer-school-name {
+  font-size: 9px;
+  font-weight: 700;
+  margin: 0 8px;
   white-space: nowrap;
-  color: #333;
+  letter-spacing: 0.5px;
 }
 
-.school-contact-area p {
-  margin: 3px 0;
-  font-size: 12px;
-  color: #555;
+/* ==========================================================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 820px) {
+  .adc-dl-card-container {
+    width: 100%;
+    max-width: 794px;
+  }
 }
 
-/* ================= MEDIA RESPONSIVE MATRICES ================= */
-
-/* Medium Layout Viewports (Tablets) */
-@media (max-width: 900px) {
-  .admit-card-container,
-  .admit-back-navigation {
-    width: 95%;
+@media (max-width: 600px) {
+  .adc-dl-inner-border {
+    padding: 14px;
+  }
+  
+  .adc-dl-school-logo {
+    width: 44px;
+    height: 44px;
   }
 
-  .inner-border {
-    padding: 25px;
-    min-height: auto;
-  }
-
-  .school-name {
-    font-size: 24px;
-  }
-
-  .admit-title {
-    font-size: 28px;
-  }
-
-  .student-info p {
+  .adc-dl-school-name {
     font-size: 15px;
   }
-
-  .exam-table th,
-  .exam-table td {
-    padding: 8px;
-    font-size: 13px;
-  }
-}
-
-/* Compact Mobile Screens */
-@media (max-width: 600px) {
-  .admit-page {
-    padding: 15px 0;
+  
+  .adc-dl-title {
+    font-size: 11px;
   }
 
-  .school-logo {
-    width: 60px;
+  .adc-dl-photo-frame {
+    width: 74px;
+    height: 92px;
   }
 
-  .school-name {
-    font-size: 20px;
+  .adc-dl-student-info strong {
+    width: 95px;
   }
-
-  .divider-wrapper .line {
-    max-width: 15%;
-  }
-
-  .admit-title {
-    font-size: 24px;
-    letter-spacing: 2px;
-  }
-
-  /* Stack card profiling contents vertically */
-  .student-section {
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .student-info {
-    width: 100%;
-  }
-
-  .data-text {
-    font-size: 13px;
-  }
-
-  /* Linearize bottom validation columns */
-  .footer-layout {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    text-align: center;
-  }
-
-  .signature-container,
-  .school-contact-area {
-    width: 100%;
-  }
-
-  .signature-img {
-    width: 120px;
-  }
-}
-
-/* Extreme Low Density Mobile constraints */
-@media (max-width: 400px) {
-  .school-name {
-    font-size: 18px;
-  }
-
-  .admit-title {
-    font-size: 22px;
-  }
-
-  .student-info p {
-    font-size: 14px;
-  }
-
-  .instruction-list li {
-    font-size: 12px;
+  
+  .adc-dl-exam-table thead tr th,
+  .adc-dl-exam-table tbody tr td,
+  .adc-dl-table-header-box {
+    font-size: 8.5px;
   }
 }

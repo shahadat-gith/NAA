@@ -7,10 +7,10 @@ import {
   TbAlertTriangle,
   TbArrowLeft
 } from "react-icons/tb";
-import "./Profile.css"; // Renamed your CSS reference to look consistent
+import "./StudentProfile.css";
 import Search from "../Portal/Common/Search";
 
-const Profile = () => {
+const StudentProfile = () => {
   const { backendUrl } = useContext(AppContext);
   
   const [data, setData] = useState(null);
@@ -47,7 +47,7 @@ const Profile = () => {
 
   if (!data) {
     return (
-      <div className="prof-page search-landing-context">
+      <div className="prof-page prof-search-landing-context">
         <div className="prof-container">
           
           <Search 
@@ -58,7 +58,7 @@ const Profile = () => {
 
           {error && (
             <div className="prof-inline-error">
-              <TbAlertTriangle className="error-warn-icon" />
+              <TbAlertTriangle className="prof-error-warn-icon" />
               <p>{error}</p>
             </div>
           )}
@@ -75,7 +75,6 @@ const Profile = () => {
   return (
     <div className="prof-page">
       <div className="prof-container">
-
         {/* ================= Cards Information Sections ================= */}
         <div className="prof-cards-wrapper">
 
@@ -89,7 +88,7 @@ const Profile = () => {
               <div className="prof-avatar-wrapper">
                 <div className="prof-avatar">
                   {student?.image?.url ? (
-                    <img src={student.image.url} alt="Profile" />
+                    <img src={student.image.url} alt="Profile" className="prof-avatar-img" />
                   ) : (
                     <TbUser />
                   )}
@@ -142,7 +141,7 @@ const Profile = () => {
               <h2 className="prof-card-title">Family Details</h2>
             </div>
 
-            <div className="prof-info-grid">
+            <div className="prof-info-grid prof-grid-two-cols">
               <div className="prof-info-item">
                 <div className="prof-info-label">Father's Name</div>
                 <div className="prof-info-value">
@@ -216,4 +215,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default StudentProfile;

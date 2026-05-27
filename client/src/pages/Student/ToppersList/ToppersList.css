@@ -1,329 +1,301 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;700&display=swap');
+/* ==========================================================================
+   HALL OF EXCELLENCE TOPPERS MODULE (PREFIX: top-)
+   ========================================================================== */
 
-:root {
-  --primary: #1a237e;
-  --accent: #e94560;
-  --bg-soft: #f8fafc;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --white: #ffffff;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-}
-
-.sp-container {
-  background-color: var(--bg-soft);
+.top-page-container {
+  width: 100%;
   min-height: 100vh;
-  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-primary);
   color: var(--text-main);
-  padding-bottom: 80px;
+  padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+  transition: background var(--transition-normal);
 }
 
-/* ── HEADER ── */
-.sp-header {
-  width: 100%;
-  padding: 70px 20px 50px;
-  background: linear-gradient(180deg, #faf9f7 0%, #f5f3ef 100%);
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  border-bottom: 1px solid #eceae6;
-}
-
-.sp-header-content {
-  max-width: 720px;
-}
-
-.sp-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 900;
-  line-height: 1.1;
-  color: #111;
-  margin-bottom: 16px;
-}
-
-.sp-title span {
-  color: var(--accent);
-  position: relative;
-}
-
-.sp-title span::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-.sp-subtitle {
-  font-size: 15px;
-  font-weight: 300;
-  color: #666;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-/* ── CONTENT ── */
-.sp-content {
+.top-content {
   max-width: 1200px;
-  margin: 40px auto 0;
-  padding: 0 24px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-/* ── SECTION ── */
-.sp-section {
-  margin-bottom: 60px;
+/* ─── Hero Header Header Area ─── */
+.top-header {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto clamp(2.5rem, 6vw, 4.5rem) auto;
 }
 
-.sp-section-head {
+.top-title {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+}
+
+.top-title span {
+  color: var(--accent-color);
+}
+
+.top-session-badge {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  margin: 0.5rem 0 1rem 0;
+}
+
+.top-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ─── Structural Section Headings ─── */
+.top-section {
+  margin-bottom: clamp(3.5rem, 8vw, 5rem);
+}
+
+.top-section-head {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 10px;
 }
 
-.sp-section-head h2 {
+.top-section-head h2 {
   font-size: 1.5rem;
   font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.01em;
 }
 
-.head-icon {
+.top-head-icon {
   font-size: 1.5rem;
-  color: var(--primary);
+  color: var(--text-muted);
 }
 
-.head-icon.gold {
-  color: var(--accent);
+.top-gold {
+  color: #eab308; /* Premium golden accent token */
 }
 
+/* ==========================================================================
+   PODIUM CARD DISPLAY LAYOUT
+   ========================================================================== */
 
-
-/* ── HEADER SEARCH ── */
-.sp-header-search {
-  margin-top: 24px;
-  display: flex;
+.top-podium-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   justify-content: center;
 }
 
-/* ── SEARCH BAR ── */
-.sp-search-bar {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 999px; /* 🔥 fully rounded */
-  padding: 6px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.06);
-  border: 1px solid #ececec;
-}
-
-/* ── INPUT ── */
-.sp-search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 10px 14px;
-  font-size: 14px;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text-main);
-}
-
-/* ── BUTTON ── */
-.sp-search-btn {
-  border: none;
-  background: var(--accent);
-  color: #fff;
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.sp-search-btn:hover {
-  background: #d63c55;
-}
-
-/* ── SCHOOL TOPPERS ── */
-.sp-podium-layout {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-}
-
-.sp-winner-card {
-  background: var(--white);
-  padding: 32px;
-  border-radius: 24px;
+.top-winner-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
   text-align: center;
   position: relative;
-  box-shadow: var(--shadow);
-  transition: 0.3s;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
-.sp-winner-card:hover {
-  transform: translateY(-8px);
+.top-winner-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
 }
 
-.rank-1 {
-  border: 2px solid var(--accent);
-}
-
-.sp-card-rank-tag {
+/* Rank Medallion Badging */
+.top-card-rank-tag {
   position: absolute;
   top: 16px;
-  right: 16px;
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 50px;
-  background: var(--text-muted);
-  color: #fff;
-}
-
-.rank-1 .sp-card-rank-tag {
-  background: var(--accent);
-}
-
-.sp-image-frame {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 20px;
-  border-radius: 50%;
-  padding: 4px;
-  background: linear-gradient(45deg, var(--accent), #fef3c7);
-}
-
-.sp-image-frame img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid #fff;
-}
-
-.sp-winner-info h3 {
-  font-weight: 700;
-}
-
-.sp-winner-info p {
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-medium);
+  color: var(--text-main);
   font-size: 0.9rem;
-  color: var(--text-muted);
-  margin: 10px 0;
-}
-
-.sp-winner-score {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--primary);
-}
-
-
-/* ── CLASS RANK BADGE ── */
-.sp-winner-rank {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 4px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--accent);
-  background: rgba(233, 69, 96, 0.08);
-  border: 1px solid rgba(233, 69, 96, 0.2);
-  border-radius: 20px;
-  letter-spacing: 0.03em;
-}
-
-/* ── MEDIUM TITLE ── */
-.sp-medium-title {
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  margin: 40px 0 20px;
-  padding-left: 8px;
-  border-left: 4px solid var(--primary);
-}
-
-/* ── CLASS TOPPERS GRID ── */
-.sp-class-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-}
-
-/* ── CLASS CARD ── */
-.sp-class-card {
-  background: var(--white);
-  padding: 16px;
-  border-radius: 16px;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 16px;
-  box-shadow: var(--shadow);
-  transition: 0.2s;
+  justify-content: center;
 }
 
-.sp-class-card:hover {
-  transform: translateY(-4px);
+/* Podium contextual rank borders */
+.top-winner-card.top-rank-1 { border-top: 4px solid #eab308; }
+.top-winner-card.top-rank-2 { border-top: 4px solid #94a3b8; }
+.top-winner-card.top-rank-3 { border-top: 4px solid #b45309; }
+
+.top-image-frame {
+  width: 110px;
+  height: 110px;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--bg-primary);
+  box-shadow: 0 0 0 1px var(--border-light);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  background: var(--bg-secondary);
 }
 
-/* ── IMAGE ── */
-.sp-class-card img {
-  width: 120px;
-  border-radius: 12px;
+.top-profile-img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-/* ── INFO ── */
-.sp-class-info {
+.top-winner-info h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.top-winner-meta {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem 0;
+  font-weight: 500;
+}
+
+.top-divider {
+  margin: 0 4px;
+  color: var(--border-medium);
+}
+
+.top-winner-score {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.top-winner-rank {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   CLASS WISE COMPACT GRID DIRECTORY
+   ========================================================================== */
+
+.top-medium-group {
+  margin-top: 2.5rem;
+}
+
+.top-medium-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.top-class-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.top-class-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-fast) ease;
+}
+
+.top-class-card:hover {
+  border-color: var(--accent-border);
+}
+
+.top-class-img {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  background: var(--bg-secondary);
+  flex-shrink: 0;
+}
+
+.top-class-info {
   flex: 1;
+  min-width: 0;
 }
 
-.sp-class-info h4 {
+.top-class-info h4 {
   font-size: 0.95rem;
-  margin-bottom: 2px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 2px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ── LABEL ── */
-.sp-class-label {
+.top-class-label {
   font-size: 0.8rem;
   color: var(--text-muted);
+  font-weight: 500;
 }
 
-/* ── SCORE ── */
-.sp-class-score {
-  font-weight: 800;
-  color: var(--primary);
-  font-size: 1.1rem;
+.top-class-score {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-color);
+  flex-shrink: 0;
 }
 
-/* ── LOADING ── */
-.sp-loader-skeleton {
+/* ─── Loader Skeleton Standby Modules ─── */
+.top-loader-skeleton {
   text-align: center;
-  padding: 60px;
+  padding: 6rem 2rem;
   color: var(--text-muted);
+  font-size: 1.1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-  .sp-header {
-    padding: 50px 16px;
-  }
+.top-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-medium);
+  border-top-color: var(--accent-color);
+  border-radius: var(--radius-full);
+  animation: topSpin 0.6s linear infinite;
+}
 
-  .sp-title {
-    font-size: 34px;
-  }
+@keyframes topSpin { to { transform: rotate(360deg); } }
 
-  .sp-class-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sp-podium-layout {
+/* ==========================================================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 640px) {
+  .top-class-grid {
     grid-template-columns: 1fr;
   }
 }

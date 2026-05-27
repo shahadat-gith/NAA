@@ -1,61 +1,78 @@
-.skills-grid-container {
+/* ==========================================================================
+   DEVELOPER SKILLS SUB-MODULE (PREFIX: sk-)
+   ========================================================================== */
+
+/* Core Outer Grid Framework */
+.sk-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
   width: 100%;
-  max-width: 1200px;
-  font-family: system-ui, -apple-system, sans-serif;
 }
 
-.skills-group-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 4px 20px -4px rgba(16, 24, 40, 0.03);
-  transition: all 0.3s ease;
+/* Category Content Surface Block */
+.sk-group-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-fast) ease;
 }
 
-.skills-group-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(233, 69, 96, 0.3);
-  box-shadow: 0 12px 24px -8px rgba(233, 69, 96, 0.08);
+.sk-group-card:hover {
+  border-color: var(--accent-border);
 }
 
-.skills-group-title {
-  margin: 0 0 18px 0;
-  font-size: 1.05rem;
+/* Category Structural Headings */
+.sk-group-title {
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-main);
+  margin: 0 0 1.25rem 0;
   letter-spacing: -0.01em;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border-light);
 }
 
-.skills-pill-flex {
+/* Flex Pill wrapping field track */
+.sk-pill-flex {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.skill-pill-modern {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #475569;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 8px 14px;
-  border-radius: 10px;
-  transition: all 0.2s ease;
+/* Elegant, Minimalist Individual Skill Tag */
+.sk-pill-modern {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast) ease;
 }
 
-.skill-pill-modern:hover {
-  background: #fffbfb;
-  border-color: #e94560;
-  color: #e94560;
+.sk-pill-modern:hover {
+  background: var(--accent-light);
+  color: var(--accent-color);
+  border-color: var(--accent-border);
+  transform: translateY(-1px);
 }
 
-@media (max-width: 640px) {
-  .skills-grid-container {
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM MEDIA QUERY CONSTRAINTS
+   ========================================================================== */
+@media (max-width: 480px) {
+  .sk-grid-container {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 1.25rem;
+  }
+
+  .sk-group-card {
+    padding: 1.25rem;
   }
 }

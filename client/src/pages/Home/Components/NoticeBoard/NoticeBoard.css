@@ -1,15 +1,15 @@
 .notice-board-container {
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(233, 69, 96, 0.08);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--accent-border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   padding: 26px;
-  margin: 30px;
+  margin: 0 5%;
 
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 /* Header */
@@ -18,7 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #16161b;
+  color: var(--text-main);
 }
 
 .header-main {
@@ -28,7 +28,7 @@
 }
 
 .announce-icon {
-  color: #e94560;
+  color: var(--accent-color);
   font-size: 1.3rem;
 }
 
@@ -52,8 +52,8 @@
 }
 
 .notice-scroll-area::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
 }
 
 /* List */
@@ -68,33 +68,33 @@
   display: flex;
   gap: 14px;
   padding: 1rem;
-  border-radius: 12px;
-  transition: all 0.25s ease;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
   cursor: pointer;
 }
 
 .notice-item:hover {
-  background: #fafafa;
+  background: var(--hover-light);
   transform: translateX(3px);
 }
 
-/* Icon Box (better than wrapper) */
+/* Icon Box */
 .notice-icon-box {
   min-width: 36px;
   height: 36px;
-  border-radius: 10px;
-  background: rgba(233, 69, 96, 0.08);
+  border-radius: var(--radius-sm);
+  background: var(--accent-light);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #e94560;
+  color: var(--accent-color);
   font-size: 0.95rem;
-  transition: all 0.3s ease;
+  transition: all var(--transition-slow);
 }
 
 .notice-item:hover .notice-icon-box {
-  background: #e94560;
-  color: white;
+  background: var(--accent-color);
+  color: var(--text-white);
 }
 
 /* Content */
@@ -112,16 +112,16 @@
 
 .notice-date {
   font-size: 0.72rem;
-  color: #999;
+  color: var(--text-light);
 }
 
 /* New Badge */
 .new-badge {
-  background: #e94560;
-  color: white;
+  background: var(--accent-color);
+  color: var(--text-white);
   font-size: 0.6rem;
   padding: 3px 8px;
-  border-radius: 20px;
+  border-radius: var(--radius-full);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -132,14 +132,14 @@
   justify-content: space-between;
   align-items: center;
   text-decoration: none;
-  color: #1a1a2e;
+  color: var(--text-secondary);
   font-size: 0.95rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
 .notice-title-link:hover {
-  color: #e94560;
+  color: var(--accent-color);
 }
 
 /* Text */
@@ -160,7 +160,7 @@
 .link-mini {
   font-size: 0.75rem;
   opacity: 0.6;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
 .notice-item:hover .download-mini,
@@ -175,11 +175,11 @@
   margin-top: 10px;
   padding: 0.9rem;
   font-weight: 600;
-  color: #e94560;
+  color: var(--accent-color);
   text-align: center;
   text-decoration: none;
-  border-top: 1px solid #eee;
-  transition: all 0.25s ease;
+  border-top: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -187,7 +187,7 @@
 }
 
 .view-all-notices-btn:hover {
-  background: #fafafa;
+  background: var(--hover-light);
   letter-spacing: 0.3px;
 }
 
@@ -198,13 +198,13 @@
   justify-content: center;
   height: 100%;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-muted);
   font-style: italic;
   text-align: center;
 }
 
 .notice-status-msg.error {
-  color: #e94560;
+  color: var(--color-danger);
   font-weight: 600;
 }
 
@@ -212,9 +212,9 @@
 .spinner-mini {
   width: 14px;
   height: 14px;
-  border: 2px solid #ddd;
-  border-top: 2px solid #e94560;
-  border-radius: 50%;
+  border: 2px solid var(--border-light);
+  border-top: 2px solid var(--accent-color);
+  border-radius: var(--radius-full);
   margin-right: 8px;
   animation: spin 0.6s linear infinite;
 }
@@ -241,8 +241,6 @@
     font-size: 0.9rem;
   }
 }
-
-
 
 /* Ensure the button looks exactly like your links */
 .btn-reset {

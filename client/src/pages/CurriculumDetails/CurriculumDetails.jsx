@@ -27,42 +27,48 @@ const CurriculumDetails = () => {
           content="Explore the academic curriculum of Nashib Ali Academy, designed to support holistic learning and academic excellence for students in Barpeta, Assam."
         />
       </Helmet>
+      
       <Banner image={bannerImage} />
-      <section className="curriculum-details-section">
+      
+      <section className="crd-details-section">
         {details ? (
           <>
-            <div className="curriculum-tabs">
+            {/* Navigation Tabs */}
+            <div className="crd-tabs-nav">
               {curriculumTypes.map((curriculumType) => (
                 <Link
                   key={curriculumType}
                   to={`/curriculum?type=${curriculumType}`}
-                  className={`tab-item ${type === curriculumType ? 'active' : ''}`}
+                  className={`crd-tab-item ${type === curriculumType ? 'crd-active' : ''}`}
                 >
                   {curriculumDetailsData[curriculumType].title.split(' ')[0]}
                 </Link>
               ))}
             </div>
-            <div className="curriculum-breadcrumb">
-              <Link to="/curriculum" className="breadcrumb-link">
-                <i className="fas fa-arrow-left"></i> Back to Curriculum
-              </Link>
-            </div>
 
-            <div className="curriculum-details-container">
-              <div className="curriculum-details-card overview-card" style={{ background: details.background }}>
-                <h3><i className="fas fa-book"></i> Overview</h3>
-                <p>{details.overview}</p>
+            {/* Content Container */}
+            <div className="crd-details-container">
+              
+              {/* Overview Section */}
+              <div className="crd-card crd-overview-card">
+                <h3 className="crd-card-title">
+                  <i className="fas fa-book-open"></i> Overview
+                </h3>
+                <p className="crd-card-text">{details.overview}</p>
               </div>
 
-              <div className="curriculum-details-card" style={{ background: details.background }}>
-                <h3><i className="fas fa-book"></i> Subjects</h3>
-                <div className="curriculum-subjects">
+              {/* Subjects Section */}
+              <div className="crd-card">
+                <h3 className="crd-card-title">
+                  <i className="fas fa-book"></i> Core Subjects
+                </h3>
+                <div className="crd-subjects-list">
                   {details.subjects.map((subject, index) => (
-                    <div key={index} className="subject-item">
-                      <div className="subject-icon">
+                    <div key={index} className="crd-subject-item">
+                      <div className="crd-subject-icon">
                         <i className={`fas fa-${subject.icon}`}></i>
                       </div>
-                      <div className="subject-content">
+                      <div className="crd-subject-content">
                         <h4>{subject.name}</h4>
                         <p>{subject.description}</p>
                       </div>
@@ -71,15 +77,18 @@ const CurriculumDetails = () => {
                 </div>
               </div>
 
-              <div className="curriculum-details-card" style={{ background: details.background }}>
-                <h3><i className="fas fa-chalkboard-teacher"></i> Teaching Methods</h3>
-                <div className="teaching-methods">
+              {/* Teaching Methods Section */}
+              <div className="crd-card">
+                <h3 className="crd-card-title">
+                  <i className="fas fa-chalkboard-teacher"></i> Teaching Methodologies
+                </h3>
+                <div className="crd-methods-list">
                   {details.methods.map((method, index) => (
-                    <div key={index} className="method-item">
-                      <div className="method-icon">
+                    <div key={index} className="crd-method-item">
+                      <div className="crd-method-icon">
                         <i className={`fas fa-${method.icon}`}></i>
                       </div>
-                      <div className="method-content">
+                      <div className="crd-method-content">
                         <h4>{method.name}</h4>
                         <p>{method.description}</p>
                       </div>
@@ -88,32 +97,35 @@ const CurriculumDetails = () => {
                 </div>
               </div>
 
-              <div className="curriculum-details-card" style={{ background: details.background }}>
-                <h3><i className="fas fa-star"></i> Program Features</h3>
-                <div className="features-grid">
+              {/* Program Features Section */}
+              <div className="crd-card">
+                <h3 className="crd-card-title">
+                  <i className="fas fa-star"></i> Key Program Features
+                </h3>
+                <div className="crd-features-grid">
                   {details.features.map((feature, index) => (
-                    <div key={index} className="feature-item">
+                    <div key={index} className="crd-feature-pill">
                       <i className={`fas fa-${feature.icon}`}></i>
                       <span>{feature.name}</span>
                     </div>
                   ))}
                 </div>
-
               </div>
 
             </div>
           </>
         ) : (
-          <div className="curriculum-details-error">
-            <div className="error-icon">
-              <i className="fas fa-book"></i>
+          /* Error Layout State */
+          <div className="crd-error-fallback">
+            <div className="crd-error-icon">
+              <i className="fas fa-exclamation-circle"></i>
             </div>
             <h2>Curriculum Not Found</h2>
-            <p className="error-message" aria-live="polite">
-              We couldn't find the requested curriculum. Please select a valid program from our offerings.
+            <p className="crd-error-msg" aria-live="polite">
+              We couldn't find the requested curriculum data module. Please choose an alternate academic track.
             </p>
-            <Link to="/curriculum" className="back-link">
-              <i className="fas fa-arrow-left"></i> Return to Curriculum Page
+            <Link to="/curriculum" className="crd-return-btn">
+              <i className="fas fa-arrow-left"></i> Return to Main Directory
             </Link>
           </div>
         )}

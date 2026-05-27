@@ -1,12 +1,11 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AppContext } from "../../../context/AppContext";
 import "./ToppersList.css";
 import { CLASS_OPTIONS } from "../../../Utils/utility";
 import { FiStar, FiTrendingUp } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-
+import Loader from "../../../components/Loader/Loader";
 
 const ALL_CLASS_ORDER = [
   ...CLASS_OPTIONS.english,
@@ -22,9 +21,7 @@ const sortByClassOrder = (a, b) => {
 const classLabel = (cls) => {
   const lower = cls.toLowerCase();
   const specials = ["nursery", "kg", "ankur", "mukul"];
-  return specials.includes(lower)
-    ? lower.toUpperCase()
-    : `Class ${cls}`;
+  return specials.includes(lower) ? lower.toUpperCase() : `Class ${cls}`;
 };
 
 const ToppersList = () => {
@@ -32,7 +29,6 @@ const ToppersList = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({ toppers: [], schoolToppers: [] });
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchToppers = async () => {
@@ -57,60 +53,59 @@ const ToppersList = () => {
     .sort(sortByClassOrder);
 
   return (
-    <div className="sp-container">
+    <div className="top-page-container">
 
-      {/* HEADER */}
-      <div className="sp-header">
-        <div className="sp-header-content">
-          <h1 className="sp-title">
+      {/* HEADER HERO AREA */}
+      <div className="top-header">
+        <div className="top-header-content">
+          <h1 className="top-title">
             Hall of <span>Excellence</span>
           </h1>
-          <h3 style={{ fontSize: "20px", color: "#e95560" }}>
-            {data.toppers.length > 0 && `Session - ${data.toppers[0].session}`}
-          </h3>
-          <p className="sp-subtitle">
+          {data.toppers.length > 0 && (
+            <h3 className="top-session-badge">
+              Session — {data.toppers[0].session}
+            </h3>
+          )}
+          <p className="top-subtitle">
             Honoring our brightest minds and their remarkable academic journeys.
           </p>
-
         </div>
       </div>
 
-      {/* CONTENT */}
-      <div className="sp-content">
+      {/* MAIN LAYOUT CONTENT */}
+      <div className="top-content">
         {loading ? (
-          <div className="sp-loader-skeleton">
-            Checking the records...
-          </div>
+          <Loader overlay={false} />
         ) : (
           <>
-            {/* SCHOOL TOPPERS */}
-            <div className="sp-section">
-              <div className="sp-section-head">
-                <FiStar className="head-icon gold" />
+            {/* SCHOOL OVERALL TOPPERS SECTION */}
+            <div className="top-section">
+              <div className="top-section-head">
+                <FiStar className="top-head-icon top-gold" />
                 <h2>Overall School Toppers</h2>
               </div>
 
-              <div className="sp-podium-layout">
+              <div className="top-podium-layout">
                 {data.schoolToppers.map((group, gi) =>
                   group.students.map((s, si) => (
-                    <div key={si} className={`sp-winner-card rank-${gi + 1}`}>
-                      <div className="sp-card-rank-tag">
+                    <div key={si} className={`top-winner-card top-rank-${gi + 1}`}>
+                      <div className="top-card-rank-tag">
                         {gi + 1}
                       </div>
 
-                      <div className="sp-image-frame">
-                        <img src={s.image?.url} alt={s.name} />
+                      <div className="top-image-frame">
+                        <img src={s.image?.url || "/user.png"} alt={s.name} className="top-profile-img" />
                       </div>
 
-                      <div className="sp-winner-info">
-                        <h3>{(s.name).toUpperCase()}</h3>
-                        <p>
-                          {classLabel(s.class)} • {s.medium}
+                      <div className="top-winner-info">
+                        <h3>{s.name.toUpperCase()}</h3>
+                        <p className="top-winner-meta">
+                          {classLabel(s.class)} <span className="top-divider">•</span> {s.medium.charAt(0).toUpperCase() + s.medium.slice(1)}
                         </p>
-                        <div className="sp-winner-score">
+                        <div className="top-winner-score">
                           {s.percentage}%
                         </div>
-                        <div className="sp-winner-rank">
+                        <div className="top-winner-rank">
                           Class Rank : {s.rank}
                         </div>
                       </div>
@@ -120,31 +115,30 @@ const ToppersList = () => {
               </div>
             </div>
 
-            {/* CLASS TOPPERS */}
-            <div className="sp-section">
-              <div className="sp-section-head">
-                <FiTrendingUp className="head-icon" />
+            {/* CLASS WISE DIRECTORY TOPPERS */}
+            <div className="top-section">
+              <div className="top-section-head">
+                <FiTrendingUp className="top-head-icon" />
                 <h2>Class Wise Toppers</h2>
               </div>
 
-              {/* ENGLISH */}
-              <div className="sp-medium-group">
-                <h3 className="sp-medium-title">English Medium</h3>
+              {/* ENGLISH MEDIUM COMPARTMENT */}
+              <div className="top-medium-group">
+                <h3 className="top-medium-title">English Medium</h3>
 
-                <div className="sp-class-grid">
+                <div className="top-class-grid">
                   {englishToppers.map((t, i) => (
-                    <div key={i} className="sp-class-card">
-                      <img src={t.image?.url} alt={t.name} />
+                    <div key={i} className="top-class-card">
+                      <img src={t.image?.url || "/user.png"} alt={t.name} className="top-class-img" />
 
-                      <div className="sp-class-info">
+                      <div className="top-class-info">
                         <h4>{t.name.toUpperCase()}</h4>
-
-                        <span className="sp-class-label">
-                          {classLabel(t.class)} • English
+                        <span className="top-class-label">
+                          {classLabel(t.class)} <span className="top-divider">•</span> English
                         </span>
                       </div>
 
-                      <div className="sp-class-score">
+                      <div className="top-class-score">
                         {t.percentage}%
                       </div>
                     </div>
@@ -152,24 +146,23 @@ const ToppersList = () => {
                 </div>
               </div>
 
-              {/* ASSAMESE */}
-              <div className="sp-medium-group">
-                <h3 className="sp-medium-title">Assamese Medium</h3>
+              {/* ASSAMESE MEDIUM COMPARTMENT */}
+              <div className="top-medium-group">
+                <h3 className="top-medium-title">Assamese Medium</h3>
 
-                <div className="sp-class-grid">
+                <div className="top-class-grid">
                   {assameseToppers.map((t, i) => (
-                    <div key={i} className="sp-class-card">
-                      <img src={t.image?.url} alt={t.name} />
+                    <div key={i} className="top-class-card">
+                      <img src={t.image?.url || "/user.png"} alt={t.name} className="top-class-img" />
 
-                      <div className="sp-class-info">
+                      <div className="top-class-info">
                         <h4>{t.name.toUpperCase()}</h4>
-
-                        <span className="sp-class-label">
-                          {classLabel(t.class)} • Assamese
+                        <span className="top-class-label">
+                          {classLabel(t.class)} <span className="top-divider">•</span> Assamese
                         </span>
                       </div>
 
-                      <div className="sp-class-score">
+                      <div className="top-class-score">
                         {t.percentage}%
                       </div>
                     </div>

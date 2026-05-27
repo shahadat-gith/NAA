@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import { developerInfo } from "./data";
 import "./Developer.css";
 import Skills from "./Skills";
@@ -8,14 +8,13 @@ const { personalInfo, socialLinks, education, skills } = developerInfo;
 /* ── Section wrapper ── */
 const Section = ({ eyebrow, title, children, id }) => (
   <section className="dev-section" id={id}>
-    <div className="dev-section__header">
-      <span className="eyebrow">{eyebrow}</span>
-      <h2 className="dev-section__title">{title}</h2>
+    <div className="dev-section-header">
+      <span className="dev-eyebrow">{eyebrow}</span>
+      <h2 className="dev-section-title">{title}</h2>
     </div>
     {children}
   </section>
 );
-
 
 /* ─────────────────────────────────────────── */
 const Developer = () => {
@@ -23,31 +22,31 @@ const Developer = () => {
     <div className="dev-page">
       {/* ── HERO ── */}
       <header className="dev-hero">
-        <div className="dev-hero__bg-line" aria-hidden="true" />
+        <div className="dev-hero-bg-line" aria-hidden="true" />
 
-        <div className="container">
-          <div className="dev-hero__inner">
-            <div className="dev-hero__avatar-wrap">
+        <div className="dev-container">
+          <div className="dev-hero-inner">
+            <div className="dev-hero-avatar-wrap">
               <img
                 src={personalInfo.image}
                 alt={personalInfo.name}
-                className="dev-hero__avatar"
+                className="dev-hero-avatar"
               />
-              <span className="dev-hero__avatar-ring" aria-hidden="true" />
+              <span className="dev-hero-avatar-ring" aria-hidden="true" />
             </div>
 
-            <div className="dev-hero__text">
-              <span className="eyebrow">Full Stack Web Developer</span>
-              <h1 className="dev-hero__name">{personalInfo.name}</h1>
+            <div className="dev-hero-text">
+              <span className="dev-eyebrow">Full Stack Web Developer</span>
+              <h1 className="dev-hero-name">{personalInfo.name}</h1>
 
-              <div className="dev-hero__socials">
-                {socialLinks.map(({label,href, icon }) => (
+              <div className="dev-hero-socials">
+                {socialLinks.map(({ label, href, icon }) => (
                   <a
                     key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="social-btn"
+                    className="dev-social-btn"
                     aria-label={label}
                     title={label}
                   >
@@ -60,45 +59,43 @@ const Developer = () => {
         </div>
       </header>
 
-      {/* ── MAIN ── */}
-      <main className="container dev-main">
+      {/* ── MAIN CONTENT ── */}
+      <main className="dev-container dev-main">
         {/* EDUCATION */}
         <Section eyebrow="Academic Background" title="Education" id="education">
-          <div className="timeline">
+          <div className="dev-timeline">
             {education.map((e, i) => (
-              <div className="timeline__item" key={i}>
-                <div className="timeline__marker" aria-hidden="true" />
-                <div className="timeline__card">
-                  <div className="timeline__card-top">
+              <div className="dev-timeline-item" key={i}>
+                <div className="dev-timeline-marker" aria-hidden="true" />
+                <div className="dev-timeline-card">
+                  <div className="dev-timeline-card-top">
                     <div>
-                      <h3 className="timeline__institution">{e.institution}</h3>
-                      <p className="timeline__location">
-                        <i
-                          className="fas fa-map-marker-alt"
-                          aria-hidden="true"
-                        />{" "}
+                      <h3 className="dev-timeline-institution">{e.institution}</h3>
+                      <p className="dev-timeline-location">
+                        <i className="fas fa-map-marker-alt" aria-hidden="true" />{" "}
                         {e.location}
                       </p>
                     </div>
-                    <span className="timeline__period">
+                    <span className="dev-timeline-period">
                       {e.startDate} – {e.endDate}
                     </span>
                   </div>
-                  <p className="timeline__degree">
+                  <p className="dev-timeline-degree">
                     {e.degree || e.qualification}
                   </p>
+                  
                   {e.cgpa && (
-                    <div className="timeline__stat">
-                      <span className="timeline__stat-label">CGPA</span>
-                      <span className="timeline__stat-value">
+                    <div className="dev-timeline-stat">
+                      <span className="dev-timeline-stat-label">CGPA</span>
+                      <span className="dev-timeline-stat-value">
                         {e.cgpa} / 10
                       </span>
                     </div>
                   )}
                   {e.percentage && (
-                    <div className="timeline__stat">
-                      <span className="timeline__stat-label">Score</span>
-                      <span className="timeline__stat-value">
+                    <div className="dev-timeline-stat">
+                      <span className="dev-timeline-stat-label">Score</span>
+                      <span className="dev-timeline-stat-value">
                         {e.percentage}%
                       </span>
                     </div>

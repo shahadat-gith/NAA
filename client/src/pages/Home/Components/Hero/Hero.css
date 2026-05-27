@@ -18,7 +18,7 @@
 /* Slider */
 .slider {
   display: flex;
-  transition: transform 0.5s ease-in-out;
+  transition: transform var(--transition-slow);
 }
 
 /* Slide */
@@ -46,14 +46,14 @@
 .dot {
   width: 12px;
   height: 12px;
-  background: #e94560;
-  border-radius: 50%;
+  background: var(--accent-color);
+  border-radius: var(--radius-full);
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background var(--transition-slow);
 }
 
 .dot.active {
-  background: #012512;
+  background: var(--text-main); /* Fallback option to match high-contrast layout focus rules safely */
 }
 
 @media (max-width: 768px) {
@@ -84,7 +84,7 @@
    =============================== */
 .admission-notice {
   width: 100%;
-  background: #e94560;
+  background: var(--accent-color);
   overflow: hidden;
   cursor: pointer;
   white-space: nowrap;
@@ -96,7 +96,7 @@
 }
 
 .admission-text {
-  color: #ffffff;
+  color: var(--text-white);
   font-weight: 600;
   font-size: 0.95rem;
   padding: 0.6rem 2rem;
@@ -116,7 +116,7 @@
 }
 
 .admission-cta {
-  color: #3dff8e;
+  color: var(--color-success);
   font-weight: 700;
   text-decoration: underline;
 }

@@ -62,25 +62,28 @@ const AdmitCard = () => {
   };
 
   return (
-    <div className="admit-page search-landing-context">
-      <div className="admit-search-container">
+    <div className="adtc-page adtc-search-landing-context">
+      <div className="adtc-search-container">
         
+        {/* Reusable Core Search Component Module */}
         <Search 
           title="Download Admit Card"
           onSearch={handleAdmitCardSearch}
           searching={loading}
         />
 
+        {/* System Error Response Banner */}
         {error && (
-          <div className="admit-inline-msg error">
-            <TbAlertTriangle className="msg-icon" />
+          <div className="adtc-inline-msg adtc-alert-danger">
+            <TbAlertTriangle className="adtc-msg-icon" />
             <p>{error}</p>
           </div>
         )}
 
+        {/* System Informational/Warning Response Banner */}
         {infoMessage && (
-          <div className="admit-inline-msg warning">
-            <TbAlertTriangle className="msg-icon" />
+          <div className="adtc-inline-msg adtc-alert-warning">
+            <TbAlertTriangle className="adtc-msg-icon" />
             <p>{infoMessage}</p>
           </div>
         )}

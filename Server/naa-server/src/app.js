@@ -62,13 +62,12 @@ app.use("/api/payments", paymentRouter);
 
 app.get("/api/home-data", async (req, res, next) => {
   try {
-    const [heroImages, authorities, teachers, galleryImages, serviceSettings, notices] = await Promise.all([
+    const [heroImages, authorities, teachers, serviceSettings, notices] = await Promise.all([
       HeroImage.find({}),
       authorityModel.find({ role: { $in: ["Principal", "Managing Director"] } }),
       teacherModel.find({}).sort({ experience: -1 }),
-      Image.find({}),
       ServiceSettings.findOne({}),
-      Notice.find({}).sort({ createdAt: -1 })
+      Notice.find({}).sort({ createdAt: -1 }).limit(5)
     ]);
 
     res.status(200).json({
@@ -77,7 +76,6 @@ app.get("/api/home-data", async (req, res, next) => {
         heroImages,
         authorities,
         teachers,
-        galleryImages,
         serviceSettings,
         notices,
       },

@@ -1,363 +1,285 @@
-/* ================= Admission Page ================= */
+/* ==========================================================================
+   ADMISSION COMPONENT CORE SHELL (PREFIX: adm-)
+   ========================================================================== */
 
-.admission-page {
+.adm-admission-page {
+  width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 3rem 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-/* ================= Choice Modal ================= */
-
-.admission-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
+  padding: clamp(2rem, 5vw, 4rem) 1.5rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
+  transition: background var(--transition-normal);
 }
 
-.admission-modal {
-  background: white;
-  border-radius: 16px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 440px;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.4s ease;
-}
-
-.admission-modal h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-}
-
-.admission-modal p {
-  font-size: 0.95rem;
-  color: #7f8c8d;
-  margin-bottom: 2rem;
-}
-
-/* ================= Modal Buttons ================= */
-
-.admission-modal-actions {
-  display: flex;
-  gap: 1rem;
-  flex-direction: column;
-}
-
-.admission-btn {
-  width: 100%;
-  padding: 1rem;
-  border-radius: 10px;
-  border: none;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.admission-btn.primary {
-  background: linear-gradient(135deg, #e94560 0%, #d32f4a 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
-}
-
-.admission-btn.primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.6);
-}
-
-.admission-btn.secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-}
-
-.admission-btn.secondary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
-}
-
-/* ================= Form Container ================= */
-
-.admission-form-container {
+.adm-form-container {
   width: 100%;
   max-width: 1100px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 20px;
-  padding: 3rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  animation: fadeInUp 0.5s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: clamp(1.5rem, 4vw, 3rem);
 }
 
-.admission-form-container h2 {
-  font-size: 2rem;
+/* ─── Heading Titles ─── */
+.adm-page-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 2.5rem;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border-light);
+}
+
+.adm-address-title {
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
-  text-align: center;
+  color: var(--text-main);
+  margin: 3rem 0 1.5rem 0;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-light);
 }
 
-.admission-form-container h2::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(90deg, #e94560, #d32f4a);
-  margin: 1rem auto 2.5rem;
-  border-radius: 2px;
-}
+/* ==========================================================================
+   FLEXIBLE RESPONSIVE MATRIX FORM GRIDS
+   ========================================================================== */
 
-/* ================= Form Fields ================= */
-
-.admission-form {
-  width: 100%;
-}
-
-.form-grid,
-.address-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.form-field {
+.adm-form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
-.form-field label {
-  font-size: 0.9rem;
+/* Core Student Parameters Grid Context */
+.adm-form-grid,
+.adm-address-grid {
+  display: grid;
+  /* Desktop Layout Default: Exactly 3 fields distributed per row layer */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 1.25rem;
+}
+
+.adm-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.adm-form-field label {
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #34495e;
-  margin-bottom: 0.25rem;
-  display: flex;
-  align-items: center;
+  color: var(--text-secondary);
 }
 
-.form-field input,
-.form-field select {
+.adm-form-field input,
+.adm-form-field select {
   width: 100%;
-  padding: 0.85rem 1rem;
+  padding: 12px 14px;
   font-size: 0.95rem;
-  border: 2px solid #e0e6ed;
-  border-radius: 10px;
-  background: #f8f9fa;
-  transition: all 0.3s ease;
+  color: var(--text-main);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
   outline: none;
-  font-family: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
 }
 
-.form-field input:focus,
-.form-field select:focus {
-  border-color: #e94560;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1);
+.adm-form-field input:focus,
+.adm-form-field select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
 }
 
-.form-field input::placeholder {
-  color: #95a5a6;
-  font-size: 0.9rem;
-}
-
-.form-field select {
+/* Native Custom Dropdown Styling */
+.adm-form-field select {
   cursor: pointer;
-  color: #2c3e50;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
-.form-field select option {
-  padding: 0.5rem;
+.adm-form-field select:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
 }
 
-/* ================= Address Section ================= */
+/* ==========================================================================
+   PRIMARY INTERACTIVE INTERFACE BUTTON
+   ========================================================================== */
 
-.address-title {
-  margin-top: 2.5rem;
-  margin-bottom: 1.5rem;
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2c3e50;
+.adm-submit-btn {
+  width: 100%;
+  max-width: 300px;
+  margin: 3rem auto 0 auto;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-white);
+  background: var(--accent-color);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
 }
 
-.address-title::before {
-  content: "";
-  display: inline-block;
-  width: 4px;
-  height: 28px;
-  background: linear-gradient(180deg, #e94560, #d32f4a);
-  border-radius: 2px;
+.adm-submit-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-/* ================= Submit Button ================= */
-
-.admission-submit-btn {
-  width: 100%;
-  margin-top: 2rem;
-  padding: 1.1rem 2rem;
-  background: linear-gradient(135deg, #e94560 0%, #d32f4a 100%);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
-}
-
-.admission-submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(233, 69, 96, 0.6);
-}
-
-.admission-submit-btn:disabled {
-  opacity: 0.6;
+.adm-submit-btn:disabled {
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
-/* ================= Success Modal ================= */
+/* ==========================================================================
+   SUCCESS REGISTRATION SUMMARY MODAL DIALOG
+   ========================================================================== */
 
-.admission-modal.success {
-  max-width: 500px;
-}
-
-.registration-box {
-  margin: 1.5rem 0;
+.adm-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--backdrop-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border: 2px dashed #e94560;
-  border-radius: 12px;
-  text-align: center;
+  animation: admFadeIn var(--transition-fast) ease-out;
 }
 
-.registration-box strong {
-  display: block;
+.adm-success-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  animation: admScaleUp var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.adm-success-card h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.adm-modal-text {
+  font-size: 0.975rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.adm-modal-text strong {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* Shared Modal Action Layout Utility */
+.adm-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.adm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
   font-size: 0.95rem;
-  color: #7f8c8d;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
-.registration-box span {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 1.8rem;
-  color: #e94560;
-  font-weight: 800;
-  letter-spacing: 2px;
-  font-family: monospace;
+.adm-btn-primary {
+  color: var(--text-white);
+  background: var(--accent-color);
+  box-shadow: var(--shadow-accent);
+  width: 120px;
 }
 
-/* ================= Animations ================= */
+.adm-btn-primary:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
 
-@keyframes fadeIn {
+/* ==========================================================================
+   ANIMATIONS KEYFRAMES DECLARATIONS
+   ========================================================================== */
+
+@keyframes admFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes admScaleUp {
   from {
     opacity: 0;
+    transform: scale(0.95) translateY(10px);
   }
   to {
     opacity: 1;
+    transform: scale(1) translateY(0);
   }
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM MEDIA QUERY CONSTRAINTS
+   ========================================================================== */
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ================= Responsive Design ================= */
-
-@media (max-width: 768px) {
-  .admission-page {
-    padding: 2rem 1rem;
-  }
-
-  .admission-form-container {
-    padding: 2rem 1.5rem;
-  }
-
-  .admission-form-container h2 {
-    font-size: 1.6rem;
-  }
-
-  .form-grid,
-  .address-grid {
-    grid-template-columns: 1fr;
+/* Tablet Optimization Layout Mode */
+@media (max-width: 900px) {
+  .adm-form-grid,
+  .adm-address-grid {
+    /* Shifts grid exactly to 2 layout configurations per line row */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
-
-  .address-title {
-    font-size: 1.2rem;
-  }
-
-  .admission-modal {
-    padding: 2rem 1.5rem;
-    max-width: 90%;
+  
+  .adm-submit-btn {
+    max-width: 100%; /* Spans to balance full width flow rows on compact states */
   }
 }
 
-@media (max-width: 480px) {
-  .admission-form-container {
-    padding: 1.5rem 1rem;
+/* Mobile Viewport Stack Mode */
+@media (max-width: 600px) {
+  .adm-form-container {
+    padding: 1.5rem 1.25rem;
   }
 
-  .admission-form-container h2 {
-    font-size: 1.4rem;
+  .adm-form-grid,
+  .adm-address-grid {
+    /* Collapses to 1 clean field element block stacked per row line */
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  .form-field label {
-    font-size: 0.85rem;
+  .adm-page-title {
+    margin-bottom: 1.75rem;
   }
 
-  .form-field input,
-  .form-field select {
-    padding: 0.75rem 0.85rem;
-    font-size: 0.9rem;
-  }
-
-  .admission-submit-btn {
-    padding: 1rem;
-    font-size: 1rem;
-  }
-
-  .registration-box span {
-    font-size: 1.5rem;
+  .adm-address-title {
+    margin: 2.25rem 0 1.25rem 0;
   }
 }

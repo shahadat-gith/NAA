@@ -3,17 +3,17 @@ import "./Academics.css";
 import Header from "../../components/Header/Header";
 import { AppContext } from '../../context/AppContext';
 import axios from "axios";
-import user from '/user.jpg'
 import { Helmet } from "react-helmet-async";
+import Loader from "../../components/Loader/Loader";
 
 const Academics = () => {
   const { backendUrl } = useContext(AppContext);
   const [achievers, setAchievers] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchAchievers = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await axios.get(`${backendUrl}/api/achievers/get-achievers`);
       if (response.data.success) {
@@ -22,19 +22,18 @@ const Academics = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchAchievers();
+    if (backendUrl) {
+      fetchAchievers();
+    }
   }, [backendUrl]);
 
   const openImagePopup = (imageUrl) => {
-    if (!imageUrl) {
-      return
-    }
-
+    if (!imageUrl) return;
     setSelectedImage(imageUrl);
     document.body.style.overflow = 'hidden';
   };
@@ -45,7 +44,7 @@ const Academics = () => {
   };
 
   return (
-    <div className="academics-page">
+    <div className="acd-academics-page loader-parent">
       <Helmet>
         <title>Academics | Nashib Ali Academy</title>
         <meta
@@ -54,20 +53,21 @@ const Academics = () => {
         />
       </Helmet>
 
-      <section className="academics-header">
+      <section className="acd-header-section">
         <Header
           title={`Academics ${new Date().getFullYear()}`}
           tagline={"Empowering Excellence in Education"}
         />
       </section>
-      <section className="academics-section achievers-section">
-        <h2 className="section-title">Our Top Achievers</h2>
-        <div className="achievers-container">
+
+      <section className="acd-section acd-achievers-section">
+        <h2 className="acd-section-title">Our Top Achievers</h2>
+        <div className="acd-achievers-container">
           {loading ? (
-            <p className="no-achievers">Loading data...</p>
+            <Loader text="Loading achievers data..." overlay={false} />
           ) : achievers?.length > 0 ? (
-            <div className="achievers-table-wrapper">
-              <table className="achievers-table">
+            <div className="acd-table-wrapper">
+              <table className="acd-table">
                 <thead>
                   <tr>
                     <th>Image</th>
@@ -80,23 +80,22 @@ const Academics = () => {
                 </thead>
                 <tbody>
                   {achievers.map((achiever, index) => (
-                    <tr key={index} className="achiever-row" onClick={() => openImagePopup(achiever.image)}>
-                      <td className="image-cell">
-                        {achiever.image ? (
-                          <img
-                            src={achiever.image}
-                            alt={achiever.name}
-                            className="achiever-image"
-                          />
-                        ) : (
-                          <img
-                            src={user}
-                            className="achiever-image"
-                          />
-                        )}
+                    <tr 
+                      key={index} 
+                      className="acd-row" 
+                      onClick={() => openImagePopup(achiever.image)}
+                    >
+                      <td className="acd-image-cell">
+                        <img
+                          src={achiever.image || "/user.jpg"}
+                          alt={achiever.name || "Achiever"}
+                          className="acd-achiever-img"
+                        />
                       </td>
-                      <td>{achiever.name}</td>
-                      <td>{`Scored ${achiever.percentage}% in class ${achiever.className} in ${achiever.year}`}</td>
+                      <td className="acd-name-cell">{achiever.name}</td>
+                      <td className="acd-achievement-cell">
+                        {`Scored ${achiever.percentage}% in class ${achiever.className} in ${achiever.year}`}
+                      </td>
                       <td>{achiever.father || 'N/A'}</td>
                       <td>{achiever.mother || 'N/A'}</td>
                       <td>{achiever.village || 'N/A'}</td>
@@ -106,34 +105,35 @@ const Academics = () => {
               </table>
             </div>
           ) : (
-            <p className="no-achievers">No achievers available.</p>
+            <p className="acd-no-data-msg">No achievers available.</p>
           )}
         </div>
       </section>
 
-
-      <section className="resources-section">
-        <h2 className="section-title">Online Learning Resources</h2>
-        <div className="resources-container">
-          <div className="resource-subsection ebooks">
-            <h3 className="subsection-title">E-Books</h3>
-            <p className="subsection-description">Access a rich collection of e-books for all subjects.</p>
-            <a href="https://site.sebaonline.org/textbook" target="_blank" className="premium-link-btn">
+      <section className="acd-section acd-resources-section">
+        <h2 className="acd-section-title">Online Learning Resources</h2>
+        <div className="acd-resources-container">
+          <div className="acd-resource-card acd-ebooks-card">
+            <h3 className="acd-card-title">E-Books</h3>
+            <p className="acd-card-description">Access a rich collection of e-books for all subjects.</p>
+            <a href="https://site.sebaonline.org/textbook" target="_blank" rel="noopener noreferrer" className="acd-premium-btn">
               Explore E-Books
             </a>
           </div>
-          <div className="resource-subsection study-materials">
-            <h3 className="subsection-title">Study Materials</h3>
-            <p className="subsection-description">Download past year questions (PYQs), notes, and more.</p>
-            <div className="study-materials-links">
-              <a href="/pyqs" className="premium-link-btn">PYQs</a>
-              <a href="/notes" className="premium-link-btn">Notes</a>
+
+          <div className="acd-resource-card acd-materials-card">
+            <h3 className="acd-card-title">Study Materials</h3>
+            <p className="acd-card-description">Download past year questions (PYQs), notes, and more.</p>
+            <div className="acd-materials-btn-group">
+              <a href="/pyqs" className="acd-premium-btn">PYQs</a>
+              <a href="/notes" className="acd-premium-btn">Notes</a>
             </div>
           </div>
-          <div className="resource-subsection lectures">
-            <h3 className="subsection-title">Online Lectures</h3>
-            <p className="subsection-description">Watch recorded lectures for in-depth learning.</p>
-            <a href="https://www.sebaonline.info/studentcorner/main.php" className="premium-link-btn" target="_blank">
+
+          <div className="acd-resource-card acd-lectures-card">
+            <h3 className="acd-card-title">Online Lectures</h3>
+            <p className="acd-card-description">Watch recorded lectures for in-depth learning.</p>
+            <a href="https://www.sebaonline.info/studentcorner/main.php" className="acd-premium-btn" target="_blank" rel="noopener noreferrer">
               Access Lectures
             </a>
           </div>
@@ -142,12 +142,12 @@ const Academics = () => {
 
       {/* Image Popup Modal */}
       {selectedImage && (
-        <div className="image-popup-modal" onClick={closeImagePopup}>
-          <div className="image-popup-content" onClick={(e) => e.stopPropagation()}>
-            <button className="image-popup-close" onClick={closeImagePopup} title="Close">
+        <div className="acd-modal-overlay" onClick={closeImagePopup}>
+          <div className="acd-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="acd-modal-close-btn" onClick={closeImagePopup} title="Close">
               <i className="fas fa-times"></i>
             </button>
-            <img src={selectedImage} alt="Large Achiever Image" className="image-popup-img" />
+            <img src={selectedImage} alt="Enlarged Achiever Visual" className="acd-modal-img" />
           </div>
         </div>
       )}

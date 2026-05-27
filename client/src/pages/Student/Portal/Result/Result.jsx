@@ -16,16 +16,20 @@ const Result = () => {
   const navigate = useNavigate();
   const { backendUrl } = useContext(AppContext);
 
-
   const handleResultSearch = async (registrationNo) => {
     setError("");
     setInfoMessage("");
     setResult(null);
     setLoading(true);
 
+  // Clear messages from view when user hits search
+  const messagesWrapper = document.querySelector('.res-messages-container');
+  if (messagesWrapper) messagesWrapper.removeAttribute('data-active');
+
     try {
       const res = await axios.post(
-        `${backendUrl}/api/results/student/fetch`,{registrationNo});
+        `${backendUrl}/api/results/student/fetch`, { registrationNo }
+      );
 
       if (!res.data.success) {
         setError(res.data.message || "Result not found");
@@ -37,7 +41,7 @@ const Result = () => {
       /* 🔒 VISIBILITY CHECK */
       if (!resultData.canSee) {
         setInfoMessage(
-          "Please pay fees to see the result. Contact principal sir"
+          "Please complete your outstanding dues to unlock the report card layout. Kindly contact the Principal's office."
         );
         return;
       }
@@ -47,7 +51,7 @@ const Result = () => {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "An error occurred while fetching the result"
+          "An unexpected network error occurred while fetching your academic record."
       );
     } finally {
       setLoading(false);
@@ -67,18 +71,35 @@ const Result = () => {
   /* ================= UI RENDERING ================= */
 
   return (
-    <div className="result-page">
-      {/* Reusable Search Component replaces the entire old manual form layout */}
-      <Search 
-        title="Check Result" 
-        onSearch={handleResultSearch} 
-        searching={loading} 
-      />
+    <div className="res-page">
+      <div className="res-container">
+        
+        {/* Reusable Search Component Module */}
+        <Search 
+          title="Check Result" 
+          onSearch={handleResultSearch} 
+          searching={loading} 
+        />
 
-      {/* System Response Messages Container */}
-      <div className="result-messages-container">
-        {error && <div className="error-message">{error}</div>}
-        {infoMessage && <div className="info-message">{infoMessage}</div>}
+        {/* System Response Status Message Area */}
+        {(error || infoMessage) && (
+          <div className="res-messages-container" data-active="true">
+            {error && (
+              <div className="res-alert res-alert-danger">
+                <i className="fas fa-exclamation-triangle"></i>
+                <p>{error}</p>
+              </div>
+            )}
+            
+            {infoMessage && (
+              <div className="res-alert res-alert-info">
+                <i className="fas fa-lock"></i>
+                <p>{infoMessage}</p>
+              </div>
+            )}
+          </div>
+        )}
+
       </div>
     </div>
   );

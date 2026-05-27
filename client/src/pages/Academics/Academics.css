@@ -1,353 +1,295 @@
-/* General Page Styles */
-.academics-page {
-  background: #f9fafb;
-  color: #1f2937;
+/* ─── Page Container ─────────────────────────────────────────── */
+.acd-academics-page {
+  width: 100%;
   min-height: 100vh;
+  background: var(--bg-primary);
+  transition: background var(--transition-normal);
 }
 
-/* Achievers Section */
-.academics-section.achievers-section {
-  padding: 2rem 1rem;
-}
-
-.section-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  text-align: center;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.025em;
-}
-
-.achievers-container {
-  max-width: 1200px;
+/* ─── Structural Layout Sections ───────────────────────────────── */
+.acd-section {
+  padding: clamp(3rem, 8vw, 5rem) 2rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
-.achievers-table-wrapper {
-  overflow-x: auto;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  padding: 1rem;
+.acd-section-title {
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-main);
+  text-align: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.achievers-table {
+/* ─── Achievers Table Module ──────────────────────────────────── */
+.acd-achievers-container {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
 }
 
-.achievers-table th,
-.achievers-table td {
-  padding: 0.75rem 1rem;
+.acd-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.acd-table {
+  width: 100%;
+  border-collapse: collapse;
   text-align: left;
   font-size: 0.95rem;
-  color: #1f2937;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-.achievers-table th {
-  background: #e6fffa;
-  color: #2dd4bf;
+.acd-table th {
+  background: var(--bg-secondary);
+  color: var(--text-main);
   font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 0.05em;
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--border-light);
+  white-space: nowrap;
 }
 
-.achievers-table tbody tr:last-child td {
-  border-bottom: none;
+.acd-table td {
+  padding: 16px 20px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
 }
 
-.achiever-row {
-  transition: background 0.2s ease;
+.acd-row {
   cursor: pointer;
+  transition: background var(--transition-fast);
 }
 
-.achiever-row:hover {
-  background: #f1f5f9;
+.acd-row:hover {
+  background: var(--table-row-hover);
 }
 
-.image-cell {
+/* Table Cells specialized layouts */
+.acd-image-cell {
   width: 80px;
 }
 
-.achiever-image {
-  width: 40px;
-  height: 40px;
+.acd-achiever-img {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-full);
   object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid #e5e7eb;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.achiever-image:hover {
-  transform: scale(1.1);
-}
-
-.no-image {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e5e7eb;
-  color: #6b7280;
-  font-size: 0.75rem;
-  border-radius: 4px;
-  text-align: center;
-  border: 1px solid #d1d5db;
-}
-
-.no-achievers {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1rem;
-  color: #6b7280;
-  background: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-/* Resources Section */
-.resources-section {
-  padding: 2rem 1rem;
-  background: #ffffff;
-}
-
-.resources-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.resource-subsection {
-  background: #f9fafb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.resource-subsection:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.subsection-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.75rem;
-}
-
-.subsection-description {
-  font-size: 1rem;
-  color: #4b5563;
-  margin-bottom: 1rem;
-  line-height: 1.5;
-}
-
-.premium-link-btn {
-  display: inline-block;
-  background: #e94560;
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-decoration: none;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.premium-link-btn:hover {
-  background: #e87191;
-  transform: translateY(-2px);
-}
-
-.study-materials-links {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-/* Image Popup Modal */
-.image-popup-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease-out;
-}
-
-.image-popup-content {
-  position: relative;
-  max-width: 400px;
-  max-height: auto;
-  background: #ffffff;
-  border: 5px solid #2dd4bf;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  animation: scaleIn 0.3s ease-out;
-}
-
-.image-popup-img {
-  max-width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
+  border: 2px solid var(--border-light);
+  background: var(--bg-secondary);
   display: block;
 }
 
-.image-popup-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: #ef4444;
-  color: #ffffff;
+.acd-name-cell {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.acd-achievement-cell {
+  font-weight: 500;
+  color: var(--accent-color);
+}
+
+.acd-no-data-msg {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* ─── Resources Grid System ───────────────────────────────────── */
+.acd-resources-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  width: 100%;
+}
+
+.acd-resource-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.acd-resource-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.acd-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.75rem;
+}
+
+.acd-card-description {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+/* Buttons / Interactive Links */
+.acd-premium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-white);
+  background: var(--accent-color);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
   border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.acd-premium-btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.acd-materials-btn-group {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.acd-materials-btn-group .acd-premium-btn {
+  flex: 1;
+  max-width: 120px;
+}
+
+/* ─── Image Popup Modal View ──────────────────────────────────── */
+.acd-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--backdrop-dark);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 20px;
+  animation: acdFadeIn var(--transition-fast) ease-out;
+}
+
+.acd-modal-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 85vh;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: acdScaleUp var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.acd-modal-img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  border: 4px solid var(--bg-card);
+}
+
+.acd-modal-close-btn {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  border: none;
+  color: var(--text-main);
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  z-index: 10;
 }
 
-.image-popup-close:hover {
-  background: #dc2626;
-  transform: scale(1.1);
+.acd-modal-close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  color: var(--accent-color);
 }
 
-.image-popup-close i {
-  font-size: 1.2rem;
-}
-
-/* Animations */
-@keyframes fadeIn {
+/* ─── Keyframes Animations ────────────────────────────────────── */
+@keyframes acdFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+@keyframes acdScaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-/* Responsive Design */
+/* ─── Responsive Adjustments ────────────────────────────────── */
 @media (max-width: 768px) {
-  .academics-header,
-  .academics-section.achievers-section,
-  .resources-section {
-    padding: 1.5rem 0.75rem;
-  }
-
-  .section-title {
-    font-size: 1.75rem;
-  }
-
-  .achievers-table-wrapper {
-    padding: 0.5rem;
-  }
-
-  .achievers-table th,
-  .achievers-table td {
-    padding: 0.5rem;
+  .acd-table th, 
+  .acd-table td {
+    padding: 12px 14px;
     font-size: 0.9rem;
   }
-
-  .achievers-table th {
-    font-size: 0.8rem;
+  
+  .acd-image-cell {
+    width: 65px;
   }
 
-  .image-cell {
-    width: 60px;
+  .acd-achiever-img {
+    width: 42px;
+    height: 42px;
   }
-
-  .achiever-image,
-  .no-image {
-    width: 32px;
-    height: 32px;
-    font-size: 0.7rem;
-  }
-
-  .resources-container {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .subsection-title {
-    font-size: 1.3rem;
-  }
-
-  .subsection-description {
-    font-size: 0.95rem;
-  }
-
-  .premium-link-btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-  }
-
-  .study-materials-links {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .image-popup-content {
-    max-width: 90vw;
-    max-height: 85vh;
+  
+  .acd-modal-close-btn {
+    top: 10px;
+    right: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .section-title {
-    font-size: 1.5rem;
+  .acd-section {
+    padding: 2.5rem 1rem;
   }
 
-  .achievers-table th,
-  .achievers-table td {
-    font-size: 0.85rem;
+  .acd-resources-container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
-  .achievers-table th {
-    font-size: 0.75rem;
-  }
-
-  .achiever-image,
-  .no-image {
-    width: 28px;
-    height: 28px;
-  }
-
-  .subsection-title {
-    font-size: 1.2rem;
-  }
-
-  .subsection-description {
-    font-size: 0.9rem;
-  }
-
-  .image-popup-close {
-    width: 28px;
-    height: 28px;
-  }
-
-  .image-popup-close i {
-    font-size: 1rem;
+  .acd-resource-card {
+    padding: 2rem 1.5rem;
   }
 }

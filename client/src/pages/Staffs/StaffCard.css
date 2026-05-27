@@ -1,0 +1,154 @@
+/* ─── Teacher Card Container ─────────────────────────────────── */
+.stf-teacher-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  width: 100%;
+  max-width: 320px;
+}
+
+.stf-teacher-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-border);
+}
+
+/* ─── Media Profile Area ─────────────────────────────────────── */
+.stf-card-media {
+  width: 100%;
+  height: 240px;
+  background: var(--bg-secondary);
+  overflow: hidden;
+  position: relative;
+}
+
+.stf-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-normal);
+}
+
+.stf-teacher-card:hover .stf-card-image {
+  transform: scale(1.03);
+}
+
+/* ─── Card Typography & Details ──────────────────────────────── */
+.stf-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  flex-grow: 1;
+}
+
+.stf-card-top {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stf-card-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.stf-card-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.stf-divider {
+  margin: 0 4px;
+  color: var(--text-muted);
+}
+
+.stf-degree {
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* ─── Specialized Subject Field ─────────────────────────────── */
+.stf-card-subjects {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stf-subject-label {
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stf-subject-value {
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ─── Meta Badges & Chips ────────────────────────────────────── */
+.stf-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  flex-wrap: wrap;
+}
+
+.stf-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-light);
+}
+
+.stf-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Handle system specific contextual flag indicators cleanly */
+.stf-status-badge.status-onleave {
+  background: var(--bg-warning-light, #fef3c7);
+  color: var(--color-warning, #d97706);
+}
+
+.stf-status-badge.status-inactive {
+  background: var(--bg-danger-light, #fee2e2);
+  color: var(--color-danger, #dc2626);
+}
+
+/* ─── Responsive Adjustments ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .stf-teacher-card {
+    max-width: 100%;
+  }
+  
+  .stf-card-media {
+    height: 220px;
+  }
+}

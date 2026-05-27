@@ -1,18 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Dancing+Script:wght@700&display=swap');
 
-.id-wrapper {
-  background: linear-gradient(135deg, #c9d6e8 0%, #e8edf5 50%, #d0daea 100%);
+/* ==========================================================================
+   PARENT CONTROLLER WRAPPER PAGE STYLES (UPDATED WITH SYSTEM TOKENS)
+   ========================================================================== */
+
+.idc-dl-wrapper {
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 24px 16px 40px;
+  padding: clamp(1.5rem, 5vw, 2.5rem) 16px 40px;
   gap: 24px;
-  min-height: 70vh;
   box-sizing: border-box;
+  width: 100%;
+  transition: background var(--transition-normal);
 }
 
-/* ── UI Panel Controls ── */
-.id-topbar {
+.idc-dl-topbar {
   width: 100%;
   max-width: 1100px;
   display: flex;
@@ -22,48 +26,76 @@
   box-sizing: border-box;
 }
 
-.id-topbar button {
+.idc-dl-topbar button,
+.idc-dl-btn-back {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 18px;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-fast) ease;
 }
 
-.id-btn-back { background: #1a2d6b; }
-.id-btn-back:hover { background: #0f1f52; }
-.id-btn-download {
-  background: #2563c0;
-  color: #ffffff;
-  text-decoration: none; /* Prevents anchor line underlines */
-  display: inline-flex;  /* Keeps the download icon and text row linear */
+.idc-dl-btn-back:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-border);
+  transform: translateX(-2px);
+}
+
+.idc-dl-btn-download {
+  background: var(--accent-color);
+  color: var(--text-white);
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  border-radius: 8px;
-  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  padding: 10px 20px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
-  transition: background 0.2s;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast) ease, transform var(--transition-fast) ease;
 }
 
-.id-btn-download:hover {
-  background: #1d4ed8;
-  color: #ffffff;
+.idc-dl-btn-download:hover {
+  background: var(--accent-hover);
+  color: var(--text-white);
+  transform: translateY(-1px);
 }
-.id-scale-wrapper {
+
+.idc-dl-scale-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
 }
+
+.idc-dl-error-msg {
+  text-align: center;
+  margin-top: 60px;
+  color: var(--accent-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: var(--bg-card);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   PRESERVED INTENT: CORE PHYSICAL CARD METRICS (DO NOT MODIFY)
+   ========================================================================== */
 
 .id-card-layout-container {
   display: flex;
@@ -74,7 +106,6 @@
   max-width: 1100px;
 }
 
-/* ── Premium Card Framework ── */
 .id-card {
   width: 530px;
   height: 335px;
@@ -105,9 +136,7 @@
   letter-spacing: 1px;
 }
 
-/* ══════════════════════════════════════════════
-   FRONT CARD DESIGN
-   ══════════════════════════════════════════════ */
+/* ─── Front Design Specifications ─── */
 .id-card-header {
   display: flex;
   flex-direction: column;
@@ -186,7 +215,6 @@
 .id-detail-colon { color: #a0aec0; }
 .id-detail-value { color: #2d3748; font-weight: 600; }
 
-/* Right Profile Column */
 .id-card-body-right {
   display: flex;
   flex-direction: column;
@@ -213,7 +241,6 @@
   object-position: center top;
 }
 
-/* Name Banner Box */
 .id-name-banner {
   background: linear-gradient(90deg, #1e3a8a 0%, #2563c0 50%, #1e3a8a 100%);
   padding: 4.5px 6px;
@@ -234,9 +261,7 @@
   text-overflow: ellipsis;
 }
 
-/* ══════════════════════════════════════════════
-   BACK CARD DESIGN
-   ══════════════════════════════════════════════ */
+/* ─── Back Design Specifications ─── */
 .id-back-header-decoration {
   background: linear-gradient(180deg, #1e3a8a 0%, #1a2d6b 100%);
   padding: 12px 20px 36px;
@@ -390,11 +415,7 @@
   margin-top: 1px;
 }
 
-/* ══════════════════════════════════════════════
-   RESPONSIVE DESIGN SYSTEM (EQUAL SIZING)
-   ══════════════════════════════════════════════ */
-
-/* Tablet & Smaller Screen Adjustments */
+/* ─── Scaled Responsive Grid Viewports ─── */
 @media (max-width: 1120px) {
   .id-card-layout-container {
     flex-direction: column;
@@ -402,186 +423,47 @@
   }
 }
 
-/* Mobile Screens (Under 560px) */
 @media (max-width: 560px) {
   .id-card {
-   max-width: 400px;
-   max-height: 300px;
+    max-width: 400px;
+    max-height: 300px;
   }
-
-  /* FRONT DESIGN ADJUSTMENTS */
-  .id-card-header {
-    padding: 12px 14px 32px; /* Tightened tracking space */
-  }
-
-  .id-card-logo {
-    width: 32px;
-    height: 32px;
-    margin-bottom: 2px;
-  }
-
-  .id-card-title {
-    font-size: 14px;
-  }
-
-  .id-card-tagline {
-    font-size: 6.5px;
-    letter-spacing: 1px;
-    gap: 4px;
-    margin-top: 3px;
-  }
-
-  .id-card-body {
-    padding: 0 16px;
-    gap: 14px;
-    margin-top: -14px; /* Pulls contents upward uniformly */
-  }
-
-  .id-detail-row {
-    grid-template-columns: 75px 10px 1fr;
-    font-size: 9.5px;
-    padding: 3px 0;
-  }
-
-  .id-card-body-right {
-    width: 105px;
-    gap: 4px;
-  }
-
-  .id-photo-frame {
-    width: 64px;
-    height: 78px;
-  }
-
-  .id-name-banner {
-    padding: 3px 4px;
-  }
-
-  .id-name-banner h2 {
-    font-size: 8.5px;
-  }
-
-  /* BACK DESIGN ADJUSTMENTS */
-  .id-back-header-decoration {
-    padding: 10px 16px 24px;
-  }
-
-  .id-back-mini-logo {
-    width: 28px;
-    height: 28px;
-  }
-
-  .id-back-content-stack {
-    padding: 0 16px;
-    gap: 6px;
-    margin-top: -12px;
-  }
-
-  .id-back-section {
-    gap: 4px;
-  }
-
-  .id-tc-list {
-    gap: 2px 10px;
-  }
-
-  .id-tc-list li {
-    font-size: 7px;
-    gap: 4px;
-    line-height: 1.2;
-  }
-
-  .id-bullet-point {
-    width: 3px;
-    height: 3px;
-    margin-top: 2.5px;
-  }
-
-  .id-contact-container {
-    gap: 6px;
-  }
-
-  .id-contact-info-block {
-    gap: 1px 8px;
-  }
-
-  .id-contact-item {
-    font-size: 7px;
-    gap: 3px;
-  }
-
-  .id-contact-icon {
-    font-size: 6.5px;
-  }
-
-  .id-back-qr-code {
-    width: 34px;
-    height: 34px;
-    padding: 2px;
-  }
-
-  .id-back-footer {
-    padding: 4px 16px;
-  }
-
-  .id-footer-note {
-    font-size: 10px;
-  }
-
-  .id-footer-institution {
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
+  .id-card-header { padding: 12px 14px 32px; }
+  .id-card-logo { width: 32px; height: 32px; margin-bottom: 2px; }
+  .id-card-title { font-size: 14px; }
+  .id-card-tagline { font-size: 6.5px; letter-spacing: 1px; gap: 4px; margin-top: 3px; }
+  .id-card-body { padding: 0 16px; gap: 14px; margin-top: -14px; }
+  .id-detail-row { grid-template-columns: 75px 10px 1fr; font-size: 9.5px; padding: 3px 0; }
+  .id-card-body-right { width: 105px; gap: 4px; }
+  .id-photo-frame { width: 64px; height: 78px; }
+  .id-name-banner { padding: 3px 4px; }
+  .id-name-banner h2 { font-size: 8.5px; }
+  .id-back-header-decoration { padding: 10px 16px 24px; }
+  .id-back-mini-logo { width: 28px; height: 28px; }
+  .id-back-content-stack { padding: 0 16px; gap: 6px; margin-top: -12px; }
+  .id-back-section { gap: 4px; }
+  .id-tc-list { gap: 2px 10px; }
+  .id-tc-list li { font-size: 7px; gap: 4px; line-height: 1.2; }
+  .id-bullet-point { width: 3px; height: 3px; margin-top: 2.5px; }
+  .id-contact-container { gap: 6px; }
+  .id-contact-info-block { gap: 1px 8px; }
+  .id-contact-item { font-size: 7px; gap: 3px; }
+  .id-contact-icon { font-size: 6.5px; }
+  .id-back-qr-code { width: 34px; height: 34px; padding: 2px; }
+  .id-back-footer { padding: 4px 16px; }
+  .id-footer-note { font-size: 10px; }
+  .id-footer-institution { font-size: 9px; letter-spacing: 1px; }
 }
 
-/* Ultra Small Screens (Under 380px) */
 @media (max-width: 380px) {
-    .id-card {
-   max-width: 300px;
-   max-height: 230px;
-  }
-
-  .id-card-body {
-    padding: 0 12px;
-    gap: 10px;
-    margin-top: -16px;
-  }
-
-  .id-detail-row {
-    grid-template-columns: 60px 8px 1fr;
-    font-size: 8px;
-    padding: 2px 0;
-  }
-
-  .id-card-body-right {
-    width: 85px;
-  }
-
-  .id-photo-frame {
-    width: 52px;
-    height: 64px;
-  }
-
-  .id-name-banner h2 {
-    font-size: 7.5px;
-  }
-
-  .id-tc-list {
-    grid-template-columns: 1fr;
-    gap: 1px 0;
-  }
-  
-  .id-contact-info-block {
-    grid-template-columns: 1fr;
-    gap: 0px;
-  }
-
-  .id-section-badge {
-    font-size: 6.5px;
-  }
-
-  .id-tc-list li, 
-  .id-contact-item {
-    font-size: 6.5px;
-  }
+  .id-card { max-width: 300px; max-height: 230px; }
+  .id-card-body { padding: 0 12px; gap: 10px; margin-top: -16px; }
+  .id-detail-row { grid-template-columns: 60px 8px 1fr; font-size: 8px; padding: 2px 0; }
+  .id-card-body-right { width: 85px; }
+  .id-photo-frame { width: 52px; height: 64px; }
+  .id-name-banner h2 { font-size: 7.5px; }
+  .id-tc-list { grid-template-columns: 1fr; gap: 1px 0; }
+  .id-contact-info-block { grid-template-columns: 1fr; gap: 0px; }
+  .id-section-badge { font-size: 6.5px; }
+  .id-tc-list li, .id-contact-item { font-size: 6.5px; }
 }

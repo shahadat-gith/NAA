@@ -110,8 +110,8 @@ export const navGroups = [
     title: "Students",
     items: [
       { label: "Toppers list", to: "/student/toppers" },
-      { label: "Portal", to: "/student/portal" },
-      { label: "Profile", to: "/student/profile" },
+      { label: "Student Portal", to: "/student/portal" },
+      { label: "Student Profile", to: "/student/profile" },
     ],
   },
   {

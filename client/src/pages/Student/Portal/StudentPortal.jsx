@@ -1,3 +1,4 @@
+import React from "react";
 import { 
   TbReceipt2, 
   TbIdBadge2, 
@@ -6,94 +7,86 @@ import {
   TbArrowUpRight 
 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
-import "./Portal.css";
+import "./StudentPortal.css";
 import bg_image from "/search.webp";
 import logo from '/logo.png';
 
-const Portal = () => {
+const StudentPortal = () => {
   const navigate = useNavigate();
 
-  // Added distinct path strings matching your routing structure
   const portalOptions = [
     { 
       id: "fees_payment", 
       label: "Fees Payment", 
       path: "/student/portal/fees",
       icon: <TbReceipt2 />, 
-      iconBg: "#fef1f3", 
-      iconColor: "#e94560" 
+      className: "prt-icon-fees"
     },
     { 
       id: "admit_card", 
       label: "Admit Card", 
       path: "/student/portal/admit-card",
       icon: <TbIdBadge2 />, 
-      iconBg: "#eeedfe", 
-      iconColor: "#534AB7" 
+      className: "prt-icon-admit"
     },
     { 
       id: "result_check", 
       label: "Result Check", 
       path: "/student/portal/result",
       icon: <TbChartBar />, 
-      iconBg: "#e1f5ee", 
-      iconColor: "#0F6E56" 
+      className: "prt-icon-result"
     },
     { 
       id: "id_card", 
       label: "ID Card", 
       path: "/student/portal/id-card",
       icon: <TbFingerprint />, 
-      iconBg: "#faeeda", 
-      iconColor: "#BA7517" 
+      className: "prt-icon-id"
     },
   ];
 
   return (
     <div 
-      className="portal-bg-wrapper" 
+      className="prt-bg-wrapper" 
       style={{ backgroundImage: `url(${bg_image})` }}
     >
-      <div className="portal-blur-overlay">
-        <div className="p-root">
-          <div className="p-inner">
+      <div className="prt-blur-overlay">
+        <div className="prt-root">
+          <div className="prt-inner">
             
             {/* Top Header Section */}
-            <div className="p-top">
-              <div className="p-logo">
+            <div className="prt-top">
+              <div className="prt-logo">
                 <img src={logo} alt="Logo" />
               </div>
-              <div>
-                <p className="p-eyebrow">Academic Hub</p>
-                <h1 className="p-heading">Online Portal</h1>
+              <div className="prt-header-text">
+                <p className="prt-eyebrow">Academic Hub</p>
+                <h1 className="prt-heading">Online Portal</h1>
               </div>
-              <div className="p-status" title="All systems online"></div>
+              <div className="prt-status" title="All systems online"></div>
             </div>
 
-            <div className="p-divider"></div>
+            <div className="prt-divider"></div>
 
             {/* Grid Options */}
-            <div className="p-grid">
+            <div className="prt-grid">
               {portalOptions.map((option) => (
                 <div
                   key={option.id}
-                  className="p-card"
+                  className="prt-card"
                   role="button"
                   tabIndex={0}
                   onClick={() => navigate(option.path)}
                   onKeyDown={(e) => e.key === 'Enter' && navigate(option.path)}
                   aria-label={option.label}
                 >
-                  <div className="p-card-left">
-                    <div 
-                      className="p-icon" 
-                      style={{ background: option.iconBg, color: option.iconColor }}
-                    >
+                  <div className="prt-card-left">
+                    <div className={`prt-icon ${option.className}`}>
                       {option.icon}
                     </div>
-                    <p className="p-label">{option.label}</p>
+                    <p className="prt-label">{option.label}</p>
                   </div>
-                  <span className="p-arrow">
+                  <span className="prt-arrow">
                     <TbArrowUpRight />
                   </span>
                 </div>
@@ -107,4 +100,4 @@ const Portal = () => {
   );
 };
 
-export default Portal;
+export default StudentPortal;

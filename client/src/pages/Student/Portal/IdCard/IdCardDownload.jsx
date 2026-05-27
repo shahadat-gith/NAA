@@ -36,13 +36,13 @@ const IdCardDownload = () => {
   // Guard safety clause to prevent crashes if routed directly without state
   if (!student) {
     return (
-      <div className="id-wrapper">
-        <div className="id-topbar">
-          <button className="id-btn-back" onClick={handleBack}>
+      <div className="idc-dl-wrapper">
+        <div className="idc-dl-topbar">
+          <button className="idc-dl-btn-back" onClick={handleBack}>
             <FaArrowLeft /> Back
           </button>
         </div>
-        <div style={{ textAlign: "center", marginTop: "40px", color: "#1a2d6b", fontWeight: "700" }}>
+        <div className="idc-dl-error-msg">
           No student data found. Please go back and retry.
         </div>
       </div>
@@ -61,16 +61,15 @@ const IdCardDownload = () => {
   ];
 
   return (
-    <div className="id-wrapper">
-      {/* TOPBAR */}
-      <div className="id-topbar">
-        <button className="id-btn-back" onClick={handleBack}>
+    <div className="idc-dl-wrapper">
+      {/* TOPBAR CONTROLS MODULE */}
+      <div className="idc-dl-topbar">
+        <button className="idc-dl-btn-back" onClick={handleBack}>
           <FaArrowLeft /> Back
         </button>
 
-        {/* FIXED: Removed the nested button tag. The PDFDownloadLink now safely acts as the button asset wrapper itself */}
         <PDFDownloadLink
-          className="id-btn-download"
+          className="idc-dl-btn-download"
           document={
             <IdCardPdf
               student={student}
@@ -90,10 +89,10 @@ const IdCardDownload = () => {
         </PDFDownloadLink>
       </div>
 
-      {/* SCALE WRAPPER */}
-      <div className="id-scale-wrapper">
+      {/* SCALE SHEET CONTAINER */}
+      <div className="idc-dl-scale-wrapper">
         <div className="id-card-layout-container" ref={cardPairRef}>
-          {/* FRONT */}
+          {/* FRONT (Design Preserved Entirely) */}
           <div className="id-card-wrapper">
             <div className="id-card id-card-front">
               <div className="id-card-header">
@@ -138,7 +137,7 @@ const IdCardDownload = () => {
             <div className="id-card-label">Front Page</div>
           </div>
 
-          {/* BACK */}
+          {/* BACK (Design Preserved Entirely) */}
           <div className="id-card-wrapper">
             <div className="id-card id-card-back">
               <div className="id-back-header-decoration">

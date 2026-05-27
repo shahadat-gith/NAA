@@ -4,7 +4,7 @@ import axios from "axios";
 import { AppContext } from "../../../../context/AppContext";
 import { TbAlertTriangle } from "react-icons/tb";
 import Search from "../Common/Search";
-import "./IdCard.css"; // Uses the clean, centring stylesheet layout
+import "./IdCard.css";
 
 const IdCard = () => {
   const { backendUrl } = useContext(AppContext);
@@ -18,7 +18,6 @@ const IdCard = () => {
     setLoading(true);
 
     try {
-      // Normal search without a payload key, as per your specifications
       const res = await axios.post(`${backendUrl}/api/student/search`, {
         registrationNo,
       });
@@ -41,18 +40,20 @@ const IdCard = () => {
   };
 
   return (
-    <div className="idcard-page search-landing-context">
-      <div className="idcard-search-container">
+    <div className="idc-page idc-search-landing-context">
+      <div className="idc-search-container">
         
+        {/* Reusable Core Search Component Module */}
         <Search 
           title="Download Digital ID Card"
           onSearch={handleIdCardSearch}
           searching={loading}
         />
 
+        {/* System Error Response Banner */}
         {error && (
-          <div className="idcard-inline-msg error">
-            <TbAlertTriangle className="msg-icon" />
+          <div className="idc-inline-msg idc-alert-danger">
+            <TbAlertTriangle className="idc-msg-icon" />
             <p>{error}</p>
           </div>
         )}

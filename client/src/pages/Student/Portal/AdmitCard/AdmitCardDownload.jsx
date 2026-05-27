@@ -4,6 +4,7 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { TbArrowLeft } from "react-icons/tb";
 import AdmitCardPdf from "./admitCardPdf";
 import "./AdmitCardDownload.css";
+import capitalizeWords from "../../../../Utils/utility";
 
 const formatDate = (dateInput) => {
   if (!dateInput) return "-";
@@ -27,7 +28,7 @@ const formatDate = (dateInput) => {
   const year = date.getFullYear();
   const weekday = date.toLocaleString("en-GB", { weekday: "long" });
 
-  return `${day}${getOrdinal(day)} ${month} ${year} (${weekday})`;
+  return `${day}${getOrdinal(day)} ${month} ${year} ( ${weekday} )`;
 };
 
 const AdmitCardDownload = () => {
@@ -45,6 +46,13 @@ const AdmitCardDownload = () => {
   
   const { admitCard, examDetails, principal, student } = location?.state?.data || {};
 
+const capitaliseStudentData = { ...student };
+
+for (const key in capitaliseStudentData) {
+  if (typeof capitaliseStudentData[key] === 'string' && key !== "registrationNo") {
+    capitaliseStudentData[key] = capitalizeWords(capitaliseStudentData[key]);
+  }
+}
   // Force safety fallback redirection to prevent component crashes if user manually refreshes page empty
   useEffect(() => {
     if (!student) {
@@ -64,14 +72,14 @@ const AdmitCardDownload = () => {
   });
 
   return (
-    <div className="admit-page">
+    <div className="adc-dl-page">
 
-      <div className="download-wrapper">
+      <div className="adc-dl-actions-wrapper">
         <PDFDownloadLink
-          className="download-btn"
+          className="adc-dl-download-btn"
           document={
             <AdmitCardPdf
-              student={student}
+              student={capitaliseStudentData}
               admitCard={admitCard}
               examDetails={examDetails}
               principal={principal}
@@ -79,61 +87,61 @@ const AdmitCardDownload = () => {
           }
           fileName={`admit_card_${student?.registrationNo || "student"}.pdf`}
         >
-          {({ loading }) => loading ? "Generating Document..." : "Download Admit Card PDF"}
+          {({ loading }) => loading ? "Generating Document..." : "Download"}
         </PDFDownloadLink>
       </div>
 
-      <div className="admit-card-container">
-        <div className="outer-border">
-          <div className="inner-border">
+      <div className="adc-dl-card-container">
+        <div className="adc-dl-outer-border">
+          <div className="adc-dl-inner-border">
 
             {/* ================= HEADER ================= */}
-            <div className="admit-header">
-              <img src={SCHOOL_DETAILS.logo} alt="logo" className="school-logo" />
-              <h1 className="school-name">{SCHOOL_DETAILS.name}</h1>
+            <div className="adc-dl-header">
+              <img src={SCHOOL_DETAILS.logo} alt="school logo" className="adc-dl-school-logo" />
+              <h1 className="adc-dl-school-name">{SCHOOL_DETAILS.name}</h1>
 
-              <div className="divider-wrapper">
-                <span className="line"></span>
-                <span className="exam-name">{examDetails?.examName || "Annual Examination"}</span>
-                <span className="line"></span>
+              <div className="adc-dl-divider-wrapper">
+                <span className="adc-dl-line"></span>
+                <span className="adc-dl-exam-name">{examDetails?.examName || "Annual Examination"}</span>
+                <span className="adc-dl-line"></span>
               </div>
 
-              <h2 className="admit-title">ADMIT CARD</h2>
+              <h2 className="adc-dl-title">ADMIT CARD</h2>
 
-              <div className="session-wrapper">
-                <span className="line short"></span>
-                <p className="session-text">SESSION: {examDetails?.academicSession || "2025 - 2026"}</p>
-                <span className="line short"></span>
+              <div className="adc-dl-session-wrapper">
+                <span className="adc-dl-line adc-dl-short"></span>
+                <p className="adc-dl-session-text">SESSION: {examDetails?.academicSession || "2025 - 2026"}</p>
+                <span className="adc-dl-line adc-dl-short"></span>
               </div>
             </div>
 
             {/* ================= STUDENT DETAILS ================= */}
-            <div className="student-section">
-              <div className="student-info">
-                <p><strong>Name:</strong> <span className="data-text">{student?.name}</span></p>
-                <p><strong>Father's Name:</strong> <span className="data-text">{student?.fatherName}</span></p>
-                <p><strong>Mother's Name:</strong> <span className="data-text">{student?.motherName}</span></p>
-                <p><strong>Class:</strong> <span className="data-text">{student?.class}</span></p>
-                <p><strong>Medium:</strong> <span className="data-text">{student?.medium}</span></p>
-                {student?.stream && (
-                  <p><strong>Stream:</strong> <span className="data-text">{student.stream}</span></p>
+            <div className="adc-dl-student-section">
+              <div className="adc-dl-student-info">
+                <p><strong>Name:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.name}</span></p>
+                <p><strong>Father's Name:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.fatherName}</span></p>
+                <p><strong>Mother's Name:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.motherName}</span></p>
+                <p><strong>Class:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.class}</span></p>
+                <p><strong>Medium:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.medium}</span></p>
+                {capitaliseStudentData?.stream && (
+                  <p><strong>Stream:</strong> <span className="adc-dl-data-text">{capitaliseStudentData.stream}</span></p>
                 )}
-                <p><strong>Registration No:</strong> <span className="data-text">{student?.registrationNo}</span></p>
+                <p><strong>Registration No:</strong> <span className="adc-dl-data-text">{capitaliseStudentData?.registrationNo}</span></p>
               </div>
-              <div className="photo-frame">
+              <div className="adc-dl-photo-frame">
                 <img src={student?.image?.url || "/user.png"} alt="student profile" />
               </div>
             </div>
 
             {/* ================= EXAM DETAILS TABLE ================= */}
-            <div className="exam-section">
-              <div className="table-header-box">Exam Details</div>
-              <table className="exam-table">
+            <div className="adc-dl-exam-section">
+              <div className="adc-dl-table-header-box">Exam Details</div>
+              <table className="adc-dl-exam-table">
                 <thead>
                   <tr>
                     <th>DATE</th>
-                    <th>MORNING <br />( <span style={{ color: "#ddd" }}>{examDetails?.time?.morning || "9:00 AM - 12:00 PM"} )</span></th>
-                    <th>AFTERNOON <br />( <span style={{ color: "#ddd" }}>{examDetails?.time?.afternoon || "1:00 PM - 4:00 PM"} )</span></th>
+                    <th>MORNING <br />( <span className="adc-dl-time-sub">{examDetails?.time?.morning || "9:00 AM - 12:00 PM"}</span> )</th>
+                    <th>AFTERNOON <br />( <span className="adc-dl-time-sub">{examDetails?.time?.afternoon || "1:00 PM - 4:00 PM"}</span> )</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -141,21 +149,21 @@ const AdmitCardDownload = () => {
                     Object.keys(groupedExams).map((date, index) => (
                       <tr key={index}>
                         <td>{date}</td>
-                        <td className="subject-cell">{groupedExams[date].morning}</td>
-                        <td className="subject-cell">{groupedExams[date].afternoon}</td>
+                        <td className="adc-dl-subject-cell">{groupedExams[date].morning}</td>
+                        <td className="adc-dl-subject-cell">{groupedExams[date].afternoon}</td>
                       </tr>
                     ))
                   ) : (
-                    <tr><td colSpan="3" style={{ textAlign: "center" }}>No exams scheduled</td></tr>
+                    <tr><td colSpan="3" className="adc-dl-empty-table-cell">No exams scheduled</td></tr>
                   )}
                 </tbody>
               </table>
             </div>
 
             {/* ================= INSTRUCTIONS ================= */}
-            <div className="instruction-section">
+            <div className="adc-dl-instruction-section">
               <h4>Instructions:</h4>
-              <ul className="instruction-list">
+              <ul className="adc-dl-instruction-list">
                 <li>This admit card must be brought to the examination hall every day.</li>
                 <li>Students must be in the examination hall 15 minutes prior to the exam time.</li>
                 <li>All students must bring their own pens, pencils, and other necessary stationery.</li>
@@ -164,27 +172,27 @@ const AdmitCardDownload = () => {
               </ul>
             </div>
 
-            {/* ================= FOOTER ================= */}
-            <div className="footer-layout">
-              <div className="signature-container">
-                <div className="signature-wrapper">
+            {/* ================= FOOTER / AUTHORIZATIONS ================= */}
+            <div className="adc-dl-footer-layout">
+              <div className="adc-dl-signature-container">
+                <div className="adc-dl-signature-wrapper">
                   {principal?.signature?.url ? (
-                    <img src={principal.signature.url} alt="Principal Signature" className="signature-img" />
+                    <img src={principal.signature.url} alt="Principal Signature" className="adc-dl-signature-img" />
                   ) : (
-                    <div className="signature-placeholder"></div>
+                    <div className="adc-dl-signature-placeholder"></div>
                   )}
-                  <div className="signature-labels">
-                    <p className="principal-label">Principal</p>
-                    <p className="principal-name">({principal?.name || "Abdul Mozid Mondol"})</p>
+                  <div className="adc-dl-signature-labels">
+                    <p className="adc-dl-principal-label">Principal</p>
+                    <p className="adc-dl-principal-name">({principal?.name || "Abdul Mozid Mondol"})</p>
                   </div>
                 </div>
               </div>
 
-              <div className="school-contact-area">
-                <div className="footer-school-line">
-                  <span className="line"></span>
-                  <span className="footer-school-name">{SCHOOL_DETAILS.name}</span>
-                  <span className="line"></span>
+              <div className="adc-dl-school-contact-area">
+                <div className="adc-dl-footer-school-line">
+                  <span className="adc-dl-line"></span>
+                  <span className="adc-dl-footer-school-name">{SCHOOL_DETAILS.name}</span>
+                  <span className="adc-dl-line"></span>
                 </div>
                 <p>{SCHOOL_DETAILS.address}</p>
                 <p>{SCHOOL_DETAILS.website}</p>

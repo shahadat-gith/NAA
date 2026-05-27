@@ -1,64 +1,79 @@
-:root {
-  --color-bg-base: #f4f7f6;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fee2e2;
-  --color-error-text: #ef4444;
+/* ==========================================================================
+   DIGITAL ID CARD GENERATOR HUB (PREFIX: idc-)
+   ========================================================================== */
+
+.idc-page {
+  width: 100%;
+  min-height: 80vh;
+  padding: clamp(2rem, 6vw, 4rem) 1.5rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-normal);
 }
 
-/* ================= PAGE BACKGROUND & BASE CONTAINER ================= */
-.idcard-page {
-  background-color: var(--color-bg-base);
-  padding: 40px 15px;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-/* Flex layout centering mechanics */
-.search-landing-context {
+/* ─── Center Constrained Search Card Layout Shell ─── */
+.idc-search-landing-context {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.idcard-search-container {
+.idc-search-container {
   width: 100%;
-  max-width: 500px; /* Synchronizes layout width structure constraints */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  max-width: 600px; /* Synchronized profile/result module constraints */
+  margin: 0 auto;
 }
 
-/* ================= SYSTEM ERROR STATE NOTIFICATION BANNER ================= */
-.idcard-inline-msg {
+/* ==========================================================================
+   SYSTEM RESPONSE STATUS BANNER
+   ========================================================================== */
+
+.idc-inline-msg {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  padding: 1rem 1.25rem;
-  border-radius: 14px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  border: 1px solid;
-  line-height: 1.5;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  animation: slideInBanner 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 1px solid transparent;
+  margin-top: 1.5rem;
+  animation: idcFadeIn var(--transition-normal) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.idcard-inline-msg.error {
-  background-color: var(--color-error-bg);
-  border-color: var(--color-error-border);
-  color: var(--color-error-text);
-}
-
-.msg-icon {
-  font-size: 1.3rem;
+.idc-msg-icon {
+  font-size: 1.25rem;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
-/* ================= TRANSITION SLIDE KEYFRAMES ================= */
-@keyframes slideInBanner {
+.idc-inline-msg p {
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Danger Verification Error Context Variant Override */
+.idc-alert-danger {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger, #dc2626);
+}
+
+.idc-alert-danger .idc-msg-icon {
+  color: var(--color-danger, #dc2626);
+}
+
+/* ==========================================================================
+   STRUCTURAL LAYOUT ANIMATION TIMELINES
+   ========================================================================== */
+
+@keyframes idcFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -66,14 +81,18 @@
   }
 }
 
-/* ================= MOBILE MEDIA LAYOUT CONSTRAINTS ================= */
+/* ─── Media Responsive Support Breaks ─── */
 @media (max-width: 480px) {
-  .idcard-page {
-    padding: 20px 10px;
+  .idc-page {
+    padding: 1.5rem 1rem;
   }
   
-  .idcard-inline-msg {
-    font-size: 0.85rem;
-    padding: 0.85rem 1rem;
+  .idc-inline-msg {
+    padding: 1rem 1.25rem;
+    gap: 10px;
+  }
+  
+  .idc-inline-msg p {
+    font-size: 0.9rem;
   }
 }

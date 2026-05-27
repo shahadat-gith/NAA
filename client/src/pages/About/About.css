@@ -1,433 +1,238 @@
+/* ==========================================================================
+   ABOUT PAGE MODULE SYSTEM (PREFIX: abt-)
+   ========================================================================== */
 
-
-.about-page {
-  background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
-  overflow: hidden;
+.abt-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-primary);
+  color: var(--text-main);
+  transition: background var(--transition-normal);
 }
 
-/* Content Sections */
-.about-section {
-  max-width: 1200px;
-  margin: 0 auto 4rem;
-  padding: 3rem;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
-  position: relative;
-}
-
-.about-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #e94560 0%, #f4a261 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.about-section:hover::before {
-  opacity: 1;
-}
-
-.mission-section {
-  animation-delay: 0.2s;
-}
-
-.history-section {
-  animation-delay: 0.4s;
-}
-
-.values-section {
-  animation-delay: 0.6s;
-}
-
-.programs-section {
-  animation-delay: 0.8s;
-}
-
-.facilities-section {
-  animation-delay: 1.0s;
-}
-
-.community-section {
-  animation-delay: 1.2s;
-}
-
-.faq-section {
-  animation-delay: 1.4s;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #1a1a2e;
-  margin-bottom: 2rem;
-  position: relative;
-  text-transform: uppercase;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  width: 50px;
-  height: 3px;
-  background: #e94560;
-}
-
-.section-content {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #666;
-  max-width: 800px;
+.abt-section-container {
+  max-width: 1400px;
   margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
 }
 
-/* Values Section */
-.values-list {
+/* ─── Shared Section Structural Basics ─── */
+.abt-section {
+  padding: clamp(3rem, 7vw, 5rem) 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.abt-section:nth-child(even) {
+  background: var(--bg-secondary);
+}
+
+.abt-section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.abt-section-content {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  max-width: 850px;
+  margin: 0;
+}
+
+/* ─── Core Values Token Badges ─── */
+.abt-values-list {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 12px;
   margin-top: 2rem;
 }
 
-.value-item {
-  font-size: 1.2rem;
+.abt-value-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 20px;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #e94560;
-  padding: 1rem 2rem;
-  background: rgba(233, 69, 96, 0.1);
-  border-radius: 20px;
-  transition: transform 0.3s ease, background 0.3s ease;
+  color: var(--accent-color);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-card);
 }
 
-.value-item:hover {
-  transform: translateY(-5px);
-  background: rgba(233, 69, 96, 0.2);
-}
-
-/* Programs Section */
-.programs-list {
+/* ─── Card Grids (Programs & Facilities Layouts) ─── */
+.abt-programs-list,
+.abt-facilities-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
-  margin-top: 2rem;
+  margin-top: 3rem;
+  width: 100%;
 }
 
-.program-item {
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.program-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(233, 69, 96, 0.2);
-}
-
-.program-icon {
-  font-size: 2rem;
-  color: #e94560;
-  margin-bottom: 1rem;
-}
-
-.program-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-bottom: 0.75rem;
-}
-
-.program-description {
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.6;
-}
-
-/* Facilities Section */
-.facilities-list {
+.abt-program-item,
+.abt-facility-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 1.75rem;
+  box-shadow: var(--shadow-card);
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin-top: 2rem;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.abt-program-item:hover,
+.abt-facility-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.abt-program-icon,
+.abt-facility-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-light);
+  color: var(--accent-color);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
-.facility-item {
-  flex: 1;
-  min-width: 250px;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.facility-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(233, 69, 96, 0.2);
-}
-
-.facility-icon {
-  font-size: 2rem;
-  color: #e94560;
-  margin-bottom: 1rem;
-}
-
-.facility-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #1a1a2e;
+.abt-program-title,
+.abt-facility-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
   margin-bottom: 0.75rem;
 }
 
-.facility-description {
-  font-size: 1rem;
-  color: #666;
+.abt-program-description,
+.abt-facility-description {
+  font-size: 0.95rem;
   line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-/* Community Section */
-.community-cta {
-  margin-top: 2rem;
+/* ==========================================================================
+   FAQ ACCORDION COMPONENT LAYOUT
+   ========================================================================== */
+
+.abt-faq-section {
+  padding: clamp(3rem, 7vw, 5rem) 0;
+  background: var(--bg-primary);
+}
+
+.abt-faq-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
   text-align: center;
+  margin-bottom: 3rem;
 }
 
-.community-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, #e94560 0%, #d32f4a 100%);
-  color: #fff;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  text-decoration: none;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
-}
-
-.community-link:hover {
-  background: linear-gradient(135deg, #d32f4a 0%, #e94560 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(233, 69, 96, 0.5);
-}
-
-.community-link i {
-  transition: transform 0.3s ease;
-}
-
-.community-link:hover i {
-  transform: translateX(5px);
-}
-
-/* FAQ Section */
-.faq-section {
-  background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%);
-  padding: 5rem 2rem;
-  color: #fff;
-  position: relative;
-}
-
-.faq-list {
-  max-width: 900px;
+.abt-faq-list {
+  max-width: 1400px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.faq-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #e94560;
-  margin-bottom: 2rem;
-  text-align: center;
-  text-transform: uppercase;
+.abt-faq-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-fast);
 }
 
-.faq-item {
-  margin-bottom: 1.5rem;
-  border-left: 4px solid transparent;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  transition: border-left 0.3s ease, background 0.3s ease;
+.abt-faq-item:hover {
+  border-color: var(--accent-border);
 }
 
-.faq-item:hover {
-  border-left: 4px solid #e94560;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.faq-question {
-  font-size: 1.4rem;
+.abt-faq-question {
+  font-size: 1.05rem;
   font-weight: 600;
-  color: #fff;
-  padding: 1.5rem 2rem;
+  color: var(--text-main);
+  padding: 1.25rem 1.5rem;
+  margin: 0;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 0.3s ease;
+  gap: 1rem;
+  user-select: none;
 }
 
-.faq-question:hover {
-  color: #f4a261;
+.abt-faq-toggle-icon {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
-.faq-toggle-icon {
-  width: 30px;
-  height: 30px;
-  background: #e94560;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease, background 0.3s ease;
+.abt-faq-toggle-icon.abt-open {
+  color: var(--accent-color);
 }
 
-.faq-toggle-icon.open {
-  transform: rotate(180deg);
-  background: #f4a261;
-}
-
-.faq-toggle-icon i {
-  font-size: 1rem;
-  color: #fff;
-}
-
-.faq-answer {
+/* Smooth Accordion Height Expansion Engine */
+.abt-faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s ease-in-out, padding 0.3s ease-in-out;
-  padding: 0 2rem;
+  transition: max-height var(--transition-normal) cubic-bezier(0, 1, 0, 1), padding var(--transition-normal) ease;
+  background: var(--bg-secondary);
+  padding: 0 1.5rem;
 }
 
-.faq-answer.open {
-  max-height: 300px;
-  padding: 1.5rem 2rem;
+.abt-faq-answer.abt-open {
+  max-height: 1000px; /* Secure height ceiling bounds */
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--border-light);
+  transition: max-height var(--transition-normal) cubic-bezier(1, 0, 1, 0), padding var(--transition-normal) ease;
 }
 
-.faq-answer p {
-  font-size: 1.1rem;
-  color: #f5f7fa;
-  line-height: 1.6;
+.abt-faq-answer p {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
   margin: 0;
 }
 
-/* Animations */
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* ==========================================================================
+   RESPONSIVE LAYOUT CONSTRAINTS
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .abt-programs-list,
+  .abt-facilities-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
   }
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .about-section {
-    padding: 2rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .section-content {
-    font-size: 1rem;
-  }
-
-  .values-list {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .value-item {
-    width: 80%;
-    text-align: center;
-  }
-
-  .programs-list {
+@media (max-width: 600px) {
+  .abt-programs-list,
+  .abt-facilities-list {
     grid-template-columns: 1fr;
   }
-
-  .facilities-list {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .facility-item {
-    width: 90%;
-  }
-
-  .faq-section {
-    padding: 3rem 1rem;
-  }
-
-  .faq-title {
-    font-size: 2rem;
-  }
-
-  .faq-question {
-    font-size: 1.2rem;
-  }
-
-  .faq-answer p {
+  
+  .abt-faq-question {
     font-size: 1rem;
+    padding: 1.1rem 1.25rem;
   }
-}
-
-@media (max-width: 425px) {
-  .section-title {
-    font-size: 1.8rem;
-  }
-
-  .section-content {
-    font-size: 0.9rem;
-  }
-
-  .value-item {
-    font-size: 1rem;
-    padding: 0.75rem 1.5rem;
-  }
-
-  .program-title {
-    font-size: 1.2rem;
-  }
-
-  .program-description {
-    font-size: 0.9rem;
-  }
-
-  .facility-title {
-    font-size: 1.2rem;
-  }
-
-  .facility-description {
-    font-size: 0.9rem;
-  }
-
-  .community-link {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .faq-title {
-    font-size: 1.8rem;
-  }
-
-  .faq-question {
-    font-size: 1.1rem;
-  }
-
-  .faq-answer p {
-    font-size: 0.9rem;
+  
+  .abt-faq-answer.abt-open {
+    padding: 1.1rem 1.25rem;
   }
 }

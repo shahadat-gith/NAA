@@ -4,42 +4,116 @@
 
 
 :root {
+  /* =========================
+     BACKGROUNDS
+  ========================= */
   --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
   --bg-card: #ffffff;
+  --bg-overlay: rgba(15, 23, 42, 0.55);
+  --footer-bg: #171f2b;
 
+  /* =========================
+     TEXT
+  ========================= */
   --text-main: #1e293b;
+  --text-secondary: #334155;
   --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --text-white: #ffffff;
 
+  /* =========================
+     BRAND / ACCENT
+  ========================= */
   --accent-color: #e94560;
   --accent-hover: #d2334c;
+  --accent-light: rgba(233, 69, 96, 0.1);
+  --accent-border: rgba(233, 69, 96, 0.2);
 
+  /* =========================
+     BORDERS
+  ========================= */
   --border-light: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-dark: #94a3b8;
 
+  /* =========================
+     SHADOWS
+  ========================= */
   --shadow-card:
     0 4px 10px rgba(15, 23, 42, 0.04);
 
+  --shadow-md:
+    0 10px 25px rgba(15, 23, 42, 0.08);
+
+  --shadow-lg:
+    0 20px 50px rgba(15, 23, 42, 0.12);
+
+  --shadow-accent:
+    0 10px 24px rgba(233, 69, 96, 0.22);
+
+  /* =========================
+     STATUS COLORS
+  ========================= */
+
+  /* Success */
   --color-success: #10b981;
   --bg-success: #ecfdf5;
 
+  /* Danger */
   --color-danger: #ef4444;
   --bg-danger: #fef2f2;
-}
 
+  /* Warning */
+  --color-warning: #f59e0b;
+  --bg-warning: #fffbeb;
+
+  /* Info */
+  --color-info: #3b82f6;
+  --bg-info: #eff6ff;
+
+  /* Neutral */
+  --color-neutral: #6b7280;
+  --bg-neutral: #f3f4f6;
+
+  /* =========================
+     TABLE / HOVER
+  ========================= */
+  --hover-light: #f8fafc;
+  --hover-accent: #fff1f3;
+  --table-row-hover: #fff5f7;
+
+  /* =========================
+     SPECIAL UI
+  ========================= */
+  --disabled-bg: #cbd5e1;
+  --disabled-text: #94a3b8;
+
+  --scrollbar-thumb: #d1d5db;
+  --scrollbar-thumb-hover: #9ca3af;
+
+  --backdrop-dark: rgba(0, 0, 0, 0.7);
+
+  /* =========================
+     RADIUS
+  ========================= */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* =========================
+     TRANSITIONS
+  ========================= */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+}
 
 body {
     font-family: "Poppins", sans-serif;
     background-color: #f4f4f4;
-}
-
-.naa-title-underline {
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 4px;
-  background: #e94560;
-  border-radius: 2px;
 }
 
 

@@ -16,7 +16,7 @@ const Notices = () => {
     }
   };
 
-  // 🔥 Sort: future targetDate first, then latest
+  // Sort: future targetDate first, then latest
   const sortedNotices = [...notices].sort((a, b) => {
     const now = new Date();
 
@@ -29,11 +29,11 @@ const Notices = () => {
     return new Date(b.createdAt) - new Date(a.createdAt);
   });
 
-  // 🔥 Wrapper for full row click
+  // Wrapper for full row click using the updated prefix namespace selector
   const NoticeWrapper = ({ notice, children }) => {
     if (notice.noticeType === "INTERNAL_LINK") {
       return (
-        <Link to={notice.linkedPage} className="notice-row">
+        <Link to={notice.linkedPage} className="ntc-row">
           {children}
         </Link>
       );
@@ -45,7 +45,7 @@ const Notices = () => {
           href={notice.externalUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="notice-row"
+          className="ntc-row"
         >
           {children}
         </a>
@@ -58,7 +58,7 @@ const Notices = () => {
           href={notice.file?.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="notice-row"
+          className="ntc-row"
           download={`${notice.title}.pdf`}
         >
           {children}
@@ -66,56 +66,55 @@ const Notices = () => {
       );
     }
 
-    return <div className="notice-row">{children}</div>;
+    return <div className="ntc-row">{children}</div>;
   };
 
   return (
-    <div className="notices-page-container">
+    <div className="ntc-page-container">
 
       {/* Header */}
-      <div className="notices-page-header">
+      <div className="ntc-page-header">
         <h1>All Notices</h1>
         <p>Latest announcements and updates</p>
       </div>
 
-      {/* List */}
-      <div className="notices-list-container">
+      {/* List Container Container */}
+      <div className="ntc-list-container">
         {sortedNotices.length === 0 ? (
-          <div className="no-notices">No notices available</div>
+          <div className="ntc-no-data">No notices available</div>
         ) : (
-          <ul className="notices-list">
+          <ul className="ntc-list">
 
             {sortedNotices.map((notice) => {
               const isNew =
                 (new Date() - new Date(notice.createdAt)) /
-                  (1000 * 60 * 60 * 24) <
-                7;
+                  (1000 * 60 * 60 * 24) < 7;
 
               return (
                 <li key={notice._id}>
 
                   <NoticeWrapper notice={notice}>
 
-                    {/* Icon */}
-                    <div className="notice-icon">
+                    {/* Dynamic Status Icon */}
+                    <div className="ntc-icon">
                       <i className={`fas ${getNoticeIcon(notice.noticeType)}`}></i>
                     </div>
 
-                    {/* Content */}
-                    <div className="notice-main">
+                    {/* Core Content Body */}
+                    <div className="ntc-main">
 
-                      {/* Top Row */}
-                      <div className="notice-top">
-                        <span className="notice-date">
+                      {/* Top Row Metadata Grid */}
+                      <div className="ntc-top">
+                        <span className="ntc-date">
                           {new Date(notice.createdAt).toLocaleDateString("en-IN", {
                             day: "numeric",
                             month: "short",
                             year: "numeric",
                           })}
-                        </span>
+                        </span> 
 
-                        <div className="notice-badges">
-                          {isNew && <span className="new-badge">NEW</span>}
+                        <div className="ntc-badges">
+                          {isNew && <span className="ntc-new-badge">NEW</span>}
 
                           {notice.targetDate && (
                             <Countdown targetDate={notice.targetDate} />
@@ -123,25 +122,25 @@ const Notices = () => {
                         </div>
                       </div>
 
-                      {/* Title */}
-                      <div className="notice-title">
+                      {/* Interactive Heading Text Row */}
+                      <div className="ntc-title">
                         <span>{notice.title}</span>
 
-                        {/* Dynamic icon */}
+                        {/* Action Direction Arrow/Download Context Icons */}
                         {notice.noticeType === "FILE" && (
-                          <i className="fas fa-download notice-action-icon"></i>
+                          <i className="fas fa-download ntc-action-icon"></i>
                         )}
                         {notice.noticeType === "EXTERNAL_LINK" && (
-                          <i className="fas fa-external-link-alt notice-action-icon"></i>
+                          <i className="fas fa-external-link-alt ntc-action-icon"></i>
                         )}
                         {notice.noticeType === "INTERNAL_LINK" && (
-                          <i className="fas fa-chevron-right notice-action-icon"></i>
+                          <i className="fas fa-chevron-right ntc-action-icon"></i>
                         )}
                       </div>
 
-                      {/* Description */}
+                      {/* Summary Subtext Snippet */}
                       {notice.description && (
-                        <div className="notice-desc">
+                        <div className="ntc-desc">
                           {notice.description}
                         </div>
                       )}

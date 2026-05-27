@@ -244,9 +244,9 @@ const StaffOnboarding = () => {
           <div className="so-form-section-title">Academic & Professional Credentials</div>
           <div className="so-form-grid">
             <div className="so-input-group">
-              <label>Main Subject Specialization *</label>
+              <label>Subject You Teach *</label>
               <select value={subjectTaught} onChange={(e) => setSubjectTaught(e.target.value)} required>
-                <option value="">Select Primary Subject</option>
+                <option value="">Select Subject</option>
                 {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -275,7 +275,7 @@ const StaffOnboarding = () => {
               <>
                 <span className="so-spinner"></span> Processing Application...
               </>
-            ) : "Submit Onboarding Profile"}
+            ) : "Submit Application"}
           </button>
         </form>
 

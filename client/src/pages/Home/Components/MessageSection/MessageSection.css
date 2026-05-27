@@ -3,14 +3,14 @@
    =============================== */
 .message-section {
   padding: 5rem 2rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e6e6e6 100%);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
 }
 
 /* ===============================
    CONTAINER
    =============================== */
 .message-container {
-  margin: 0 auto;
+  margin: 0 5%;
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
@@ -23,13 +23,11 @@
   display: flex;
   align-items: center;
   gap: 2rem;
-  background: #ffffff;
-  border-radius: 16px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 2rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-  opacity: 0;
+  box-shadow: var(--shadow-md);
   transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
 }
 
 /* Principal: IMAGE | MESSAGE */
@@ -54,11 +52,9 @@
 .message-img {
   max-width: 260px;
   height: auto;              /* keeps natural ratio */
-  border-radius: 14px;       /* ✅ rounded image */
+  border-radius: var(--radius-md); 
   display: block;
 }
-
-
 
 /* ===============================
    CONTENT
@@ -73,35 +69,24 @@
 .message-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #1a1a2e;
+  color: var(--text-main);
   margin-bottom: 0.6rem;
   text-transform: uppercase;
 }
 
-
-
 .message-subtitle {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #e94560;
+  color: var(--accent-color);
   margin-bottom: 1rem;
 }
 
 .message-text {
   font-size: 0.98rem;
-  color: #555;
+  color: var(--text-secondary);
   line-height: 1.7;
 }
 
-/* ===============================
-   ANIMATION
-   =============================== */
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* ===============================
    RESPONSIVE
@@ -116,8 +101,6 @@
     width: 100%;
     height: auto;
   }
-
- 
 }
 
 @media (max-width: 480px) {

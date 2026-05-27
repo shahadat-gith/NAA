@@ -1,7 +1,7 @@
 .website-loader {
   position: fixed;
   inset: 0;
-  background: #ffffff;
+  background: var(--bg-card);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,9 +20,9 @@
 .loader-ring {
   position: absolute;
   inset: 0;
-  border: 4px solid rgba(233, 69, 96, 0.2);
-  border-top: 4px solid #e94560;
-  border-radius: 50%;
+  border: 4px solid var(--accent-border);
+  border-top: 4px solid var(--accent-color);
+  border-radius: var(--radius-full);
   animation: spin 1.2s linear infinite;
 }
 
@@ -47,7 +47,7 @@
 .loader-text {
   margin-top: 18px;
   font-size: 14px;
-  color: #555;
+  color: var(--text-secondary);
   letter-spacing: 0.4px;
 }
 

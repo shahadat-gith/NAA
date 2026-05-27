@@ -1,3 +1,4 @@
+import React from 'react';
 import "./Skills.css";
 
 const Skills = ({ skills }) => {
@@ -11,18 +12,18 @@ const Skills = ({ skills }) => {
   };
 
   return (
-    <div className="skills-grid-container">
+    <div className="sk-grid-container">
       {Object.entries(skills).map(([categoryKey, skillList]) => {
         if (!skillList || skillList.length === 0) return null;
 
         return (
-          <div key={categoryKey} className="skills-group-card">
-            <h3 className="skills-group-title">
+          <div key={categoryKey} className="sk-group-card">
+            <h3 className="sk-group-title">
               {categoryLabels[categoryKey] || categoryKey}
             </h3>
-            <div className="skills-pill-flex">
+            <div className="sk-pill-flex">
               {skillList.map((skill) => (
-                <span key={skill} className="skill-pill-modern">
+                <span key={skill} className="sk-pill-modern">
                   {skill}
                 </span>
               ))}

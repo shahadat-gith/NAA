@@ -1,33 +1,35 @@
-/* --- Root Onboarding Layout Configuration --- */
+/* ==========================================================================
+   STAFF ONBOARDING CORE SHELL
+   ========================================================================== */
 .so-onboarding-container {
+  width: 100%;
   min-height: 100vh;
-  background-color: var(--bg-primary);
-  padding: 4rem 1.5rem;
+  padding: clamp(2rem, 5vw, 4rem) 1rem;
+  background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .so-onboarding-card {
   width: 100%;
-  max-width: 850px;
-  background-color: var(--bg-card);
+  max-width: 1000px;
+  background: var(--bg-card);
   border: 1px solid var(--border-light);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  padding: 3rem;
+  padding: clamp(1.5rem, 4vw, 3rem);
 }
 
-/* --- Typography Titles --- */
+/* ─── Header Typography Block ─── */
 .so-header-section {
   text-align: center;
   margin-bottom: 2.5rem;
 }
 
 .so-title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
@@ -38,66 +40,48 @@
   color: var(--text-muted);
 }
 
-/* --- Error Notification Stream --- */
+/* ─── Global Error Context Alerts ─── */
 .so-error-alert {
-  background-color: var(--bg-danger);
-  border: 1px solid var(--color-danger);
-  color: var(--color-danger);
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 4px solid var(--color-danger, #ef4444);
+  color: var(--color-danger, #ef4444);
   padding: 1rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
   font-weight: 500;
+  font-size: 0.95rem;
   margin-bottom: 2rem;
+  animation: soFadeIn 0.3s ease;
 }
 
-.so-form-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
-}
-
-/* --- Avatar Image Profile Input Section --- */
+/* ==========================================================================
+   ELEGANT COMPONENT AVATAR IMAGE UPLOADER
+   ========================================================================== */
 .so-image-upload-section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 12px;
+  margin-bottom: 3rem;
 }
 
 .so-avatar-preview {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background-color: var(--bg-primary);
-  border: 2px dashed var(--border-light);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  width: 130px;
+  height: 130px;
+  border-radius: var(--radius-full);
+  border: 2px dashed var(--border-medium);
+  background: var(--bg-secondary);
   overflow: hidden;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
 .so-avatar-preview:hover {
   border-color: var(--accent-color);
-  background-color: #fff5f6;
-}
-
-.so-upload-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--text-muted);
-  gap: 0.25rem;
-}
-
-.so-upload-placeholder i {
-  font-size: 1.4rem;
-}
-
-.so-upload-placeholder span {
-  font-size: 0.75rem;
-  font-weight: 600;
+  background: var(--accent-light);
 }
 
 .so-preview-img {
@@ -106,389 +90,207 @@
   object-fit: cover;
 }
 
-.so-hidden-file-input {
-  display: none;
-}
-
-.so-upload-tip {
-  font-size: 0.85rem;
+.so-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
   color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
 }
 
-/* --- Input Fields & Grids --- */
+.so-upload-placeholder i {
+  font-size: 1.5rem;
+  color: var(--accent-color);
+}
+
+.so-hidden-file-input {
+  display: none !important;
+}
+
+.so-avatar-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.so-action-text-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color var(--transition-fast);
+}
+
+.so-action-text-btn:hover {
+  color: var(--accent-color);
+}
+
+.so-crop-trigger {
+  color: var(--accent-color);
+  border-bottom: 1px dashed var(--accent-color);
+  padding-bottom: 2px;
+}
+
+/* ==========================================================================
+   DYNAMIC FORM STRUCTURAL GRID
+   ========================================================================== */
+.so-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.so-form-section-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--border-light);
+  margin-bottom: -1rem;
+}
+
+/* ─── Responsive Matrix Calculator ─── */
 .so-form-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
+  /* Desktop Layout Default Guardrail: Exactly 3 structural items per row */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem 1.25rem;
 }
 
 .so-input-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .so-input-group label {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-main);
+  color: var(--text-secondary);
 }
 
-.so-input-group input {
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--border-light);
-  background-color: #ffffff;
-  color: var(--text-main);
+.so-input-group input,
+.so-input-group select {
+  width: 100%;
+  padding: 12px 14px;
   font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.so-input-group input:focus {
+.so-input-group input:focus,
+.so-input-group select:focus {
   border-color: var(--accent-color);
   box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
 }
 
-/* --- Dynamic Specializations Box --- */
-.so-academic-section {
-  border-top: 1px solid var(--border-light);
-  padding-top: 2rem;
-}
-
-.so-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.25rem;
-}
-
-.so-section-header h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.so-section-desc {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-}
-
-.so-add-mapping-btn {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  color: var(--text-main);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.2s ease;
-}
-
-.so-add-mapping-btn:hover {
-  background-color: var(--accent-color);
-  color: #ffffff;
-  border-color: var(--accent-color);
-}
-
-/* --- Subject Cards Roster --- */
-.so-mapping-card {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.so-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
-.so-subject-select {
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--border-light);
-  background-color: #ffffff;
-  color: var(--text-main);
-  font-size: 0.95rem;
-  font-weight: 500;
-  min-width: 220px;
-  outline: none;
-}
-
-.so-subject-select:focus {
-  border-color: var(--accent-color);
-}
-
-.so-delete-card-btn {
-  background-color: transparent;
-  border: none;
-  color: var(--color-danger);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.4rem;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.so-delete-card-btn:hover {
-  background-color: var(--bg-danger);
-}
-
-/* --- Pill Matrix Selection Grid --- */
-.so-classes-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.so-classes-label {
-  font-size: 0.85rem;
-  font-weight: 600;
+.so-input-group input::placeholder {
   color: var(--text-muted);
 }
 
-.so-classes-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.so-class-pill-btn {
-  background-color: #ffffff;
-  border: 1px solid var(--border-light);
-  color: var(--text-muted);
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 500;
+/* Fix for modern select component typography blending */
+.so-input-group select {
   cursor: pointer;
-  transition: all 0.15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
 }
 
-.so-class-pill-btn:hover {
-  border-color: var(--text-muted);
-  color: var(--text-main);
-}
-
-.so-class-pill-btn.so-pill-active {
-  background-color: var(--accent-color);
-  border-color: var(--accent-color);
-  color: #ffffff;
-}
-
-/* --- Submit Execution Buttons --- */
+/* ==========================================================================
+   SUBMIT INTERACTIVE INTERFACE BUTTON
+   ========================================================================== */
 .so-submit-application-btn {
-  background-color: var(--accent-color);
-  color: #ffffff;
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.05rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-white);
+  background: var(--accent-color);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
   margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.15);
 }
 
-.so-submit-application-btn:hover:not(:disabled) {
-  background-color: var(--accent-hover);
+.so-submit-application-btn:hover {
+  background: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(233, 69, 96, 0.25);
 }
 
 .so-submit-application-btn:disabled {
-  opacity: 0.65;
+  opacity: 0.7;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* --- Spinner Animation Loader --- */
+/* ─── Processing Spinner Node ─── */
 .so-spinner {
   width: 18px;
   height: 18px;
   border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #ffffff;
-  animation: so-spin 0.8s linear infinite;
+  border-top-color: var(--text-white);
+  border-radius: var(--radius-full);
+  animation: soSpin 0.6s linear infinite;
 }
 
-@keyframes so-spin {
+/* ==========================================================================
+   ANIMATION TIME PATH KEYFRAMES
+   ========================================================================== */
+@keyframes soSpin {
   to { transform: rotate(360deg); }
 }
 
-/* --- Component Responsiveness --- */
-@media (max-width: 768px) {
-  .so-onboarding-card {
-    padding: 2rem 1.5rem;
-  }
-  
+@keyframes soFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet Rule Matrix Breakpoint */
+@media (max-width: 900px) {
   .so-form-grid {
-    grid-template-columns: 1fr;
+    /* Transitions flawlessly to exactly 2 items per row */
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
+}
 
-  .so-card-header {
-    flex-direction: column;
-    align-items: flex-start;
+/* Mobile Rule Matrix Breakpoint */
+@media (max-width: 600px) {
+  .so-onboarding-card {
+    padding: 1.5rem 1.25rem;
   }
 
-  .so-subject-select {
-    width: 100%;
+  .so-form-grid {
+    /* Transitions flawlessly to exactly 1 item per row */
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
-}
-
-
-
-
-
-/* --- New Profile Actions Bar Layout --- */
-.so-avatar-actions {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 0.5rem;
-}
-
-.so-action-text-btn {
-  background: none;
-  border: none;
-  color: var(--accent-color);
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.so-action-text-btn:hover {
-  background-color: var(--bg-danger);
-  color: var(--accent-hover);
-}
-
-.so-crop-trigger {
-  color: var(--text-main);
-}
-
-.so-crop-trigger:hover {
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-}
-
-/* --- Interactive Image Cropping Overlay Modal --- */
-.so-crop-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  padding: 1rem;
-}
-
-.so-crop-modal-card {
-  background-color: var(--bg-card);
-  border-radius: 16px;
-  width: 100%;
-  max-width: 480px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  overflow: hidden;
-  border: 1px solid var(--border-light);
-}
-
-.so-crop-workspace {
-  position: relative;
-  width: 100%;
-  height: 320px;
-  background-color: #0f172a;
-}
-
-.so-crop-controls {
-  padding: 1.5rem;
-  background-color: var(--bg-card);
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.so-slider-group {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.so-crop-zoom-range {
-  flex: 1;
-  accent-color: var(--accent-color);
-  cursor: pointer;
-  height: 4px;
-  background-color: var(--border-light);
-  border-radius: 2px;
-}
-
-.so-crop-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-}
-
-.so-crop-btn-cancel {
-  background-color: var(--bg-primary);
-  border: 1px solid var(--border-light);
-  color: var(--text-main);
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.so-crop-btn-cancel:hover {
-  background-color: var(--border-light);
-}
-
-.so-crop-btn-save {
-  background-color: var(--accent-color);
-  border: none;
-  color: #ffffff;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-  box-shadow: 0 4px 12px rgba(233, 69, 96, 0.15);
-}
-
-.so-crop-btn-save:hover {
-  background-color: var(--accent-hover);
-  box-shadow: 0 6px 16px rgba(233, 69, 96, 0.25);
+  
+  .so-submit-application-btn {
+    font-size: 0.95rem;
+    padding: 12px;
+  }
 }

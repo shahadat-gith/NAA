@@ -1,345 +1,425 @@
+/* ==========================================================================
+   OFFICIAL TRANSCRIPT & REPORT CARD VIEWER (PREFIX: rep-)
+   ========================================================================== */
 
-/* ===== PAGE WRAPPER ===== */
-.report-page {
+.rep-page {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 16px 60px;
+  padding: clamp(2rem, 5vw, 3.5rem) 16px 60px;
+  background: var(--bg-primary);
+  min-height: 100vh;
+  transition: background var(--transition-normal);
 }
 
-/* ===== A4 SHEET ===== */
-.report-sheet {
-  width: 794px;         
-  background: #fff;
-  padding: 20px;      
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
+/* ─── Empty/Error State Context Blocks ─── */
+.rep-empty-state {
+  text-align: center;
+  background: var(--bg-card);
+  padding: 3rem 2rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
 }
 
-/* ===== DOUBLE BORDER (outerBorder + innerBorder) ===== */
-.report-outer-border {
-  border: 2px solid #000;
+.rep-empty-state p {
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.rep-fallback-btn {
+  background: var(--accent-color);
+  color: var(--text-white);
+  border: none;
+  padding: 10px 22px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast);
+}
+
+.rep-fallback-btn:hover {
+  background: var(--accent-hover);
+}
+
+/* ─── Download Action Command Bar ─── */
+.rep-actions-container {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.rep-download-btn {
+  background: var(--accent-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 12px 36px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-accent);
+  transition: background var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+}
+
+.rep-download-btn:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.rep-download-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   OFFICIAL A4 PRINT CANVAS SHEET
+   ========================================================================== */
+
+.rep-sheet {
+  width: 794px; /* Standard fixed A4 Width aspect map reference */
+  background: #ffffff; /* Preserved clinical white paper presentation sheet context */
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-md);
+  color: #000000; /* Crisp dark ink standard for physical printing readability */
+}
+
+/* ─── Traditional Institutional Double Borders ─── */
+.rep-outer-border {
+  border: 2px solid #000000;
   padding: 6px;
+  border-radius: calc(var(--radius-md) - 2px);
 }
 
-.report-inner-border {
-  border: 1px solid #000;
-  padding: 14px;
+.rep-inner-border {
+  border: 1px solid #000000;
+  padding: 24px;
+  border-radius: calc(var(--radius-md) - 6px);
 }
 
-/* ===== HEADER ===== */
-.report-header {
+/* ==========================================================================
+   HEADER BLOCK
+   ========================================================================== */
+
+.rep-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-.school-logo {
-  width: 50px;
-  height: 50px;
+.rep-school-logo {
+  width: 54px;
+  height: 54px;
   object-fit: contain;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
-.report-header h1 {
-  font-size: 18px;
+.rep-header h1 {
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: #000;
+  color: #000000;
   margin: 0;
 }
 
-/* Divider row — line | text | line */
-.header-divider,
-.session-row {
+.rep-header h2 {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin: 6px 0 0;
+  color: #000000;
+}
+
+/* Decorative Header Alignment Tracks: line | text | line */
+.rep-header-divider,
+.rep-session-row {
   display: flex;
   align-items: center;
   width: 100%;
-  margin: 3px 0;
+  margin: 4px 0;
 }
 
-.header-divider::before,
-.header-divider::after {
+.rep-header-divider::before,
+.rep-header-divider::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #000000;
 }
 
-.header-divider span {
+.rep-header-divider span {
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  margin: 0 8px;
+  margin: 0 10px;
   white-space: nowrap;
 }
 
-.report-header h2 {
-  font-family: "Lato", sans-serif;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin: 4px 0 0;
-  color: #000;
-}
-
-/* Session row */
-.session-row {
+.rep-session-row {
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.line-short {
-  width: 40px;
-  border-bottom: 1px solid #000;
+.rep-line-short {
+  width: 45px;
+  border-bottom: 1px solid #000000;
 }
 
-.session-row span {
+.rep-session-row span {
   font-size: 9px;
+  font-weight: 600;
   white-space: nowrap;
 }
 
-/* ===== STUDENT SECTION ===== */
-.student-section {
+/* ==========================================================================
+   PROFILE DETAILS SECTION
+   ========================================================================== */
+
+.rep-student-section {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 8px 0;
+  margin: 16px 0;
 }
 
-.student-info {
+.rep-student-info {
   width: 75%;
-}
-
-.info-row {
   display: flex;
-  margin-bottom: 4px;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.info-label {
-  width: 110px;
-  font-size: 9px;
+.rep-info-row {
+  display: flex;
+  align-items: baseline;
+}
+
+.rep-info-label {
+  width: 120px;
+  font-size: 10px;
   font-weight: 700;
+  color: #000000;
   flex-shrink: 0;
 }
 
-.info-value {
-  font-size: 9px;
+.rep-info-value {
+  font-size: 10px;
+  color: #000000;
 }
 
-/* Photo */
-.photo-frame {
+/* Physical Profile Image Frame Box */
+.rep-photo-frame {
   width: 90px;
   height: 110px;
-  border: 1px solid #000;
+  border: 1px solid #000000;
   overflow: hidden;
   flex-shrink: 0;
+  background: #f8fafc;
 }
 
-.photo-frame img {
+.rep-photo-frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* ===== TABLE ===== */
-.table-title {
-  border: 1px solid #000;
-  padding: 4px;
+/* ==========================================================================
+   DATA SHEET TABULAR COMPONENT
+   ========================================================================== */
+
+.rep-table-title {
+  border: 1px solid #000000;
+  padding: 5px;
   text-align: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  margin-top: 6px;
+  text-transform: uppercase;
+  margin-top: 14px;
+  letter-spacing: 0.5px;
 }
 
-.marks-table {
+.rep-marks-table {
   width: 100%;
   border-collapse: collapse;
-  border-left: 1px solid #000;
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-left: 1px solid #000000;
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
 }
 
-.marks-table thead tr th,
-.marks-table tbody tr td {
-  border-right: 1px solid #000;
-  border-bottom: 1px solid #000;
-  padding: 4px;
+.rep-marks-table thead tr th,
+.rep-marks-table tbody tr td {
+  border-right: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  padding: 6px 4px;
   text-align: center;
-  font-size: 9px;
+  font-size: 10px;
 }
 
-.marks-table thead tr th:last-child,
-.marks-table tbody tr td:last-child {
+.rep-marks-table thead tr th:last-child,
+.rep-marks-table tbody tr td:last-child {
   border-right: none;
 }
 
-.marks-table thead tr th {
+.rep-marks-table thead tr th {
   font-weight: 700;
-  background: #fff;
+  background: #f8fafc;
 }
 
-.marks-table tbody tr td {
-  font-weight: 400;
+.rep-marks-table tbody tr td {
+  font-weight: 500;
 }
 
-/* ===== SUMMARY ===== */
-.summary-section {
-  margin-top: 8px;
+/* ==========================================================================
+   METRIC SUMMARY BLOCKS
+   ========================================================================== */
+
+.rep-summary-section {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.summary-section > div {
-  font-size: 9px;
+.rep-summary-section > div {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.rep-summary-total {
+  font-size: 11px !important;
+  font-weight: 700 !important;
   margin-bottom: 2px;
 }
 
-.summary-section > div:first-child {
-  font-size: 10px;
-  font-weight: 700;
-  margin-bottom: 3px;
-}
+/* ==========================================================================
+   TRANSCRIPT FOOTER & AUTHORITY SIGNATURE SIGNALS
+   ========================================================================== */
 
-/* ===== FOOTER ===== */
-.report-footer {
+.rep-footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 20px;
+  margin-top: 32px;
 }
 
-/* Principal signature */
-.principal-sign {
-  width: 40%;
+/* Principal Signature Node Area */
+.rep-principal-sign {
+  width: 35%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.principal-sign-img {
-  width: 80px;
-  height: 30px;
+.rep-principal-sign-img {
+  width: 90px;
+  height: 35px;
   object-fit: contain;
+  margin-bottom: 2px;
+}
+
+.rep-sign-line {
+  width: 100%;
+  border-bottom: 1px solid #000000;
   margin-bottom: 4px;
 }
 
-.sign-line {
-  width: 100%;
-  border-bottom: 1px solid #000;
-  margin-bottom: 3px;
-}
-
-.principal-sign span {
-  font-size: 9px;
+.rep-principal-sign span {
+  font-size: 10px;
   font-weight: 700;
+  text-transform: uppercase;
 }
 
-.principal-name {
+.rep-principal-name {
   font-size: 9px;
   margin-top: 1px;
 }
 
-/* School contact */
-.school-contact {
-  width: 55%;
+/* Contact Details Module */
+.rep-school-contact {
+  width: 58%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
 }
 
-.divider-footer {
+.rep-divider-footer {
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
-.divider-footer::before,
-.divider-footer::after {
+.rep-divider-footer::before,
+.rep-divider-footer::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #000000;
 }
 
-.divider-footer span {
+.rep-divider-footer span {
   font-size: 9px;
   font-weight: 700;
   margin: 0 8px;
   white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
-.school-contact > div {
+.rep-school-contact > div {
   font-size: 8px;
   text-align: center;
+  font-weight: 500;
 }
 
-/* ===== DOWNLOAD BUTTON ===== */
-.actions-container {
-  margin-bottom: 18px;
-  display: flex;
-  justify-content: center;
-}
+/* ==========================================================================
+   RESPONSIVE CANVAS ADAPTATION BREAKPOINTS
+   ========================================================================== */
 
-.download-btn {
-  background: #e94560;
-  color: #fff;
-  border: none;
-  border-radius: 9999px;
-  padding: 12px 36px;
-  font-family: "Lato", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.download-btn:hover:not(:disabled) {
-  background: #333;
-  transform: translateY(-1px);
-}
-
-.download-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.download-btn:disabled {
-  background: #888;
-  cursor: not-allowed;
-}
-
-/* ===== RESPONSIVE — shrink on small screens ===== */
-@media (max-width: 860px) {
-  .report-sheet {
+@media (max-width: 820px) {
+  .rep-sheet {
     width: 100%;
     max-width: 794px;
   }
 }
 
 @media (max-width: 600px) {
-  .report-sheet {
-    font-size: 8px;
+  .rep-inner-border {
+    padding: 14px;
+  }
+  
+  .rep-school-logo {
+    width: 44px;
+    height: 44px;
   }
 
-  .school-logo {
-    width: 38px;
-    height: 38px;
+  .rep-header h1 {
+    font-size: 15px;
+  }
+  
+  .rep-header h2 {
+    font-size: 11px;
   }
 
-  .report-header h1 {
-    font-size: 13px;
+  .rep-photo-frame {
+    width: 74px;
+    height: 92px;
   }
 
-  .photo-frame {
-    width: 68px;
-    height: 85px;
+  .rep-info-label {
+    width: 95px;
   }
-
-  .info-label {
-    width: 90px;
+  
+  .rep-marks-table thead tr th,
+  .rep-marks-table tbody tr td,
+  .rep-table-title {
+    font-size: 8.5px;
   }
 }

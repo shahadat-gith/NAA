@@ -75,7 +75,7 @@ const About = () => {
   };
 
   return (
-    <div className="about-page">
+    <div className="abt-page">
       <Helmet>
         <title>About Us | Nashib Ali Academy</title>
         <meta
@@ -90,73 +90,73 @@ const About = () => {
       />
 
       {/* Our Mission */}
-      <section className="about-section mission-section">
-        <div className="section-container">
-          <h2 className="section-title">Our Mission</h2>
-          <p className="section-content">
+      <section className="abt-section abt-mission-section">
+        <div className="abt-section-container">
+          <h2 className="abt-section-title">Our Mission</h2>
+          <p className="abt-section-content">
             At Nashib Ali Academy, our mission is to empower students with a world-class education that nurtures their intellectual, emotional, and social growth. We strive to create a dynamic learning environment that fosters creativity, critical thinking, and a passion for lifelong learning.
           </p>
         </div>
       </section>
 
       {/* Our History */}
-      <section className="about-section history-section">
-        <div className="section-container">
-          <h2 className="section-title">Our History</h2>
-          <p className="section-content">
-            Founded in 2015 by visionary men Abdul Mozid Mondal(Principal) and Sultan Mahmud(Managing Director), our academy has grown into a prestigious institution known for academic excellence and holistic development. Over the years, we have shaped thousands of students into confident, compassionate, and capable individuals, contributing to society with integrity and purpose.
+      <section className="abt-section abt-history-section">
+        <div className="abt-section-container">
+          <h2 className="abt-section-title">Our History</h2>
+          <p className="abt-section-content">
+            Founded in 2015 by visionary men Abdul Mozid Mondal (Principal) and Sultan Mahmud (Managing Director), our academy has grown into a prestigious institution known for academic excellence and holistic development. Over the years, we have shaped thousands of students into confident, compassionate, and capable individuals, contributing to society with integrity and purpose.
           </p>
         </div>
       </section>
 
       {/* Our Values */}
-      <section className="about-section values-section">
-        <div className="section-container">
-          <h2 className="section-title">Our Values</h2>
-          <p className="section-content">
+      <section className="abt-section abt-values-section">
+        <div className="abt-section-container">
+          <h2 className="abt-section-title">Our Values</h2>
+          <p className="abt-section-content">
             Our core values guide everything we do, shaping our students into well-rounded individuals ready to face the world.
           </p>
-          <div className="values-list">
-            <span className="value-item">Integrity</span>
-            <span className="value-item">Excellence</span>
-            <span className="value-item">Community</span>
-            <span className="value-item">Innovation</span>
+          <div className="abt-values-list">
+            <span className="abt-value-item">Integrity</span>
+            <span className="abt-value-item">Excellence</span>
+            <span className="abt-value-item">Community</span>
+            <span className="abt-value-item">Innovation</span>
           </div>
         </div>
       </section>
 
       {/* Our Programs */}
-      <section className="about-section programs-section">
-        <div className="section-container">
-          <h2 className="section-title">Our Programs</h2>
-          <p className="section-content">
+      <section className="abt-section abt-programs-section">
+        <div className="abt-section-container">
+          <h2 className="abt-section-title">Our Programs</h2>
+          <p className="abt-section-content">
             We offer a diverse range of educational programs tailored to meet the needs of students from Nursery to Higher Secondary.
           </p>
-          <div className="programs-list">
-            <div className="program-item">
-              <div className="program-icon">
+          <div className="abt-programs-list">
+            <div className="abt-program-item">
+              <div className="abt-program-icon">
                 <i className="fas fa-book"></i>
               </div>
-              <h3 className="program-title">English Medium Education</h3>
-              <p className="program-description">
+              <h3 className="abt-program-title">English Medium Education</h3>
+              <p className="abt-program-description">
                 From Nursery to Class 10, our English medium curriculum emphasizes proficiency in English, Mathematics, General Science, and more through interactive learning.
               </p>
             </div>
-            <div className="program-item">
-              <div className="program-icon">
+            <div className="abt-program-item">
+              <div className="abt-program-icon">
                 <i className="fas fa-language"></i>
               </div>
-              <h3 className="program-title">Assamese Medium Education</h3>
-              <p className="program-description">
+              <h3 className="abt-program-title">Assamese Medium Education</h3>
+              <p className="abt-program-description">
                 From Ankur to Class 10, we provide a culturally rich education focusing on Assamese language and literature alongside core subjects like Mathematics and Social Studies.
               </p>
             </div>
-            <div className="program-item">
-              <div className="program-icon">
+            <div className="abt-program-item">
+              <div className="abt-program-icon">
                 <i className="fas fa-graduation-cap"></i>
               </div>
-              <h3 className="program-title">Higher Secondary Streams</h3>
-              <p className="program-description">
+              <h3 className="abt-program-title">Higher Secondary Streams</h3>
+              <p className="abt-program-description">
                 Specialized Arts and Science streams for Classes 11–12, offering subjects like Physics, Chemistry, Biology, Political Science, and Advance Assamese.
               </p>
             </div>
@@ -165,59 +165,58 @@ const About = () => {
       </section>
 
       {/* Our Facilities */}
-      <section className="about-section facilities-section">
-        <div className="section-container">
-          <h2 className="section-title">Our Facilities</h2>
-          <p className="section-content">
+      <section className="abt-section abt-facilities-section">
+        <div className="abt-section-container">
+          <h2 className="abt-section-title">Our Facilities</h2>
+          <p className="abt-section-content">
             Our state-of-the-art facilities create an environment conducive to learning, creativity, and personal growth.
           </p>
-          <div className="facilities-list">
-            <div className="facility-item">
-              <div className="facility-icon">
+          <div className="abt-facilities-list">
+            <div className="abt-facility-item">
+              <div className="abt-facility-icon">
                 <i className="fas fa-building"></i>
               </div>
-              <h3 className="facility-title">Separate Hostels</h3>
-              <p className="facility-description">
+              <h3 className="abt-facility-title">Separate Hostels</h3>
+              <p className="abt-facility-description">
                 Safe and comfortable residential facilities with separate hostels for girls and boys, fostering a supportive community.
               </p>
             </div>
-            <div className="facility-item">
-              <div className="facility-icon">
+            <div className="abt-facility-item">
+              <div className="abt-facility-icon">
                 <i className="fas fa-flask"></i>
               </div>
-              <h3 className="facility-title">Modern Laboratories</h3>
-              <p className="facility-description">
+              <h3 className="abt-facility-title">Modern Laboratories</h3>
+              <p className="abt-facility-description">
                 Well-equipped labs for Chemistry, enabling hands-on learning and experimentation.
               </p>
             </div>
-            <div className="facility-item">
-              <div className="facility-icon">
+            <div className="abt-facility-item">
+              <div className="abt-facility-icon">
                 <i className="fas fa-book-open"></i>
               </div>
-              <h3 className="facility-title">Mini Library</h3>
-              <p className="facility-description">
-                A vast collection of textbooks are available in our mini library
+              <h3 className="abt-facility-title">Mini Library</h3>
+              <p className="abt-facility-description">
+                A vast collection of textbooks are available in our mini library.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-
       {/* FAQ Section */}
-      <section className="faq-section">
-        <div className="section-container">
-          <h2 className="faq-title">Frequently Asked Questions</h2>
-          <div className="faq-list">
+      <section className="abt-faq-section">
+        <div className="abt-section-container">
+          <h2 className="abt-faq-title">Frequently Asked Questions</h2>
+          <div className="abt-faq-list">
             {faqs.map((faq) => (
-              <div key={faq.id} className="faq-item">
-                <h3 className="faq-question" onClick={() => toggleFAQ(faq.id)}>
+              <div key={faq.id} className="abt-faq-item">
+                <h3 className="abt-faq-question" onClick={() => toggleFAQ(faq.id)}>
                   {faq.question}
-                  <span className={`faq-toggle-icon ${openFaq === faq.id ? 'open' : ''}`}>
+                  <span className={`abt-faq-toggle-icon ${openFaq === faq.id ? 'abt-open' : ''}`}>
                     <i className={openFaq === faq.id ? 'fas fa-minus' : 'fas fa-plus'}></i>
                   </span>
                 </h3>
-                <div className={`faq-answer ${openFaq === faq.id ? 'open' : ''}`}>
+                <div className={`abt-faq-answer ${openFaq === faq.id ? 'abt-open' : ''}`}>
                   <p>{faq.answer}</p>
                 </div>
               </div>

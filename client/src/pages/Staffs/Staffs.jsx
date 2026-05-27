@@ -1,12 +1,38 @@
-import React, { useContext, useMemo, useState } from 'react';
-import { AppContext } from '../../context/AppContext';
-import { Helmet } from 'react-helmet-async';
-import './Staffs.css';
-import { StaffCard } from './StaffCard';
+import React, { useContext, useEffect, useMemo, useState } from "react";
+import { AppContext } from "../../context/AppContext";
+import { Helmet } from "react-helmet-async";
+import "./Staffs.css";
+import { StaffCard } from "./StaffCard";
+import toast from "react-hot-toast";
+import axios from "axios";
+import Loader from "../../components/Loader/Loader";
 
 const Staffs = () => {
-  const { teachers } = useContext(AppContext);
-  const [searchTerm, setSearchTerm] = useState('');
+  const { backendUrl } = useContext(AppContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchTeachers = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${backendUrl}/api/teacher/all-teachers`,
+      );
+      if (data.success) {
+        setTeachers(data.teachers);
+      }
+    } catch (error) {
+      console.error("Failed to fetch Teachers:", error);
+      toast.error("Could not load teachers");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeachers();
+  }, []);
 
   // Enhanced filtering logic syncing with the updated schema layout
   const filteredTeachers = useMemo(() => {
@@ -17,8 +43,6 @@ const Staffs = () => {
 
     return teachers.filter((teacher) => {
       const matchName = teacher.name?.toLowerCase().includes(term);
-      
-      // Match against the single string property from your updated schema layout
       const matchSubject = teacher.subjectTaught?.toLowerCase().includes(term);
 
       // Return true if either condition matches
@@ -27,7 +51,7 @@ const Staffs = () => {
   }, [teachers, searchTerm]);
 
   return (
-    <div className="te-teacher-page">
+    <div className="staff-page">
       <Helmet>
         <title>Our Teachers | Nashib Ali Academy</title>
         <meta
@@ -37,42 +61,42 @@ const Staffs = () => {
       </Helmet>
 
       {/* Hero & Search Section */}
-      <section className="te-teacher-hero">
-        <div className="te-container te-teacher-hero-inner">
-          <div className="te-teacher-hero-content">
-            <p className="te-teacher-kicker">Our Faculty</p>
-            <h1 className="te-teacher-title">Teachers Who Shape Futures</h1>
+      <section className="staff-hero">
+        <div className="section-container staff-hero-inner">
+          <div className="staff-hero-content">
+            <p className="staff-kicker">Our Faculty</p>
+            <h1 className="staff-title">Teachers Who Shape Futures</h1>
           </div>
 
-          <div className="te-teacher-search-card">
-            <label className="te-teacher-search-label" htmlFor="teacher-search">
+          <div className="staff-search-card">
+            <label className="staff-search-label" htmlFor="teacher-search">
               Search teachers
             </label>
-            <div className="te-teacher-search">
+            <div className="staff-search-input-wrapper">
               <input
                 id="teacher-search"
                 type="text"
                 placeholder="Search by name or subject..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="te-search-input"
+                className="search-input"
               />
               {searchTerm && (
                 <button
-                  className="te-search-clear-btn"
-                  onClick={() => setSearchTerm('')}
+                  className="search-clear-btn"
+                  onClick={() => setSearchTerm("")}
                   aria-label="Clear search"
                 >
                   <i className="fas fa-times"></i>
                 </button>
               )}
             </div>
-            <div className="te-teacher-search-meta">
+            <div className="staff-search-meta">
               <span>{filteredTeachers.length} teachers found</span>
               <span>
                 {searchTerm
                   ? `Filtered by "${searchTerm}"`
-                  : 'Search by teacher name or subject department'}
+                  : "Search by teacher name or subject department"}
               </span>
             </div>
           </div>
@@ -80,18 +104,23 @@ const Staffs = () => {
       </section>
 
       {/* Grid Section */}
-      <section className="te-teacher-directory">
-        <div className="te-container">
-          {filteredTeachers.length > 0 ? (
-            <div className="te-teachers-grid">
+      <section className="directory-section">
+        <div className="section-container">
+          {loading ? (
+            <Loader />
+          ) : filteredTeachers.length > 0 ? (
+            <div className="teachers-grid">
               {filteredTeachers.map((teacher, index) => (
                 <StaffCard key={teacher._id || index} teacher={teacher} />
               ))}
             </div>
           ) : (
-            <div className="te-no-results">
+            <div className="no-results">
               <h3>No teachers found</h3>
-              <p>Try a different search term like "Mathematics", "Social Studies", or another department name.</p>
+              <p>
+                Try a different search term like "Mathematics", "Social
+                Studies", or another department name.
+              </p>
             </div>
           )}
         </div>

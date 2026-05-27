@@ -5,8 +5,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #f3f4f6;
-  font-family: 'Arial', sans-serif;
+  background-color: var(--bg-secondary);
 }
 
 .not-found-content {
@@ -18,28 +17,28 @@
 .error-code {
   font-size: 8rem;
   font-weight: 800;
-  color: #e94560;
+  color: var(--accent-color);
   line-height: 1;
   margin-bottom: 1rem;
 }
 
 .clock-icon {
   font-size: 5rem;
-  color: #5a4c4c;
+  color: var(--text-secondary);
   margin: 1.5rem 0;
-  animation: bounce 2s infinite;
+  animation: bounce 2s infinite; /* Timing remains specific to the illustration rhythm */
 }
 
 .not-found-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #e94560;
+  color: var(--accent-color);
   margin-bottom: 1rem;
 }
 
 .not-found-message {
   font-size: 1.125rem;
-  color: #4b5563;
+  color: var(--text-secondary);
   margin-bottom: 2rem;
   line-height: 1.5;
 }
@@ -48,17 +47,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: #e94560;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--text-white);
   padding: 0.75rem 1.5rem;
-  border-radius: 1.5rem;
+  border-radius: var(--radius-xl);
   text-decoration: none;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  transition: background-color var(--transition-slow);
 }
 
 .back-home-button:hover {
-  background-color: #6d031f;
+  background-color: var(--accent-hover);
 }
 
 @keyframes bounce {
