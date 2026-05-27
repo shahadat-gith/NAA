@@ -62,10 +62,9 @@ app.use("/api/payments", paymentRouter);
 
 app.get("/api/home-data", async (req, res, next) => {
   try {
-    const [heroImages, authorities, teachers, serviceSettings, notices] = await Promise.all([
+    const [heroImages, authorities, serviceSettings, notices] = await Promise.all([
       HeroImage.find({}),
       authorityModel.find({ role: { $in: ["Principal", "Managing Director"] } }),
-      teacherModel.find({}).sort({ experience: -1 }),
       ServiceSettings.findOne({}),
       Notice.find({}).sort({ createdAt: -1 }).limit(5)
     ]);
@@ -75,7 +74,6 @@ app.get("/api/home-data", async (req, res, next) => {
       data: {
         heroImages,
         authorities,
-        teachers,
         serviceSettings,
         notices,
       },

@@ -6,10 +6,8 @@ export const AppContext = createContext();
 export const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const adminUrl = import.meta.env.VITE_ADMIN_URL;
-  const [teachers, setTeachers] = useState([]);
   const [authorities, setAuthorities] = useState([]);
   const [heroImages, setHeroImages] = useState([]);
-  const [galleryImages, setGalleryImages] = useState([]);
   const [serviceSettings, setServiceSettings] = useState(null);
   const [loading, setLoading] = useState(false);
   const [notices, setNotices] = useState([])
@@ -21,12 +19,10 @@ export const AppContextProvider = (props) => {
       const res = await axios.get(`${backendUrl}/api/home-data`);
 
       if (res.data.success) {
-        const { teachers, authorities, heroImages, galleryImages, serviceSettings, notices} = res.data.data;
+        const { authorities, heroImages, serviceSettings, notices} = res.data.data;
 
-        setTeachers(teachers || []);
         setAuthorities(authorities || []);
         setHeroImages(heroImages || []);
-        setGalleryImages(galleryImages || [])
         setServiceSettings(serviceSettings || [])
         setNotices(notices || [])
       }
@@ -47,10 +43,8 @@ export const AppContextProvider = (props) => {
   const value = {
     backendUrl,
     adminUrl,
-    teachers,
     authorities,
     heroImages,
-    galleryImages,
     serviceSettings,
     notices,
     loading,
