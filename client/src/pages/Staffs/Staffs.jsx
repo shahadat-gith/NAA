@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import { Helmet } from "react-helmet-async";
 import "./Staffs.css";
@@ -13,12 +13,11 @@ const Staffs = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchTeachers = async () => {
+  const fetchTeachers = useCallback(async () => {
+    if (!backendUrl) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${backendUrl}/api/teacher/all-teachers`,
-      );
+      const { data } = await axios.get(`${backendUrl}/api/teacher/all-teachers`);
       if (data.success) {
         setTeachers(data.teachers);
       }
@@ -28,11 +27,12 @@ const Staffs = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [backendUrl]);
 
   useEffect(() => {
+    if (!backendUrl) return;
     fetchTeachers();
-  }, []);
+  }, [backendUrl, fetchTeachers]);
 
   // Enhanced filtering logic syncing with the updated schema layout
   const filteredTeachers = useMemo(() => {

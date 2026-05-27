@@ -69,7 +69,7 @@
 
 .feature-item:hover .feature-icon {
   transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(233, 69, 96, 0.5); /* Focus highlight glow scaling */
+  box-shadow: var(--accent-shadow); /* Focus highlight glow scaling */
 }
 
 .feature-content {

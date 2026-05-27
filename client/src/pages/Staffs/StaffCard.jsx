@@ -21,7 +21,7 @@ export const StaffCard = ({ teacher }) => {
       <div className="stf-card-body">
         <div className="stf-card-top">
           <h3 className="stf-card-name">{teacher.name}</h3>
-          <p className="stf-card-subtitle">
+          <div className="stf-card-subtitle">
             <p>
               <span style={{ fontWeight: "bold" }}>Designation:</span>{" "}
               <span style={{ color: "var(--accent-color)" }}>
@@ -34,7 +34,7 @@ export const StaffCard = ({ teacher }) => {
                 {teacher.degree || "Not Provided"} 
               </span>
             </p>
-          </p>
+          </div>
         </div>
 
         <div className="stf-card-subjects">

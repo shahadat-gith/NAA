@@ -12,6 +12,7 @@ const Result = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [infoMessage, setInfoMessage] = useState("");
+  const [showMessages, setShowMessages] = useState(false);
 
   const navigate = useNavigate();
   const { backendUrl } = useContext(AppContext);
@@ -19,12 +20,9 @@ const Result = () => {
   const handleResultSearch = async (registrationNo) => {
     setError("");
     setInfoMessage("");
+    setShowMessages(false);
     setResult(null);
     setLoading(true);
-
-  // Clear messages from view when user hits search
-  const messagesWrapper = document.querySelector('.res-messages-container');
-  if (messagesWrapper) messagesWrapper.removeAttribute('data-active');
 
     try {
       const res = await axios.post(
@@ -33,6 +31,7 @@ const Result = () => {
 
       if (!res.data.success) {
         setError(res.data.message || "Result not found");
+        setShowMessages(true);
         return;
       }
 
@@ -43,6 +42,7 @@ const Result = () => {
         setInfoMessage(
           "Please complete your outstanding dues to unlock the report card layout. Kindly contact the Principal's office."
         );
+        setShowMessages(true);
         return;
       }
 
@@ -53,6 +53,7 @@ const Result = () => {
         err.response?.data?.message ||
           "An unexpected network error occurred while fetching your academic record."
       );
+      setShowMessages(true);
     } finally {
       setLoading(false);
     }
@@ -83,7 +84,7 @@ const Result = () => {
 
         {/* System Response Status Message Area */}
         {(error || infoMessage) && (
-          <div className="res-messages-container" data-active="true">
+          <div className="res-messages-container" data-active={showMessages}>
             {error && (
               <div className="res-alert res-alert-danger">
                 <i className="fas fa-exclamation-triangle"></i>

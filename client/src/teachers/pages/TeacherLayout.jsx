@@ -58,9 +58,13 @@ const TeacherLayout = () => {
     };
 
     // 2. Fire fetch only if context is ready, otherwise let the application resolve context
-    if (backendUrl) {
-      fetchDashboardData();
+    if (!backendUrl) {
+      setLoading(false);
+      toast.error("Server configuration unavailable. Please refresh the page.");
+      return;
     }
+
+    fetchDashboardData();
   }, [backendUrl, token, navigate]);
 
   // If there's no token, return null to completely prevent any flashing of unauthenticated UI elements

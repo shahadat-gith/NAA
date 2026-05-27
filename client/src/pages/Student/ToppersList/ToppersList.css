@@ -17,7 +17,7 @@
   width: 100%;
 }
 
-/* ─── Hero Header Header Area ─── */
+/* ─── Hero Header Area ─── */
 .top-header {
   text-align: center;
   max-width: 750px;
@@ -78,7 +78,7 @@
 }
 
 .top-gold {
-  color: #eab308; /* Premium golden accent token */
+  color: var(--accent-gold); /* Premium golden accent token */
 }
 
 /* ==========================================================================
@@ -130,9 +130,9 @@
 }
 
 /* Podium contextual rank borders */
-.top-winner-card.top-rank-1 { border-top: 4px solid #eab308; }
-.top-winner-card.top-rank-2 { border-top: 4px solid #94a3b8; }
-.top-winner-card.top-rank-3 { border-top: 4px solid #b45309; }
+.top-winner-card.top-rank-1 { border-top: 4px solid var(--rank-gold); }
+.top-winner-card.top-rank-2 { border-top: 4px solid var(--rank-silver); }
+.top-winner-card.top-rank-3 { border-top: 4px solid var(--rank-bronze); }
 
 .top-image-frame {
   width: 110px;

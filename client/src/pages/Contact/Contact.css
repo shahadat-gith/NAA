@@ -60,11 +60,10 @@
 
 .cnt-grid {
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(450px, 1.6fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(380px, 1.6fr);
   gap: 3.5rem clamp(2rem, 4vw, 4rem);
   align-items: start;
 }
-
 /* ─── Left Column: Info Cards ─── */
 .cnt-info-col {
   display: flex;
