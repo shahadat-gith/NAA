@@ -1,0 +1,671 @@
+[{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451b"
+  },
+  "public_id": "school-gallery/ywpdjq6cuqy8ycf1jkhx",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521024/school-gallery/ywpdjq6cuqy8ycf1jkhx.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451a"
+  },
+  "public_id": "school-gallery/i1gt3ycbqvstuyyh4xix",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521028/school-gallery/i1gt3ycbqvstuyyh4xix.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451e"
+  },
+  "public_id": "school-gallery/xcgrhrdetzuzroqcrxfi",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521023/school-gallery/xcgrhrdetzuzroqcrxfi.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124528"
+  },
+  "public_id": "school-gallery/dznq8lkug7ty7wjr7xd9",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521094/school-gallery/dznq8lkug7ty7wjr7xd9.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124522"
+  },
+  "public_id": "school-gallery/dxumbrfr5hpqun6tncyf",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521101/school-gallery/dxumbrfr5hpqun6tncyf.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124541"
+  },
+  "public_id": "school-gallery/b7w6v3asapjk1c3szcek",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521182/school-gallery/b7w6v3asapjk1c3szcek.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e124516"
+  },
+  "public_id": "school-gallery/cbleb9u9kmr40qj8cwvo",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521025/school-gallery/cbleb9u9kmr40qj8cwvo.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.565Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452d"
+  },
+  "public_id": "school-gallery/z1ni8enqht6nlgykzho6",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521075/school-gallery/z1ni8enqht6nlgykzho6.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452c"
+  },
+  "public_id": "school-gallery/fmmwbaekhmqauubsuplo",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521084/school-gallery/fmmwbaekhmqauubsuplo.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124534"
+  },
+  "public_id": "school-gallery/dgpmicnylhtiwicwmpoa",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521097/school-gallery/dgpmicnylhtiwicwmpoa.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453a"
+  },
+  "public_id": "school-gallery/tdym5twpkq5pocscezen",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521193/school-gallery/tdym5twpkq5pocscezen.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451f"
+  },
+  "public_id": "school-gallery/epit5vhlrjnegeooc78v",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521025/school-gallery/epit5vhlrjnegeooc78v.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452a"
+  },
+  "public_id": "school-gallery/nsfzarz0tq109qhg20sq",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521070/school-gallery/nsfzarz0tq109qhg20sq.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453b"
+  },
+  "public_id": "school-gallery/mtmc89dem0qstumcvvyg",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521190/school-gallery/mtmc89dem0qstumcvvyg.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124526"
+  },
+  "public_id": "school-gallery/klsmxapn7bplgihswcou",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521091/school-gallery/klsmxapn7bplgihswcou.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124523"
+  },
+  "public_id": "school-gallery/wvuckasfwz7ush3zqa3b",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521099/school-gallery/wvuckasfwz7ush3zqa3b.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451c"
+  },
+  "public_id": "school-gallery/ibcrhivqmsy9bdboiolp",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521020/school-gallery/ibcrhivqmsy9bdboiolp.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e124518"
+  },
+  "public_id": "school-gallery/vgewuemz67e2xuie1ht7",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521021/school-gallery/vgewuemz67e2xuie1ht7.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.566Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124529"
+  },
+  "public_id": "school-gallery/kmhnonekniutktpkqofk",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521095/school-gallery/kmhnonekniutktpkqofk.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124527"
+  },
+  "public_id": "school-gallery/dozs0kpcsq3ovposjppr",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521100/school-gallery/dozs0kpcsq3ovposjppr.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124531"
+  },
+  "public_id": "school-gallery/fpyawhsvnnqudr0m2dqi",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521104/school-gallery/fpyawhsvnnqudr0m2dqi.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453c"
+  },
+  "public_id": "school-gallery/tjjas2cia3vdqnzyadtt",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521185/school-gallery/tjjas2cia3vdqnzyadtt.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124539"
+  },
+  "public_id": "school-gallery/fcxdps1sexekovk3ycb0",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521189/school-gallery/fcxdps1sexekovk3ycb0.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124540"
+  },
+  "public_id": "school-gallery/bedajodqduegxkddq5ou",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521196/school-gallery/bedajodqduegxkddq5ou.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124533"
+  },
+  "public_id": "school-gallery/bjfrzdwqvbhujm8aaycs",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521096/school-gallery/bjfrzdwqvbhujm8aaycs.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124538"
+  },
+  "public_id": "school-gallery/zibqwd6hk7qrux2haoei",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521178/school-gallery/zibqwd6hk7qrux2haoei.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124530"
+  },
+  "public_id": "school-gallery/t94euwlh0cqenmbxzekl",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521059/school-gallery/t94euwlh0cqenmbxzekl.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124537"
+  },
+  "public_id": "school-gallery/vgjrruobv7symsunr1yo",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521192/school-gallery/vgjrruobv7symsunr1yo.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.632Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e124519"
+  },
+  "public_id": "school-gallery/pgpmsgpcfcyx3ldlx7hu",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521027/school-gallery/pgpmsgpcfcyx3ldlx7hu.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124532"
+  },
+  "public_id": "school-gallery/rxxg54arva9w42nznlbn",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521087/school-gallery/rxxg54arva9w42nznlbn.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453d"
+  },
+  "public_id": "school-gallery/igflxl6hz3ew6ham7ugc",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521196/school-gallery/igflxl6hz3ew6ham7ugc.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124524"
+  },
+  "public_id": "school-gallery/s8pbi09k4lbp6r2iqph8",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521081/school-gallery/s8pbi09k4lbp6r2iqph8.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124543"
+  },
+  "public_id": "school-gallery/q9gpzqtb4vqic3iqsjzw",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521195/school-gallery/q9gpzqtb4vqic3iqsjzw.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e124517"
+  },
+  "public_id": "school-gallery/mcybdg8cmbu7rlibbqdi",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521017/school-gallery/mcybdg8cmbu7rlibbqdi.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.566Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452e"
+  },
+  "public_id": "school-gallery/ydh1ho6vmbxkdzpfkdho",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521099/school-gallery/ydh1ho6vmbxkdzpfkdho.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e124542"
+  },
+  "public_id": "school-gallery/qtge2xyirtqf4yjtukah",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521182/school-gallery/qtge2xyirtqf4yjtukah.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453e"
+  },
+  "public_id": "school-gallery/jihh48cpw9lsdhr0yrui",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521183/school-gallery/jihh48cpw9lsdhr0yrui.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385046332ba9ef9e12451d"
+  },
+  "public_id": "school-gallery/ad2i0o7tj8fxjdihthjk",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521016/school-gallery/ad2i0o7tj8fxjdihthjk.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:17:10.567Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452f"
+  },
+  "public_id": "school-gallery/d1wdxeexxyierenhauyp",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521088/school-gallery/d1wdxeexxyierenhauyp.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e12452b"
+  },
+  "public_id": "school-gallery/i5ghjkmz6zys57w8jdk6",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521080/school-gallery/i5ghjkmz6zys57w8jdk6.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683850ee332ba9ef9e12453f"
+  },
+  "public_id": "school-gallery/napjmncbtphxmoqoxwl3",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521185/school-gallery/napjmncbtphxmoqoxwl3.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:19:58.633Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68385092332ba9ef9e124521"
+  },
+  "public_id": "school-gallery/y1g9ut3ujcq3ofdsbjvh",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1748521069/school-gallery/y1g9ut3ujcq3ofdsbjvh.jpg",
+  "createdAt": {
+    "$date": "2025-05-29T12:18:26.741Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918133"
+  },
+  "public_id": "school-gallery/gpm80k1psmlilo9nzjst",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/gpm80k1psmlilo9nzjst.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918136"
+  },
+  "public_id": "school-gallery/q7caamsavbtiyflezjot",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/q7caamsavbtiyflezjot.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813a"
+  },
+  "public_id": "school-gallery/ilstxxnyac9vf92zucsx",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/ilstxxnyac9vf92zucsx.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918143"
+  },
+  "public_id": "school-gallery/uurb0arcaqo8ah4lvrtp",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/uurb0arcaqo8ah4lvrtp.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918137"
+  },
+  "public_id": "school-gallery/azjwfghyjfety26z5xlq",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/azjwfghyjfety26z5xlq.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813c"
+  },
+  "public_id": "school-gallery/ti6tkd8g98avovi4qe5f",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/ti6tkd8g98avovi4qe5f.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918141"
+  },
+  "public_id": "school-gallery/vrgvo5dkn4caz3jhodbj",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/vrgvo5dkn4caz3jhodbj.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813b"
+  },
+  "public_id": "school-gallery/uxbg8sdt2huyzbe6oy2h",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/uxbg8sdt2huyzbe6oy2h.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813d"
+  },
+  "public_id": "school-gallery/uwfhumuo40ejatzywpk3",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/uwfhumuo40ejatzywpk3.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813e"
+  },
+  "public_id": "school-gallery/zejoevgpo3l2fu7athbw",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/zejoevgpo3l2fu7athbw.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918132"
+  },
+  "public_id": "school-gallery/wsykhtla6axiikezjmoy",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/wsykhtla6axiikezjmoy.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918135"
+  },
+  "public_id": "school-gallery/schynxhn7xhf04yvrjbe",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/schynxhn7xhf04yvrjbe.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918138"
+  },
+  "public_id": "school-gallery/sh62ya9ikon7xdqegwqr",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/sh62ya9ikon7xdqegwqr.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918140"
+  },
+  "public_id": "school-gallery/qu8yzpy6tnf07inptta9",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/qu8yzpy6tnf07inptta9.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918142"
+  },
+  "public_id": "school-gallery/yhkkps5dpvb0noyjytlj",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/yhkkps5dpvb0noyjytlj.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da93491813f"
+  },
+  "public_id": "school-gallery/qsben1j33f1j5ktkh3mp",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/qsben1j33f1j5ktkh3mp.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918130"
+  },
+  "public_id": "school-gallery/mjhrztcski4hgqaybqeh",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/mjhrztcski4hgqaybqeh.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918131"
+  },
+  "public_id": "school-gallery/sd3hheysz1ae0vonidvd",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/sd3hheysz1ae0vonidvd.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698c69450f1b4da934918134"
+  },
+  "public_id": "school-gallery/ndezfftzvqd8gsfns2vj",
+  "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1770809668/school-gallery/ndezfftzvqd8gsfns2vj.webp",
+  "createdAt": {
+    "$date": "2026-02-11T11:34:29.524Z"
+  },
+  "__v": 0
+}]

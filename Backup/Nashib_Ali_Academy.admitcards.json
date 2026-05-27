@@ -1,0 +1,1512 @@
+[{
+  "_id": {
+    "$oid": "69830a2cd59a6f65fee74ae9"
+  },
+  "class": "6",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Hindi",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "69831e38208f9a92ca865145"
+  },
+  "class": "7",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Hindi",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "69832a8e3da9015bbf7f4817"
+  },
+  "class": "8",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Elective",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 4
+},
+{
+  "_id": {
+    "$oid": "69832f19798509cf06192151"
+  },
+  "class": "1",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "GK",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Drawing",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "698330427e0c82d6a0c76175"
+  },
+  "class": "2",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "GK",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Drawing",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "6983322d2550befbc1824030"
+  },
+  "class": "3",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "GK",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "69833413f94572193298c0ca"
+  },
+  "class": "4",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "GK",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "698334ff5d5eae891714df56"
+  },
+  "class": "5",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Hindi",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Studies",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "698336275ff9b429698aaece"
+  },
+  "class": "9",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "MIL",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Elective",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69899cc455f448c894967b89"
+  },
+  "class": "kg",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "GK",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Drawing",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "69899d0255f448c894967b8c"
+  },
+  "class": "nursery",
+  "stream": "",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-07T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Drawing",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "medium": "english",
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "698ae251e421d443747bdeec"
+  },
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "G.K / Drawing",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae26be421d443747bdef6"
+  },
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "G.K / Drawing",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae275e421d443747bdef9"
+  },
+  "class": "1",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Parivesh",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "G.K / Drawing",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae280e421d443747bdefc"
+  },
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Parivesh",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Oral",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "G.K / Drawing",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 1:00 PM"
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "698ae2ebe421d443747bdf02"
+  },
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Oral",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "New Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "698ae2f6e421d443747bdf05"
+  },
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "New Science",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Oral",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae305e421d443747bdf08"
+  },
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "New Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae34fe421d443747bdf0b"
+  },
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Hindi",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Diniyaat",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae35ee421d443747bdf0e"
+  },
+  "class": "7",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Hindi",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Arabic",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Diniyaat",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae36ce421d443747bdf11"
+  },
+  "class": "8",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy North Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-09T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-12T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Assamese",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Elective",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:00 PM - 4:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "698ae456e421d443747bdf1e"
+  },
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-06T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "General Science",
+      "date": {
+        "$date": "2026-03-10T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "MIL",
+      "date": {
+        "$date": "2026-03-11T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Elective",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Social Science",
+      "date": {
+        "$date": "2026-03-16T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6995586bfc63b359d9733a09"
+  },
+  "class": "11",
+  "stream": "arts",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "Environmental Education",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "History",
+      "date": {
+        "$date": "2026-03-18T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "MIL / Alternative English",
+      "date": {
+        "$date": "2026-03-19T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Education",
+      "date": {
+        "$date": "2026-03-20T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-25T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Geography",
+      "date": {
+        "$date": "2026-03-24T00:00:00.000Z"
+      },
+      "shift": "afternoon",
+      "time": "1:30 PM - 4:30 PM"
+    },
+    {
+      "subject": "Political Science",
+      "date": {
+        "$date": "2026-03-26T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "69955a8231bfc560614715b6"
+  },
+  "class": "11",
+  "stream": "science",
+  "medium": "assamese",
+  "examCenter": "Nashib Ali Academy South Building",
+  "exams": [
+    {
+      "subject": "Environmental Education",
+      "date": {
+        "$date": "2026-03-13T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Mathematics",
+      "date": {
+        "$date": "2026-03-14T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Biology",
+      "date": {
+        "$date": "2026-03-17T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "MIL / Alternative English",
+      "date": {
+        "$date": "2026-03-19T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Physics",
+      "date": {
+        "$date": "2026-03-20T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "English",
+      "date": {
+        "$date": "2026-03-25T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    },
+    {
+      "subject": "Chemistry",
+      "date": {
+        "$date": "2026-03-27T00:00:00.000Z"
+      },
+      "shift": "morning",
+      "time": "9:00 AM - 12:00 PM"
+    }
+  ],
+  "__v": 0
+}]

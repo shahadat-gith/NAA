@@ -1,0 +1,44 @@
+[{
+  "_id": {
+    "$oid": "6943dbc9a835a40d838ccbce"
+  },
+  "name": "Abdul Mozid Mondol",
+  "role": "Principal",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1766055931/authorities/images/yhnamoj06jzl3v17yjbj.jpg",
+    "public_id": "authorities/images/yhnamoj06jzl3v17yjbj"
+  },
+  "signature": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1767793498/authorities/signatures/m1prisq19gg9bk0ewypz.png",
+    "public_id": "authorities/signatures/m1prisq19gg9bk0ewypz"
+  },
+  "createdAt": {
+    "$date": "2025-12-18T10:47:44.049Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-18T11:05:37.644Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6943dcf4592a36bb7620dd29"
+  },
+  "name": "Sultan Mahmud",
+  "role": "Managing Director",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1766055156/authorities/images/fhfj52zechreae35sgin.jpg",
+    "public_id": "authorities/images/fhfj52zechreae35sgin"
+  },
+  "signature": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1766055157/authorities/signatures/ezmsskr2gq8ehqeel4nz.png",
+    "public_id": "authorities/signatures/ezmsskr2gq8ehqeel4nz"
+  },
+  "createdAt": {
+    "$date": "2025-12-18T10:52:42.514Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-18T10:52:42.514Z"
+  },
+  "__v": 0
+}]

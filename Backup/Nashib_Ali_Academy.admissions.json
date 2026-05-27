@@ -1,0 +1,3069 @@
+[{
+  "_id": {
+    "$oid": "699425afc047ab15838d98fb"
+  },
+  "name": "Shakibul Hoque",
+  "class": "11",
+  "stream": "arts",
+  "medium": "assamese",
+  "fatherName": "Anchari shamsul Hoque",
+  "motherName": "Shahida khatun",
+  "dob": "2007-06-18",
+  "gender": "male",
+  "phone": "6003435114",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "754053267713",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-02-17T08:24:15.375Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-17T08:24:15.375Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69a294efe299c9b9612c6578"
+  },
+  "name": "Mofid Uddin Ahmed",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Md.Jomir Uddin",
+  "motherName": "Momataz Khatun",
+  "dob": "2017-08-18",
+  "gender": "male",
+  "phone": "7002573913",
+  "address": {
+    "village": "3 No. Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Boko",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "643463438213",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-02-28T07:10:39.277Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-28T07:10:39.277Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69a2b4addac9ecd14d1e45a0"
+  },
+  "name": "Atia jannat",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Abdul hai",
+  "motherName": "Juliara Ahmed",
+  "dob": "2026-02-28",
+  "gender": "female",
+  "phone": "9387568948",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "9122 9265 7668",
+  "pen": "781127",
+  "createdAt": {
+    "$date": "2026-02-28T09:26:05.919Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-28T09:26:05.919Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69a2b63a2788e1253252b958"
+  },
+  "name": "Atia jannat",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Abdul hai",
+  "motherName": "Juliara Ahmed",
+  "dob": "2026-02-19",
+  "gender": "female",
+  "phone": "9957276969",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "9122 9265 7668",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-02-28T09:32:42.205Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-28T09:32:42.205Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69a828ea9a45717b4a093d1f"
+  },
+  "name": "Tanveer Hussain",
+  "class": "kg",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Jahangir Hussain",
+  "motherName": "Shahida Khatun",
+  "dob": "2020-04-13",
+  "gender": "male",
+  "phone": "9635378808",
+  "address": {
+    "village": "2No.Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "638424439165",
+  "pen": "23085481746",
+  "createdAt": {
+    "$date": "2026-03-04T12:43:22.703Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-04T12:43:22.703Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c1ebd003b619433a71848f"
+  },
+  "name": "Mabiya Khatun",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Munnaf Ali",
+  "motherName": "Mofida Begom",
+  "dob": "2021-04-26",
+  "gender": "female",
+  "phone": "9957198269",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-24T01:41:36.351Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-24T01:41:36.351Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c1f1753eddd1b9f0380df7"
+  },
+  "name": "Elija Aktar",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sorhab Ali",
+  "motherName": "Omela Khatun",
+  "dob": "2010-02-01",
+  "gender": "female",
+  "phone": "8011009080",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "307456647007",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-24T02:05:41.054Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-24T02:05:41.054Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c1f2143eddd1b9f0380dfe"
+  },
+  "name": "Aminul Islam",
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sorhab Ali",
+  "motherName": "Omela Khatun",
+  "dob": "2010-02-01",
+  "gender": "male",
+  "phone": "8011009080",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-24T02:08:20.353Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-24T02:08:20.353Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c5fdf03fa5e54dc1ac8648"
+  },
+  "name": "Atia jannat",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Abdul hai",
+  "motherName": "Juliara Ahmed",
+  "dob": "2026-03-27",
+  "gender": "female",
+  "phone": "9957276969",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "9122 9265 7668",
+  "pen": "781127",
+  "createdAt": {
+    "$date": "2026-03-27T03:48:00.828Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-27T03:48:00.828Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69c936913a6c2d3c0060b091"
+  },
+  "name": "Masuda kawsar Ahmed",
+  "class": "5",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Jamal Uddin Ahmed",
+  "motherName": "HachenaBhanu Nessa",
+  "dob": "2015-08-18",
+  "gender": "female",
+  "phone": "8812979704",
+  "address": {
+    "village": "Vill:-2 No. Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "865537874019",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-29T14:26:25.839Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-29T14:26:25.839Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1b72edff00e798a3cc22"
+  },
+  "name": "Kohinur Begum",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Kamal Ali",
+  "motherName": "Lal Bhanu Nessa",
+  "dob": "2015-02-27",
+  "gender": "female",
+  "phone": "9387685784",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "569345471517",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:42:58.118Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:42:58.118Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1c0dedff00e798a3cca9"
+  },
+  "name": "Muzammel Hoque",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Kamal Ali",
+  "motherName": "Lal Bhanu Nessa",
+  "dob": "2015-02-27",
+  "gender": "male",
+  "phone": "9387685784",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "592265956951",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:45:33.213Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:45:33.213Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1cbeedff00e798a3cd64"
+  },
+  "name": "Muzahidul Islam",
+  "class": "1",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Kamal Ali",
+  "motherName": "Lal Bhanu Nessa",
+  "dob": "2017-03-12",
+  "gender": "male",
+  "phone": "9387685784",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "419220930478",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:48:30.008Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:48:30.008Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1d59edff00e798a3ce02"
+  },
+  "name": "AYESHA SIDDIKA",
+  "class": "1",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "JABED ALI",
+  "motherName": "Shemina khatun",
+  "dob": "2021-01-14",
+  "gender": "female",
+  "phone": "7635956113",
+  "address": {
+    "village": "No 1 Uttae Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "338057969362",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:51:05.511Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:51:05.511Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1d7cedff00e798a3ce09"
+  },
+  "name": "Ennus Ali",
+  "class": "1",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jamat Ali",
+  "motherName": "Elisma Ahmed",
+  "dob": "2017-11-19",
+  "gender": "male",
+  "phone": "8099596643",
+  "address": {
+    "village": "No 1 Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "926265726279",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:51:40.806Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:51:40.806Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca1e10edff00e798a3ce76"
+  },
+  "name": "Bilkis ahmed",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jamat ali",
+  "motherName": "Elisma begum",
+  "dob": "2020-03-21",
+  "gender": "female",
+  "phone": "8099596643",
+  "address": {
+    "village": "1 no uttar rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "720586459580",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T06:54:08.771Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T06:54:08.771Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca207aedff00e798a3cefa"
+  },
+  "name": "Shahida begum",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "JAMAL BADSHA",
+  "motherName": "Korimon nessa",
+  "dob": "2015-01-01",
+  "gender": "female",
+  "phone": "9957747852",
+  "address": {
+    "village": "1 no uttar rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "301217190620",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T07:04:26.229Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T07:04:26.229Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ca2117edff00e798a3cf33"
+  },
+  "name": "Shazida parbin",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "JAMAL BADSHA",
+  "motherName": "Korimon nessa",
+  "dob": "2017-01-31",
+  "gender": "female",
+  "phone": "9957747852",
+  "address": {
+    "village": "1 no uttar rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "81856849916",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-30T07:07:03.958Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-30T07:07:03.958Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cb4e1b970550db1d2a6e3b"
+  },
+  "name": "Shamima Nasrin",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sattar Ali",
+  "motherName": "Mazeda Ahmed",
+  "dob": "2021-08-25",
+  "gender": "female",
+  "phone": "7012947228",
+  "address": {
+    "village": "Simulbari",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-03-31T04:31:23.820Z"
+  },
+  "updatedAt": {
+    "$date": "2026-03-31T04:31:23.820Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cc956b6352012d6fd343d6"
+  },
+  "name": "Tanveer hussain",
+  "class": "kg",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "JAHANGIR HUSSAIN",
+  "motherName": "SHAHIDA khatun",
+  "dob": "2020-04-13",
+  "gender": "male",
+  "phone": "9365378808",
+  "address": {
+    "village": "2 no tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T03:47:55.032Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T03:47:55.032Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cc969f6352012d6fd343d8"
+  },
+  "name": "Abdul wahid",
+  "class": "nursery",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Abdul alim",
+  "motherName": "Ajmina khatun",
+  "dob": "2022-07-21",
+  "gender": "male",
+  "phone": "6000616269",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "640471005640",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T03:53:03.704Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T03:53:03.704Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cc975a108eec93e9c0bb54"
+  },
+  "name": "Anjuma ahmed",
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Abul gaji",
+  "motherName": "Kohinoor begum",
+  "dob": "2011-02-01",
+  "gender": "female",
+  "phone": "8136058427",
+  "address": {
+    "village": "1 no uttar rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagarbera",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "329739353677",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T03:56:10.316Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T03:56:10.316Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cc9ec51e0ad0e8eeb5a1d2"
+  },
+  "name": "Md husain ali",
+  "class": "8",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Md mohar ali",
+  "motherName": "Falani nessa",
+  "dob": "2010-12-28",
+  "gender": "male",
+  "phone": "7896613500",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T04:27:49.880Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T04:27:49.880Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ccb2a3cfa4a485ce960f1d"
+  },
+  "name": "Sabnam Suhana",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Kashim Uddin",
+  "motherName": "Sokina Khatun",
+  "dob": "2019-05-05",
+  "gender": "female",
+  "phone": "9365387133",
+  "address": {
+    "village": "Mahchara",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "320892411107",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T05:52:35.272Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T05:52:35.272Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cd0bcbca60c7b863d62b28"
+  },
+  "name": "HUMAYARA YESMIN",
+  "class": "1",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Md Hafizur Rahman",
+  "motherName": "Fatema Ahmed",
+  "dob": "2019-08-11",
+  "gender": "female",
+  "phone": "9101897622",
+  "address": {
+    "village": "CHANGBANDHA",
+    "postOffice": "KACHUMARA",
+    "policeStation": "KACHUMARA",
+    "district": "BARPETA",
+    "state": "ASSAM",
+    "pincode": "781127"
+  },
+  "aadhar": "459490115970",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-01T12:12:59.212Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-01T12:12:59.212Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cdeba81a8f5235aac9ffc3"
+  },
+  "name": "Afrin Siddika",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Shaibuddin Ali",
+  "motherName": "Taslima Ahmed",
+  "dob": "2020-12-11",
+  "gender": "female",
+  "phone": "8453813114",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumara",
+    "policeStation": "Kachumara",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "776064062573",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-02T04:08:08.724Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-02T04:08:08.724Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf4f553364c5e61cda941b"
+  },
+  "name": "Nur Husniyara",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Nur Abdin",
+  "motherName": "Milonara khatun",
+  "dob": "2019-10-12",
+  "gender": "female",
+  "phone": "9954996811",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T05:25:41.063Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T05:25:41.063Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf50353364c5e61cda941d"
+  },
+  "name": "Shahil Hasan",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Nur uddin",
+  "motherName": "Kohinur begum",
+  "dob": "2021-12-11",
+  "gender": "male",
+  "phone": "9101652708",
+  "address": {
+    "village": "Halangapara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T05:29:25.800Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T05:29:25.800Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf5252d5c6d5f81763263d"
+  },
+  "name": "Arifa Begum",
+  "class": "7",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Ohad Ali",
+  "motherName": "Shahida Begum",
+  "dob": "2013-06-20",
+  "gender": "female",
+  "phone": "8099944478",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T05:38:26.788Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T05:38:26.788Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf533ead12278644a9458a"
+  },
+  "name": "Rukia khatun",
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Rabiyal hussain",
+  "motherName": "Forida khatun",
+  "dob": "2014-01-05",
+  "gender": "female",
+  "phone": "9387380393",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T05:42:22.323Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T05:42:22.323Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf5418ad12278644a94591"
+  },
+  "name": "Al Faruk Ahmed",
+  "class": "1",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Rabiyal Hussain",
+  "motherName": "Forida khatun",
+  "dob": "2017-01-03",
+  "gender": "male",
+  "phone": "9387380393",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T05:46:00.238Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T05:46:00.238Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf61beaea42e5d6580c491"
+  },
+  "name": "Moriyam khatun",
+  "class": "7",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Nashib ali",
+  "motherName": "Monowara Begum",
+  "dob": "2014-01-10",
+  "gender": "female",
+  "phone": "6901194604",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T06:44:14.778Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T06:44:14.778Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf630aaea42e5d6580c493"
+  },
+  "name": "Sabnam Suhana",
+  "class": "2",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Kashim Uddin",
+  "motherName": "Sokina khatun",
+  "dob": "2019-05-05",
+  "gender": "female",
+  "phone": "9365387133",
+  "address": {
+    "village": "Mahchara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T06:49:46.274Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T06:49:46.274Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf64f302666fdb2f76046e"
+  },
+  "name": "Asraful Alom",
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jumir Ali",
+  "motherName": "Dilewara Begum",
+  "dob": "2008-01-01",
+  "gender": "male",
+  "phone": "8011627469",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T06:57:55.141Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T06:57:55.141Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69cf65a4e0cf9c56f802b1bc"
+  },
+  "name": "Ashik jonaid khan",
+  "class": "1",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Rekibul Islam",
+  "motherName": "Azima Ahmed",
+  "dob": "2018-05-21",
+  "gender": "male",
+  "phone": "9365337252",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-03T07:00:52.414Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-03T07:00:52.414Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d09b7362bff6d7c7124376"
+  },
+  "name": "Suhana Aktar",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Siddique Ali",
+  "motherName": "Mohida Khatun",
+  "dob": "2020-11-30",
+  "gender": "female",
+  "phone": "6000183625",
+  "address": {
+    "village": "1 No Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:02:43.828Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:02:43.828Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a2bc67e0e04c2f2c04fe"
+  },
+  "name": "Abul Kalam",
+  "class": "4",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Shahidul Islam",
+  "motherName": "Anjuwara Khatun",
+  "dob": "2016-04-22",
+  "gender": "male",
+  "phone": "6002337292",
+  "address": {
+    "village": "Aduripara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "204263697272",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:33:48.513Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:33:48.513Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a3a067e0e04c2f2c053b"
+  },
+  "name": "Jahanara Ahmed",
+  "class": "7",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jehirul Islam",
+  "motherName": "Morjina khatun",
+  "dob": "2013-09-18",
+  "gender": "female",
+  "phone": "7635961035",
+  "address": {
+    "village": "Mahachara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:37:36.807Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:37:36.807Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a44e89f413dc6f18ec30"
+  },
+  "name": "Minhajul",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jeherul Islam",
+  "motherName": "Marjina Khatun",
+  "dob": "2019-02-18",
+  "gender": "male",
+  "phone": "7635961035",
+  "address": {
+    "village": "Mahachara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:40:30.287Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:40:30.287Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a7ed89f413dc6f18ec9e"
+  },
+  "name": "Amina Khatun",
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Taher Ali",
+  "motherName": "Shomela Khatun",
+  "dob": "2013-08-29",
+  "gender": "female",
+  "phone": "+91 8453956151",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "415513835920",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:55:57.655Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:55:57.655Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a8b789f413dc6f18eca0"
+  },
+  "name": "Arifa Yeasmin",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Ansarul Hoque",
+  "motherName": "Majedar Khatun",
+  "dob": "2014-08-08",
+  "gender": "female",
+  "phone": "7099671141",
+  "address": {
+    "village": "Halangapara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T05:59:19.003Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T05:59:19.003Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d0a96f89f413dc6f18eca2"
+  },
+  "name": "Mehzabin",
+  "class": "nursery",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Ansarul Hoque",
+  "motherName": "Mazeda Khatun",
+  "dob": "2021-05-22",
+  "gender": "female",
+  "phone": "7099671141",
+  "address": {
+    "village": "Halangapara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-04T06:02:23.056Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-04T06:02:23.056Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d242c5a18def1f54a58796"
+  },
+  "name": "Nasima ahmed",
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Bahaj uddin",
+  "motherName": "Mafida khatun",
+  "dob": "2026-04-05",
+  "gender": "female",
+  "phone": "8099922238",
+  "address": {
+    "village": "Khachumara N.C",
+    "postOffice": "Kachumara N.c",
+    "policeStation": "Khachumara N.C",
+    "district": "Barpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "380034342790",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-05T11:08:53.961Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-05T11:08:53.961Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d32e791c99d7183f48e5ac"
+  },
+  "name": "Nurjahan Begum",
+  "class": "9",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Nurul Amin",
+  "motherName": "Jesmina Khatun",
+  "dob": "2011-04-21",
+  "gender": "female",
+  "phone": "8638732041",
+  "address": {
+    "village": "Aduripara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "613465319301",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T03:54:33.056Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T03:54:33.056Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d32f461c99d7183f48e5ae"
+  },
+  "name": "Azizul Hoque",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Faraj Ali",
+  "motherName": "Monjuwara Khatun",
+  "dob": "2015-04-30",
+  "gender": "male",
+  "phone": "6000824352",
+  "address": {
+    "village": "Khchumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "280764685515",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T03:57:58.990Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T03:57:58.990Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d330431c99d7183f48e5b0"
+  },
+  "name": "Taslima Khatun",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Tajmol Hoque",
+  "motherName": "Saniyara Khatun",
+  "dob": "2016-06-10",
+  "gender": "female",
+  "phone": "6900418647",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T04:02:11.792Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T04:02:11.792Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d34126e686a02bb9d59bc3"
+  },
+  "name": "Beauty parbin",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Afaj uddin",
+  "motherName": "Anowara Ahmed",
+  "dob": "2021-07-07",
+  "gender": "female",
+  "phone": "8453182365",
+  "address": {
+    "village": "Mahachara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T05:14:14.900Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T05:14:14.900Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d3476f5fd7245ee4daea13"
+  },
+  "name": "Shamim Ahsan",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Abdul Hai Nagori",
+  "motherName": "Rejiya Ahmed",
+  "dob": "2019-11-28",
+  "gender": "male",
+  "phone": "9678310526",
+  "address": {
+    "village": "Mahachara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "805421749160",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T05:41:03.413Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T05:41:03.413Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d36cfb5681d6d8bc193e23"
+  },
+  "name": "Aisha Siddika",
+  "class": "8",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Solaman Ali",
+  "motherName": "Jorina Khatun",
+  "dob": "2013-04-18",
+  "gender": "female",
+  "phone": "9395068547",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-06T08:21:15.329Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-06T08:21:15.329Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d47abecda8bf59d031dd1f"
+  },
+  "name": "Jubair Hasan",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Hafijul Hoque",
+  "motherName": "Shamarjan Nessa",
+  "dob": "2019-02-27",
+  "gender": "male",
+  "phone": "6000655528",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "354818217659",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-07T03:32:14.694Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-07T03:32:14.694Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d4adb13e6a7b2394b73582"
+  },
+  "name": "Shahin Shah Eqbal",
+  "class": "8",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Hafizur Rahman",
+  "motherName": "Akitara Hussain",
+  "dob": "2012-06-03",
+  "gender": "male",
+  "phone": "7896648942",
+  "address": {
+    "village": "Pub Mahchara  Nonke",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "937321599431",
+  "pen": "AEZPE8573R",
+  "createdAt": {
+    "$date": "2026-04-07T07:09:37.357Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-07T07:09:37.357Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d4ae583e6a7b2394b73593"
+  },
+  "name": "Mafuza Rima",
+  "class": "6",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Maidul Islam",
+  "motherName": "Rofida Parbin",
+  "dob": "2014-08-19",
+  "gender": "female",
+  "phone": "6002212503",
+  "address": {
+    "village": "Pub Mahchara  Nonke",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-07T07:12:24.103Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-07T07:12:24.103Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d4ba67a025105fd3a018e0"
+  },
+  "name": "Sharus Islam",
+  "class": "kg",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Nurul Islam",
+  "motherName": "Shelima Khatun",
+  "dob": "2020-10-20",
+  "gender": "male",
+  "phone": "9954393662",
+  "address": {
+    "village": "Panikhati",
+    "postOffice": "Mahatoli",
+    "policeStation": "Boko",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "766443283666",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-07T08:03:51.636Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-07T08:03:51.636Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d5e12d17f244c954ce6085"
+  },
+  "name": "Sultana Parbin",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sayed Ali",
+  "motherName": "Rohima Khatun",
+  "dob": "2014-01-10",
+  "gender": "female",
+  "phone": "9365306915",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-08T05:01:33.341Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-08T05:01:33.341Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d5e1b517f244c954ce6087"
+  },
+  "name": "Nuri Aktar",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Nazim Uddin",
+  "motherName": "Asma Khatun",
+  "dob": "2012-12-02",
+  "gender": "female",
+  "phone": "8011744018",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-08T05:03:49.547Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-08T05:03:49.547Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8722423a52e44aafad4f8"
+  },
+  "name": "Habiba Jannat",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Azmal Hoque",
+  "motherName": "Samida Ahmed",
+  "dob": "2020-07-10",
+  "gender": "female",
+  "phone": "8471813401",
+  "address": {
+    "village": "Halangapara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "251051279569",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-10T03:44:36.902Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T03:44:36.902Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d899abdcfb5e1edba297e4"
+  },
+  "name": "Tasmina Aktar",
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Tofij Uddin",
+  "motherName": "Fulmala Khatun",
+  "dob": "2015-09-15",
+  "gender": "female",
+  "phone": "6026674587",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "678574969780",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-10T06:33:15.885Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T06:33:15.885Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d89a26dcfb5e1edba297e6"
+  },
+  "name": "Fahim Alom",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Tofij Uddin",
+  "motherName": "Fulmala Khatun",
+  "dob": "2018-11-26",
+  "gender": "male",
+  "phone": "6026674587",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "212097094529",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-10T06:35:18.049Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T06:35:18.049Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d89aaadcfb5e1edba297e8"
+  },
+  "name": "Mahin Alom",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sanidul Islam",
+  "motherName": "Nuriza Ahmed",
+  "dob": "2020-11-04",
+  "gender": "male",
+  "phone": "9365139498",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "410210378055",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-10T06:37:30.539Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-10T06:37:30.539Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc69fb055abaf85ad6dad1"
+  },
+  "name": "Mamuni Akter",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jeherul Islam",
+  "motherName": "Razina Ahmed",
+  "dob": "2017-02-18",
+  "gender": "female",
+  "phone": "9678968660",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T03:58:51.927Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T03:58:51.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc6e90954de6530fbdb2e1"
+  },
+  "name": "Ariful Islam",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Rabiul Hussain",
+  "motherName": "Jahanara Begum",
+  "dob": "2016-06-26",
+  "gender": "male",
+  "phone": "9101780896",
+  "address": {
+    "village": "1 No Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "469543521510",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:18:24.418Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:18:24.418Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc6f1d954de6530fbdb2e8"
+  },
+  "name": "Rajul Karim",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jeherul Islam",
+  "motherName": "Razina Ahmed",
+  "dob": "2019-04-19",
+  "gender": "male",
+  "phone": "9678968660",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:20:45.915Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:20:45.915Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc6f9a954de6530fbdb2ea"
+  },
+  "name": "Zerifa Akter",
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jeherul Islam",
+  "motherName": "Razina Ahmed",
+  "dob": "2013-08-23",
+  "gender": "female",
+  "phone": "9678968660",
+  "address": {
+    "village": "Kachumara N/c",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "780816714215",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:22:50.362Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:22:50.362Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc704c954de6530fbdb2ec"
+  },
+  "name": "Jubaida Ahmed",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jehad Ali",
+  "motherName": "Khudeja Begum",
+  "dob": "2020-01-12",
+  "gender": "female",
+  "phone": "9678891022",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "631334728573",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:25:48.059Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:25:48.059Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc7288827018a848dc800c"
+  },
+  "name": "Jahida Khatun",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jehad Ali",
+  "motherName": "Khudeja Begum",
+  "dob": "2015-04-26",
+  "gender": "female",
+  "phone": "9678891022",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "864835370963",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:35:20.644Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:35:20.644Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc7304827018a848dc8013"
+  },
+  "name": "Elias Ahmed",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jehad Ali",
+  "motherName": "Khudeja Begum",
+  "dob": "2018-11-15",
+  "gender": "male",
+  "phone": "9678891022",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "834950761633",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T04:37:24.654Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T04:37:24.654Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69dc8cc14e7ec9af98fd4874"
+  },
+  "name": "Ariful",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Eyakub Ali",
+  "motherName": "Asmina Khatun",
+  "dob": "2018-10-15",
+  "gender": "male",
+  "phone": "9394236256",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "477778930546",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-13T06:27:14.002Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-13T06:27:14.002Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddbc3c24487b31388e11fb"
+  },
+  "name": "Hussain Ali",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Asar Uddin",
+  "motherName": "Panful",
+  "dob": "2015-10-07",
+  "gender": "male",
+  "phone": "9707521197",
+  "address": {
+    "village": "Bhakhuradia",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "557540990610",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:02:04.985Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:02:04.985Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddbdb713f164456752537c"
+  },
+  "name": "Aysha siddika",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jabed Ali",
+  "motherName": "Shor Bhanu",
+  "dob": "2016-09-15",
+  "gender": "female",
+  "phone": "6901194589",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "502467786825",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:08:23.114Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:08:23.114Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddbed213f1644567525383"
+  },
+  "name": "Junaid Islam",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Abdul Hai",
+  "motherName": "Mofidab Parbin",
+  "dob": "2020-10-29",
+  "gender": "male",
+  "phone": "7099148959",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "782820887543",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:13:06.900Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:13:06.900Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddc09e13f16445675253b7"
+  },
+  "name": "Rupchand Ali",
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Shahar Ali",
+  "motherName": "Rohiton Nessa",
+  "dob": "2008-09-05",
+  "gender": "male",
+  "phone": "6009950360",
+  "address": {
+    "village": "3 No Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "593121610618",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:20:46.035Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:20:46.035Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddc13d13f16445675253b9"
+  },
+  "name": "Rupsana Parbin",
+  "class": "7",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Rabiul Hussain",
+  "motherName": "Kamela Khatun",
+  "dob": "2012-08-02",
+  "gender": "female",
+  "phone": "6009950360",
+  "address": {
+    "village": "3 No Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "314902003170",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:23:25.759Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:23:25.759Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69ddc5afaf042573fce0a0a3"
+  },
+  "name": "Ariyan Ansary",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Shamez Ali",
+  "motherName": "Rasida Khatun",
+  "dob": "2021-01-05",
+  "gender": "male",
+  "phone": "7099696360",
+  "address": {
+    "village": "1 No Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "701003279659",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-14T04:42:23.881Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-14T04:42:23.881Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69df0a883a3d67cc03593f21"
+  },
+  "name": "Sumaya Akhtara",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Md Mohir Uddin",
+  "motherName": "Afruja Ahmed",
+  "dob": "2018-02-19",
+  "gender": "female",
+  "phone": "6000924133",
+  "address": {
+    "village": "Mahchara Nonke",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-15T03:48:24.536Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T03:48:24.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69df15425278b3f00365d61a"
+  },
+  "name": "Akibul",
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Aijal Hoque",
+  "motherName": "Sajeda Khatun",
+  "dob": "2009-04-11",
+  "gender": "male",
+  "phone": "8811029704",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "291917607034",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-15T04:34:10.536Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T04:34:10.536Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69df218138833c09896e8f3c"
+  },
+  "name": "Jerifa Khatun",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Abu Taleb",
+  "motherName": "Mamtaz Begum",
+  "dob": "2020-05-29",
+  "gender": "female",
+  "phone": "9126389844",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "499972285549",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-15T05:26:25.938Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T05:26:25.938Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69df226338833c09896e8f3e"
+  },
+  "name": "Sahanur Alom",
+  "class": "2",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Mofij Uddin",
+  "motherName": "Shahatan Nessa",
+  "dob": "2015-03-01",
+  "gender": "male",
+  "phone": "8135956272",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "818789055019",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-15T05:30:11.576Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T05:30:11.576Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69df2d5ec4ae7d0ffe12151e"
+  },
+  "name": "Akibul Islam",
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Nasim Uddin",
+  "motherName": "Anowara Khatun",
+  "dob": "2013-11-08",
+  "gender": "male",
+  "phone": "8134891613",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "888125677779",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-15T06:17:02.586Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-15T06:17:02.586Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e0565d3948612a2e016b02"
+  },
+  "name": "Asraful Alom",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Forizul Hoque",
+  "motherName": "Alia Khatun",
+  "dob": "2019-06-24",
+  "gender": "male",
+  "phone": "6302512146",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "750899373523",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T03:24:13.851Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T03:24:13.851Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e057b13948612a2e016b04"
+  },
+  "name": "Md Ashraful Alom",
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Kader Ali",
+  "motherName": "Alekjan Nessa",
+  "dob": "2010-08-05",
+  "gender": "male",
+  "phone": "9395517513",
+  "address": {
+    "village": "Khulabandha",
+    "postOffice": "Khulabandha",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T03:29:53.320Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T03:29:53.320Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e058d63948612a2e016b06"
+  },
+  "name": "Hanif Uddin Alom",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Sairuddin Sheikh",
+  "motherName": "Hafiza khatun",
+  "dob": "2013-07-03",
+  "gender": "male",
+  "phone": "9101807313",
+  "address": {
+    "village": "Pub Mahchara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T03:34:46.091Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T03:34:46.091Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e059763948612a2e016b08"
+  },
+  "name": "Nazma Aktar",
+  "class": "3",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Chahera Uddin",
+  "motherName": "Hafiza khatun",
+  "dob": "2017-07-19",
+  "gender": "female",
+  "phone": "9101807313",
+  "address": {
+    "village": "Pub Mahchara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T03:37:26.715Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T03:37:26.715Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06c01eacd7523f88272b7"
+  },
+  "name": "Jahidul Islam",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Hanif Ali",
+  "motherName": "Asma Khatun",
+  "dob": "2016-07-07",
+  "gender": "male",
+  "phone": "9101693615",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T04:56:33.364Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T04:56:33.364Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06cd8eacd7523f88272be"
+  },
+  "name": "Anisa Ahmed",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Manik Ali",
+  "motherName": "Rukiya Khatun",
+  "dob": "2018-03-27",
+  "gender": "female",
+  "phone": "9101693615",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T05:00:08.566Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T05:00:08.566Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06d41eacd7523f88272c0"
+  },
+  "name": "Akiful Islam",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Manik Ali",
+  "motherName": "Rukiya Khatun",
+  "dob": "2019-04-08",
+  "gender": "male",
+  "phone": "9101693615",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T05:01:53.956Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T05:01:53.956Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06e14eacd7523f88272c2"
+  },
+  "name": "Ariyan Ahmed",
+  "class": "kg",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Abdul Motin",
+  "motherName": "Anjuwara Ahmed",
+  "dob": "2020-09-11",
+  "gender": "male",
+  "phone": "9957958640",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "620228505327",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T05:05:24.649Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T05:05:24.649Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06ebaeacd7523f88272c4"
+  },
+  "name": "Sumaya Parbin",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Abdul Sattar",
+  "motherName": "Kohinur begum",
+  "dob": "2020-10-11",
+  "gender": "female",
+  "phone": "6001027969",
+  "address": {
+    "village": "1 No Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "355653930768",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T05:08:10.031Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T05:08:10.031Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e06fd0eacd7523f88272c6"
+  },
+  "name": "Farhana Jannat",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Amir Ali",
+  "motherName": "Helmina Parbin",
+  "dob": "2020-10-15",
+  "gender": "female",
+  "phone": "6002656481",
+  "address": {
+    "village": "1 No Uttar Rangapani",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "395515575846",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T05:12:48.749Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T05:12:48.749Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e07ed395b9aaf5a5465222"
+  },
+  "name": "Nilima Ahmed",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Hatem Ali",
+  "motherName": "Hajiron Nessa",
+  "dob": "2014-05-16",
+  "gender": "female",
+  "phone": "9101392541",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "873275601544",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T06:16:51.969Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T06:16:51.969Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e094268f8fe6cd9b7ccc23"
+  },
+  "name": "Younus Ali",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Idris Ali",
+  "motherName": "Shuna Bhanu",
+  "dob": "2018-01-05",
+  "gender": "male",
+  "phone": "8453813242",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "558227980219",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-16T07:47:50.958Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-16T07:47:50.958Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e2f883566208d6ab5d97af"
+  },
+  "name": "Fulmala Khatun",
+  "class": "mukul",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Golap Ali",
+  "motherName": "Saina Khatun",
+  "dob": "2016-08-12",
+  "gender": "female",
+  "phone": "8453182080",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "679233761374",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-18T03:20:35.430Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T03:20:35.430Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e2f928566208d6ab5d97b1"
+  },
+  "name": "Suhana Parbin",
+  "class": "1",
+  "stream": "",
+  "medium": "english",
+  "fatherName": "Baser Ali",
+  "motherName": "Amina Khatun",
+  "dob": "2019-07-21",
+  "gender": "female",
+  "phone": "6009950360",
+  "address": {
+    "village": "3 No Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-18T03:23:20.249Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T03:23:20.249Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e2f9ee566208d6ab5d97b3"
+  },
+  "name": "Tasmina Begum",
+  "class": "5",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Taib Ali",
+  "motherName": "Mamataj Begum",
+  "dob": "2014-09-12",
+  "gender": "female",
+  "phone": "6002041032",
+  "address": {
+    "village": "3 No Uttar Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "627717572805",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-18T03:26:38.577Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T03:26:38.577Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e3201b7cb31055e23fe2c8"
+  },
+  "name": "Afrin Anjum",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Tamser Ali",
+  "motherName": "Jobeda Khatun",
+  "dob": "2021-08-08",
+  "gender": "female",
+  "phone": "9859314913",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "705507748049",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-18T06:09:31.946Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T06:09:31.946Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e320c17cb31055e23fe2cf"
+  },
+  "name": "Eilus Khan",
+  "class": "4",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Harzat Ali",
+  "motherName": "Jesmina  Ahmed",
+  "dob": "2015-11-01",
+  "gender": "male",
+  "phone": "8453813183",
+  "address": {
+    "village": "Kachumara",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-18T06:12:17.279Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-18T06:12:17.279Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5d43ce397f13be346b5d7"
+  },
+  "name": "Atif Aslam",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Hafizur Rahman",
+  "motherName": "Forida",
+  "dob": "2019-10-06",
+  "gender": "male",
+  "phone": "9365039238",
+  "address": {
+    "village": "2 No Tupamari",
+    "postOffice": "Tupamari",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "295404549185",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-20T07:22:36.558Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T07:22:36.558Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e5e5040296517cf4ac2e54"
+  },
+  "name": "Mirdul Husen",
+  "class": "6",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Mafij Uddin",
+  "motherName": "Mamtaj Begum",
+  "dob": "2013-01-10",
+  "gender": "male",
+  "phone": "8011944559",
+  "address": {
+    "village": "Chaurdia",
+    "postOffice": "Mahatoli",
+    "policeStation": "Boko",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-20T08:34:12.584Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-20T08:34:12.584Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e732ca6a508d118302ba7b"
+  },
+  "name": "Lovely Sultana",
+  "class": "9",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Jahangir Alom",
+  "motherName": "Shahida Khatun",
+  "dob": "2011-08-23",
+  "gender": "female",
+  "phone": "9365698134",
+  "address": {
+    "village": "2 No Dakshin Rangapani",
+    "postOffice": "Badla Bazar",
+    "policeStation": "Nagerbere",
+    "district": "Kamrup",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-21T08:18:18.956Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-21T08:18:18.956Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69e996abcf7846c3871307cc"
+  },
+  "name": "Rayhan Ahmed",
+  "class": "ankur",
+  "stream": "",
+  "medium": "assamese",
+  "fatherName": "Usuf Ali",
+  "motherName": "Rehena Begum",
+  "dob": "2022-04-04",
+  "gender": "male",
+  "phone": "6000365690",
+  "address": {
+    "village": "Shimulbari",
+    "postOffice": "Kachumar",
+    "policeStation": "Kachumar",
+    "district": "Berpeta",
+    "state": "Assam",
+    "pincode": "781127"
+  },
+  "aadhar": "",
+  "pen": "",
+  "createdAt": {
+    "$date": "2026-04-23T03:48:59.736Z"
+  },
+  "updatedAt": {
+    "$date": "2026-04-23T03:48:59.736Z"
+  },
+  "__v": 0
+}]
