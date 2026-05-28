@@ -19,14 +19,19 @@ const teacherPaymentSchema = new mongoose.Schema(
     },
 
     paymentDate: {
-      type: String, // Format: YYYY-MM-DD
-      default: () => new Date().toISOString().split("T")[0], // Defaults to current date
+      type: Date,
+      default: () => new Date(), // Defaults to current date
     },
 
     paymentMethod: {
       type: String,
       enum: ["Bank Transfer", "Cash", "UPI"],
       required: true,
+    },
+
+    isAcknowledged:{
+      type: Boolean,
+      default: false,
     },
 
     status: {

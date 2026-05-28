@@ -297,8 +297,6 @@ export const teacherCashPayment = async (req, res) => {
   }
 };
 
-
-
 export const createDuesForTeacher = async (req, res) => {
   try {
     const { teacherId, month, amount } = req.body;
@@ -378,6 +376,72 @@ export const createDuesForTeacher = async (req, res) => {
   }
 };
 
+
+//for teachers
+
+
+export const acknowledgePayment = async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+    const paymentRecord = await TeacherPayment.findById(paymentId);
+
+    if (!paymentRecord) {
+      return res.status(404).json({
+        success: false,
+        message: "Payment record not found.",
+      });
+    }
+    if (paymentRecord.isAcknowledged) {
+      return res.status(400).json({
+        success: false,
+        message: "This payment has already been acknowledged.",
+      });
+    }
+
+    paymentRecord.isAcknowledged = true;
+    await paymentRecord.save();
+    return res.status(200).json({
+      success: true,
+      message: "Payment acknowledged successfully!",
+      payment: paymentRecord
+    });
+  } catch (error) {
+    console.error("Error acknowledging payment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while acknowledging the payment.",
+      error: error.message
+    });
+  }
+};
+
+
+//for both admin and teacher (with different access levels)
+
+export const getPaymentDetailsByTeacherId = async (req, res) =>{
+  try{
+    const teacherId = req.user.id || req.params.teacherId;
+
+    const [payments, dues] = await Promise.all([
+      TeacherPayment.find({ teacher: teacherId }).sort({ paymentDate: -1 }),
+      TeacherDues.findOne({ teacher: teacherId}),
+    ])
+
+    return res.status(200).json({
+      success: true,
+      message: "Payment details fetched successfully!",
+      payments,
+      dues
+    });
+  } catch (error) {
+    console.error("Error fetching payment details:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching payment details.",
+      error: error.message
+    });
+  }
+};
 
 
 
