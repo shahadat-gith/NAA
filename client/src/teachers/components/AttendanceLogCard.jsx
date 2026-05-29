@@ -3,6 +3,19 @@ import "../styles/AttendanceLogCard.css";
 import { useNavigate } from "react-router-dom";
 
 const AttendanceLogCard = ({ attendance = [] }) => {
+  const navigate = useNavigate();
+
+  // Helper to format the pure ISO Date into a clean reader string
+  const formatDate = (isoString) => {
+    if (!isoString) return "—";
+    return new Date(isoString).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  // UPDATED: Now falls back on native log.createdAt timestamp parameters
   const formatCheckInTime = (isoString) => {
     if (!isoString) return "—";
 
@@ -12,8 +25,6 @@ const AttendanceLogCard = ({ attendance = [] }) => {
     });
   };
 
-  const navigate = useNavigate();
-
   return (
     <section className="alc-card">
       <div className="alc-header">
@@ -22,8 +33,10 @@ const AttendanceLogCard = ({ attendance = [] }) => {
         <button
           className="alc-navigate-btn"
           onClick={() => navigate("/teacher/attendance")}
+          aria-label="Navigate to full history"
         >
-          <i class="fa-solid fa-square-up-right"></i>
+          {/* Fixed syntax error from class to className */}
+          <i className="fa-solid fa-square-up-right"></i>
         </button>
       </div>
 
@@ -34,7 +47,6 @@ const AttendanceLogCard = ({ attendance = [] }) => {
               <tr>
                 <th>Date</th>
                 <th>Check-In Time</th>
-                <th>Marked By</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -42,19 +54,19 @@ const AttendanceLogCard = ({ attendance = [] }) => {
             <tbody>
               {attendance.map((log) => (
                 <tr key={log._id}>
-                  <td className="alc-date-cell">{log.date}</td>
+                  {/* UPDATED: Formatted native date wrapper nicely */}
+                  <td className="alc-date-cell">{formatDate(log.date)}</td>
 
+                  {/* UPDATED: Points directly to automated log.createdAt fallback timestamp hook */}
                   <td className="alc-time-cell">
-                    {formatCheckInTime(log.checkInTime)}
+                    {formatCheckInTime(log.createdAt)}
                   </td>
-
-                  <td className="alc-markedby-cell">{log.markedBy}</td>
 
                   <td>
                     <span
-                      className={`alc-status-badge ${log.status?.toLowerCase()}`}
+                      className={`alc-status-badge ${log.status?.toLowerCase() || "present"}`}
                     >
-                      {log.status}
+                      {log.status || "Present"}
                     </span>
                   </td>
                 </tr>

@@ -8,6 +8,7 @@ import ScannerModal from "../components/ScannerModal";
 import { BsQrCodeScan } from "react-icons/bs";
 import Calendar from "../components/Calendar";
 import { useOutletContext } from "react-router-dom";
+import AttendanceHistory from "../components/AttendanceHistory";
 
 const Attendance = () => {
   const { backendUrl } = useContext(AppContext);
@@ -22,7 +23,6 @@ const Attendance = () => {
 
   const token = localStorage.getItem("teacher-token");
 
-  // Fetch Attendance for Selected Month
   const fetchMonthlyAttendance = useCallback(async () => {
     if (!backendUrl) return;
     setLoading(true);
@@ -37,7 +37,6 @@ const Attendance = () => {
       });
 
       if (res.data?.success) {
-        console.log(res.data)
         setHistory(res.data.attendance || []);
       }
     } catch (err) {
@@ -49,12 +48,10 @@ const Attendance = () => {
     }
   }, [backendUrl, token, selectedMonth, selectedYear, setLoading]);
 
-  // Hook into timeline state mutations
   useEffect(() => {
     fetchMonthlyAttendance();
   }, [fetchMonthlyAttendance]);
 
-  // Scan and register check-in token strings
   const markAttendance = async (qrToken) => {
     setMarking(true);
     try {
@@ -71,7 +68,7 @@ const Attendance = () => {
       if (res.data.success) {
         toast.success("Attendance Marked!");
         setHistory(res.data.attendance || []);
-        setShowScanner(false); // Cleanly close the scanner overlay modal upon success
+        setShowScanner(false);
       }
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to mark attendance";
@@ -81,23 +78,20 @@ const Attendance = () => {
     }
   };
 
-  // UPDATED: Standardize dynamic evaluations to Asia/Kolkata timezone to avoid date skipping bugs
   const getTodayISTString = () => {
-    return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); // "YYYY-MM-DD"
+    return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
   };
 
-  // UPDATED: Strips away temporal noise from the native ISO object strings to safely look up matches
   const isTodayAttendanceMarked = history.some((att) => {
     if (!att.date) return false;
-    const dbDateString = att.date.split("T")[0]; // Isolates "YYYY-MM-DD" from ISO structure
+    const dbDateString = att.date.split("T")[0];
     return dbDateString === getTodayISTString();
   });
 
   return (
     <div className="teacher-attendance-page">
       <Toaster position="top-center" reverseOrder={false} />
-      
-      {/* Control Top Header */}
+
       <div className="teacher-attendance-header">
         <div>
           <h1>Attendance</h1>
@@ -114,16 +108,16 @@ const Attendance = () => {
         </button>
       </div>
 
-      {/* Network Alert Message */}
       {error && !loading && (
         <div className="error-message">
           <p>Error: {error}</p>
         </div>
       )}
 
-      {/* Integrated Workspace Module */}
+      {/* REFACTORED: 50/50 Card Grid with Mobile Re-ordering */}
       {!loading && !error && (
-        <div className="calendar-container-pane">
+        <div className="attendance-workspace-grid">
+          {/* Card 1: Calendar Card Section */}
           <Calendar
             history={history}
             selectedMonth={selectedMonth}
@@ -131,10 +125,12 @@ const Attendance = () => {
             onMonthChange={setSelectedMonth}
             onYearChange={setSelectedYear}
           />
+
+          {/* Card 2: History Log Card Section */}
+          <AttendanceHistory history={history} />
         </div>
       )}
 
-      {/* Scanner Overlay */}
       <ScannerModal
         isOpen={showScanner}
         onClose={() => setShowScanner(false)}

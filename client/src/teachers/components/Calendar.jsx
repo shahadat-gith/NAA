@@ -10,8 +10,8 @@ const Calendar = ({ history = [], selectedMonth, selectedYear, onMonthChange, on
 
   const currentYear = new Date().getFullYear();
 
-// Generates an array containing [Current - 4] through [Current + 5]
-const years = Array.from({ length: 8 }, (_, i) => String((currentYear - 4) + i));
+  // Generates an array containing [Current - 4] through [Current + 3] (Total 8 elements)
+  const years = Array.from({ length: 8 }, (_, i) => String((currentYear - 4) + i));
 
   // Helper functions
   const getDaysInMonth = (month, year) => {
@@ -44,16 +44,19 @@ const years = Array.from({ length: 8 }, (_, i) => String((currentYear - 4) + i))
     }
   };
 
-  // Create attendance map for quick lookup (key: YYYY-MM-DD)
+  // UPDATED: Split ISO Date string down to YYYY-MM-DD for accurate mapping keys
   const attendanceMap = history.reduce((acc, item) => {
-    acc[item.date] = item.status;
+    if (item.date) {
+      const pureDateKey = item.date.split("T")[0]; // Extracts "YYYY-MM-DD"
+      acc[pureDateKey] = item.status;
+    }
     return acc;
   }, {});
 
-  // Calculated Metrics derived directly inside the calendar layout
+  // UPDATED: Aligned status matching strings with your backend Enum model properties ("On-Leave")
   const presentCount = history.filter(item => item.status === "Present").length;
   const absentCount = history.filter(item => item.status === "Absent").length;
-  const onLeaveCount = history.filter(item => item.status === "On Leave").length;
+  const onLeaveCount = history.filter(item => item.status === "On-Leave").length;
   
   const activeTrackedDays = presentCount + absentCount + onLeaveCount;
   const attendancePercentage = activeTrackedDays 
@@ -144,7 +147,7 @@ const years = Array.from({ length: 8 }, (_, i) => String((currentYear - 4) + i))
               dayClass = "sunday";
             } else if (status === "Present") {
               dayClass = "status-green";
-            } else if (status === "On Leave") {
+            } else if (status === "On-Leave") { // Updated matching criteria rule
               dayClass = "status-yellow";
             } else if (status === "Absent") {
               dayClass = "status-red";
@@ -165,7 +168,8 @@ const years = Array.from({ length: 8 }, (_, i) => String((currentYear - 4) + i))
           <div className="legend-item"><span className="legend-dot red"></span> Absent</div>
           <div className="legend-item"><span className="legend-dot gray"></span> Sunday</div>
         </div>
-      </section>
+      </section >
+     
     </div>
   );
 };

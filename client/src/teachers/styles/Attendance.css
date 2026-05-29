@@ -1,78 +1,104 @@
-/* Base Page Container Styling */
+/* ==========================================================================
+   MAIN PAGE CONTROLLER
+   ========================================================================== */
 .teacher-attendance-page {
   padding: 24px;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
+  background-color: var(--bg-primary);
 }
 
+/* Header Content Row */
 .teacher-attendance-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .teacher-attendance-header h1 {
-  font-size: 1.85rem;
-  color: var(--text-main);
-  margin: 0;
+  font-size: 1.75rem;
   font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 4px 0;
 }
 
 .teacher-sub {
   color: var(--text-muted);
-  margin-top: 4px;
+  margin: 0;
   font-size: 0.95rem;
 }
 
-/* Premium QR Scan Button Layout */
+/* Interactive Scanning Action Button */
 .teacher-scan-icon-btn {
-  background: var(--accent-color);
-  color: var(--bg-card);
+  background-color: var(--accent-color);
+  color: var(--text-white);
   border: none;
-  padding: 12px;
-  border-radius: 12px;
+  padding: 14px;
+  border-radius: var(--radius-md);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-card);
-  transition: all 0.2s ease;
+  box-shadow: var(--shadow-accent);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.teacher-scan-icon-btn:hover {
+.teacher-scan-icon-btn:hover:not(:disabled) {
   background-color: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(233, 69, 96, 0.25);
-}
-
-.teacher-scan-icon-btn:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
 }
 
 .teacher-scan-icon-btn:disabled {
-  background-color: var(--text-muted);
+  background-color: var(--disabled-bg);
+  color: var(--disabled-text);
   box-shadow: none;
   cursor: not-allowed;
 }
 
-/* Error Element Styling */
-.error-message {
-  background-color: var(--bg-danger);
-  border: 1px solid var(--border-light);
-  color: var(--color-danger);
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
-  max-width: 360px;
-  margin: 0 auto 24px auto;
-  font-weight: 500;
-  font-size: 0.9rem;
+/* ==========================================================================
+   50/50 WORKSPACE LAYOUT SEPARATOR
+   ========================================================================== */
+.attendance-workspace-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two exact equal columns */
+  gap: 24px;
+  align-items: start;
 }
 
-/* Integrated Workspace Anchor */
-.calendar-container-pane {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+/* ==========================================================================
+   ALERTS / ERROR BANNERS
+   ========================================================================== */
+.error-message {
+  background-color: var(--bg-danger);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINT (Mobile Stacking)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .teacher-attendance-page {
+  padding: 10px;
+  
+}
+  .attendance-workspace-grid {
+    grid-template-columns: 1fr; /* Fall back to 1 column */
+    gap: 20px;
+  }
+
+  /* Targets the first child (Calendar component wrapper node) to snap to top */
+  .attendance-workspace-grid > *:nth-child(1) {
+    order: 1;
+  }
+
+  /* Targets the second child (History component wrapper node) to stack below */
+  .attendance-workspace-grid > *:nth-child(2) {
+    order: 2;
+  }
 }
