@@ -14,19 +14,9 @@ export const navSections = [
     links: [
       { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
       {
-        to: "/teachers/attendance",
+        to: "/attendance",
         icon: "fas fa-clipboard-check",
         label: "Attendance",
-      },
-    ],
-  },
-  {
-    title: "Payments",
-    links: [
-      {
-        to: "/payments",
-        icon: "fas fa-money-bill-wave",
-        label: "Payment Dashboard",
       },
     ],
   },

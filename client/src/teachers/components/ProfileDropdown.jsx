@@ -10,7 +10,6 @@ const ProfileDropdown = ({ teacher, handleLogout }) => {
     { label: "Profile", to: "/teacher/profile", icon: "far fa-user" },
     { label: "Attendance", to: "/teacher/attendance", icon: "far fa-calendar-check" },
     { label: "Timetable", to: "/teacher/timetable", icon: "far fa-clock" },
-    { label: "Payments", to: "/teacher/payments", icon: "fas fa-wallet" },
   ];
 
   useEffect(() => {

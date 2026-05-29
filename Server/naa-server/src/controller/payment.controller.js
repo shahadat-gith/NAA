@@ -3,179 +3,48 @@ import TeacherDues from "../models/Teacher/dues.js";
 import StudentPayment from "../models/Student/payment.js";
 import { teacherModel } from "../models/Teacher/teacher.js";
 
-export const paymentDashboardData = async (req, res) => {
+export const teacherPaymentDashboardData = async (req, res) => {
   try {
-    const [studentStats,teacherStats,teacherDues,teacherDuesList] = await Promise.all([
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
 
-      // STUDENT PAYMENTS (INFLOW)
-      StudentPayment.aggregate([
-        {
-          $facet: {
-            overview: [
-              {
-                $group: {
-                  _id: null,
-                  totalReceived: {
-                    $sum: { $cond: [{ $eq: ["$status", "Paid"] }, "$amount", 0] }
-                  },
-                  totalPending: {
-                    $sum: { $cond: [{ $eq: ["$status", "Pending"] }, "$amount", 0] }
-                  }
-                }
-              }
-            ],
-            monthlyCollection: [
-              { $match: { status: "Paid" } },
-              {
-                $group: {
-                  _id: { $dateToString: { format: "%Y-%m", date: "$paymentDate" } },
-                  amount: { $sum: "$amount" }
-                }
-              },
-              { $sort: { _id: 1 } }
-            ],
-            recentPayments: [
-              { $sort: { paymentDate: -1 } },
-              { $limit: 10 },
-              {
-                $lookup: {
-                  from: "students",
-                  localField: "student",
-                  foreignField: "_id",
-                  as: "student"
-                }
-              },
-              {
-                $unwind: {
-                  path: "$student",
-                  preserveNullAndEmptyArrays: true
-                }
-              }
-            ]
-          }
-        }
-      ]),
 
-      // TEACHER PAYMENTS (OUTFLOW)
-      TeacherPayment.aggregate([
-        {
-          $facet: {
-            overview: [
-              { $match: { status: "Paid" } },
-              {
-                $group: {
-                  _id: null,
-                  totalPaid: { $sum: "$amount" }
-                }
-              }
-            ],
-            monthlySalary: [
-              { $match: { status: "Paid" } },
-              {
-                $group: {
-                  _id: "$salaryMonth",
-                  amount: { $sum: "$amount" }
-                }
-              },
-              { $sort: { _id: 1 } }
-            ],
-            recentPayments: [
-              { $sort: { paymentDate: -1 } },
-              { $limit: 10 },
-              {
-                $lookup: {
-                  from: "teachers",
-                  localField: "teacher",
-                  foreignField: "_id",
-                  as: "teacher"
-                }
-              },
-              {
-                $unwind: {
-                  path: "$teacher",
-                  preserveNullAndEmptyArrays: true
-                }
-              }
-            ]
-          }
-        }
-      ]),
+    const [payments,dues] = await Promise.all([
+      TeacherPayment.find()
+        .sort({ paymentDate: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("teacher", "name image contact email"),
 
-      // TOTAL DUES
-      TeacherDues.aggregate([
-        {
-          $group: {
-            _id: null,
-            totalDue: { $sum: "$totalDue" }
-          }
-        }
-      ]),
-
-      // TEACHER DUES LIST
-      teacherModel.aggregate([
-        {
-          $lookup: {
-            from: "teacherdues",
-            localField: "_id",
-            foreignField: "teacher",
-            as: "due"
-          }
-        },
-        {
-          $unwind: {
-            path: "$due",
-            preserveNullAndEmptyArrays: true
-          }
-        },
-        {
-          $project: {
-            name: 1,
-            email: 1,
-            image: 1,
-            contact: 1,
-            totalDue: { $ifNull: ["$due.totalDue", 0] },
-            dueMonths: { $ifNull: ["$due.dueMonths", []] }
-          }
-        },
-        { $sort: { totalDue: -1 } }
-      ])
+      TeacherDues.find().populate("teacher", "name image contact email").sort({ totalDue: -1 }),
     ]);
 
-    // =========================
-    // EXTRACT DATA
-    // =========================
-    const studentData = studentStats[0];
-    const teacherData = teacherStats[0];
 
-    const totalIncome = studentData?.overview[0]?.totalReceived || 0;
-    const totalPendingFees = studentData?.overview[0]?.totalPending || 0;
-    const totalExpense = teacherData?.overview[0]?.totalPaid || 0;
-    const totalTeacherDue = teacherDues[0]?.totalDue || 0;
-    const balance = totalIncome - totalExpense;
+    // 4. CALCULATE TOTALS VIA JAVASCRIPT ARRAY REDUCE
+    const totalPaid = payments.reduce((sum, item) => sum + (item.amount || 0), 0);
+    const totalDue = dues.reduce((sum, item) => sum + (item.totalDue || 0), 0);
 
     // =========================
     // RESPONSE
     // =========================
     return res.status(200).json({
       success: true,
-      message: "Dashboard data fetched successfully",
+      message: "Teacher dashboard data fetched successfully",
       dashboard: {
         stats: {
-          totalIncome,
-          totalExpense,
-          totalPendingFees,
-          totalTeacherDue,
-          balance
+          totalPaid,
+          totalDue,
         },
-        income: {
-          monthlyCollection: studentData?.monthlyCollection || [],
-          recentPayments: studentData?.recentPayments || []
-        },
-        expense: {
-          monthlySalary: teacherData?.monthlySalary || [],
-          recentPayments: teacherData?.recentPayments || []
-        },
-        teacherDues: teacherDuesList
+        payments,
+        dues,
+        pagination: {
+          totalPayments: totalPaymentsCount,
+          currentPage: page,
+          totalPages: Math.ceil(totalPaymentsCount / limit),
+          hasNextPage: skip + payments.length < totalPaymentsCount,
+          hasNextPage: page * limit < totalPaymentsCount,
+        }
       }
     });
 
@@ -183,7 +52,7 @@ export const paymentDashboardData = async (req, res) => {
     console.log("Dashboard Error:", error);
     return res.status(500).json({
       success: false,
-      message: "Failed to load dashboard data",
+      message: "Failed to load teacher dashboard data",
       error: error.message
     });
   }

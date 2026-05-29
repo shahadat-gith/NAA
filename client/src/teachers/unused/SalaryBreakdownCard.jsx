@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/SalaryBreakdownCard.css";
+
 
 const SalaryBreakdownCard = ({ dues = { dueMonths: [] } }) => {
   const dueMonths = dues?.dueMonths || [];

@@ -15,14 +15,19 @@ const Attendance = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [attendanceList, setAttendanceList] = useState([]);
 
-  // Local calculation wrapper matching Asia/Kolkata context formats
+  // Local calculation wrapper matching Asia/Kolkata context formats ("YYYY-MM-DD")
   const getTodayDateString = () => {
     return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
   };
 
+  // UPDATED: Now matches backend ISO Date objects cleanly with local string formats
   const isQrValid = (qrDoc) => {
     if (!qrDoc || qrDoc.isExpired) return false;
-    return qrDoc.date === getTodayDateString();
+    
+    // Safely extract "YYYY-MM-DD" from the backend ISO Date string (e.g., "2026-05-29T00:00:00.000Z")
+    const backendDateString = qrDoc.date ? qrDoc.date.split("T")[0] : "";
+    
+    return backendDateString === getTodayDateString();
   };
 
   const fetchDashboardDetails = useCallback(async () => {
@@ -82,7 +87,8 @@ const Attendance = () => {
       );
 
       if (data.success) {
-        setQrDetails(null);
+        // Instead of setting to null, match the updated backend state by setting isExpired to true
+        setQrDetails((prev) => (prev ? { ...prev, isExpired: true } : null));
         toast.success("QR expired!");
       }
     } catch (error) {
@@ -101,7 +107,7 @@ const Attendance = () => {
       <div className="atd-max-width-wrapper">
         {/* HEADER SECTION */}
         <header className="atd-header-section">
-          <h1 className="atd-main-title">Faculty Attendance Dashboard</h1>
+          <h1 className="atd-main-title">Attendance Dashboard</h1>
         </header>
 
         {/* QR CODE CONTROL CENTER */}

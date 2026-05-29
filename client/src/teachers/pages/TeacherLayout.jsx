@@ -77,7 +77,7 @@ const TeacherLayout = () => {
       <Navbar teacher={dashboard.teacher} />
 
       <main className="teacher-page-content">
-        <Outlet context={{ dashboard, setDashboard, loading }} />
+        <Outlet context={{ dashboard, setDashboard, loading, setLoading }} />
       </main>
     </div>
   );

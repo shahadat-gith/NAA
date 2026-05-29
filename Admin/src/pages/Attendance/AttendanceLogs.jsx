@@ -6,7 +6,7 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
   const getStatusStyle = (status) => {
     switch(status) {
       case 'Present': return 'status-present';
-      case 'Late': return 'status-late';
+      case 'Absent': return 'status-late'; // Matches your backend Enum ["Present", "Absent", "On-Leave"]
       case 'On-Leave': return 'status-onleave';
       default: return 'status-default';
     }
@@ -49,14 +49,18 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
             </thead>
             <tbody>
               {attendanceList.map((record) => {
+                // Formatting the Midnight-Normalized Date safe for presentation
                 const attendanceDate = new Date(record.date).toLocaleDateString('en-GB', {
                   day: '2-digit',
                   month: 'short',
                   year: 'numeric'
                 });
 
-                const attendanceTime = record.checkInTime
-                  ? new Date(record.checkInTime).toLocaleTimeString('en-IN', {
+                // UPDATED: Falling back cleanly on MongoDB's native 'createdAt' timestamp token
+                const checkInTimestamp = record.createdAt || null;
+
+                const attendanceTime = checkInTimestamp
+                  ? new Date(checkInTimestamp).toLocaleTimeString('en-IN', {
                       hour: '2-digit',
                       minute: '2-digit',
                       second: '2-digit',
@@ -91,7 +95,7 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
                     </td>
                     <td className="atd-td">{attendanceDate}</td>
                     <td className="atd-td time-cell">
-                      <span className={record.checkInTime ? "" : "no-time"}>{attendanceTime}</span>
+                      <span className={checkInTimestamp ? "" : "no-time"}>{attendanceTime}</span>
                     </td>
                     <td className="atd-td">
                       <span className={`status-badge ${getStatusStyle(record.status)}`}>

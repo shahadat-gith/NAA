@@ -9,12 +9,17 @@ const attendanceQRSchema = new mongoose.Schema(
       index: true,
     },
 
+
     date: {
-      type: String, // YYYY-MM-DD
+      type: Date, 
       required: true,
-      unique: true,
+      index: true, 
     },
-    qrCodeBase64:{ type: String, required: true },
+
+    qrCodeBase64: { 
+      type: String, 
+      required: true 
+    },
 
     isExpired: {
       type: Boolean,
@@ -26,5 +31,6 @@ const attendanceQRSchema = new mongoose.Schema(
   }
 );
 
-const AttendanceQR = mongoose.models.AttendanceQR || mongoose.model("AttendanceQR",attendanceQRSchema);
+
+const AttendanceQR = mongoose.models.AttendanceQR || mongoose.model("AttendanceQR", attendanceQRSchema);
 export default AttendanceQR;

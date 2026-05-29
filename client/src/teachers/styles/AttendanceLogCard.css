@@ -54,6 +54,46 @@
   color: var(--text-main);
 }
 
+
+.alc-navigate-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 10px;
+
+  background: #e94560;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  box-shadow:
+    0 4px 10px rgba(233, 69, 96, 0.18);
+}
+
+.alc-navigate-btn:hover {
+  background: #d73754;
+
+  transform: translateY(-1px);
+}
+
+.alc-navigate-btn:active {
+  transform: scale(0.96);
+}
+
 /* ========================================
    TABLE CONTAINER
 ======================================== */

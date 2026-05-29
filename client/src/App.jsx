@@ -52,7 +52,6 @@ import TeacherLayout from "./teachers/pages/TeacherLayout";
 import Dashboard from "./teachers/pages/Dashboard";
 import TeacherLogin from "./teachers/pages/TeacherLogin";
 import TeacherProfile from "./teachers/pages/TeacherProfile";
-import Payments from "./teachers/pages/Payments";
 import Attendance from "./teachers/pages/Attendance";
 import Timetable from "./teachers/pages/Timetable";
 
@@ -89,7 +88,6 @@ const App = () => {
           >
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<TeacherProfile />} />
-            <Route path="payments" element={<Payments />} />
             <Route path="attendance" element={<Attendance />} />
             <Route path="timetable" element={<Timetable />} />
             <Route path="*" element={<PageNotFound />} />

@@ -13,7 +13,6 @@ import {
   TbCheck,
   TbLoaderQuarter
 } from "react-icons/tb";
-import "../styles/Payments.css";
 
 // Helper engine to convert "YYYY-MM" to user-facing strings (e.g., "Oct 2025")
 const formatSalaryMonth = (monthStr) => {
@@ -181,9 +180,9 @@ const Payments = () => {
                 <table className="pay-history-table">
                   <thead>
                     <tr>
-                      <th>Month</th>
-                      <th>Date</th>
-                      <th>Method</th>
+                      <th>Salary Month</th>
+                      <th>Payment Date</th>
+                      <th>Payment Method</th>
                       <th>Amount</th>
                       <th>Status</th>
                       <th>Acknowledgement</th>
@@ -231,7 +230,7 @@ const Payments = () => {
                                   <span>Saving...</span>
                                 </>
                               ) : (
-                                <span>Acknowledge Receipt</span>
+                                <span>Acknowledge</span>
                               )}
                             </button>
                           )}

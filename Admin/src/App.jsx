@@ -26,7 +26,6 @@ import ResultDetails from "./pages/Result/ResultDetails";
 import TeacherDetails from "./pages/Teacher/TeacherDetails";
 import Notices from "./pages/Notices/Notices";
 import Attendance from "./pages/Attendance/Attendance";
-import Payments from "./pages/Payments/Payments";
 
 
 /* ===============================
@@ -88,7 +87,7 @@ const App = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/teachers" element={<Teacher />} />
                   <Route path="/teachers/:teacherId" element={<TeacherDetails />} />
-                  <Route path="/teachers/attendance" element={<Attendance />} />
+                  <Route path="/attendance" element={<Attendance />} />
                  
 
                   <Route path="/students" element={<Student />} />
@@ -102,7 +101,6 @@ const App = () => {
                   <Route path="/admissions/:id" element={<AdmissionDetails/>}/>
                   <Route path="/notices" element={<Notices/>}/>
 
-                   <Route path="/payments" element={<Payments />} />
 
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/achievers" element={<Achievers />} />

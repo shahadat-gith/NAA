@@ -82,7 +82,7 @@
 
 .pay-workspace {
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(500px, 1.8fr);
+  grid-template-columns: minmax(220px, 1fr) minmax(700px, 3fr);
   gap: 2rem;
   align-items: start;
 }
@@ -280,6 +280,7 @@
   .pay-workspace {
     grid-template-columns: 1fr;
     gap: 1.75rem;
+    overflow-x: auto;
   }
 }
 

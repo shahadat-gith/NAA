@@ -3,9 +3,9 @@ import { useOutletContext } from "react-router-dom";
 
 // Components
 import TimetableCard from "../components/TimetableCard";
-import SalaryBreakdownCard from "../components/SalaryBreakdownCard";
+import SalaryBreakdownCard from "../unused/SalaryBreakdownCard";
 import AttendanceLogCard from "../components/AttendanceLogCard";
-import PaymentsCard from "../components/PaymentsCard";
+import PaymentsCard from "../unused/PaymentsCard";
 
 // Styles
 import "../styles/Dashboard.css";
@@ -28,7 +28,7 @@ const Dashboard = () => {
   }, []);
 
   // Dashboard data
-  const {teacher,timetable,attendance,payments,dues} = dashboard;
+  const {teacher,timetable,attendance} = dashboard;
 
   // Refresh timetable state
   const refreshTimetableState = (newScheduleArray) => {
@@ -63,15 +63,10 @@ const Dashboard = () => {
           onRefreshDashboard={refreshTimetableState}
         />
 
-        <SalaryBreakdownCard
-          dues={dues}
-        />
-
         <AttendanceLogCard
           attendance={attendance}
         />
 
-        <PaymentsCard payments={payments}/>
 
       </div>
 

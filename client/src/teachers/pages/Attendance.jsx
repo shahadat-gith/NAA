@@ -11,7 +11,7 @@ import { useOutletContext } from "react-router-dom";
 
 const Attendance = () => {
   const { backendUrl } = useContext(AppContext);
-  const { fetching, setFetching } = useOutletContext();
+  const { loading, setLoading } = useOutletContext();
   const [history, setHistory] = useState([]);
   const [error, setError] = useState(null);
   const [showScanner, setShowScanner] = useState(false);
@@ -25,7 +25,7 @@ const Attendance = () => {
   // Fetch Attendance for Selected Month
   const fetchMonthlyAttendance = useCallback(async () => {
     if (!backendUrl) return;
-    setFetching(true);
+    setLoading(true);
     setError(null);
     try {
       const res = await axios.get(`${backendUrl}/api/attendance/history/me`, {
@@ -37,6 +37,7 @@ const Attendance = () => {
       });
 
       if (res.data?.success) {
+        console.log(res.data)
         setHistory(res.data.attendance || []);
       }
     } catch (err) {
@@ -44,9 +45,9 @@ const Attendance = () => {
       setError(errorMsg);
       setHistory([]);
     } finally {
-      setFetching(false);
+      setLoading(false);
     }
-  }, [backendUrl, token, selectedMonth, selectedYear, setFetching]);
+  }, [backendUrl, token, selectedMonth, selectedYear, setLoading]);
 
   // Hook into timeline state mutations
   useEffect(() => {
@@ -70,6 +71,7 @@ const Attendance = () => {
       if (res.data.success) {
         toast.success("Attendance Marked!");
         setHistory(res.data.attendance || []);
+        setShowScanner(false); // Cleanly close the scanner overlay modal upon success
       }
     } catch (err) {
       const msg = err.response?.data?.message || "Failed to mark attendance";
@@ -79,15 +81,22 @@ const Attendance = () => {
     }
   };
 
-  // 1. Get today's date elements
-  const today = new Date();
-  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  // UPDATED: Standardize dynamic evaluations to Asia/Kolkata timezone to avoid date skipping bugs
+  const getTodayISTString = () => {
+    return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); // "YYYY-MM-DD"
+  };
 
-  // Check if any single record in the history array matches today's date string
-  const isTodayAttendanceMarked = history.some((att) => att.date === todayStr);
+  // UPDATED: Strips away temporal noise from the native ISO object strings to safely look up matches
+  const isTodayAttendanceMarked = history.some((att) => {
+    if (!att.date) return false;
+    const dbDateString = att.date.split("T")[0]; // Isolates "YYYY-MM-DD" from ISO structure
+    return dbDateString === getTodayISTString();
+  });
 
   return (
     <div className="teacher-attendance-page">
+      <Toaster position="top-center" reverseOrder={false} />
+      
       {/* Control Top Header */}
       <div className="teacher-attendance-header">
         <div>
@@ -96,7 +105,7 @@ const Attendance = () => {
         </div>
 
         <button
-          className="teacher-scan-icon-btn"
+          className={`teacher-scan-icon-btn ${isTodayAttendanceMarked ? "disabled-btn-style" : ""}`}
           onClick={() => setShowScanner(true)}
           disabled={marking || isTodayAttendanceMarked}
           aria-label="Scan QR Code"
@@ -106,14 +115,14 @@ const Attendance = () => {
       </div>
 
       {/* Network Alert Message */}
-      {error && !fetching && (
+      {error && !loading && (
         <div className="error-message">
           <p>Error: {error}</p>
         </div>
       )}
 
       {/* Integrated Workspace Module */}
-      {!fetching && !error && (
+      {!loading && !error && (
         <div className="calendar-container-pane">
           <Calendar
             history={history}

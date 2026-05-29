@@ -3,7 +3,8 @@ import {
   generateAttendanceQR,
   expireAttendanceQR,
   markAttendance,
-  getTeacherAttendanceHistory,
+  getMyAttendanceHistory,               
+  getTeacherAttendanceHistoryForAdmin,     
   getTodayAttendanceDetails,
 } from "../controller/attendance.controller.js";
 
@@ -20,17 +21,14 @@ attendanceRouter.post("/expire-qr", adminAuthMiddleware, expireAttendanceQR);
 attendanceRouter.post("/mark-attendance", authMiddleware, markAttendance);
 
 /* ====================== ATTENDANCE HISTORY ====================== */
-// Me route uses authMiddleware -> sets req.user.id
-attendanceRouter.get("/history/me", authMiddleware, getTeacherAttendanceHistory);
 
-// Param route uses adminAuthMiddleware -> reads req.params.teacherId
-attendanceRouter.get("/history/:teacherId", adminAuthMiddleware, getTeacherAttendanceHistory);
+// 1. TEACHER ROUTE: Uses authMiddleware -> reads req.user.id
+attendanceRouter.get("/history/me", authMiddleware, getMyAttendanceHistory);
 
-// Admin dashboard view
-attendanceRouter.get(
-  "/today-dashboard-details", 
-  adminAuthMiddleware, 
-  getTodayAttendanceDetails
-);
+// 2. ADMIN ROUTE: Uses adminAuthMiddleware -> reads req.params.teacherId
+attendanceRouter.get("/history/:teacherId", adminAuthMiddleware, getTeacherAttendanceHistoryForAdmin);
+
+// 3. ADMIN DASHBOARD VIEW
+attendanceRouter.get("/today-dashboard-details", adminAuthMiddleware, getTodayAttendanceDetails);
 
 export default attendanceRouter;
