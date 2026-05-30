@@ -14,6 +14,10 @@ import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
 
 import AnimatedScreen from "@/components/common/AnimatedScreen";
+
+import { ThemeOptionButton } from "@/components/settings/ThemeOptionButton";
+import { SettingSectionHeader } from "@/components/settings/SettingSectionHeader";
+import { SettingRowItem } from "@/components/settings/SettingRowItem";
 import { AppContext } from "@/context/AppContext";
 import { ThemeContext } from "@/context/ThemeProvider";
 
@@ -30,16 +34,10 @@ const Settings = () => {
         onPress: async () => {
           await SecureStore.deleteItemAsync("teacher-token");
           setTeacher(null);
-          router.replace("/login");
+          router.push("/(auth)/login")
         },
       },
     ]);
-  };
-
-  const handleChangePassword = () => {
-    // You can redirect to a dedicated sub-route, e.g., router.push("/change-password") 
-    // or trigger an explicit action modal framework.
-    Alert.alert("Change Password", "Redirecting to password modification dashboard...");
   };
 
   const toggleThemeSwitch = (isDarkIntent) => {
@@ -128,7 +126,7 @@ const Settings = () => {
             icon="key-outline"
             title="Change Password"
             description="Update your security credentials regularly"
-            onPress={handleChangePassword}
+            onPress={() => router.push("/change-password")}
             colors={COLORS}
             isLast
           />
@@ -144,21 +142,21 @@ const Settings = () => {
             icon="book-outline"
             title="Academic Rules"
             description="Institutional guidelines, rules, and teaching grading parameters"
-            onPress={() => Alert.alert("Academic Rules", "Accessing Nashib Ali Academy curriculum regulations...")}
+            onPress={() => router.push("/academic-rules")}
             colors={COLORS}
           />
           <SettingRowItem
             icon="document-text-outline"
             title="Terms & Conditions"
             description="Operational usage parameters and standard service conditions"
-            onPress={() => Alert.alert("Terms & Conditions", "Accessing operational terms of service guidelines...")}
+            onPress={() => router.push("/terms-conditions")}
             colors={COLORS}
           />
           <SettingRowItem
             icon="shield-checkmark-outline"
             title="Privacy Policy"
             description="Data footprint protection protocols and teacher security frameworks"
-            onPress={() => Alert.alert("Privacy Policy", "Your profile credentials and database keys are fully encrypted.")}
+            onPress={() => router.push("/privacy-policy")}
             colors={COLORS}
             isLast
           />
@@ -190,63 +188,5 @@ const Settings = () => {
     </AnimatedScreen>
   );
 };
-
-/* --- REGIONAL SUB-COMPONENTS --- */
-
-const SettingSectionHeader = ({ title, colors }) => (
-  <Text 
-    className="text-xs font-bold uppercase tracking-wider pl-1 mb-2 ml-1"
-    style={{ color: colors.textSecondary }}
-  >
-    {title}
-  </Text>
-);
-
-const ThemeOptionButton = ({ label, active, onPress, colors }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className="flex-1 rounded-xl py-2.5 items-center justify-center border"
-    style={{
-      backgroundColor: active ? colors.primary : colors.background,
-      borderColor: active ? colors.primary : colors.border,
-    }}
-  >
-    <Text 
-      className="text-xs font-bold"
-      style={{ color: active ? colors.white : colors.textPrimary }}
-    >
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
-
-const SettingRowItem = ({ icon, title, description, onPress, colors, isLast }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    className="flex-row items-center justify-between p-4"
-    style={{ 
-      borderBottomWidth: isLast ? 0 : 1,
-      borderColor: colors.border
-    }}
-  >
-    <View className="flex-row items-center flex-1 pr-4">
-      <View 
-        className="w-10 h-10 rounded-xl items-center justify-center mr-3"
-        style={{ backgroundColor: colors.background }}
-      >
-        <Ionicons name={icon} size={20} color={colors.textSecondary} />
-      </View>
-      <View className="flex-1">
-        <Text className="font-bold text-sm" style={{ color: colors.textPrimary }}>
-          {title}
-        </Text>
-        <Text className="text-xs mt-0.5" style={{ color: colors.textSecondary }} numberOfLines={1}>
-          {description}
-        </Text>
-      </View>
-    </View>
-    <Ionicons name="chevron-forward" size={16} color={colors.inactive} />
-  </TouchableOpacity>
-);
 
 export default Settings;

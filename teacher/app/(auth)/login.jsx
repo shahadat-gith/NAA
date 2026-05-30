@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -21,13 +21,20 @@ import { AppContext } from "@/context/AppContext";
 import { ThemeContext } from "@/context/ThemeProvider";
 
 const Login = () => {
-  const { setTeacher } = useContext(AppContext);
+  const { teacher, setTeacher } = useContext(AppContext);
   const { COLORS } = useContext(ThemeContext);
 
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // SAFE REDIRECT GUARD: Fires strictly outside the layout rendering pass
+  useEffect(() => {
+    if (teacher) {
+      router.replace("/(tabs)");
+    }
+  }, [teacher]);
 
   const handleLogin = async () => {
     if (!contact.trim() || !password.trim()) {
@@ -64,10 +71,9 @@ const Login = () => {
         }
 
         await SecureStore.setItemAsync("teacher-token", token);
-
         setTeacher(teacherData);
-
-        router.replace("/(tabs)");
+        
+        // Let the useEffect hook up top handle standard redirect transitions seamlessly
       } else {
         Alert.alert(
           "Login Failed",
@@ -192,8 +198,11 @@ const Login = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Recovery Action Link */}
-            <TouchableOpacity className="self-end mb-6">
+            {/* Recovery Action Link - FIXED INLINE EVALUATION BUG */}
+            <TouchableOpacity 
+              className="self-end mb-6" 
+              onPress={() => router.push("/(auth)/forgot-password")}
+            >
               <Text style={{ color: COLORS.primary }}>Forgot Password?</Text>
             </TouchableOpacity>
 

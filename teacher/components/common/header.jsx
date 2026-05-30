@@ -13,6 +13,13 @@ import { AppContext } from "@/context/AppContext";
 import { ThemeContext } from "@/context/ThemeProvider";
 
 const getHeaderTitle = (pathname) => {
+  // Explicit matching for precise settings sub-routes
+  if (pathname.includes("change-password")) return "Change Password";
+  if (pathname.includes("academic-rules")) return "Academic Rules";
+  if (pathname.includes("terms-conditions")) return "Terms & Conditions";
+  if (pathname.includes("privacy-policy")) return "Privacy Policy";
+  
+  // Base core module level route tracking definitions
   if (pathname.includes("attendance")) return "Attendance";
   if (pathname.includes("timetable")) return "Timetable";
   if (pathname.includes("profile")) return "Profile";

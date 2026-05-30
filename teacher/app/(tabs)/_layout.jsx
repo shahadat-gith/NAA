@@ -8,8 +8,8 @@ const tabs = [
   {
     name: "index",
     title: "Home",
-    icon: "home-outline",
-    activeIcon: "home",
+    icon: "grid-outline",
+    activeIcon: "grid",
   },
   {
     name: "attendance",
