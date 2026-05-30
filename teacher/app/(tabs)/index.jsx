@@ -3,13 +3,13 @@ import { View, Text, ScrollView, ActivityIndicator, Alert } from "react-native";
 
 import * as SecureStore from "expo-secure-store";
 import { router } from "expo-router";
-import TodaySchedule from "@/components/TodaySchedule";
-import RecentAttendance from "@/components/RecentAttendance";
-import AnimatedScreen from "@/components/AnimatedScreen";
+import TodaySchedule from "@/components/home/TodaySchedule";
+import RecentAttendance from "@/components/home/RecentAttendance";
+import AnimatedScreen from "@/components/common/AnimatedScreen";
 
 import api from "@/configs/api";
 import { AppContext } from "@/context/AppContext";
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const emptyScheduleStructure = {
   Monday: [],
@@ -22,6 +22,7 @@ const emptyScheduleStructure = {
 
 const Home = () => {
   const { teacher, setTeacher } = useContext(AppContext);
+  const { COLORS } = useContext(ThemeContext);
 
   const [dashboard, setDashboard] = useState({
     teacher,
@@ -79,7 +80,10 @@ const Home = () => {
 
   if (loading) {
     return (
-      <View className="flex-1 items-center justify-center bg-background">
+      <View 
+        className="flex-1 items-center justify-center" 
+        style={{ backgroundColor: COLORS.background }}
+      >
         <ActivityIndicator size="large" color={COLORS.primary} />
         <Text className="mt-3" style={{ color: COLORS.textSecondary }}>
           Loading dashboard...
@@ -95,9 +99,11 @@ const Home = () => {
   return (
     <AnimatedScreen>
       <ScrollView
-        className="flex-1 bg-background"
+        className="flex-1"
+        style={{ backgroundColor: COLORS.background }}
         contentContainerStyle={{ padding: 16, paddingBottom: 30 }}
       >
+        {/* Header/Greeting Section */}
         <View className="mb-5">
           <Text
             className="text-2xl font-bold"
@@ -106,12 +112,9 @@ const Home = () => {
             <Text style={{ color: COLORS.primary }}>{greeting}</Text>,{" "}
             {dashboardTeacher?.name || "Teacher"}!
           </Text>
-
-          <Text className="mt-1" style={{ color: COLORS.textSecondary }}>
-            Here is your overview for today.
-          </Text>
         </View>
 
+        {/* Dashboard Widgets */}
         <TodaySchedule timetableData={timetable} />
 
         <RecentAttendance attendance={attendance} />

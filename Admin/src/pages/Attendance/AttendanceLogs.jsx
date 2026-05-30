@@ -12,6 +12,7 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
     }
   };
 
+
   return (
     <section className="atd-panel-card">
       <div className="atd-panel-header">
@@ -72,21 +73,11 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
                   <tr key={record._id}>
                     <td className="atd-td">
                       <div className="atd-faculty-profile-cell">
-                        {record.teacher?.image ? (
-                          <img 
-                            src={record.teacher.image} 
+                         <img 
+                            src={record.teacher.image.url || "/user.png"} 
                             alt={record.teacher?.name || "Profile"} 
                             className="atd-faculty-avatar"
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src = "/user.png";
-                            }}
                           />
-                        ) : (
-                          <div className="atd-faculty-avatar-placeholder">
-                            {record.teacher?.name ? record.teacher.name.charAt(0) : "F"}
-                          </div>
-                        )}
                         <div className="atd-faculty-meta-info">
                           <div className="faculty-name">{record.teacher?.name || "N/A"}</div>
                           <div className="faculty-dept">{record.teacher?.contact || "No Contact Ext."}</div>

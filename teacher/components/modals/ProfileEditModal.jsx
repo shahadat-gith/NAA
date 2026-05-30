@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -15,9 +15,11 @@ import { Ionicons } from "@expo/vector-icons";
 
 import api from "@/configs/api";
 import { pickAndCropProfileImage } from "@/configs/cropper";
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
+  const { COLORS } = useContext(ThemeContext);
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -161,8 +163,15 @@ const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View className="flex-1 bg-black/40 justify-end">
-        <View className="bg-card rounded-t-3xl max-h-[92%]">
-          <View className="flex-row items-center justify-between px-5 py-4 border-b border-gray-100">
+        <View 
+          className="rounded-t-3xl max-h-[92%]"
+          style={{ backgroundColor: COLORS.card }}
+        >
+          {/* Header Bar */}
+          <View 
+            className="flex-row items-center justify-between px-5 py-4 border-b"
+            style={{ borderColor: COLORS.border }}
+          >
             <Text
               className="text-xl font-bold"
               style={{ color: COLORS.textPrimary }}
@@ -176,6 +185,7 @@ const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
           </View>
 
           <ScrollView contentContainerStyle={{ padding: 20 }}>
+            {/* Avatar Section */}
             <View className="items-center mb-6">
               <Image
                 source={
@@ -194,25 +204,25 @@ const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
                 style={{ backgroundColor: COLORS.primary }}
               >
                 <Text className="text-white font-semibold">
-                  {teacher.image.url ? "Change Profile" : "Upload Profile"}
+                  {teacher?.image?.url ? "Change Profile" : "Upload Profile"}
                 </Text>
               </TouchableOpacity>
             </View>
 
-            <SectionTitle title="Personal Details" />
+            <SectionTitle title="Personal Details" colors={COLORS} />
 
-            <Input label="Full Name" value={form.name} onChangeText={(v) => handleChange("name", v)} />
-            <Input label="Email Address" value={form.email} onChangeText={(v) => handleChange("email", v)} keyboardType="email-address" />
-            <Input label="Contact Number" value={form.contact} onChangeText={(v) => handleChange("contact", v)} keyboardType="phone-pad" />
-            <Input label="Degree / Qualifications" value={form.degree} onChangeText={(v) => handleChange("degree", v)} />
-            <Input label="Experience" value={form.experience} onChangeText={(v) => handleChange("experience", v)} keyboardType="numeric" />
+            <Input label="Full Name" value={form.name} onChangeText={(v) => handleChange("name", v)} colors={COLORS} />
+            <Input label="Email Address" value={form.email} onChangeText={(v) => handleChange("email", v)} keyboardType="email-address" colors={COLORS} />
+            <Input label="Contact Number" value={form.contact} onChangeText={(v) => handleChange("contact", v)} keyboardType="phone-pad" colors={COLORS} />
+            <Input label="Degree / Qualifications" value={form.degree} onChangeText={(v) => handleChange("degree", v)} colors={COLORS} />
+            <Input label="Experience" value={form.experience} onChangeText={(v) => handleChange("experience", v)} keyboardType="numeric" colors={COLORS} />
 
-            <SectionTitle title="Residential Address" />
+            <SectionTitle title="Residential Address" colors={COLORS} />
 
-            <Input label="Village / Town" value={form.village} onChangeText={(v) => handleChange("village", v)} />
-            <Input label="Post Office (P.O.)" value={form.po} onChangeText={(v) => handleChange("po", v)} />
-            <Input label="Police Station (P.S.)" value={form.ps} onChangeText={(v) => handleChange("ps", v)} />
-            <Input label="District" value={form.district} onChangeText={(v) => handleChange("district", v)} />
+            <Input label="Village / Town" value={form.village} onChangeText={(v) => handleChange("village", v)} colors={COLORS} />
+            <Input label="Post Office (P.O.)" value={form.po} onChangeText={(v) => handleChange("po", v)} colors={COLORS} />
+            <Input label="Police Station (P.S.)" value={form.ps} onChangeText={(v) => handleChange("ps", v)} colors={COLORS} />
+            <Input label="District" value={form.district} onChangeText={(v) => handleChange("district", v)} colors={COLORS} />
 
             <Input
               label="PIN Code"
@@ -220,10 +230,12 @@ const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
               onChangeText={(v) => /^\d*$/.test(v) && handleChange("pin", v)}
               keyboardType="numeric"
               maxLength={6}
+              colors={COLORS}
             />
 
-            <Input label="State" value={form.state} onChangeText={(v) => handleChange("state", v)} />
+            <Input label="State" value={form.state} onChangeText={(v) => handleChange("state", v)} colors={COLORS} />
 
+            {/* Action Buttons */}
             <View className="flex-row gap-3 mt-4 mb-4">
               <TouchableOpacity
                 disabled={saving}
@@ -258,10 +270,11 @@ const ProfileEditModal = ({ visible, onClose, teacher, loadTeacher }) => {
   );
 };
 
-const SectionTitle = ({ title }) => (
+// Sub-components utilizing mapped contextual properties
+const SectionTitle = ({ title, colors }) => (
   <Text
     className="text-base font-bold mb-3 mt-2"
-    style={{ color: COLORS.textPrimary }}
+    style={{ color: colors.textPrimary }}
   >
     {title}
   </Text>
@@ -273,11 +286,12 @@ const Input = ({
   onChangeText,
   keyboardType = "default",
   maxLength,
+  colors,
 }) => (
   <View className="mb-4">
     <Text
       className="text-xs font-semibold mb-2"
-      style={{ color: COLORS.textSecondary }}
+      style={{ color: colors.textSecondary }}
     >
       {label}
     </Text>
@@ -288,12 +302,12 @@ const Input = ({
       keyboardType={keyboardType}
       maxLength={maxLength}
       placeholder={label}
-      placeholderTextColor={COLORS.textSecondary}
+      placeholderTextColor={colors.textSecondary}
       className="border rounded-2xl px-4 py-4"
       style={{
-        borderColor: COLORS.border,
-        color: COLORS.textPrimary,
-        backgroundColor: COLORS.white,
+        borderColor: colors.border,
+        color: colors.textPrimary,
+        backgroundColor: colors.background, // Nested inputs pull background shade for visual depth inside cards
       }}
     />
   </View>

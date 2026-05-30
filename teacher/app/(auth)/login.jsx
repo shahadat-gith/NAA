@@ -18,71 +18,73 @@ import { Ionicons } from "@expo/vector-icons";
 
 import api from "@/configs/api";
 import { AppContext } from "@/context/AppContext";
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const Login = () => {
   const { setTeacher } = useContext(AppContext);
+  const { COLORS } = useContext(ThemeContext);
 
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-const handleLogin = async () => {
-  if (!contact.trim() || !password.trim()) {
-    return Alert.alert(
-      "Validation Error",
-      "Please enter both contact and password."
-    );
-  }
-
-  setLoading(true);
-
-  try {
-    const response = await api.post("/api/auth/teacher-login", {
-      contact: contact.trim(),
-      password,
-    });
-
-    if (response.data?.success) {
-      const token = response.data.token;
-      const teacherData = response.data.teacher;
-
-      if (!token) {
-        return Alert.alert(
-          "Login Failed",
-          "Token was not received from server."
-        );
-      }
-
-      if (!teacherData) {
-        return Alert.alert(
-          "Login Failed",
-          "Teacher profile was not received from server."
-        );
-      }
-
-      await SecureStore.setItemAsync("teacher-token", token);
-
-      setTeacher(teacherData);
-
-      router.replace("/(tabs)");
-    } else {
-      Alert.alert(
-        "Login Failed",
-        response.data?.message || "Invalid credentials."
+  const handleLogin = async () => {
+    if (!contact.trim() || !password.trim()) {
+      return Alert.alert(
+        "Validation Error",
+        "Please enter both contact and password."
       );
     }
-  } catch (error) {
-    Alert.alert(
-      "Login Failed",
-      error?.response?.data?.message ||
-        "Unable to connect to server."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+
+    setLoading(true);
+
+    try {
+      const response = await api.post("/api/auth/teacher-login", {
+        contact: contact.trim(),
+        password,
+      });
+
+      if (response.data?.success) {
+        const token = response.data.token;
+        const teacherData = response.data.teacher;
+
+        if (!token) {
+          return Alert.alert(
+            "Login Failed",
+            "Token was not received from server."
+          );
+        }
+
+        if (!teacherData) {
+          return Alert.alert(
+            "Login Failed",
+            "Teacher profile was not received from server."
+          );
+        }
+
+        await SecureStore.setItemAsync("teacher-token", token);
+
+        setTeacher(teacherData);
+
+        router.replace("/(tabs)");
+      } else {
+        Alert.alert(
+          "Login Failed",
+          response.data?.message || "Invalid credentials."
+        );
+      }
+    } catch (error) {
+      Alert.alert(
+        "Login Failed",
+        error?.response?.data?.message ||
+          "Unable to connect to server."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ImageBackground
       source={require("@/assets/images/background.webp")}
@@ -94,6 +96,7 @@ const handleLogin = async () => {
           className="flex-1 justify-center px-6"
           behavior={Platform.OS === "ios" ? "padding" : undefined}
         >
+          {/* Brand Identity / Logo Header */}
           <View className="items-center mb-8">
             <View className="w-24 h-24 rounded-full bg-white items-center justify-center mb-4">
               <Image
@@ -112,9 +115,10 @@ const handleLogin = async () => {
             </Text>
           </View>
 
+          {/* Login Form Sheet Container */}
           <View
-            className="bg-white rounded-3xl px-6 py-7"
-            style={{ elevation: 8 }}
+            className="rounded-3xl px-6 py-7"
+            style={{ backgroundColor: COLORS.card, elevation: 8 }}
           >
             <Text
               className="text-2xl font-bold text-center mb-2"
@@ -130,9 +134,13 @@ const handleLogin = async () => {
               Sign in to access your dashboard
             </Text>
 
+            {/* Input - Contact Field */}
             <View
-              className="flex-row items-center border rounded-2xl px-4 mb-4 bg-white"
-              style={{ borderColor: COLORS.border }}
+              className="flex-row items-center border rounded-2xl px-4 mb-4"
+              style={{ 
+                borderColor: COLORS.border,
+                backgroundColor: COLORS.background 
+              }}
             >
               <Ionicons
                 name="call-outline"
@@ -147,12 +155,17 @@ const handleLogin = async () => {
                 keyboardType="phone-pad"
                 placeholderTextColor={COLORS.textSecondary}
                 className="flex-1 py-4 ml-3"
+                style={{ color: COLORS.textPrimary }}
               />
             </View>
 
+            {/* Input - Password Field */}
             <View
-              className="flex-row items-center border rounded-2xl px-4 mb-3 bg-white"
-              style={{ borderColor: COLORS.border }}
+              className="flex-row items-center border rounded-2xl px-4 mb-3"
+              style={{ 
+                borderColor: COLORS.border,
+                backgroundColor: COLORS.background 
+              }}
             >
               <Ionicons
                 name="lock-closed-outline"
@@ -167,6 +180,7 @@ const handleLogin = async () => {
                 secureTextEntry={!showPassword}
                 placeholderTextColor={COLORS.textSecondary}
                 className="flex-1 py-4 ml-3"
+                style={{ color: COLORS.textPrimary }}
               />
 
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
@@ -178,10 +192,12 @@ const handleLogin = async () => {
               </TouchableOpacity>
             </View>
 
+            {/* Recovery Action Link */}
             <TouchableOpacity className="self-end mb-6">
               <Text style={{ color: COLORS.primary }}>Forgot Password?</Text>
             </TouchableOpacity>
 
+            {/* Submit Action Trigger */}
             <TouchableOpacity
               disabled={loading}
               onPress={handleLogin}

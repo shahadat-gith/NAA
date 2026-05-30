@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const AttendanceHistory = ({ history = [] }) => {
+  const { COLORS } = useContext(ThemeContext);
+
   const formatDate = (isoString) => {
     if (!isoString) return "—";
 
@@ -24,7 +26,10 @@ const AttendanceHistory = ({ history = [] }) => {
   };
 
   return (
-    <View className="bg-card rounded-3xl p-5" style={{ elevation: 3 }}>
+    <View 
+      className="rounded-3xl p-5" 
+      style={{ backgroundColor: COLORS.card, elevation: 3 }}
+    >
       <Text className="text-xl font-bold mb-4" style={{ color: COLORS.textPrimary }}>
         Attendance Logs
       </Text>
@@ -33,15 +38,21 @@ const AttendanceHistory = ({ history = [] }) => {
         history.map((log) => {
           const status = log.status || "Present";
           const statusLower = status.toLowerCase();
-          const color =
+          
+          // Map to dynamic theme colors instead of hardcoded hex values
+          const statusColor =
             status === "Present"
-              ? "#16a34a"
+              ? COLORS.success
               : status === "Absent"
-              ? "#dc2626"
-              : "#ca8a04";
+              ? COLORS.danger
+              : COLORS.primary; // Dynamic fallback for other states
 
           return (
-            <View key={log._id} className="bg-background rounded-2xl p-4 mb-3">
+            <View 
+              key={log._id} 
+              className="rounded-2xl p-4 mb-3"
+              style={{ backgroundColor: COLORS.background }}
+            >
               <Text className="font-bold mb-1" style={{ color: COLORS.textPrimary }}>
                 {formatDate(log.date)}
               </Text>
@@ -50,12 +61,12 @@ const AttendanceHistory = ({ history = [] }) => {
                 {log.markedBy === "Admin" ? (
                   <>
                     Admin marked you{" "}
-                    <Text style={{ color, fontWeight: "700" }}>{statusLower}</Text>
+                    <Text style={{ color: statusColor, fontWeight: "700" }}>{statusLower}</Text>
                   </>
                 ) : (
                   <>
                     You marked{" "}
-                    <Text style={{ color, fontWeight: "700" }}>{statusLower}</Text>{" "}
+                    <Text style={{ color: statusColor, fontWeight: "700" }}>{statusLower}</Text>{" "}
                     at{" "}
                     <Text style={{ color: COLORS.textPrimary, fontWeight: "700" }}>
                       {formatTime(log.createdAt)}

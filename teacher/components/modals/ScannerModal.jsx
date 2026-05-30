@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,9 +10,10 @@ import {
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { Ionicons } from "@expo/vector-icons";
 
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const ScannerModal = ({ visible, onClose, onScanSuccess }) => {
+  const { COLORS } = useContext(ThemeContext);
   const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
 
@@ -47,14 +48,19 @@ const ScannerModal = ({ visible, onClose, onScanSuccess }) => {
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
+      {/* Dimmed Modal Backdrop Overlap layer */}
       <View className="flex-1 bg-black/80 justify-center px-5">
-        <View className="bg-card rounded-3xl overflow-hidden">
+        <View 
+          className="rounded-3xl overflow-hidden"
+          style={{ backgroundColor: COLORS.card }}
+        >
+          {/* Header Description Section */}
           <View className="flex-row items-center justify-between p-5">
-            <View>
+            <View className="flex-1 pr-2">
               <Text className="text-xl font-bold" style={{ color: COLORS.textPrimary }}>
                 Scan Attendance QR
               </Text>
-              <Text className="mt-1" style={{ color: COLORS.textSecondary }}>
+              <Text className="mt-1 text-xs" style={{ color: COLORS.textSecondary }}>
                 Position the QR code inside the frame
               </Text>
             </View>
@@ -64,6 +70,7 @@ const ScannerModal = ({ visible, onClose, onScanSuccess }) => {
             </TouchableOpacity>
           </View>
 
+          {/* Camera Viewport View Container */}
           <View className="h-96 bg-black mx-5 rounded-3xl overflow-hidden mb-5">
             {permission?.granted ? (
               <CameraView
@@ -75,9 +82,10 @@ const ScannerModal = ({ visible, onClose, onScanSuccess }) => {
                 onBarcodeScanned={scanned ? undefined : handleBarcodeScanned}
               />
             ) : (
+              /* Fallback Missing Permissions View Block */
               <View className="flex-1 items-center justify-center px-5">
                 <Ionicons name="camera-outline" size={44} color={COLORS.white} />
-                <Text className="text-white text-center mt-3">
+                <Text className="text-white text-center mt-3 text-sm">
                   Camera permission is required to scan QR codes.
                 </Text>
 
@@ -94,6 +102,7 @@ const ScannerModal = ({ visible, onClose, onScanSuccess }) => {
             )}
           </View>
 
+          {/* Actions Close Trigger Button */}
           <TouchableOpacity
             onPress={onClose}
             className="mx-5 mb-5 rounded-2xl py-4 items-center"

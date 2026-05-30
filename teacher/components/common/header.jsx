@@ -10,7 +10,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { usePathname, useRouter } from "expo-router";
 
 import { AppContext } from "@/context/AppContext";
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const getHeaderTitle = (pathname) => {
   if (pathname.includes("attendance")) return "Attendance";
@@ -26,6 +26,7 @@ const Header = () => {
   const pathname = usePathname();
 
   const { teacher } = useContext(AppContext);
+  const { COLORS } = useContext(ThemeContext);
 
   const title = getHeaderTitle(pathname);
   const isHome = title === "Dashboard";
@@ -36,11 +37,12 @@ const Header = () => {
     <View
       className="border-b px-4 py-4 flex-row items-center justify-between"
       style={{
-        backgroundColor: COLORS.background,
+        backgroundColor: COLORS.card, // Perfectly uniform color matching the SafeArea top edge block
         borderColor: COLORS.border,
       }}
     >
-      <View className="w-11 items-start">
+      {/* Left Action Box (Logo or Nav Control) */}
+      <View className="w-11 items-start justify-center">
         {isHome ? (
           <Image
             source={require("@/assets/images/logo.png")}
@@ -48,16 +50,25 @@ const Header = () => {
             resizeMode="contain"
           />
         ) : (
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity 
+            onPress={() => router.back()}
+            className="w-10 h-10 rounded-full border items-center justify-center"
+            style={{
+              backgroundColor: COLORS.background, // Indented look inside the header card strip
+              borderColor: COLORS.border
+            }}
+          >
             <Ionicons
-              name="arrow-back"
-              size={24}
+              name="chevron-back"
+              size={22}
               color={COLORS.textPrimary}
+              style={{ marginRight: 1 }}
             />
           </TouchableOpacity>
         )}
       </View>
 
+      {/* Screen Title */}
       <Text
         numberOfLines={1}
         className="flex-1 text-center text-lg font-semibold"
@@ -68,6 +79,7 @@ const Header = () => {
         {title}
       </Text>
 
+      {/* Right User Avatar Action Trigger */}
       <TouchableOpacity
         className="w-11 h-11"
         onPress={() => router.push("/profile")}

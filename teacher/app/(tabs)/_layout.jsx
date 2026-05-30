@@ -1,7 +1,8 @@
 import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
-import { COLORS } from "@/constants/theme";
+import { useContext } from "react";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const tabs = [
   {
@@ -31,6 +32,8 @@ const tabs = [
 ];
 
 export default function TabLayout() {
+  const { COLORS } = useContext(ThemeContext);
+
   return (
     <Tabs
       screenOptions={{

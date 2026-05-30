@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,12 +11,12 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import api from "@/configs/api";
-import { COLORS } from "@/constants/theme";
 import CalendarCard from "@/components/attendance/CalendarCard";
 import AttendanceHistory from "@/components/attendance/AttendanceHistory";
 import ScannerModal from "@/components/modals/ScannerModal";
 
-import AnimatedScreen from "@/components/AnimatedScreen";
+import AnimatedScreen from "@/components/common/AnimatedScreen";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const Attendance = () => {
   const [history, setHistory] = useState([]);
@@ -27,6 +27,8 @@ const Attendance = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
+  const { COLORS } = useContext(ThemeContext);
 
   const fetchMonthlyAttendance = useCallback(async () => {
     setLoading(true);
@@ -62,7 +64,7 @@ const Attendance = () => {
   const markAttendance = async (qrToken) => {
     setMarking(true);
 
-    try {
+  try {
       const res = await api.post("/api/attendance/mark-attendance", {
         token: qrToken,
         markedBy: "Teacher",
@@ -97,80 +99,96 @@ const Attendance = () => {
 
   return (
     <>
-     <AnimatedScreen>
-       <ScrollView
-        className="flex-1 bg-background"
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
-      >
-        <View className="flex-row items-center justify-between mb-5">
-          <View>
-            <Text
-              className="text-2xl font-bold"
-              style={{ color: COLORS.textPrimary }}
+      <AnimatedScreen>
+        <ScrollView
+          className="flex-1"
+          style={{ backgroundColor: COLORS.background }}
+          contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        >
+          {/* Header Row */}
+          <View className="flex-row items-center justify-between mb-5">
+            <View>
+              <Text
+                className="text-2xl font-bold"
+                style={{ color: COLORS.textPrimary }}
+              >
+                Attendance
+              </Text>
+
+              <Text className="mt-1" style={{ color: COLORS.textSecondary }}>
+                Monthly Overview
+              </Text>
+            </View>
+
+            <TouchableOpacity
+              disabled={marking || isTodayAttendanceMarked}
+              onPress={() => setShowScanner(true)}
+              className="w-14 h-14 rounded-2xl items-center justify-center"
+              style={{
+                backgroundColor:
+                  marking || isTodayAttendanceMarked
+                    ? COLORS.inactive
+                    : COLORS.primary,
+              }}
             >
-              Attendance
-            </Text>
-
-            <Text className="mt-1" style={{ color: COLORS.textSecondary }}>
-              Monthly Overview
-            </Text>
+              {marking ? (
+                <ActivityIndicator color={COLORS.white} />
+              ) : (
+                <Ionicons name="qr-code-outline" size={26} color={COLORS.white} />
+              )}
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            disabled={marking || isTodayAttendanceMarked}
-            onPress={() => setShowScanner(true)}
-            className="w-14 h-14 rounded-2xl items-center justify-center"
-            style={{
-              backgroundColor:
-                marking || isTodayAttendanceMarked
-                  ? COLORS.inactive
-                  : COLORS.primary,
-            }}
-          >
-            {marking ? (
-              <ActivityIndicator color={COLORS.white} />
-            ) : (
-              <Ionicons name="qr-code-outline" size={26} color={COLORS.white} />
-            )}
-          </TouchableOpacity>
-        </View>
+          {/* Already Marked Banner */}
+          {isTodayAttendanceMarked && (
+            <View 
+              className="border rounded-2xl px-4 py-3 mb-5"
+              style={{ 
+                backgroundColor: COLORS.card, 
+                borderColor: COLORS.success 
+              }}
+            >
+              <Text className="font-semibold" style={{ color: COLORS.success }}>
+                Your attendance is already marked for today.
+              </Text>
+            </View>
+          )}
 
-        {isTodayAttendanceMarked && (
-          <View className="bg-green-50 border border-green-100 rounded-2xl px-4 py-3 mb-5">
-            <Text className="font-semibold" style={{ color: "#166534" }}>
-              Your attendance is already marked for today.
-            </Text>
-          </View>
-        )}
+          {/* Dynamic Content States */}
+          {loading ? (
+            <View className="items-center justify-center py-20">
+              <ActivityIndicator size="large" color={COLORS.primary} />
+              <Text className="mt-3" style={{ color: COLORS.textSecondary }}>
+                Loading attendance...
+              </Text>
+            </View>
+          ) : error ? (
+            <View 
+              className="border rounded-2xl p-4"
+              style={{ 
+                backgroundColor: COLORS.card, 
+                borderColor: COLORS.danger 
+              }}
+            >
+              <Text className="font-semibold" style={{ color: COLORS.danger }}>
+                {error}
+              </Text>
+            </View>
+          ) : (
+            <>
+              <CalendarCard
+                history={history}
+                selectedMonth={selectedMonth}
+                selectedYear={selectedYear}
+                onMonthChange={setSelectedMonth}
+                onYearChange={setSelectedYear}
+              />
 
-        {loading ? (
-          <View className="items-center justify-center py-20">
-            <ActivityIndicator size="large" color={COLORS.primary} />
-            <Text className="mt-3" style={{ color: COLORS.textSecondary }}>
-              Loading attendance...
-            </Text>
-          </View>
-        ) : error ? (
-          <View className="bg-red-50 border border-red-100 rounded-2xl p-4">
-            <Text className="font-semibold" style={{ color: "#991b1b" }}>
-              {error}
-            </Text>
-          </View>
-        ) : (
-          <>
-            <CalendarCard
-              history={history}
-              selectedMonth={selectedMonth}
-              selectedYear={selectedYear}
-              onMonthChange={setSelectedMonth}
-              onYearChange={setSelectedYear}
-            />
-
-            <AttendanceHistory history={history} />
-          </>
-        )}
-      </ScrollView>
-     </AnimatedScreen>
+              <AttendanceHistory history={history} />
+            </>
+          )}
+        </ScrollView>
+      </AnimatedScreen>
 
       <ScannerModal
         visible={showScanner}

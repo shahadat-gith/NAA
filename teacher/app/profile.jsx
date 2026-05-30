@@ -5,19 +5,18 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
 
-import * as SecureStore from "expo-secure-store";
-import { router } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
 
 import ProfileEditModal from "@/components/modals/ProfileEditModal";
+import ProfileCard from "@/components/profile/ProfileCard";
+import InfoField from "@/components/profile/InfoField";
 import { AppContext } from "@/context/AppContext";
-import { COLORS } from "@/constants/theme";
+import { ThemeContext } from "@/context/ThemeProvider";
 
 const Profile = () => {
-  const { teacher, setTeacher, loadTeacher } = useContext(AppContext);
+  const { teacher, loadTeacher } = useContext(AppContext);
+  const { COLORS } = useContext(ThemeContext);
   const [editOpen, setEditOpen] = useState(false);
 
   if (!teacher) {
@@ -27,28 +26,19 @@ const Profile = () => {
   const address = teacher.address || {};
   const profileImage = teacher?.image?.url || teacher?.image;
 
-  const handleLogout = () => {
-    Alert.alert("Logout", "Are you sure you want to logout?", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Logout",
-        style: "destructive",
-        onPress: async () => {
-          await SecureStore.deleteItemAsync("teacher-token");
-          setTeacher(null);
-          router.replace("/login");
-        },
-      },
-    ]);
-  };
 
   return (
     <>
       <ScrollView
-        className="flex-1 bg-background"
+        className="flex-1"
+        style={{ backgroundColor: COLORS.background }}
         contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
       >
-        <View className="bg-card rounded-3xl p-5 mb-5" style={{ elevation: 3 }}>
+        {/* Main Profile Header Card */}
+        <View 
+          className="rounded-3xl p-5 mb-5" 
+          style={{ backgroundColor: COLORS.card, elevation: 3 }}
+        >
           <View className="flex-row items-center">
             <Image
               source={
@@ -75,7 +65,14 @@ const Profile = () => {
                 {teacher?.name || "Teacher"}
               </Text>
 
-              <View className="self-start mt-2 px-3 py-1 rounded-full bg-orange-50">
+              {/* Adaptive Badge Container */}
+              <View 
+                className="self-start mt-2 px-3 py-1 rounded-full border"
+                style={{ 
+                  backgroundColor: COLORS.background,
+                  borderColor: COLORS.border 
+                }}
+              >
                 <Text
                   className="text-xs font-semibold"
                   style={{ color: COLORS.primary }}
@@ -95,6 +92,7 @@ const Profile = () => {
           </TouchableOpacity>
         </View>
 
+        {/* Account Details Wrapper */}
         <ProfileCard title="Account & Academic Details">
           <InfoField label="Full Name" value={teacher?.name} />
           <InfoField
@@ -119,6 +117,7 @@ const Profile = () => {
           <InfoField label="Account Status" value={teacher?.status || "Pending"} />
         </ProfileCard>
 
+        {/* Address Details Wrapper */}
         <ProfileCard title="Residential Address">
           <InfoField label="Village / Town" value={address.village} />
           <InfoField label="Post Office (P.O.)" value={address.po} />
@@ -127,15 +126,6 @@ const Profile = () => {
           <InfoField label="PIN Code" value={address.pin} />
           <InfoField label="State" value={address.state || "Assam"} />
         </ProfileCard>
-
-        <TouchableOpacity
-          onPress={handleLogout}
-          className="mt-2 rounded-2xl py-4 flex-row items-center justify-center"
-          style={{ backgroundColor: COLORS.danger || "#ef4444" }}
-        >
-          <Ionicons name="log-out-outline" size={20} color="#fff" />
-          <Text className="text-white font-semibold ml-2">Logout</Text>
-        </TouchableOpacity>
       </ScrollView>
 
       <ProfileEditModal
@@ -147,38 +137,5 @@ const Profile = () => {
     </>
   );
 };
-
-const ProfileCard = ({ title, children }) => (
-  <View className="bg-card rounded-3xl p-5 mb-5" style={{ elevation: 2 }}>
-    <Text
-      className="text-lg font-bold mb-4"
-      style={{ color: COLORS.textPrimary }}
-    >
-      {title}
-    </Text>
-
-    <View>{children}</View>
-  </View>
-);
-
-const InfoField = ({ label, value, highlight }) => (
-  <View className="bg-background rounded-2xl px-4 py-3 mb-3">
-    <Text
-      className="text-xs font-medium mb-1"
-      style={{ color: COLORS.textSecondary }}
-    >
-      {label}
-    </Text>
-
-    <Text
-      className="text-base font-semibold"
-      style={{
-        color: highlight ? COLORS.primary : COLORS.textPrimary,
-      }}
-    >
-      {value || "N/A"}
-    </Text>
-  </View>
-);
 
 export default Profile;

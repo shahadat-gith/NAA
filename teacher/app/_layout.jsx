@@ -1,69 +1,72 @@
 import { Stack, usePathname } from "expo-router";
-import {
-  SafeAreaProvider,
-  SafeAreaView,
-} from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { useContext } from "react";
+import { View } from "react-native";
 
 import "../global.css";
 
 import AppProvider from "@/context/AppProvider";
-import Header from "@/components/header";
-import ScreenLoader from "@/components/ScreenLoader";
+import ThemeProvider, { ThemeContext } from "@/context/ThemeProvider";
+import Header from "@/components/common/header";
+import ScreenLoader from "@/components/common/ScreenLoader";
 import { AppContext } from "@/context/AppContext";
-import { COLORS } from "@/constants/theme";
 
 function LayoutContent() {
   const pathname = usePathname();
 
-  const { teacher, sessionChecking } =
-    useContext(AppContext);
+  const { teacher, sessionChecking } = useContext(AppContext);
+  const { COLORS, activeTheme } = useContext(ThemeContext);
 
   const isAuthScreen = pathname.includes("login");
 
 
-  if (sessionChecking) {
-    return (
-      <ScreenLoader text="Checking your session..." />
-    );
-  }
+  const topBarSurfaceColor = !isAuthScreen && teacher && !sessionChecking 
+    ? COLORS.card 
+    : COLORS.background;
 
   return (
-    <>
-      {!isAuthScreen && teacher && (
-          <Header />
-        )
-      }
-
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: topBarSurfaceColor,
+      }}
+      edges={["top", "left", "right"]}
+    >
+      <StatusBar
+        style={activeTheme === "dark" ? "light" : "dark"}
+        backgroundColor={topBarSurfaceColor}
       />
-    </>
+
+      {sessionChecking ? (
+        <ScreenLoader 
+          text="Checking your session..." 
+          backgroundColor={COLORS.background} 
+        />
+      ) : (
+        <View style={{ flex: 1, backgroundColor: COLORS.background }}>
+          {!isAuthScreen && teacher && <Header />}
+
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: COLORS.background }
+            }}
+          />
+        </View>
+      )}
+    </SafeAreaView>
   );
 }
 
 export default function RootLayout() {
   return (
     <AppProvider>
-      <SafeAreaProvider>
-        <SafeAreaView
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.background,
-          }}
-          edges={["top", "left", "right"]}
-        >
-          <StatusBar
-            style="dark"
-            backgroundColor={COLORS.background}
-          />
-
+      <ThemeProvider>
+        <SafeAreaProvider>
           <LayoutContent />
-        </SafeAreaView>
-      </SafeAreaProvider>
+        </SafeAreaProvider>
+      </ThemeProvider>
     </AppProvider>
   );
 }
