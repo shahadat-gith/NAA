@@ -27,7 +27,25 @@ export const teacherLogin = async (req, res) => {
     }
 
     const token = jwt.sign({ id: teacher._id, role: "teacher" }, process.env.JWT_SECRET, { expiresIn: "365d" });
-    return res.status(200).json({ success: true, token, message: "You have successfully logged in!" });
+
+    const teacherData = {
+      id: teacher._id,
+      name: teacher.name,
+      email: teacher.email,
+      contact: teacher.contact,
+      gender: teacher.gender,
+      image: teacher.image,
+      teacherId: teacher.teacherId,
+      designation: teacher.designation,
+      subjectTaught: teacher.subjectTaught,
+      degree: teacher.degree,
+      experience: teacher.experience,
+      joiningDate: teacher.joiningDate,
+      adress: teacher.address,
+      status: teacher.status,
+    };
+
+    return res.status(200).json({ success: true, token, teacher: teacherData, message: "You have successfully logged in!" });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -73,11 +91,29 @@ export const adminLogin = async (req, res) => {
 // Fetch Authenticated Teacher Profile
 export const getTeacherProfile = async (req, res) => {
   try {
-    const teacher = await teacherModel.findById(req.user.id).select("-password");
-    if (!teacher) return res.status(404).json({ success: false, message: "Teacher not found" });
-    return res.status(200).json({ success: true, data: teacher });
+    const teacher = await teacherModel
+      .findById(req.user.id)
+      .select(
+        "name email contact gender image teacherId designation subjectTaught degree experience address joiningDate status"
+      )
+      .lean();
+
+    if (!teacher) {
+      return res.status(404).json({
+        success: false,
+        message: "Teacher not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      teacher,
+    });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
 

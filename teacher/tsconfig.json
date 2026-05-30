@@ -1,0 +1,16 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "nativewind-env.d.ts"
+, "constants/theme.js", "app/(tabs)/timetable.jsx", "app/(tabs)/settings.jsx", "app/(tabs)/index.jsx", "app/(tabs)/attendance.jsx", "app/(tabs)/_layout.jsx", "context/AppProvider.jsx", "context/AppContext.jsx", "components/header.jsx", "components/auth.jsx", "app/(auth)/_layout.jsx", "app/(auth)/login.jsx", "app/profile.jsx", "app/index.jsx", "app/_layout.jsx"  ]
+}

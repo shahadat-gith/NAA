@@ -1,0 +1,208 @@
+import React, { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+  Image,
+  ImageBackground,
+} from "react-native";
+
+import * as SecureStore from "expo-secure-store";
+import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+
+import api from "@/configs/api";
+import { AppContext } from "@/context/AppContext";
+import { COLORS } from "@/constants/theme";
+
+const Login = () => {
+  const { setTeacher } = useContext(AppContext);
+
+  const [contact, setContact] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+const handleLogin = async () => {
+  if (!contact.trim() || !password.trim()) {
+    return Alert.alert(
+      "Validation Error",
+      "Please enter both contact and password."
+    );
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await api.post("/api/auth/teacher-login", {
+      contact: contact.trim(),
+      password,
+    });
+
+    if (response.data?.success) {
+      const token = response.data.token;
+      const teacherData = response.data.teacher;
+
+      if (!token) {
+        return Alert.alert(
+          "Login Failed",
+          "Token was not received from server."
+        );
+      }
+
+      if (!teacherData) {
+        return Alert.alert(
+          "Login Failed",
+          "Teacher profile was not received from server."
+        );
+      }
+
+      await SecureStore.setItemAsync("teacher-token", token);
+
+      setTeacher(teacherData);
+
+      router.replace("/(tabs)");
+    } else {
+      Alert.alert(
+        "Login Failed",
+        response.data?.message || "Invalid credentials."
+      );
+    }
+  } catch (error) {
+    Alert.alert(
+      "Login Failed",
+      error?.response?.data?.message ||
+        "Unable to connect to server."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+  return (
+    <ImageBackground
+      source={require("@/assets/images/background.webp")}
+      className="flex-1"
+      resizeMode="cover"
+    >
+      <View className="flex-1 bg-black/35">
+        <KeyboardAvoidingView
+          className="flex-1 justify-center px-6"
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          <View className="items-center mb-8">
+            <View className="w-24 h-24 rounded-full bg-white items-center justify-center mb-4">
+              <Image
+                source={require("@/assets/images/logo.png")}
+                className="w-20 h-20"
+                resizeMode="contain"
+              />
+            </View>
+
+            <Text className="text-white text-3xl font-bold text-center">
+              Nashib Ali Academy
+            </Text>
+
+            <Text className="text-white/90 text-base mt-2 text-center">
+              Teacher Portal
+            </Text>
+          </View>
+
+          <View
+            className="bg-white rounded-3xl px-6 py-7"
+            style={{ elevation: 8 }}
+          >
+            <Text
+              className="text-2xl font-bold text-center mb-2"
+              style={{ color: COLORS.textPrimary }}
+            >
+              Welcome Back
+            </Text>
+
+            <Text
+              className="text-center mb-7"
+              style={{ color: COLORS.textSecondary }}
+            >
+              Sign in to access your dashboard
+            </Text>
+
+            <View
+              className="flex-row items-center border rounded-2xl px-4 mb-4 bg-white"
+              style={{ borderColor: COLORS.border }}
+            >
+              <Ionicons
+                name="call-outline"
+                size={20}
+                color={COLORS.textSecondary}
+              />
+
+              <TextInput
+                value={contact}
+                onChangeText={setContact}
+                placeholder="Contact Number"
+                keyboardType="phone-pad"
+                placeholderTextColor={COLORS.textSecondary}
+                className="flex-1 py-4 ml-3"
+              />
+            </View>
+
+            <View
+              className="flex-row items-center border rounded-2xl px-4 mb-3 bg-white"
+              style={{ borderColor: COLORS.border }}
+            >
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={COLORS.textSecondary}
+              />
+
+              <TextInput
+                value={password}
+                onChangeText={setPassword}
+                placeholder="Password"
+                secureTextEntry={!showPassword}
+                placeholderTextColor={COLORS.textSecondary}
+                className="flex-1 py-4 ml-3"
+              />
+
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Ionicons
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  size={20}
+                  color={COLORS.textSecondary}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity className="self-end mb-6">
+              <Text style={{ color: COLORS.primary }}>Forgot Password?</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              disabled={loading}
+              onPress={handleLogin}
+              className="rounded-2xl py-4 items-center"
+              style={{
+                backgroundColor: loading ? COLORS.inactive : COLORS.primary,
+              }}
+            >
+              {loading ? (
+                <ActivityIndicator color={COLORS.white} />
+              ) : (
+                <Text className="text-white font-semibold text-base">
+                  Sign In
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    </ImageBackground>
+  );
+};
+
+export default Login;

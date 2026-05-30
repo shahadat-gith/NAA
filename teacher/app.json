@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Teacher Dashboard",
+    "slug": "teacher-dashboard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "client",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/images/logo.png",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo.png",
+        "backgroundColor": "#E6F4FE"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/logo.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ],
+      "expo-secure-store"
+    ]
+  }
+}
