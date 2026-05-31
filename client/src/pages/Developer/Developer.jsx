@@ -1,9 +1,9 @@
-import React from 'react';
-import { developerInfo } from "./data";
+import React, { useState, useEffect } from 'react';
 import "./Developer.css";
 import Skills from "./Skills";
 
-const { personalInfo, socialLinks, education, skills } = developerInfo;
+// Use the clean permanent URL path variant without version control strings
+const GIST_RAW_URL = "https://gist.githubusercontent.com/shahadat-gith/712d93d6d4be21791ff4c6aacc75eb35/raw/shahadat.json";
 
 /* ── Section wrapper ── */
 const Section = ({ eyebrow, title, children, id }) => (
@@ -18,6 +18,60 @@ const Section = ({ eyebrow, title, children, id }) => (
 
 /* ─────────────────────────────────────────── */
 const Developer = () => {
+  const [developerData, setDeveloperData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchPortfolioData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(GIST_RAW_URL);
+        
+        if (!response.ok) {
+          throw new Error("Failed to receive valid portfolio metrics payload.");
+        }
+        
+        const json = await response.json();
+        setDeveloperData(json);
+        setError(false);
+      } catch (err) {
+        console.error("[Web Gist Error]: Failed sync with remote endpoint:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPortfolioData();
+  }, []);
+
+  // 1. Structural Loading Fallback Shell
+  if (loading) {
+    return (
+      <div className="dev-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+        <div className="dev-loading-spinner" style={{ textAlign: 'center', color: '#6b7280', fontFamily: 'sans-serif' }}>
+          <p style={{ fontSize: '14px', fontWeight: '500' }}>Fetching developer data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 2. Offline / Server Error Fallback Shell
+  if (error || !developerData) {
+    return (
+      <div className="dev-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '80vh' }}>
+        <div style={{ textAlign: 'center', fontFamily: 'sans-serif', padding: '20px' }}>
+          <h3 style={{ color: '#1f2937', marginBottom: '8px' }}>Handshake Synchronization Broken</h3>
+          <p style={{ color: '#6b7280', fontSize: '13px' }}>Could not pull profile from active cloud repositories.</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Safely deconstruct values after data validation guards check out
+  const { personalInfo, socialLinks, education, skills } = developerData;
+
   return (
     <div className="dev-page">
       {/* ── HERO ── */}
@@ -28,7 +82,7 @@ const Developer = () => {
           <div className="dev-hero-inner">
             <div className="dev-hero-avatar-wrap">
               <img
-                src={personalInfo.image}
+                src={personalInfo.image || "/user.png"}
                 alt={personalInfo.name}
                 className="dev-hero-avatar"
               />
@@ -36,23 +90,27 @@ const Developer = () => {
             </div>
 
             <div className="dev-hero-text">
-              <span className="dev-eyebrow">Full Stack Web Developer</span>
+              <span className="dev-eyebrow">{personalInfo.title || "Full Stack Web Developer"}</span>
               <h1 className="dev-hero-name">{personalInfo.name}</h1>
 
               <div className="dev-hero-socials">
-                {socialLinks.map(({ label, href, icon }) => (
-                  <a
-                    key={label}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="dev-social-btn"
-                    aria-label={label}
-                    title={label}
-                  >
-                    <i className={icon} aria-hidden="true" />
-                  </a>
-                ))}
+                {socialLinks.map(({ label, href, icon }) => {
+                  const resolvedIconClass = icon.startsWith("fa") ? icon : `fab fa-${icon}`;
+                  
+                  return (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="dev-social-btn"
+                      aria-label={label}
+                      title={label}
+                    >
+                      <i className={resolvedIconClass} aria-hidden="true" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -77,7 +135,7 @@ const Developer = () => {
                       </p>
                     </div>
                     <span className="dev-timeline-period">
-                      {e.startDate} – {e.endDate}
+                      {e.timeline || `${e.startDate} – ${e.endDate}`}
                     </span>
                   </div>
                   <p className="dev-timeline-degree">

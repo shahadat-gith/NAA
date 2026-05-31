@@ -20,6 +20,8 @@ import api from "@/configs/api";
 import { AppContext } from "@/context/AppContext";
 import { ThemeContext } from "@/context/ThemeProvider";
 
+import ForgotPasswordModal from "@/components/modals/ForgotPasswordModal";
+
 const Login = () => {
   const { teacher, setTeacher } = useContext(AppContext);
   const { COLORS } = useContext(ThemeContext);
@@ -28,6 +30,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Local visibility tracking state hook for your bottom sheet modal component
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   // SAFE REDIRECT GUARD: Fires strictly outside the layout rendering pass
   useEffect(() => {
@@ -198,10 +203,10 @@ const Login = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Recovery Action Link - FIXED INLINE EVALUATION BUG */}
+            {/* Recovery Action Link - NOW SAFELY TRIPPED OVER THE LOCAL MODAL HOOK STATE */}
             <TouchableOpacity 
               className="self-end mb-6" 
-              onPress={() => router.push("/(auth)/forgot-password")}
+              onPress={() => setIsModalVisible(true)}
             >
               <Text style={{ color: COLORS.primary }}>Forgot Password?</Text>
             </TouchableOpacity>
@@ -226,6 +231,12 @@ const Login = () => {
           </View>
         </KeyboardAvoidingView>
       </View>
+
+      {/* Embedded Account Password Recovery Modal Sheet */}
+      <ForgotPasswordModal 
+        visible={isModalVisible} 
+        onClose={() => setIsModalVisible(false)} 
+      />
     </ImageBackground>
   );
 };

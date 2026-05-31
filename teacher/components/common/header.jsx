@@ -23,6 +23,7 @@ const getHeaderTitle = (pathname) => {
   if (pathname.includes("attendance")) return "Attendance";
   if (pathname.includes("timetable")) return "Timetable";
   if (pathname.includes("profile")) return "Profile";
+  if (pathname.includes("developer")) return "Developer Informations";
   if (pathname.includes("settings")) return "Settings";
 
   return "Dashboard";

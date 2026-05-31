@@ -1,5 +1,8 @@
 service: naa-server
 
+# Enforce Serverless to read and load your local .env keys during compilation
+useDotenv: true
+
 provider:
   name: aws
   runtime: nodejs18.x
@@ -7,33 +10,36 @@ provider:
   stage: dev
 
   environment:
+    # Environment & Port Context
     NODE_ENV: ${env:NODE_ENV}
     PORT: ${env:PORT}
 
-    # Database
+    # Core Database Layer
     MONGO_URI: ${env:MONGO_URI}
 
-    # Auth
+    # Authentication Security Tokens
     JWT_SECRET: ${env:JWT_SECRET}
 
-    # Admin
+    # Root Administrative Credentials
     ADMIN_EMAIL: ${env:ADMIN_EMAIL}
     ADMIN_PASSWORD: ${env:ADMIN_PASSWORD}
 
-    # URLs
-    CLIENT_URL: ${env:CLIENT_URL}
+    # Institutional Cross-Origin Endpoints
     ADMIN_URL: ${env:ADMIN_URL}
+    CLIENT_URL: ${env:CLIENT_URL}
 
-    # Email (Brevo / SMTP)
-    SMTP_USER: ${env:SMTP_USER}
-    SMTP_PASSWORD: ${env:SMTP_PASSWORD}
+    # Brevo Transactional SMTP Mail Infrastructure
+    SMTP_SERVER: ${env:SMTP_SERVER}
+    SMTP_PORT: ${env:SMTP_PORT}
+    SMTP_LOGIN: ${env:SMTP_LOGIN}
+    SMTP_KEY: ${env:SMTP_KEY}
     SENDER_EMAIL: ${env:SENDER_EMAIL}
 
-    # Razorpay
+    # Razorpay Operational Financial Gateways
     RAZORPAY_API_KEY: ${env:RAZORPAY_API_KEY}
     RAZORPAY_SECRET_KEY: ${env:RAZORPAY_SECRET_KEY}
 
-    # Cloudinary
+    # Cloudinary Cloud Asset Management Bucket Pipeline
     CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
     CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
     CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
@@ -49,5 +55,4 @@ plugins:
 
 package:
   patterns:
-    - '!.env'
-
+    - '!.env' # Ensures the raw physical file is never bundled into your deployment zip package

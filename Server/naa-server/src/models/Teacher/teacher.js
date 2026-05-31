@@ -128,6 +128,11 @@ const teacherSchema = new mongoose.Schema(
       type: Date, 
       default: null 
     },
+
+    isOtpVerified:{
+      type: Boolean,
+      default: false
+    },
     
     status: {
       type: String,

@@ -84,7 +84,7 @@
    =============================== */
 .admission-notice {
   width: 100%;
-  background: var(--accent-color);
+  background: var(--color-success);
   overflow: hidden;
   cursor: pointer;
   white-space: nowrap;
@@ -116,7 +116,7 @@
 }
 
 .admission-cta {
-  color: var(--color-success);
+  color: var(--text-secondary);
   font-weight: 700;
   text-decoration: underline;
 }

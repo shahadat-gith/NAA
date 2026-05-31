@@ -7,7 +7,7 @@ import { View } from "react-native";
 import "../global.css";
 
 import AppProvider from "@/context/AppProvider";
-import ThemeProvider, { ThemeContext } from "@/context/ThemeProvider";
+import {ThemeProvider, ThemeContext } from "@/context/ThemeProvider";
 import Header from "@/components/common/header";
 import ScreenLoader from "@/components/common/ScreenLoader";
 import { AppContext } from "@/context/AppContext";

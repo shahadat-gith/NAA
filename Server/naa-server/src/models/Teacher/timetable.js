@@ -4,6 +4,7 @@ const classScheduleSchema = new mongoose.Schema(
   {
     class: { type: String, required: true },
     medium: { type: String, required: true },
+    stream: {type: String, default:"null"},
     subject: { type: String, required: true },
     timeSlot: { type: String, required: true },
   },

@@ -69,7 +69,7 @@ const DayScheduleCard = ({ day, schedules = [], onEdit }) => {
                   className="mt-1 text-xs"
                   style={{ color: COLORS.textSecondary }}
                 >
-                  Class {item.class || "N/A"} • {item.medium || "N/A"}
+                  Class {item.class || "N/A"} • {item.medium + " Medium" || "N/A"} {item.stream && ` • ${item.stream} stream`}
                 </Text>
               </View>
 

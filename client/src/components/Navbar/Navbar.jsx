@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown, ChevronRight, GraduationCap } from "lucide-react";
 import logo from "/logo.png";
 import "./Navbar.css";
-import { AppContext } from "../../context/AppContext";
 import SearchBar from "./SearchBar";
 import { navGroups } from "./utils";
 
@@ -12,8 +12,6 @@ const Navbar = () => {
   const mobileMenuRef = useRef(null);
   const navRef = useRef(null);
   const navigate = useNavigate();
-
-  const teacherToken = localStorage.getItem("teacher-token");
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -62,23 +60,16 @@ const Navbar = () => {
     setOpenGroup((prev) => (prev === title ? null : title));
   };
 
-  const handleDropdownLinkClick = () => {
-    setOpenGroup(null);
-  };
-
   return (
     <>
       <nav className="navbar" ref={navRef}>
         <div className="navbar-container">
           <div className="navbar-content">
-            {/* ── LOGO ── */}
-            <div className="logo-container">
-              <div className="logo-wrapper" onClick={() => navigate("/")}>
-                <img
-                  src={logo}
-                  alt="Nashib Ali Academy"
-                  className="logo-image"
-                />
+            
+            {/* ── COLUMN 1: BRAND LOGO (LEFT) ── */}
+            <div className="logo-column">
+              <div className="logo-wrapper" onClick={() => { navigate("/"); setOpenGroup(null); }}>
+                <img src={logo} alt="Nashib Ali Academy" className="logo-image" />
                 <div className="school-info">
                   <h2 className="school-title">Nashib Ali</h2>
                   <span className="school-subtitle">Academy</span>
@@ -86,58 +77,51 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* ── SEARCH ── */}
-            <div className="navbar-search-inline">
-              <SearchBar />
-            </div>
-
-            {/* ── DESKTOP NAV GROUPS ── */}
-            <div className="desktop-nav">
-              <div className="nav-groups">
-                {navGroups.map((group) => (
-                  <div
-                    key={group.title}
-                    className={`nav-group ${openGroup === group.title ? "open" : ""}`}
-                  >
-                    <div
-                      className="nav-group-title"
-                      onClick={() => handleGroupClick(group.title)}
-                    >
-                      {group.title}
-                      <i className="fas fa-chevron-down" aria-hidden="true" />
-                    </div>
-
-                    <div className="nav-dropdown">
-                      {group.items.map((item) => (
-                        <NavLink
-                          key={item.to}
-                          to={item.to}
-                          className={({ isActive }) =>
-                            "nav-dropdown-link" + (isActive ? " active" : "")
-                          }
-                          onClick={handleDropdownLinkClick}
-                        >
-                          {item.label}
-                        </NavLink>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+            {/* ── COLUMN 2: SEARCH BAR (DEAD CENTER) ── */}
+            <div className="search-column">
+              <div className="navbar-search-inline">
+                <SearchBar />
               </div>
             </div>
 
-            {/* ── RIGHT ── */}
-            <div className="navbar-right">
-              {teacherToken ? (
-                <NavLink to="/teacher" className="nav-teacher-btn">
-                  Dashborad
-                </NavLink>
-              ) : (
-                <NavLink to="/teacher/login" className="nav-teacher-btn">
-                  Login as Teacher
-                </NavLink>
-              )}
+            {/* ── COLUMN 3: NAVIGATION & ACTION BUTTONS (RIGHT) ── */}
+            <div className="navigation-column">
+              <div className="desktop-nav">
+                <div className="nav-groups">
+                  {navGroups.map((group) => (
+                    <div
+                      key={group.title}
+                      className={`nav-group ${openGroup === group.title ? "open" : ""}`}
+                    >
+                      <button
+                        className="nav-group-title-btn"
+                        onClick={() => handleGroupClick(group.title)}
+                        aria-expanded={openGroup === group.title}
+                      >
+                        <span>{group.title}</span>
+                        <ChevronDown className="chevron-icon" size={14} strokeWidth={2.5} />
+                      </button>
 
+                      <div className="nav-dropdown">
+                        {group.items.map((item) => (
+                          <NavLink
+                            key={item.to}
+                            to={item.to}
+                            className={({ isActive }) =>
+                              "nav-dropdown-link" + (isActive ? " active" : "")
+                            }
+                            onClick={() => setOpenGroup(null)}
+                          >
+                            {item.label}
+                          </NavLink>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile Menu Icon Trigger */}
               <div className="mobile-menu-button">
                 <button
                   className="hamburger-button"
@@ -145,17 +129,16 @@ const Navbar = () => {
                   aria-label="Toggle menu"
                   aria-expanded={isMobileMenuOpen}
                 >
-                  <i
-                    className={`fas ${isMobileMenuOpen ? "fa-times" : "fa-bars"}`}
-                  />
+                  {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </nav>
 
-      {/* ── MOBILE MENU ── */}
+      {/* ── MOBILE DRAWER OVERLAY ── */}
       <div
         className={`mobile-menu-overlay ${isMobileMenuOpen ? "open" : ""}`}
         aria-hidden={!isMobileMenuOpen}
@@ -166,15 +149,10 @@ const Navbar = () => {
           role="dialog"
           aria-label="Navigation menu"
         >
-          {/* Header */}
+          {/* Mobile Header */}
           <div className="mobile-menu-header">
             <div className="mobile-brand">
-              <img
-                src={logo}
-                alt="logo"
-                className="logo-image"
-                style={{ width: 32, height: 32 }}
-              />
+              <img src={logo} alt="logo" className="logo-image-mobile" />
               <div>
                 <div className="mobile-brand-title">Nashib Ali</div>
                 <span className="mobile-brand-sub">Academy</span>
@@ -185,16 +163,16 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               aria-label="Close menu"
             >
-              <i className="fas fa-times" />
+              <X size={18} />
             </button>
           </div>
 
-          {/* Search */}
+          {/* Mobile Search Input Wrapper */}
           <div className="mobile-search-wrap">
             <SearchBar onClose={() => setIsMobileMenuOpen(false)} />
           </div>
 
-          {/* Links */}
+          {/* Mobile Dropdown Groups List */}
           <div className="mobile-nav-links">
             {navGroups.map((group) => (
               <div key={group.title} className="mobile-group">
@@ -209,25 +187,12 @@ const Navbar = () => {
                     }
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.label}
-                    <i className="fas fa-chevron-right" aria-hidden="true" />
+                    <span>{item.label}</span>
+                    <ChevronRight size={14} className="mobile-arrow-icon" />
                   </NavLink>
                 ))}
               </div>
             ))}
-          </div>
-
-          {/* Footer CTA */}
-          <div className="mobile-footer">
-            {teacherToken ? (
-              <NavLink to="/teacher" className="mobile-nav-footer-btn">
-                Dashborad
-              </NavLink>
-            ) : (
-              <NavLink to="/teacher/login" className="mobile-nav-footer-btn">
-                Login as Teacher
-              </NavLink>
-            )}
           </div>
         </div>
       </div>

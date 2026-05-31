@@ -3,10 +3,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js"; // Importing your existing transporter
 
-// Helper function to generate a 6-digit OTP
-const generateOTP = () => {
-  return Math.floor(100000 + Math.random() * 900000).toString();
-};
 
 // Teacher Login
 export const teacherLogin = async (req, res) => {
@@ -117,39 +113,38 @@ export const getTeacherProfile = async (req, res) => {
   }
 };
 
-// Forgot Password for Teacher - Enters Contact -> Dispatches Email OTP
+// Forgot Password for Teacher - Enters Contact -> Dispatches Email OTP -> Verifies OTP -> Resets Password
+
+const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
+
 export const forgotPasswordTeacher = async (req, res) => {
-  const { contact, otp, newPassword, action } = req.body;
+  const { step } = req.params;
+  const { email, otp, newPassword } = req.body;
+  const targetEmail = email?.trim().toLowerCase();
 
   try {
-    // Step 1: Look up by contact and send secure OTP via Email
-    if (action === "send-otp") {
-      if (!contact) {
-        return res.status(400).json({ success: false, message: "Contact number is required" });
-      }
-
-      const teacher = await teacherModel.findOne({ contact });
-      if (!teacher) {
-        return res.status(404).json({ success: false, message: "Teacher with this contact number does not exist" });
-      }
-
-      if (!teacher.email || teacher.email === "N/A") {
-        return res.status(400).json({ 
-          success: false, 
-          message: "No registered email address found for this account. Please reach out to administration." 
-        });
-      }
+    // -------------------------------------------------------------
+    // PATH 1: /forgot-password/teacher/send-otp
+    // -------------------------------------------------------------
+    if (step === "send-otp") {
+      if (!targetEmail) return res.status(400).json({ success: false, message: "Email is required" });
 
       const generatedOtp = generateOTP();
-      const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes validation threshold
+      const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 Minutes Lifecycle
 
-      teacher.verificationOtp = generatedOtp;
-      teacher.verifyOtpExpireAt = otpExpiry;
-      await teacher.save();
+      const teacher = await teacherModel.findOneAndUpdate(
+        { email: targetEmail },
+        { 
+          verificationOtp: generatedOtp, 
+          verifyOtpExpireAt: otpExpiry,
+          isOtpVerified: false 
+        },
+        { new: true }
+      );
 
-      // Masking user email for client privacy fallback visibility (e.g., s******@gmail.com)
-      const [emailUser, emailDomain] = teacher.email.split("@");
-      const maskedEmail = `${emailUser.charAt(0)}******@${emailDomain}`;
+      if (!teacher) {
+        return res.status(404).json({ success: false, message: "No account found matching this email address" });
+      }
 
       const mailOptions = {
         from: process.env.SENDER_EMAIL,
@@ -159,75 +154,78 @@ export const forgotPasswordTeacher = async (req, res) => {
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px;">
             <h2 style="color: #ff4d2d; text-align: center;">Password Reset Request</h2>
             <p>Dear <strong>${teacher.name}</strong>,</p>
-            <p>You requested a secure password modification for your Nashib Ali Academy portal account.</p>
+            <p>Use the following 6-digit verification code to reset your account credentials:</p>
             <div style="background: #f5f5f5; padding: 16px; text-align: center; border-radius: 8px; margin: 20px 0;">
               <span style="font-size: 24px; font-weight: bold; letter-spacing: 4px; color: #1f2937;">${generatedOtp}</span>
             </div>
-            <p style="color: #6b7280; font-size: 13px;">This verification token parameters frame will expire in 10 minutes. If you did not initiate this request, please safely disregard this email.</p>
-            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
-            <p style="font-size: 12px; color: #9ca3af; text-align: center;">Nashib Ali Academy Portal System Automated Notification</p>
+            <p style="color: #6b7280; font-size: 13px;">This code will expire in 10 minutes. If you did not make this request, you can safely ignore this email.</p>
           </div>
         `,
       };
 
       await transporter.sendMail(mailOptions);
-      return res.status(200).json({ 
-        success: true, 
-        message: `Verification code sent smoothly to your registered email (${maskedEmail}).` 
-      });
+      return res.status(200).json({ success: true, message: "Verification OTP sent to your email." });
     }
 
-    // Step 2: Verify Mobile Entry against DB token record
-    else if (action === "verify-otp") {
-      if (!contact || !otp) {
-        return res.status(400).json({ success: false, message: "Contact number and OTP are required" });
+    // -------------------------------------------------------------
+    // PATH 2: /forgot-password/teacher/verify-otp
+    // -------------------------------------------------------------
+    if (step === "verify-otp") {
+      if (!targetEmail || !otp) {
+        return res.status(400).json({ success: false, message: "Email and OTP are required" });
       }
 
-      const teacher = await teacherModel.findOne({ contact });
+      const teacher = await teacherModel.findOneAndUpdate(
+        { 
+          email: targetEmail,
+          verificationOtp: otp,
+          verifyOtpExpireAt: { $gt: new Date() } // Ensures OTP token is not expired
+        },
+        { isOtpVerified: true }, // Unlocks the validation switch state flag
+        { new: true }
+      );
+
       if (!teacher) {
-        return res.status(404).json({ success: false, message: "Teacher with this contact number does not exist" });
+        return res.status(401).json({ success: false, message: "Invalid or expired OTP code." });
       }
 
-      if (!teacher.verificationOtp || teacher.verifyOtpExpireAt < Date.now()) {
-        return res.status(400).json({ success: false, message: "OTP is invalid or expired" });
-      }
-
-      if (teacher.verificationOtp !== otp) {
-        return res.status(401).json({ success: false, message: "Incorrect OTP" });
-      }
-
-      return res.status(200).json({ success: true, message: "OTP verified successfully" });
+      return res.status(200).json({ success: true, message: "OTP verified successfully." });
     }
 
-    // Step 3: Overwrite and commit password fields
-    else if (action === "reset-password") {
-      if (!contact || !newPassword) {
-        return res.status(400).json({ success: false, message: "Contact number and new password are required" });
+    // -------------------------------------------------------------
+    // PATH 3: /forgot-password/teacher/reset-password
+    // -------------------------------------------------------------
+    if (step === "reset-password") {
+      if (!targetEmail || !newPassword) {
+        return res.status(400).json({ success: false, message: "Email and new password are required" });
       }
 
-      const teacher = await teacherModel.findOne({ contact });
+      const teacher = await teacherModel.findOne({ email: targetEmail });
       if (!teacher) {
-        return res.status(404).json({ success: false, message: "Teacher with this contact number does not exist" });
+        return res.status(404).json({ success: false, message: "Account instance not found." });
       }
 
-      if (!teacher.verificationOtp || teacher.verifyOtpExpireAt < Date.now()) {
-        return res.status(400).json({ success: false, message: "OTP session is invalid or expired. Please request a new OTP" });
+      // Safeguard check blocking forced malicious requests skipping path 2 execution
+      if (!teacher.isOtpVerified) {
+        return res.status(403).json({ success: false, message: "Security Violation: OTP has not been verified." });
       }
 
       const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(newPassword, salt);
-
-      teacher.password = hashedPassword;
+      teacher.password = await bcrypt.hash(newPassword, salt);
+      
+      // Flush tokens completely to avoid replay attacks
       teacher.verificationOtp = null;
       teacher.verifyOtpExpireAt = null;
+      teacher.isOtpVerified = false; 
+      
       await teacher.save();
 
-      return res.status(200).json({ success: true, message: "Password reset successfully" });
+      return res.status(200).json({ success: true, message: "Password updated successfully." });
     }
 
-    else {
-      return res.status(400).json({ success: false, message: "Invalid action parameters." });
-    }
+    // Catch-all safety for invalid URL path inputs
+    return res.status(400).json({ success: false, message: `Invalid parameter action step: "${step}"` });
+
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -1,165 +1,178 @@
-/* ─── Navbar Shell ───────────────────────────────────────────── */
+/* ─── Base Variable Configurations ─── */
+:root {
+  --nav-height: 72px;
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Main Container Framework ─── */
 .navbar {
   position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.97); /* Kept layout opacity specific to the floating nav blur effect */
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border-bottom: 1px solid var(--border-light);
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: var(--transition-smooth);
 }
 
 .navbar-container {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
 .navbar-content {
   display: flex;
   align-items: center;
-  height: 66px; /* Layout specific height dimension */
-  gap: 14px;
+  justify-content: space-between;
+  height: var(--nav-height);
 }
 
-/* ─── Logo ───────────────────────────────────────────────────── */
-.logo-container {
-  flex-shrink: 0;
+/* ─── Three Column Grid Balancing Architecture ─── */
+.logo-column {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: flex-start;
 }
 
+.search-column {
+  flex: 1.2 1 0%;
+  display: flex;
+  justify-content: center;
+}
+
+.navigation-column {
+  flex: 1 1 0%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* ─── Column 1: Identity/Branding ─── */
 .logo-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  padding: 4px 0;
+  user-select: none;
 }
 
 .logo-image {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   object-fit: contain;
-  border-radius: 9px;
+  border-radius: 10px;
 }
 
 .school-info {
-  line-height: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .school-title {
-  font-size: 15.5px;
+  font-size: 16px;
   font-weight: 700;
-  color: var(--text-main);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+  color: #111827;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
 }
 
 .school-subtitle {
-  font-size: 9.5px;
+  font-size: 10px;
   font-weight: 600;
-  color: var(--accent-color);
-  letter-spacing: 0.12em;
+  color: #ff4d2d; /* Synchronized brand accent core color */
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-top: 2px;
-  display: block;
+  margin-top: 3px;
+  line-height: 1;
 }
 
-/* ─── Inline Search ──────────────────────────────────────────── */
+/* ─── Column 2: Center Search ─── */
 .navbar-search-inline {
-  flex: 1;
-  max-width: 270px;
-  margin: 0 4px;
+  width: 100%;
+  max-width: 340px;
 }
 
-/* ─── Desktop Nav ────────────────────────────────────────────── */
+/* ─── Column 3: Navigation Menu Items ─── */
 .desktop-nav {
   display: flex;
   align-items: center;
+  padding: 2px 20px;
+  background-color: var(--bg-primary);
+  border: 0.5px solid var(--border-medium);
+  border-radius: 9999px;
 }
 
 .nav-groups {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
 }
 
-/* ─── Nav Group ──────────────────────────────────────────────── */
 .nav-group {
   position: relative;
 }
 
-.nav-group-title {
+.nav-group-title-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 7px 13px;
-  font-size: 13.5px;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: #4b5563;
+  background: transparent;
+  border: none;
   cursor: pointer;
-  border-radius: var(--radius-sm);
+  border-radius: 9999px;
+  transition: var(--transition-smooth);
   white-space: nowrap;
-  transition: var(--transition-fast);
-  user-select: none;
 }
 
-.nav-group-title i {
-  font-size: 10px;
-  color: var(--text-muted);
-  transition: transform var(--transition-fast);
+.nav-group-title-btn .chevron-icon {
+  color: #9ca3af;
+  transition: transform 0.2s ease;
 }
 
-.nav-group-title:hover {
-  color: var(--text-main);
-  background: var(--bg-secondary);
+.nav-group-title-btn:hover {
+  color: #111827;
+  background: #e5e6e8;
 }
 
-/* Active / open state — toggled via JS */
-.nav-group.open .nav-group-title {
-  color: var(--text-main);
-  background: var(--bg-secondary);
+.nav-group.open .nav-group-title-btn {
+  color: #111827;
+  background: #f3f4f6;
 }
 
-.nav-group.open .nav-group-title i {
+.nav-group.open .chevron-icon {
   transform: rotate(180deg);
+  color: #111827;
 }
 
-/* ─── Dropdown Panel ─────────────────────────────────────────── */
+/* ─── Dropdown Overlay Panel Floating Menu ─── */
 .nav-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 12px);
   left: 50%;
-  transform: translateX(-50%) translateY(-6px);
-  min-width: 175px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  padding: 7px;
+  transform: translateX(-50%) translateY(-8px);
+  min-width: 200px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+  padding: 8px;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity var(--transition-fast), transform var(--transition-fast), visibility var(--transition-fast);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
 }
 
-/* Arrow notch */
-.nav-dropdown::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%) rotate(45deg);
-  width: 10px;
-  height: 10px;
-  background: var(--bg-card);
-  border-left: 1px solid var(--border-light);
-  border-top: 1px solid var(--border-light);
-}
-
-/* Visible when .open is on the parent */
+/* Dropdown visibility rule trigger */
 .nav-group.open .nav-dropdown {
   opacity: 1;
   visibility: visible;
@@ -170,119 +183,23 @@
 .nav-dropdown-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  font-size: 13px;
+  padding: 10px 14px;
+  font-size: 13.5px;
   font-weight: 400;
-  color: var(--text-secondary);
-  border-radius: 6px;
+  color: #4b5563;
+  border-radius: 10px;
   text-decoration: none;
-  transition: var(--transition-fast);
-}
-
-.nav-dropdown-link::before {
-  content: '';
-  width: 4px;
-  height: 4px;
-  border-radius: var(--radius-full);
-  background: var(--text-muted);
-  flex-shrink: 0;
-  transition: var(--transition-fast);
+  transition: var(--transition-smooth);
 }
 
 .nav-dropdown-link:hover,
 .nav-dropdown-link.active {
-  background: var(--accent-light);
-  color: var(--accent-color);
+  background: #fff5f2; /* Styled secondary primary variant match */
+  color: #ff4d2d;
+  font-weight: 500;
 }
 
-.nav-dropdown-link:hover::before,
-.nav-dropdown-link.active::before {
-  background: var(--accent-color);
-}
-
-/* ─── Navbar Right ───────────────────────────────────────────── */
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-.nav-admission-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 18px;
-  background: var(--accent-color);
-  color: var(--text-white) !important;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: var(--transition-fast);
-  box-shadow: var(--shadow-accent);
-  border: none;
-  cursor: pointer;
-}
-
-.nav-admission-btn:hover {
-  background: var(--accent-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.38); /* Maintained accent focus pop scale */
-}
-
-.nav-admission-btn:active {
-  transform: translateY(0);
-}
-
-.nav-teacher-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 8px 18px;
-  background: var(--text-main);
-  color: var(--text-white) !important;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: var(--transition-fast);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.nav-teacher-btn:hover {
-  background: var(--text-secondary);
-  transform: translateY(-1px);
-}
-
-.mobile-teacher-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 12px;
-  background: var(--text-main);
-  color: var(--text-white);
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  box-shadow: 0 3px 14px rgba(15, 23, 40, 0.18);
-}
-
-.mobile-teacher-btn:hover {
-  background: var(--text-secondary);
-}
-
-/* ─── Hamburger ──────────────────────────────────────────────── */
+/* ─── Hamburger Mobile Layout Controls ─── */
 .mobile-menu-button {
   display: none;
 }
@@ -291,54 +208,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
+  width: 40px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   cursor: pointer;
-  color: var(--text-main);
-  font-size: 15px;
-  transition: var(--transition-fast);
+  color: #111827;
+  transition: var(--transition-smooth);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
 .hamburger-button:hover {
-  background: var(--accent-light);
-  border-color: var(--accent-border);
-  color: var(--accent-color);
+  background: #f9fafb;
+  border-color: #d1d5db;
 }
 
-/* ─── Mobile Overlay ─────────────────────────────────────────── */
+/* ─── Mobile Slide Drawer Panel Backdrop ─── */
 .mobile-menu-overlay {
   display: none;
   position: fixed;
   inset: 0;
-  background: transparent;
+  background: rgba(0, 0, 0, 0);
   z-index: 998;
   pointer-events: none;
-  transition: background var(--transition-slow);
+  transition: background 0.4s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 .mobile-menu-overlay.open {
-  background: var(--bg-overlay);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  background: rgba(17, 24, 39, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   pointer-events: auto;
 }
 
-/* ─── Mobile Slide Panel ─────────────────────────────────────── */
 .mobile-menu {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: min(340px, 88vw);
-  background: var(--bg-card);
+  background: #ffffff;
   z-index: 999;
   overflow-y: auto;
   transform: translateX(100%);
-  transition: transform var(--transition-slow) cubic-bezier(0.32, 0.72, 0, 1);
-  box-shadow: var(--shadow-lg);
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
 }
@@ -351,161 +266,142 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 22px 14px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 20px 24px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.logo-image-mobile {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .mobile-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .mobile-brand-title {
-  font-size: 14.5px;
+  font-size: 15px;
   font-weight: 700;
-  color: var(--text-main);
+  color: #111827;
+  line-height: 1.1;
 }
 
 .mobile-brand-sub {
-  font-size: 9px;
+  font-size: 9.5px;
   font-weight: 600;
-  color: var(--accent-color);
-  letter-spacing: 0.1em;
+  color: #ff4d2d;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   display: block;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .mobile-close-button {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
   cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 13px;
-  transition: var(--transition-fast);
-  flex-shrink: 0;
+  color: #4b5563;
+  transition: var(--transition-smooth);
 }
 
 .mobile-close-button:hover {
-  background: var(--accent-light);
-  color: var(--accent-color);
-  border-color: var(--accent-border);
+  background: #f9fafb;
+  color: #111827;
 }
 
 .mobile-search-wrap {
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--border-light);
+  padding: 16px 24px;
+  border-bottom: 1px solid #f3f4f6;
 }
 
 .mobile-nav-links {
-  padding: 10px 14px;
+  padding: 12px 16px;
   flex: 1;
   overflow-y: auto;
 }
 
 .mobile-group {
-  margin-bottom: 4px;
+  margin-bottom: 16px;
 }
 
 .mobile-group-title {
-  font-size: 9.5px;
+  font-size: 11px;
   font-weight: 700;
-  color: var(--text-muted);
+  color: #9ca3af;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 10px 12px 5px;
+  padding: 8px 12px 6px;
 }
 
 .mobile-nav-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 13px;
-  font-size: 13.5px;
-  font-weight: 400;
-  color: var(--text-secondary);
-  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  border-radius: 12px;
   text-decoration: none;
-  transition: var(--transition-fast);
+  transition: var(--transition-smooth);
   margin-bottom: 2px;
-  cursor: pointer;
 }
 
-.mobile-nav-link i {
-  font-size: 10px;
-  color: var(--text-muted);
+.mobile-arrow-icon {
+  color: #9ca3af;
+  transform: translateX(-4px);
   opacity: 0;
-  transition: var(--transition-fast);
+  transition: var(--transition-smooth);
 }
 
 .mobile-nav-link:hover,
 .mobile-nav-link.active {
-  background: var(--accent-light);
-  color: var(--accent-color);
+  background: #fff5f2;
+  color: #ff4d2d;
 }
 
-.mobile-nav-link:hover i,
-.mobile-nav-link.active i {
-  color: var(--accent-color);
+.mobile-nav-link:hover .mobile-arrow-icon,
+.mobile-nav-link.active .mobile-arrow-icon {
+  color: #ff4d2d;
   opacity: 1;
+  transform: translateX(0);
 }
 
-.mobile-footer {
-  padding: 18px 22px 24px;
-  border-top: 1px solid var(--border-light);
-}
-
-.mobile-nav-footer-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 12px;
-  background: var(--accent-color);
-  color: var(--text-white);
-  font-size: 13.5px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  border-radius: var(--radius-full);
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  transition: var(--transition-fast);
-  box-shadow: var(--shadow-accent);
-}
-
-.mobile-nav-footer-btn:hover {
-  background: var(--accent-hover);
-  box-shadow: 0 4px 22px rgba(233, 69, 96, 0.38); /* Maintained responsive scale variant */
-}
-
-/* ─── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 860px) {
+/* ─── Media Query Breaks Matrix ─── */
+@media (max-width: 980px) {
   .desktop-nav { display: none; }
   .navbar-search-inline { display: none; }
-  .nav-admission-btn { display: none; }
-  .nav-teacher-btn { display: none; }
   .mobile-menu-button { display: flex; }
   .mobile-menu-overlay { display: block; }
+  
+  /* Retract structural stretch space scales in compressed layout viewports */
+  .search-column { display: none; }
+  .logo-column { flex: 1 1 auto; }
+  .navigation-column { flex: 1 1 auto; }
 }
 
-@media (min-width: 601px) and (max-width: 860px) {
-  .navbar-search-inline { display: flex; }
-}
-
-@media (min-width: 861px) {
-  .mobile-menu-button { display: none; }
-  .mobile-menu-overlay { display: none !important; }
+@media (min-width: 641px) and (max-width: 980px) {
+  .search-column {
+    display: flex;
+    flex: 1.5 1 0%;
+  }
+  .navbar-search-inline {
+    display: flex;
+  }
 }
 
 @media (max-width: 480px) {
-  .navbar-container { padding: 0 14px; }
-  .school-title { font-size: 14px; }
+  .navbar-container { padding: 0 16px; }
+  .school-title { font-size: 14.5px; }
+  .logo-image { width: 36px; height: 36px; }
 }

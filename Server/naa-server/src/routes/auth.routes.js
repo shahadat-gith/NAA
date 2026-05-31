@@ -19,8 +19,8 @@ userRouter.post("/admin-login", adminLogin);
 // Get authenticated teacher profile
 userRouter.get("/teacher/me", authMiddleware, getTeacherProfile);
 
-// Teacher password reset (send OTP, verify OTP, reset password via contact field lookup)
-userRouter.post("/forgot-password/teacher", forgotPasswordTeacher);
+// Teacher password reset (send OTP, verify OTP, reset password via contact field)
+userRouter.post("/forgot-password/teacher/:step", forgotPasswordTeacher);
 
 // In-App Change Password (Requires valid active session authentication token)
 userRouter.put("/teacher/update-password", authMiddleware, updatePassword);

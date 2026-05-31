@@ -17,52 +17,22 @@ import { ThemeContext } from "@/context/ThemeProvider";
 
 const CLASS_OPTIONS = {
   english: [
-    "nursery",
-    "kg",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
+    "nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", // Appended 11 and 12
   ],
   assamese: [
-    "ankur",
-    "mukul",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
+    "ankur", "mukul", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
   ],
 };
 
 const SUBJECT_OPTIONS = [
-  "English",
-  "Assamese",
-  "Mathematics",
-  "Science",
-  "Social Science",
-  "Physics",
-  "Chemistry",
-  "Biology",
-  "Computer Science",
-  "History",
-  "Geography",
-  "Political Science",
-  "Economics",
+  "Mathematics", "Advanced Mathematics", "Physics", "Chemistry", "Biology",
+  "Assamese", "Advance Assamese", "English", "Alternative English",
+  "Geography", "Education", "Political Science", "History", "Arabic",
+  "Social Studies", "Computer", "Garments Design", "Drawing",
+  "Drawing/Handwriting", "General Science", "GK", "EVS", "Hindi", "Retail Management"
 ];
+
+const STREAM_OPTIONS = ["Arts", "Science"];
 
 const TimetableUpdateModal = ({
   visible,
@@ -73,15 +43,20 @@ const TimetableUpdateModal = ({
 }) => {
   const { COLORS } = useContext(ThemeContext);
 
+  // Flow step state sequence tracker
   const [scheduleList, setScheduleList] = useState(currentSchedule || []);
   const [selectedMedium, setSelectedMedium] = useState("english");
   const [formData, setFormData] = useState({
     class: CLASS_OPTIONS.english[0],
     subject: SUBJECT_OPTIONS[0],
     timeSlot: "",
+    stream: "", // Tracks optional streams for Higher Secondary classes
   });
 
   const [submitting, setSubmitting] = useState(false);
+
+  // Evaluates dynamically for both English and Assamese mediums
+  const isHigherSecondary = formData.class === "11" || formData.class === "12";
 
   useEffect(() => {
     if (visible) {
@@ -90,19 +65,30 @@ const TimetableUpdateModal = ({
   }, [currentSchedule, visible]);
 
   useEffect(() => {
+    const defaultClass = CLASS_OPTIONS[selectedMedium][0];
     setFormData((prev) => ({
       ...prev,
-      class: CLASS_OPTIONS[selectedMedium][0],
+      class: defaultClass,
+      stream: defaultClass === "11" || defaultClass === "12" ? STREAM_OPTIONS[0] : "",
     }));
   }, [selectedMedium]);
 
   if (!visible) return null;
 
   const handleInputChange = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+      
+      // Secondary State Guard: Reset stream variables smoothly based on class thresholds
+      if (name === "class") {
+        if (value === "11" || value === "12") {
+          updated.stream = prev.stream || STREAM_OPTIONS[0];
+        } else {
+          updated.stream = "";
+        }
+      }
+      return updated;
+    });
   };
 
   const addScheduleRow = () => {
@@ -110,11 +96,17 @@ const TimetableUpdateModal = ({
       return Alert.alert("Missing Fields", "Please fill all fields.");
     }
 
+    if (isHigherSecondary && !formData.stream) {
+      return Alert.alert("Missing Field", "Please assign an academic stream branch.");
+    }
+
     const newSlotRow = {
       class: formData.class,
       medium: selectedMedium,
       subject: formData.subject,
       timeSlot: formData.timeSlot.trim().toUpperCase(),
+      // Injects stream metadata seamlessly when handling Higher Secondary slots
+      ...(isHigherSecondary && { stream: formData.stream }),
     };
 
     setScheduleList((prev) => [...prev, newSlotRow]);
@@ -133,7 +125,6 @@ const TimetableUpdateModal = ({
 
   const handleSubmitTimetable = async () => {
     setSubmitting(true);
-
     try {
       const response = await api.put("/api/teacher/timetable/update", {
         day: selectedDay,
@@ -144,7 +135,6 @@ const TimetableUpdateModal = ({
         if (onUpdateSuccess) {
           onUpdateSuccess(scheduleList);
         }
-
         onClose();
         Alert.alert("Success", "Timetable updated successfully.");
       }
@@ -234,6 +224,26 @@ const TimetableUpdateModal = ({
                 ))}
               </View>
             </ScrollView>
+
+            {/* DYNAMIC STREAM VIEW: Automatically renders when Class 11 or 12 is selected in either medium */}
+            {isHigherSecondary && (
+              <View className="mb-4">
+                <Text className="text-xs font-semibold mb-2" style={{ color: COLORS.textSecondary }}>
+                  Stream
+                </Text>
+                <View className="flex-row gap-3">
+                  {STREAM_OPTIONS.map((str) => (
+                    <OptionButton
+                      key={str}
+                      label={`${str} Stream`}
+                      active={formData.stream === str}
+                      onPress={() => handleInputChange("stream", str)}
+                      colors={COLORS}
+                    />
+                  ))}
+                </View>
+              </View>
+            )}
 
             <Text className="text-xs font-semibold mb-2" style={{ color: COLORS.textSecondary }}>
               Subject
@@ -345,7 +355,8 @@ const TimetableUpdateModal = ({
                         className="mt-1 text-xs"
                         style={{ color: COLORS.textSecondary }}
                       >
-                        Class {item.class} • {item.medium} medium
+                        Class {item.class} 
+                        {item.stream ? ` (${item.stream})` : ""} • {item.medium} medium
                       </Text>
 
                       <Text

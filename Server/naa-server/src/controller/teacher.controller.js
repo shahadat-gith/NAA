@@ -2,27 +2,10 @@ import { teacherModel } from "../models/Teacher/teacher.js";
 import Timetable from "../models/Teacher/timetable.js";
 import bcrypt from "bcryptjs";
 import validator from "validator";
-import cloudinary from "../config/cloudinary.js";
-import { Readable } from "stream";
 import TeacherPayment from "../models/Teacher/payment.js";
 import TeacherDues from "../models/Teacher/dues.js";
 import TeacherAttendance from "../models/Teacher/attendance.js";
-
-
-const uploadToCloudinary = async (fileBuffer) => {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder: "teachers" },
-      (error, result) => {
-        if (error) reject(error);
-        else resolve(result);
-      }
-    );
-    Readable.from(fileBuffer).pipe(stream);
-  });
-};
-
-
+import { uploadImageToCloudinary, deleteFromCloudinary } from "../config/cloudinary.js";
 
 
 export const addTeacher = async (req, res) => {
@@ -32,14 +15,13 @@ export const addTeacher = async (req, res) => {
       email,
       contact,
       gender,
-      address,          // Passed down from frontend as an absolute JSON string via FormData
+      address, // Passed down from admin frontend form-data collections as a raw JSON string
       subjectTaught,
       degree,
       experience,
     } = req.body;
 
-    // Default generic starting credential password for a manually added teacher profile
-    let defaultPassword = "12345";
+    const defaultPassword = "12345";
 
     // --- Validation Guards ---
     if (!name || !contact || !gender || !address || !subjectTaught || !degree || experience === undefined) {
@@ -74,7 +56,6 @@ export const addTeacher = async (req, res) => {
       });
     }
 
-    // Confirm structural children inside the address object block
     const { village, po, ps, pin, district, state } = parsedAddress;
     if (!village || !po || !ps || !pin || !district || !state) {
       return res.status(400).json({
@@ -84,11 +65,11 @@ export const addTeacher = async (req, res) => {
     }
 
     // --- Media Storage & Encryption Processing ---
-    const uploadedImage = await uploadToCloudinary(req.file.buffer);
-
+    // Utilizes your central buffer stream uploader inside cloud parameters
+    const uploadedImage = await uploadImageToCloudinary(req.file, "teachers");
     const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
-    // --- Database Engine Execution ---
+    // --- Database Commit ---
     const teacher = await teacherModel.create({
       name,
       email: email || "N/A",
@@ -110,8 +91,7 @@ export const addTeacher = async (req, res) => {
         publicId: uploadedImage.public_id,
       },
       password: hashedPassword,
-      // Manually inserted profiles from the Admin panel bypass onboarding review queues
-      status: "Active", 
+      status: "Active", // Directly active skipping submission queue review pipelines
     });
 
     return res.status(201).json({
@@ -138,10 +118,9 @@ export const addTeacher = async (req, res) => {
 
 export const updateTeacherDetails = async (req, res) => {
   try {
-    const { id } = req.user; // Pulled dynamically from auth validation middleware
+    const { id } = req.user; // Pulled dynamically from active JWT authentication session middleware
 
     const teacher = await teacherModel.findById(id);
-
     if (!teacher) {
       return res.status(404).json({
         success: false,
@@ -151,12 +130,12 @@ export const updateTeacherDetails = async (req, res) => {
 
     // --- Asset Cloud Media Refactoring & Garbage Cleanup ---
     if (req.file) {
-      // Look for the historical asset token inside the newly structured nested document path
+      // Clear out outdated media items from storage buckets if updating image fields
       if (teacher.image && teacher.image.publicId) {
-        await cloudinary.v2.uploader.destroy(teacher.image.publicId);
+        await deleteFromCloudinary(teacher.image.publicId);
       }
 
-      const uploadedImage = await uploadToCloudinary(req.file.buffer);
+      const uploadedImage = await uploadImageToCloudinary(req.file, "teachers");
       teacher.image = {
         url: uploadedImage.secure_url,
         publicId: uploadedImage.public_id,
@@ -175,9 +154,8 @@ export const updateTeacherDetails = async (req, res) => {
           ? JSON.parse(req.body.address) 
           : req.body.address;
 
-        // Perform granular field tracking so the client can perform partial mutations on the address block
+        // Perform granular matching keys loops to allow sub-property partial mutations
         const addressFields = ["village", "po", "ps", "pin", "district", "state"];
-        
         addressFields.forEach((field) => {
           if (parsedAddress[field] !== undefined) {
             teacher.address[field] = parsedAddress[field];
@@ -192,19 +170,9 @@ export const updateTeacherDetails = async (req, res) => {
     }
 
     // --- Basic & Professional Fields Mapping Stream ---
-    const allowedFields = [
-      "name",
-      "email",
-      "contact",
-      "gender",
-      "subjectTaught", // Upgraded to track single department stream parameter
-      "degree",
-      "experience"
-    ];
-
+    const allowedFields = ["name", "email", "contact", "gender", "subjectTaught", "degree", "experience"];
     allowedFields.forEach((field) => {
       if (req.body[field] !== undefined) {
-        // Cast numerical constraints accurately
         if (field === "experience") {
           teacher[field] = Number(req.body[field]);
         } else {
@@ -213,7 +181,6 @@ export const updateTeacherDetails = async (req, res) => {
       }
     });
 
-    // Mongoose execution fires active document pre-save structural layout validation hooks automatically
     await teacher.save();
 
     return res.status(200).json({
@@ -255,8 +222,9 @@ export const deleteTeacher = async (req, res) => {
       });
     }
 
-    if (teacher.imagePublicId) {
-      await cloudinary.uploader.destroy(teacher.imagePublicId);
+    // FIXED: Corrected path parameter mapping from imagePublicId down to teacher.image.publicId matching schema
+    if (teacher.image && teacher.image.publicId) {
+      await deleteFromCloudinary(teacher.image.publicId);
     }
 
     await teacher.deleteOne();
@@ -274,6 +242,7 @@ export const deleteTeacher = async (req, res) => {
     });
   }
 };
+
 
 export const getAllTeachers = async (req, res) => {
   try {
@@ -294,12 +263,12 @@ export const getAllTeachers = async (req, res) => {
   }
 };
 
+
 export const getTeacherById = async (req, res) => {
   try {
     const { id } = req.params;
 
     const teacher = await teacherModel.findById(id);
-
     if (!teacher) {
       return res.status(404).json({
         success: false,
@@ -323,31 +292,17 @@ export const getTeacherById = async (req, res) => {
 
 
 export const updateTimetable = async (req, res) => {
-
   try {
-
     const { id } = req.user;
     const { day, schedule } = req.body;
 
-    // Validate day
-
-    const validDays = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-
+    const validDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     if (!day || !validDays.includes(day)) {
       return res.status(400).json({
         success: false,
         message: "Invalid day provided",
       });
     }
-
-    // Validate schedule array
 
     if (!schedule || !Array.isArray(schedule)) {
       return res.status(400).json({
@@ -356,10 +311,7 @@ export const updateTimetable = async (req, res) => {
       });
     }
 
-    // Verify teacher exists
-
     const teacher = await teacherModel.findById(id);
-
     if (!teacher) {
       return res.status(404).json({
         success: false,
@@ -367,16 +319,8 @@ export const updateTimetable = async (req, res) => {
       });
     }
 
-    // Find existing timetable
-
-    let timetable = await Timetable.findOne({
-      teacher: id,
-    });
-
-    // Create empty timetable if not exists
-
+    let timetable = await Timetable.findOne({ teacher: id });
     if (!timetable) {
-
       timetable = await Timetable.create({
         teacher: id,
         schedule: {
@@ -390,10 +334,7 @@ export const updateTimetable = async (req, res) => {
       });
     }
 
-    // Update only selected day
-
     timetable.schedule[day] = schedule;
-
     await timetable.save();
 
     return res.status(200).json({
@@ -401,11 +342,8 @@ export const updateTimetable = async (req, res) => {
       message: `${day} timetable updated successfully`,
       timetable,
     });
-
   } catch (error) {
-
     console.error("updateTimetable error:", error);
-
     return res.status(500).json({
       success: false,
       message: "Error updating timetable",
@@ -414,14 +352,12 @@ export const updateTimetable = async (req, res) => {
   }
 };
 
+
 export const getTimetable = async (req, res) => {
   try {
-
     const { id } = req.params;
 
-    // Verify teacher exists
     const teacher = await teacherModel.findById(id);
-
     if (!teacher) {
       return res.status(404).json({
         success: false,
@@ -429,9 +365,7 @@ export const getTimetable = async (req, res) => {
       });
     }
 
-    // Fetch timetable
     const timetable = await Timetable.findOne({ teacher: id });
-
     if (!timetable) {
       return res.status(404).json({
         success: false,
@@ -443,10 +377,8 @@ export const getTimetable = async (req, res) => {
       success: true,
       timetable,
     });
-
   } catch (error) {
     console.error("getTimetable error:", error);
-
     return res.status(500).json({
       success: false,
       message: "Error fetching timetable",
@@ -459,8 +391,7 @@ export const getTimetable = async (req, res) => {
 export const getTeacherDashboard = async (req, res) => {
   try {
     const { id } = req.user;
-    
-    // 1. Verify teacher quickly
+
     const teacher = await teacherModel.findById(id).select("-password");
     if (!teacher) {
       return res.status(404).json({
@@ -469,7 +400,7 @@ export const getTeacherDashboard = async (req, res) => {
       });
     }
 
-    // 2. Fetch dependencies concurrently with optimization safeguards
+    // Thread concurrency pipeline grouping concurrent document execution requests smoothly
     const [timetable, attendance, payments, dues] = await Promise.all([
       Timetable.findOne({ teacher: id }),
       TeacherAttendance.find({ teacher: id }).sort({ createdAt: -1 }).limit(30),
@@ -481,9 +412,9 @@ export const getTeacherDashboard = async (req, res) => {
       success: true,
       dashboard: {
         teacher,
-        timetable: timetable || { schedule: [] },
-        attendance,
-        payments,
+        timetable: timetable || { schedule: { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [] } },
+        attendance: attendance || [],
+        payments: payments || [],
         dues: dues || { totalDue: 0, dueMonths: [] },
       },
     });
@@ -496,7 +427,3 @@ export const getTeacherDashboard = async (req, res) => {
     });
   }
 };
-
-
-
-
