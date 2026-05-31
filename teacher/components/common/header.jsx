@@ -23,7 +23,7 @@ const getHeaderTitle = (pathname) => {
   if (pathname.includes("attendance")) return "Attendance";
   if (pathname.includes("timetable")) return "Timetable";
   if (pathname.includes("profile")) return "Profile";
-  if (pathname.includes("developer")) return "Developer Informations";
+  if (pathname.includes("developer")) return "Developer Information";
   if (pathname.includes("settings")) return "Settings";
 
   return "Dashboard";
@@ -37,7 +37,12 @@ const Header = () => {
   const { COLORS } = useContext(ThemeContext);
 
   const title = getHeaderTitle(pathname);
-  const isHome = title === "Dashboard";
+  
+  // Array defining all primary bottom-tab navigation root paths
+  const ROOT_TABS = ["Dashboard", "Attendance", "Timetable", "Settings"];
+  
+  // If the active title matches any element in the array, it's treated as a root tab view
+  const isRootTab = ROOT_TABS.includes(title);
 
   const profileImage = teacher?.image?.url || teacher?.image || null;
 
@@ -49,9 +54,9 @@ const Header = () => {
         borderColor: COLORS.border,
       }}
     >
-      {/* Left Action Box (Logo or Nav Control) */}
+      {/* Left Action Box (Logo for Tabs or Back Arrow for Sub-routes) */}
       <View className="w-11 items-start justify-center">
-        {isHome ? (
+        {isRootTab ? (
           <Image
             source={require("@/assets/images/logo.png")}
             className="w-10 h-10"
@@ -62,7 +67,7 @@ const Header = () => {
             onPress={() => router.back()}
             className="w-10 h-10 rounded-full border items-center justify-center"
             style={{
-              backgroundColor: COLORS.background, // Indented look inside the header card strip
+              backgroundColor: COLORS.background,
               borderColor: COLORS.border
             }}
           >
@@ -93,11 +98,7 @@ const Header = () => {
         onPress={() => router.push("/profile")}
       >
         <Image
-          source={
-            profileImage
-              ? { uri: profileImage }
-              : require("@/assets/images/user.png")
-          }
+          source={profileImage ? { uri: profileImage } : require("@/assets/images/user.png")}
           className="w-11 h-11 rounded-full"
           resizeMode="cover"
         />

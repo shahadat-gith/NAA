@@ -7,7 +7,7 @@ import { ThemeContext } from "@/context/ThemeProvider";
 const tabs = [
   {
     name: "index",
-    title: "Home",
+    title: "Dashboard",
     icon: "grid-outline",
     activeIcon: "grid",
   },
