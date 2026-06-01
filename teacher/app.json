@@ -6,20 +6,16 @@
     "orientation": "portrait",
     "scheme": "naa-teacher",
     "userInterfaceStyle": "automatic",
-
     "icon": "./assets/images/favicon.png",
-
     "splash": {
       "image": "./assets/images/favicon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nashibaliacademy.teacher"
     },
-
     "android": {
       "package": "com.nashibaliacademy.teacher",
       "permissions": ["CAMERA"],
@@ -29,11 +25,9 @@
         "backgroundColor": "#E6F4FE"
       }
     },
-
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
-
     "plugins": [
       "expo-router",
       [
@@ -44,9 +38,15 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": false,
+          "hidden": false
+        }
+      ]
     ],
-
     "extra": {
       "eas": {
         "projectId": "f9e9f8aa-cde5-4221-a3bd-c3a483c063ef"

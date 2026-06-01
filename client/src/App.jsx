@@ -1,5 +1,10 @@
 import React, { useEffect, useContext } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer/Footer";
@@ -17,7 +22,7 @@ import Contact from "./pages/Contact/Contact";
 import Developer from "./pages/Developer/Developer";
 import Gallery from "./pages/Gallery/Gallery";
 import CurriculumDetails from "./pages/CurriculumDetails/CurriculumDetails";
-import StaffOnboarding from "./pages/StaffOnboarding/StaffOnboarding";
+import StaffOnboarding from "./pages/StaffOnboarding/StaffOnboarding"
 
 /* Legal pages */
 import Legal from "./pages/Legal/Legal";
@@ -42,17 +47,55 @@ import StudentProfile from "./pages/Student/StudentProfile/StudentProfile";
 import PageNotFound from "./components/404/PageNotFound";
 import Notices from "./pages/Notices/Notices";
 
+/* ===== Teacher Dashboard ===== */
+import TeacherLayout from "./teachers/pages/TeacherLayout";
+import Dashboard from "./teachers/pages/Dashboard";
+import TeacherLogin from "./teachers/pages/TeacherLogin";
+import TeacherProfile from "./teachers/pages/TeacherProfile";
+import Attendance from "./teachers/pages/Attendance";
+import Timetable from "./teachers/pages/Timetable";
+
 const App = () => {
   const location = useLocation();
   const { loading } = useContext(AppContext);
 
-  // Smooth scroll back to top of document on view path transitions
   useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
   }, [location.pathname]);
+
+  const teacherToken = localStorage.getItem("teacher-token");
+
+  /* ===== TEACHER APP ===== */
+  if (location.pathname.startsWith("/teacher")) {
+    return (
+      <>
+        <Toaster position="top-center" />
+
+        <Routes>
+          {/* Login route */}
+          <Route
+            path="/teacher/login"
+            element={teacherToken ? (<Navigate to="/teacher" replace />) : (<TeacherLogin />)}
+          />
+
+          {/* Protected Teacher Routes */}
+          <Route
+            path="/teacher/*"
+            element={teacherToken ? (<TeacherLayout />) : (<Navigate to="/teacher/login" replace />)}
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="profile" element={<TeacherProfile />} />
+            <Route path="attendance" element={<Attendance />} />
+            <Route path="timetable" element={<Timetable />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </>
+    );
+  }
 
   /* ===== FULL PAGE LOADER ===== */
   if (loading) {

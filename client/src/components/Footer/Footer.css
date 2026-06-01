@@ -1,43 +1,48 @@
-/* --- Premium Footer Container --- */
+/* ==========================================================================
+   FOOTER PREMIUM STYLES
+   ========================================================================== */
+
 .footer-premium {
-  background: var(--footer-bg); 
-  border-top: 1px solid var(--border-light);
-  color: var(--text-main);
-  padding: 4rem 2rem 1.5rem 2rem;
-  box-shadow: var(--shadow-card);
+  background-color: var(--footer-bg);
+  color: var(--text-white);
+  padding: 60px 0 20px 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .footer-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 24px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2.5rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
 }
 
-/* --- Section Layouts --- */
+/* Footer Sections */
 .footer-section {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 16px;
 }
 
 .footer-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: var(--accent-color);
-  letter-spacing: -0.02em;
+  color: var(--text-white);
+  margin: 0;
+  letter-spacing: -0.5px;
 }
 
 .footer-subtitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--accent-color);
+  color: var(--text-white);
+  margin: 0;
   position: relative;
-  padding-bottom: 0.5rem;
+  padding-bottom: 8px;
 }
 
-/* Elegant bottom line accent for headers */
+/* Section Title Decorative Line */
 .footer-subtitle::after {
   content: '';
   position: absolute;
@@ -45,71 +50,25 @@
   bottom: 0;
   width: 35px;
   height: 2px;
-  background-color: var(--color-success);
-  border-radius: 2px;
+  background-color: var(--accent-color);
+  border-radius: var(--radius-full);
 }
 
 .footer-text {
   font-size: 0.95rem;
   line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-/* --- Navigation & Links --- */
-.footer-links {
-  list-style: none;
-  padding: 0;
+  color: var(--text-light);
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
 }
 
-.footer-link {
-  text-decoration: none;
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  transition: color var(--transition-fast), transform var(--transition-fast);
-  display: inline-block;
-}
+/* ==========================================================================
+   SOCIAL LINKS
+   ========================================================================== */
 
-.footer-link:hover {
-  color: var(--accent-color);
-  transform: translateX(4px);
-}
-
-/* --- Contact Section --- */
-.footer-contact {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.footer-contact li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.footer-contact i {
-  color: var(--accent-color);
-  margin-top: 0.2rem;
-  font-size: 1rem;
-  width: 16px;
-  text-align: center;
-}
-
-/* --- Social Media Links --- */
 .social-links {
   display: flex;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .social-icon {
@@ -118,95 +77,166 @@
   justify-content: center;
   width: 38px;
   height: 38px;
-  border-radius: var(--radius-full);
-  background-color: var(--bg-card); /* Pops elegantly off the bg-secondary footer field */
-  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-white);
   text-decoration: none;
-  transition: all var(--transition-normal);
-  border: 1px solid var(--border-light);
+  transition: all var(--transition-fast);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .social-icon:hover {
   background-color: var(--accent-color);
   color: var(--text-white);
   transform: translateY(-3px);
-  box-shadow: var(--shadow-accent);
+  box-shadow: var(--accent-shadow);
   border-color: var(--accent-color);
 }
 
-/* --- Teacher Onboarding Banner --- */
-.footer-staff-onboarding {
-  max-width: 1200px;
-  margin: 3rem auto 1.5rem auto;
-  padding: 1.5rem;
-  border: 1px dashed var(--color-success);
-  border-radius: var(--radius-md);
-  text-align: center;
+/* ==========================================================================
+   NAVIGATION LINKS & CONTACT
+   ========================================================================== */
 
+.footer-links, 
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.onboard-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+.footer-link {
+  color: var(--text-light);
   text-decoration: none;
-  color: var(--color-success);
-  font-weight: 600;
-  font-size: 1rem;
-  transition: transform var(--transition-fast);
+  font-size: 0.95rem;
+  transition: color var(--transition-fast), padding-left var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-link:hover {
+  color: var(--accent-color);
+  padding-left: 6px;
+}
+
+.footer-contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.footer-contact i {
+  color: var(--accent-color);
+  margin-top: 3px;
+  width: 16px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   TEACHER / STAFF PORTAL BAR
+   ========================================================================== */
+
+.footer-teacher-portal {
+  max-width: 1200px;
+  margin: 40px auto 0 auto;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.onboard-link, 
+.teacher-portal-link {
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+/* Style for joining as a teacher (Call to Action) */
+.onboard-link {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-border);
 }
 
 .onboard-link:hover {
-  transform: scale(1.02);
+  background-color: var(--accent-color);
+  color: var(--text-white);
+  box-shadow: var(--shadow-accent);
 }
 
-.onboard-link::after {
-  content: '→';
-  font-size: 1.1rem;
-  transition: transform var(--transition-fast);
+/* Style for existing teachers portal login */
+.teacher-portal-link {
+  color: var(--text-light);
+  border: 1px solid var(--accent-border);
 }
 
-.onboard-link:hover::after {
-  transform: translateX(4px);
+.teacher-portal-link:hover {
+  color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-/* --- Footer Bottom Copyright --- */
+/* ==========================================================================
+   FOOTER BOTTOM (COPYRIGHT)
+   ========================================================================== */
+
 .footer-bottom {
   max-width: 1200px;
-  margin: 1.5rem auto 0 auto;
-  padding-top: 1.5rem;
+  margin: 0 auto;
+  padding: 24px 24px 0 24px;
   text-align: center;
 }
 
 .footer-bottom p {
-  font-size: 0.875rem;
-  color: var(--text-muted);
   margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
-/* --- Responsive Media Queries --- */
-@media (max-width: 768px) {
-  .footer-premium {
-    padding: 3rem 1.5rem 1.5rem 1.5rem;
-  }
-  
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+
+/* Tablet View */
+@media (max-width: 992px) {
   .footer-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-  }
-  
-  .footer-staff-onboarding {
-    margin: 2.5rem auto 1.5rem auto;
-    padding: 1.25rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile View */
+@media (max-width: 576px) {
+  .footer-premium {
+    padding: 40px 0 20px 0;
+  }
+
   .footer-container {
     grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-teacher-portal {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    margin-top: 32px;
   }
   
-  .footer-section {
-    align-items: flex-start;
+  .onboard-link, 
+  .teacher-portal-link {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
   }
 }

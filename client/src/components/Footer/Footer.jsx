@@ -148,10 +148,17 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer-staff-onboarding">
-        <Link to="/staff/onboard" className="onboard-link">
-          Join us as teacher
-        </Link>
+      <div className="footer-teacher-portal" >
+        <div className="footer-teacher-onboarding">
+          <Link to="/staff/onboard" className="onboard-link">
+            Teacher Registration
+          </Link>
+        </div>
+        <div className="footer-staff-portal">
+          <Link to="/teacher" className="teacher-portal-link">
+            Teacher Portal
+          </Link>
+        </div>
       </div>
 
       <div className="footer-bottom">
