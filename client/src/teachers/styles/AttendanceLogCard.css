@@ -1,0 +1,325 @@
+
+.alc-card {
+  background: var(--bg-card);
+
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+
+  padding: 24px;
+
+  box-shadow: var(--shadow-card);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* decorative glow */
+
+.alc-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: -45px;
+  right: -45px;
+
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+
+  background: rgba(16, 185, 129, 0.05);
+
+  pointer-events: none;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.alc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.alc-title {
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: var(--text-main);
+}
+
+
+.alc-navigate-btn {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+  outline: none;
+
+  border-radius: 10px;
+
+  background: #e94560;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  transition:
+    transform 0.18s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+
+  box-shadow:
+    0 4px 10px rgba(233, 69, 96, 0.18);
+}
+
+.alc-navigate-btn:hover {
+  background: #d73754;
+
+  transform: translateY(-1px);
+}
+
+.alc-navigate-btn:active {
+  transform: scale(0.96);
+}
+
+/* ========================================
+   TABLE CONTAINER
+======================================== */
+
+.alc-table-container {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  max-height: 420px;
+
+  border-radius: 10px;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+.alc-table {
+  width: 100%;
+  min-width: 650px;
+
+  border-collapse: collapse;
+}
+
+.alc-table thead tr {
+  background: #f8fafc;
+}
+
+.alc-table th {
+  padding: 12px 16px;
+
+  text-align: left;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid var(--border-light);
+
+  white-space: nowrap;
+}
+
+.alc-table td {
+  padding: 14px 16px;
+
+  font-size: 14px;
+
+  color: #334155;
+
+  border-bottom: 1px solid var(--border-light);
+
+  vertical-align: middle;
+}
+
+.alc-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.alc-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.alc-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+/* ========================================
+   CELLS
+======================================== */
+
+.alc-date-cell {
+  font-weight: 600;
+  color: var(--text-main);
+
+  white-space: nowrap;
+}
+
+.alc-time-cell {
+  white-space: nowrap;
+}
+
+.alc-markedby-cell {
+  font-weight: 500;
+}
+
+/* ========================================
+   STATUS BADGES
+======================================== */
+
+.alc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 82px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+/* present */
+
+.alc-status-badge.present {
+  background: var(--bg-success);
+  color: var(--color-success);
+}
+
+/* absent */
+
+.alc-status-badge.absent {
+  background: var(--bg-danger);
+  color: var(--color-danger);
+}
+
+/* leave */
+
+.alc-status-badge.leave,
+.alc-status-badge.on-leave {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+/* late */
+
+.alc-status-badge.late {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.alc-no-data {
+  margin: 0;
+
+  padding: 40px 16px;
+
+  text-align: center;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  color: var(--text-muted);
+
+  font-style: italic;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+.alc-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.alc-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+.alc-table-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.alc-table-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+  .alc-card {
+    padding: 20px;
+  }
+
+  .alc-table {
+    min-width: 600px;
+  }
+
+  .alc-table th {
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  .alc-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .alc-status-badge {
+    font-size: 10px;
+    min-width: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .alc-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .alc-title {
+    font-size: 16px;
+  }
+
+  .alc-table {
+    min-width: 540px;
+  }
+}

@@ -1,0 +1,329 @@
+/* =========================================================================
+   Modal Backdrop & Core Container Layout
+   ========================================================================= */
+.teacher-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+  padding: 24px;
+}
+
+.teacher-modal-card {
+  background: var(--bg-card, #ffffff);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 780px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Header Alignment */
+.teacher-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border-light, #e2e8f0);
+}
+
+.teacher-modal-header h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: var(--text-main, #0f172a);
+  font-weight: 700;
+}
+
+.teacher-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #64748b);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.teacher-modal-close-btn:hover {
+  color: var(--accent-color, #ef4444);
+}
+
+/* =========================================================================
+   Form Elements & Section Separators
+   ========================================================================= */
+.teacher-modal-form {
+  padding: 28px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* New clean styling for Section Boundaries */
+.teacher-modal-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-color, #3b82f6);
+  border-bottom: 1px solid var(--border-light, #e2e8f0);
+  padding-bottom: 6px;
+  margin-top: 8px;
+}
+
+/* Input Grid Form Elements */
+.teacher-modal-inputs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+/* Explicit 3-column desktop layout matching the Profile view updates */
+.teacher-modal-address-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.teacher-grid-full-span {
+  grid-column: span 2;
+}
+
+.teacher-form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted, #475569);
+}
+
+.teacher-form-label input {
+  padding: 12px 14px;
+  background: var(--bg-primary, #f8fafc);
+  border: 1px solid var(--border-light, #cbd5e1);
+  border-radius: 12px;
+  color: var(--text-main, #0f172a);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.teacher-form-label input:focus {
+  outline: none;
+  border-color: var(--accent-color, #3b82f6);
+  background: var(--bg-card, #ffffff);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.teacher-form-label input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   Avatar Component Restyling Block
+   ========================================================================= */
+.teacher-modal-avatar-uploader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: var(--bg-primary, #f8fafc);
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px dashed var(--border-light, #cbd5e1);
+}
+
+.teacher-modal-avatar-frame {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--bg-card, #ffffff);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-modal-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.teacher-avatar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Action button configurations */
+.teacher-upload-btn,
+.teacher-crop-btn,
+.teacher-button-secondary,
+.teacher-button-primary {
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.teacher-upload-btn {
+  background: var(--accent-color, #3b82f6);
+  color: #ffffff;
+  display: inline-block;
+}
+
+.teacher-upload-btn:hover {
+  background: var(--accent-hover, #2563eb);
+}
+
+.teacher-crop-btn {
+  background: transparent;
+  border: 1px solid var(--border-light, #597da9);
+  color: var(--text-main, #334155);
+}
+
+.teacher-crop-btn:hover {
+  background: #f1f5f9;
+}
+
+/* =========================================================================
+   Modal Action Control Footer Bars
+   ========================================================================= */
+.teacher-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--border-light, #e2e8f0);
+  padding-top: 20px;
+  margin-top: 8px;
+}
+
+.teacher-button-secondary {
+  background: transparent;
+  border: 1px solid var(--border-light, #cbd5e1);
+  color: var(--text-muted, #64748b);
+}
+
+.teacher-button-secondary:hover:not(:disabled) {
+  background: #f1f5f9;
+  color: var(--text-main, #0f172a);
+}
+
+.teacher-button-primary {
+  background: var(--accent-color, #3b82f6);
+  color: #ffffff;
+  border: none;
+}
+
+.teacher-button-primary:hover:not(:disabled) {
+  background: var(--accent-hover, #2563eb);
+}
+
+.teacher-button-primary:disabled,
+.teacher-button-secondary:disabled,
+.teacher-upload-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   Standalone Photo Crop View Overlay Modals
+   ========================================================================= */
+.crop-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4000;
+  padding: 20px;
+}
+
+.crop-modal-card {
+  background: #1e293b;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.crop-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #0f172a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.crop-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.crop-controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent-color, #3b82f6);
+}
+
+.crop-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* =========================================================================
+   Keyframe Transitions & Microqueries
+   ========================================================================= */
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .teacher-modal-inputs-grid,
+  .teacher-modal-address-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .teacher-grid-full-span {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 540px) {
+  .teacher-modal-card {
+    max-height: 60vh;
+  }
+  .teacher-modal-inputs-grid,
+  .teacher-modal-address-grid {
+    grid-template-columns: 1fr;
+  }
+  .teacher-grid-full-span {
+    grid-column: span 1;
+  }
+  .teacher-modal-avatar-uploader {
+    flex-direction: column;
+    text-align: center;
+  }
+  .teacher-modal-actions {
+    flex-direction: column-reverse;
+  }
+  .teacher-button-secondary,
+  .teacher-button-primary {
+    width: 100%;
+  }
+}

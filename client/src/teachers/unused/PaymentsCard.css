@@ -1,0 +1,294 @@
+/* ========================================
+   PC CARD
+======================================== */
+
+.pc-card {
+  background: var(--bg-card);
+
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+
+  padding: 24px;
+
+  box-shadow: var(--shadow-card);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* decorative glow */
+
+.pc-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: -45px;
+  right: -45px;
+
+  width: 130px;
+  height: 130px;
+
+  border-radius: 50%;
+
+  background: rgba(59, 130, 246, 0.05);
+
+  pointer-events: none;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.pc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.pc-title {
+  margin: 0;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: var(--text-main);
+}
+
+/* ========================================
+   TABLE CONTAINER
+======================================== */
+
+.pc-table-container {
+  width: 100%;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  max-height: 420px;
+
+  border-radius: 10px;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+.pc-table {
+  width: 100%;
+  min-width: 760px;
+
+  border-collapse: collapse;
+}
+
+.pc-table thead tr {
+  background: #f8fafc;
+}
+
+.pc-table th {
+  padding: 12px 16px;
+
+  text-align: left;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  color: var(--text-muted);
+
+  border-bottom: 1px solid var(--border-light);
+
+  white-space: nowrap;
+}
+
+.pc-table td {
+  padding: 14px 16px;
+
+  font-size: 14px;
+
+  color: #334155;
+
+  border-bottom: 1px solid var(--border-light);
+
+  vertical-align: middle;
+}
+
+.pc-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.pc-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.pc-table tbody tr:hover td {
+  background: #f8fafc;
+}
+
+/* ========================================
+   CELLS
+======================================== */
+
+.pc-month-cell strong {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.pc-date-cell {
+  white-space: nowrap;
+}
+
+.pc-payment-amount {
+  color: var(--color-success);
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.pc-method-cell {
+  font-weight: 500;
+}
+
+/* ========================================
+   STATUS BADGES
+======================================== */
+
+.pc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 82px;
+
+  padding: 5px 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+/* paid */
+
+.pc-status-badge.paid,
+.pc-status-badge.success {
+  background: var(--bg-success);
+  color: var(--color-success);
+}
+
+/* pending */
+
+.pc-status-badge.pending {
+  background: #fffbeb;
+  color: #d97706;
+}
+
+/* failed */
+
+.pc-status-badge.failed {
+  background: var(--bg-danger);
+  color: var(--color-danger);
+}
+
+/* processing */
+
+.pc-status-badge.processing {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+/* ========================================
+   EMPTY STATE
+======================================== */
+
+.pc-no-data {
+  margin: 0;
+
+  padding: 40px 16px;
+
+  text-align: center;
+
+  font-size: 13px;
+  line-height: 1.7;
+
+  color: var(--text-muted);
+
+  font-style: italic;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+.pc-table-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.pc-table-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 999px;
+}
+
+.pc-table-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.pc-table-container::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 768px) {
+
+  .pc-card {
+    padding: 20px;
+  }
+
+  .pc-table {
+    min-width: 680px;
+  }
+
+  .pc-table th {
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  .pc-table td {
+    padding: 12px;
+    font-size: 13px;
+  }
+
+  .pc-status-badge {
+    font-size: 10px;
+    min-width: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  .pc-card {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .pc-title {
+    font-size: 16px;
+  }
+
+  .pc-table {
+    min-width: 620px;
+  }
+}
