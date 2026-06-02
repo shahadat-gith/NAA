@@ -4,8 +4,7 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 
 /* ================= ROUTES ================= */
-import { userRouter } from "./routes/auth.routes.js";
-import teacherRouter from "./routes/teacher.routes.js"; 
+import authRouter from "./routes/auth.routes.js";
 import settingsRouter from "./routes/setting.routes.js";
 import galleryRouter from "./routes/gallery.routes.js";
 import achieversRouter from "./routes/achiever.routes.js";
@@ -15,8 +14,8 @@ import admissionRouter from "./routes/admission.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import noticeRouter from "./routes/notice.routes.js";
 import attendanceRouter from "./routes/attendance.routes.js";
-import paymentRouter from "./routes/payment.routes.js";
-import staffRouter from "./routes/staff.routes.js"; // New unified staff routing layer
+import staffRouter from "./routes/staff.routes.js";
+
 
 /* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
@@ -44,9 +43,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 /* ================= ROUTES ================= */
-app.use("/api/auth", userRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/staff", staffRouter); 
-app.use("/api/teacher", teacherRouter); 
 app.use("/api/settings", settingsRouter);
 app.use("/api/gallery", galleryRouter);
 app.use("/api/achievers", achieversRouter);
@@ -56,7 +54,6 @@ app.use("/api/admission", admissionRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/notices", noticeRouter);
 app.use("/api/attendance", attendanceRouter);
-app.use("/api/payments", paymentRouter);
 
 /* ================= CUSTOM API ================= */
 app.get("/api/home-data", async (req, res, next) => {

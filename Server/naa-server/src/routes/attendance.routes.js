@@ -4,12 +4,12 @@ import {
   expireAttendanceQR,
   markAttendance,
   getMyAttendanceHistory,              
-  getStaffAttendanceHistoryForAdmin, // Imported the newly updated controller function name
+  getStaffAttendanceHistoryForAdmin, 
   getTodayAttendanceDetails,
 } from "../controller/attendance.controller.js";
 
-import { adminAuthMiddleware } from "../middleware/adminAuth.js"; // Admin authentication guard
-import { staffAuthMiddleware } from "../middleware/staffAuth.js"; // Unified Staff authentication guard
+import { adminAuthMiddleware } from "../middleware/adminAuth.js";
+import { staffAuthMiddleware } from "../middleware/staffAuth.js"; 
 
 const attendanceRouter = express.Router();
 
