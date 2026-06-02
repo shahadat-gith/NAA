@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 const attendanceSchema = new mongoose.Schema(
   {
-    teacher: {
+    staff: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Teacher",
+      ref: "Staff",
       required: true,
       index: true,
     },
@@ -27,8 +27,8 @@ const attendanceSchema = new mongoose.Schema(
   { timestamps: true }
 );
   
-attendanceSchema.index({ teacher: 1, date: 1 }, { unique: true });
+attendanceSchema.index({ staff: 1, date: 1 }, { unique: true });
 
-const TeacherAttendance = mongoose.models.TeacherAttendance || mongoose.model("TeacherAttendance", attendanceSchema);
+const StaffAttendance = mongoose.models.StaffAttendance || mongoose.model("StaffAttendance", attendanceSchema);
 
-export default TeacherAttendance;
+export default StaffAttendance;

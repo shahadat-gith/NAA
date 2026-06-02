@@ -20,16 +20,20 @@ const Attendance = () => {
     return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" });
   };
 
-  // UPDATED: Now matches backend ISO Date objects cleanly with local string formats
+  /* ================= VALIDATE QR SESSION WITHOUT TIMEZONE DRIFTING ================= */
   const isQrValid = (qrDoc) => {
     if (!qrDoc || qrDoc.isExpired) return false;
     
-    // Safely extract "YYYY-MM-DD" from the backend ISO Date string (e.g., "2026-05-29T00:00:00.000Z")
-    const backendDateString = qrDoc.date ? qrDoc.date.split("T")[0] : "";
+    // Safely parse backend timestamp into an explicit localized date string match
+    if (!qrDoc.date) return false;
+    const backendDateString = new Date(qrDoc.date).toLocaleDateString("en-CA", {
+      timeZone: "Asia/Kolkata",
+    });
     
     return backendDateString === getTodayDateString();
   };
 
+  /* ================= FETCH DASHBOARD ATTENDANCE DETAILS ================= */
   const fetchDashboardDetails = useCallback(async () => {
     try {
       setQrLoading(true);
@@ -43,7 +47,7 @@ const Attendance = () => {
         setAttendanceList(data.attendance);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Dashboard fetching runtime exception:", error);
       toast.error("Error getting dashboard data!");
       setQrDetails(null);
     } finally {
@@ -55,6 +59,7 @@ const Attendance = () => {
     fetchDashboardDetails();
   }, [fetchDashboardDetails]);
 
+  /* ================= GENERATE NEW DAILY QR SESSION ================= */
   const generateTodayQR = async () => {
     try {
       setActionLoading(true);
@@ -66,7 +71,7 @@ const Attendance = () => {
 
       if (data.success) {
         setQrDetails(data.qrdetails);
-        toast.success("QR Generated!");
+        toast.success("QR Generated successfully!");
       }
     } catch (error) {
       toast.error(
@@ -77,6 +82,7 @@ const Attendance = () => {
     }
   };
 
+  /* ================= MANUALLY EXPIRE ACTIVE QR SESSION ================= */
   const expireActiveQR = async () => {
     try {
       setActionLoading(true);
@@ -87,9 +93,9 @@ const Attendance = () => {
       );
 
       if (data.success) {
-        // Instead of setting to null, match the updated backend state by setting isExpired to true
+        // Correctly updates local state immutably 
         setQrDetails((prev) => (prev ? { ...prev, isExpired: true } : null));
-        toast.success("QR expired!");
+        toast.success("QR session expired!");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to expire QR code");
@@ -99,12 +105,13 @@ const Attendance = () => {
   };
 
   if (qrLoading) {
-    return <Loader />;
+    return <Loader text="Loading dashboard metrics..." />;
   }
 
   return (
     <div className="atd-dashboard-container">
       <div className="atd-max-width-wrapper">
+        
         {/* HEADER SECTION */}
         <header className="atd-header-section">
           <h1 className="atd-main-title">Attendance Dashboard</h1>
@@ -117,44 +124,35 @@ const Attendance = () => {
               <div className="atd-qr-frame">
                 <img src={qrDetails.qrCodeBase64} alt="Attendance QR" />
               </div>
-               <div className="atd-action-row">
-                  <button
-                    type="button"
-                    onClick={expireActiveQR}
-                    disabled={actionLoading}
-                    className="atd-btn-danger"
-                  >
-                    {actionLoading ? (
-                      <>
-                        <i
-                          className="fa-solid fa-spinner fa-spin"
-                          style={{ marginRight: "6px" }}
-                        ></i>
-                        Processing...
-                      </>
-                    ) : (
-                      <>
-                        <i
-                          className="fa-solid fa-power-off"
-                          style={{ marginRight: "6px" }}
-                        ></i>
-                        Expire
-                      </>
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={generateTodayQR}
-                    disabled={actionLoading}
-                    className="atd-btn-secondary"
-                  >
-                    <i
-                      className="fa-solid fa-rotate"
-                      style={{ marginRight: "6px" }}
-                    ></i>
-                    New QR
-                  </button>
-                </div>
+              <div className="atd-action-row">
+                <button
+                  type="button"
+                  onClick={expireActiveQR}
+                  disabled={actionLoading}
+                  className="atd-btn-danger"
+                >
+                  {actionLoading ? (
+                    <>
+                      <i className="fa-solid fa-spinner fa-spin m-right"></i>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <i className="fa-solid fa-power-off m-right"></i>
+                      Expire Session
+                    </>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={generateTodayQR}
+                  disabled={actionLoading}
+                  className="atd-btn-secondary"
+                >
+                  <i className="fa-solid fa-rotate m-right"></i>
+                  Regenerate QR
+                </button>
+              </div>
             </div>
           ) : (
             <div className="atd-empty-qr-state">
@@ -163,8 +161,7 @@ const Attendance = () => {
               </div>
               <h3>No Active QR Code Session Found for Today!</h3>
               <p>
-                The verification window is closed or needs setup processing
-                parameters.
+                The scan verification window is closed. Click the button below to instantiate today's attendance matrix.
               </p>
               <button
                 type="button"
@@ -174,19 +171,13 @@ const Attendance = () => {
               >
                 {actionLoading ? (
                   <>
-                    <i
-                      className="fa-solid fa-spinner fa-spin"
-                      style={{ marginRight: "6px" }}
-                    ></i>
+                    <i className="fa-solid fa-spinner fa-spin m-right"></i>
                     Compiling Safe Hash...
                   </>
                 ) : (
                   <>
-                    <i
-                      className="fa-solid fa-wand-magic-sparkles"
-                      style={{ marginRight: "6px" }}
-                    ></i>
-                    Generate Today's QR
+                    <i className="fa-solid fa-wand-magic-sparkles m-right"></i>
+                    Initialize Today's Session
                   </>
                 )}
               </button>

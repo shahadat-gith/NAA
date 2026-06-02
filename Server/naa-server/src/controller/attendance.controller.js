@@ -1,19 +1,18 @@
-import AttendanceQR from "../models/Teacher/qr.js";
-import TeacherAttendance from "../models/Teacher/attendance.js";
+import AttendanceQR from "../models/Staff/qr.js";
+import StaffAttendance from "../models/Staff/attendance.js";
+import Staff from "../models/Staff/staff.js"; // Imported the new unified Staff schema
 import QRCode from "qrcode";
 import crypto from "crypto";
 
-
+// Helper function to extract normalized IST timestamps
 const getIndianDateDetails = () => {
-  // 1. Get current date string in IST formatted as "YYYY-MM-DD"
   const checkDateStr = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); 
   const [year, month, day] = checkDateStr.split("-");
 
-  // 2. CRITICAL: Create a native Date object forced to midnight (00:00:00.000) Local/UTC safe representation
   const normalizedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0);
 
   return { 
-    nativeDate: normalizedDate, // Use this for MongoDB matches/inserts
+    nativeDate: normalizedDate, 
     year: parseInt(year), 
     month: parseInt(month), 
     day: parseInt(day) 
@@ -24,16 +23,15 @@ const getIndianDateDetails = () => {
 // ADMIN ROUTINES
 // ==========================================
 
+// 1. GENERATE OR UPDATE DAILY QR CODE 
 export const generateAttendanceQR = async (req, res) => {
   try {
     const { nativeDate } = getIndianDateDetails();
     const token = crypto.randomBytes(16).toString("hex");
     
-    // Payload can pass ISO string representation for frontend parsing safely
     const qrPayload = JSON.stringify({ token, date: nativeDate.toISOString() });
     const qrImageString = await QRCode.toDataURL(qrPayload);
 
-    // Try to find the single existing document structure
     let qrDoc = await AttendanceQR.findOne();
 
     if (qrDoc) {
@@ -69,16 +67,17 @@ export const generateAttendanceQR = async (req, res) => {
   }
 };
 
+// 2. FETCH TODAY'S ENTIRE ROSTER RECORD ENTRIES
 export const getTodayAttendanceDetails = async (req, res) => {
   try {
     const { nativeDate } = getIndianDateDetails();
 
-    // Fire operations concurrently 
+    // Migrated populate and query criteria keys to look up 'staff' properties
     const [qrDoc, attendanceRecords] = await Promise.all([
       AttendanceQR.findOne(),
-      TeacherAttendance.find({ date: nativeDate })
-        .populate("teacher", "name image contact") 
-        .sort({ createdAt: -1 }) // Sorted by actual insertion time instead of standard date
+      StaffAttendance.find({ date: nativeDate })
+        .populate("staff", "name image contact designation staffType") 
+        .sort({ createdAt: -1 }) 
     ]);
 
     const payload = {
@@ -106,11 +105,11 @@ export const getTodayAttendanceDetails = async (req, res) => {
   }
 };
 
+// 3. EXPIRE ATTENDANCE QR MANUALLY
 export const expireAttendanceQR = async (req, res) => {
   try {
     const { nativeDate } = getIndianDateDetails();
     
-    // Match directly by today's date object reference
     const qrDoc = await AttendanceQR.findOneAndUpdate(
       { date: nativeDate },
       { isExpired: true },
@@ -138,16 +137,17 @@ export const expireAttendanceQR = async (req, res) => {
 }; 
 
 // ==========================================
-// TEACHER ROUTINES
+// STAFF SELF ROUTINES
 // ==========================================
 
+// 4. SCAN AND MARK INDIVIDUAL DAILY ATTENDANCE
 export const markAttendance = async (req, res) => {
   try {
     const { token, markedBy, status } = req.body;
-    const teacherId = req.user.id;
+    const staffId = req.user.id; // Pulled from staffAuthMiddleware token context
     const { nativeDate, year, month } = getIndianDateDetails(); 
 
-    // 1. Verify QR matches token, date object, and validation state
+    // Verify current QR token validation tracking states
     const qrDoc = await AttendanceQR.findOne({
       date: nativeDate,
       token,
@@ -161,36 +161,35 @@ export const markAttendance = async (req, res) => {
       });
     }
 
-    // 2. Prevent duplicate entries using clean Date object validation
-    const existingAttendance = await TeacherAttendance.findOne({
-      teacher: teacherId,
+    // Swapped lookups to filter records by the 'staff' field identifier
+    const existingAttendance = await StaffAttendance.findOne({
+      staff: staffId,
       date: nativeDate,
     });
 
     if (existingAttendance) {
       return res.status(400).json({
         success: false,
-        message: "Attendance already marked for this teacher today",
+        message: "Attendance already marked for this staff member today",
       });
     }
 
-    // 3. Create explicit execution entry
-    const newAttendance = new TeacherAttendance({
-      teacher: teacherId,
-      date: nativeDate, // Saving pure midnight date 
+    // Instantiating fresh record inside the unified StaffAttendance model
+    const newAttendance = new StaffAttendance({
+      staff: staffId,
+      date: nativeDate, 
       status: status || "Present",
       markedBy: markedBy || "Teacher",
     });
 
     await newAttendance.save();
 
-    // 4. Calculate current month boundaries with proper offsets
+    // Compile dynamic rolling historical month window array updates
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
-    // 5. Query active rolling target historical log
-    const attendanceHistory = await TeacherAttendance.find({
-      teacher: teacherId,
+    const attendanceHistory = await StaffAttendance.find({
+      staff: staffId,
       date: { $gte: startDate, $lte: endDate }
     }).sort({ date: 1 }); 
 
@@ -209,13 +208,13 @@ export const markAttendance = async (req, res) => {
   }
 };
 
-// FOR TEACHERS: Strictly gets the logged-in teacher's history using req.user.id
+// 5. STAFF SELF HISTORICAL LOOKUP PIPELINE
 export const getMyAttendanceHistory = async (req, res) => {
   try {
-    const teacherId = req.user.id; // From authMiddleware
+    const staffId = req.user.id; 
     const { month, year } = req.query;
 
-    let query = { teacher: teacherId };
+    let query = { staff: staffId };
 
     if (month && year) {
       const startDate = new Date(year, month - 1, 1); 
@@ -223,8 +222,8 @@ export const getMyAttendanceHistory = async (req, res) => {
       query.date = { $gte: startDate, $lte: endDate };
     }
 
-    const attendanceRecords = await TeacherAttendance.find(query)
-      .populate("teacher", "name image")
+    const attendanceRecords = await StaffAttendance.find(query)
+      .populate("staff", "name image designation")
       .sort({ date: -1 });
 
     return res.status(200).json({
@@ -240,13 +239,13 @@ export const getMyAttendanceHistory = async (req, res) => {
   }
 };
 
-// FOR ADMINS: Strictly gets a specific teacher's history using URL params
-export const getTeacherAttendanceHistoryForAdmin = async (req, res) => {
+// 6. ADMINISTRATIVE GRANULAR INQUIRY PARAMS TRACE (Admin Looking up specific Staff Member)
+export const getStaffAttendanceHistoryForAdmin = async (req, res) => {
   try {
-    const { teacherId } = req.params; // From URL dynamic parameter /:teacherId
+    const { staffId } = req.params; // Remapped path reference from teacherId to staffId
     const { month, year } = req.query;
 
-    let query = { teacher: teacherId };
+    let query = { staff: staffId };
 
     if (month && year) {
       const startDate = new Date(year, month - 1, 1); 
@@ -254,8 +253,8 @@ export const getTeacherAttendanceHistoryForAdmin = async (req, res) => {
       query.date = { $gte: startDate, $lte: endDate };
     }
 
-    const attendanceRecords = await TeacherAttendance.find(query)
-      .populate("teacher", "name image email contact")
+    const attendanceRecords = await StaffAttendance.find(query)
+      .populate("staff", "name image email contact designation staffType")
       .sort({ date: -1 });
 
     return res.status(200).json({
@@ -265,7 +264,7 @@ export const getTeacherAttendanceHistoryForAdmin = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Admin error fetching teacher attendance history",
+      message: "Admin error fetching staff attendance history",
       error: error.message,
     });
   }

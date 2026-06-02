@@ -1,224 +1,207 @@
-/* Staffs.css */
+/* ==========================================================================
+   1. PAGE UTILITY FRAMES
+   ========================================================================== */
 .staff-page {
-  /* Dynamic values mapped directly to your index.css global design tokens */
-  color: var(--text-main);
-  line-height: 1.6;
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(233, 69, 96, 0.12), transparent 60%),
-    radial-gradient(900px 500px at 90% 0%, rgba(35, 154, 122, 0.1), transparent 55%),
-    linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+  background-color: var(--bg-primary);
   min-height: 100vh;
-  width: 100%;
+  color: var(--text-main);
+  padding: 3rem 1.5rem;
+  box-sizing: border-box;
 }
 
-.section-container {
-  max-width: 1240px;
+.staff-container {
+  max-width: 1400px; /* Expanded slightly to give two grids plenty of breathing room */
   margin: 0 auto;
-  padding: 0 20px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
 }
 
-/* Hero Section */
-.staff-hero {
-  padding: 64px 0 40px;
+/* ==========================================================================
+   2. MINIMALIST CENTERED HEADER & SEARCH INPUT
+   ========================================================================== */
+.staff-simple-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.staff-main-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.staff-count-meta {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0 0 1.25rem 0;
+}
+
+.staff-search-box-wrapper {
   position: relative;
-  overflow: hidden;
-  background: transparent; /* Seamless blend into parent radial stack background */
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
 }
 
-.staff-hero::after {
-  content: "";
+.search-icon-left {
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: 0.3;
+  left: 1.25rem;
+  color: var(--text-light);
+  font-size: 1rem;
   pointer-events: none;
 }
 
-.staff-hero-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
-  gap: 32px;
-  align-items: center;
-  position: relative;
-  z-index: 1;
-}
-
-.staff-hero-content {
-  text-align: left;
-}
-
-.staff-kicker {
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--accent-color);
-  margin-bottom: 12px;
-}
-
-.staff-title {
-  font-size: clamp(2.2rem, 3.2vw, 3.4rem);
-  margin: 0 0 12px 0;
-  color: var(--text-main);
-  line-height: 1.1;
-  font-weight: 800;
-}
-
-/* Search Card */
-.staff-search-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-card);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.staff-search-label {
-  position: relative;
-  width: auto;
-  height: auto;
-  overflow: visible;
-  clip: auto;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.staff-search-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
+.search-input-simple {
   width: 100%;
-  padding: 14px 44px 14px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-light);
+  padding: 0.95rem 1rem 0.95rem 3rem;
   font-size: 1rem;
   color: var(--text-main);
-  background: var(--bg-primary);
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-fast);
+}
+
+.search-input-simple:focus {
   outline: none;
-}
-
-.search-input:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(233, 69, 96, 0.1);
+  box-shadow: 0 0 0 4px var(--accent-light), var(--shadow-card);
 }
 
-.search-input::placeholder {
-  color: var(--text-muted);
-}
-
-.search-clear-btn {
+.search-clear-btn-simple {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
+  right: 1.25rem;
+  background: transparent;
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.25rem;
   font-size: 1rem;
   transition: color var(--transition-fast);
 }
 
-.search-clear-btn:hover {
-  color: var(--text-main);
+.search-clear-btn-simple:hover {
+  color: var(--accent-color);
 }
 
-.staff-search-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-weight: 500;
-  gap: 1rem;
-}
-
-/* Grid Logic: 4 Teachers per row */
-.directory-section {
-  padding: 20px 0 80px;
-}
-
-.teachers-grid {
+/* ==========================================================================
+   3. COLUMN-WISE DIRECTORY ARCHITECTURE (SIDE BY SIDE)
+   ========================================================================== */
+.directory-columns-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Exactly 4 columns */
-  gap: 24px;
-  justify-items: stretch;
+  grid-template-columns: 1fr auto 1fr; /* Two matching grid spaces with divider gap */
+  gap: 2.5rem;
+  align-items: start;
 }
 
-/* Empty/No Results Card Area */
-.no-results {
-  background: var(--bg-card);
-  border: 2px dashed var(--border-medium);
-  padding: 60px 20px;
-  border-radius: var(--radius-lg);
-  text-align: center;
-  grid-column: 1 / -1;
-  max-width: initial;
-  margin: 0 auto;
-  box-shadow: var(--shadow-card);
+.directory-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
 }
 
-.no-results h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
+.column-heading-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: 0.75rem;
+}
+
+.column-section-title {
+  font-size: 1.45rem;
+  font-weight: 800;
   color: var(--text-main);
-  margin-bottom: 0.5rem;
-}
-
-.no-results p {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  line-height: 1.6;
+  letter-spacing: -0.015em;
   margin: 0;
 }
 
-/* Responsive Media Query Breakpoints */
-@media (max-width: 1100px) {
-  .teachers-grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 columns for smaller desktops/tablets */
-  }
+.column-count-badge {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
 }
 
-@media (max-width: 900px) {
-  .staff-hero-inner {
+/* Compact internal vertical stacked grid inside columns */
+.column-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.column-vertical-divider {
+  width: 1px;
+  background-color: var(--border-light);
+  align-self: stroke;
+  min-height: 400px;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.column-empty-notice {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
+  margin: 1rem 0;
+}
+
+/* Utility Error/No-Results Alert Box */
+.no-results {
+  text-align: center;
+  background-color: var(--bg-card);
+  padding: 4rem 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--border-light);
+  max-width: 440px;
+  margin: 2rem auto;
+}
+
+.no-results h3 {
+  color: var(--text-main);
+  margin: 0 0 0.5rem;
+}
+
+.no-results p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ==========================================================================
+   4. COMPACT MOBILE BREAKPOINTS HANDLING
+   ========================================================================== */
+@media (max-width: 1024px) {
+  /* Safely fold the layout into a single vertical stream if the viewport shrinks too much */
+  .directory-columns-layout {
     grid-template-columns: 1fr;
+    gap: 3.5rem;
   }
-  .staff-hero-content {
-    text-align: center;
-  }
-}
 
-@media (max-width: 768px) {
-  .teachers-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
-    gap: 16px;
+  .column-vertical-divider {
+    display: none; /* Hide the vertical grid line on stack views */
   }
 }
 
 @media (max-width: 480px) {
-  .teachers-grid {
-    grid-template-columns: 1fr; /* 1 column for mobile viewports */
+  .staff-page {
+    padding: 2rem 1rem;
   }
-  .staff-hero {
-    padding: 40px 0;
-  }
-  .staff-search-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.35rem;
+
+  .staff-main-title {
+    font-size: 1.85rem;
   }
 }

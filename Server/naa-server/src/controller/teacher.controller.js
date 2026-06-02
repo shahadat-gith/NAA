@@ -116,6 +116,7 @@ export const addTeacher = async (req, res) => {
 };
 
 
+
 export const updateTeacherDetails = async (req, res) => {
   try {
     const { id } = req.user; // Pulled dynamically from active JWT authentication session middleware

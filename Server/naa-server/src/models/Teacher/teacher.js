@@ -10,7 +10,7 @@ const teacherSchema = new mongoose.Schema(
     },
     email: { 
       type: String, 
-      default: "N/A",
+      required: [true, "Email address is required"],
       trim: true,
       lowercase: true
     },
@@ -64,7 +64,7 @@ const teacherSchema = new mongoose.Schema(
     // --- Academic Profile (Simplified) ---
     subjectTaught: { 
       type: String, 
-      required: [true, "Subject taught is required"],
+      default: "N/A",
       trim: true
     },
     degree: { 
@@ -74,7 +74,7 @@ const teacherSchema = new mongoose.Schema(
     },
     experience: { 
       type: Number, 
-      required: [true, "Years of experience is required"],
+      default: 0,
       min: [0, "Experience cannot be negative"]
     },
 
@@ -102,16 +102,12 @@ const teacherSchema = new mongoose.Schema(
       type: String,
       default: "Not Provided",
     },
+
     designation: {
       type: String,
+      enum: ["Principal", "Managing Director", "Head Teacher", "Teacher", "Non Teaching Staff"],
       default: "Not Provided",
       trim: true
-    },
-
-    salary: {
-      type: Number,
-      default: 0,
-      min: 0
     },
 
     // --- Authentication, Security & Status ---

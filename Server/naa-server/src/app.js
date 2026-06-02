@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 
 /* ================= ROUTES ================= */
 import { userRouter } from "./routes/auth.routes.js";
-import teacherRouter from "./routes/teacher.routes.js";
+import teacherRouter from "./routes/teacher.routes.js"; 
 import settingsRouter from "./routes/setting.routes.js";
 import galleryRouter from "./routes/gallery.routes.js";
 import achieversRouter from "./routes/achiever.routes.js";
@@ -16,11 +16,11 @@ import adminRouter from "./routes/admin.routes.js";
 import noticeRouter from "./routes/notice.routes.js";
 import attendanceRouter from "./routes/attendance.routes.js";
 import paymentRouter from "./routes/payment.routes.js";
+import staffRouter from "./routes/staff.routes.js"; // New unified staff routing layer
 
 /* ================= MODELS ================= */
 import HeroImage from "./models/Settings/heroImages.js";
 import { authorityModel } from "./models/Academic/authorities.js";
-import { teacherModel } from "./models/Teacher/teacher.js";
 import Image from "./models/Academic/gallery.js";
 import ServiceSettings from "./models/Settings/services.js";
 import Notice from "./models/Academic/notices.js";
@@ -39,15 +39,14 @@ app.use(cors({
 app.options("*", cors());
 
 /* ================= MIDDLEWARE ================= */
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 /* ================= ROUTES ================= */
-
-app.use("/api/teacher", teacherRouter);
 app.use("/api/auth", userRouter);
+app.use("/api/staff", staffRouter); 
+app.use("/api/teacher", teacherRouter); 
 app.use("/api/settings", settingsRouter);
 app.use("/api/gallery", galleryRouter);
 app.use("/api/achievers", achieversRouter);
@@ -58,8 +57,8 @@ app.use("/api/admin", adminRouter);
 app.use("/api/notices", noticeRouter);
 app.use("/api/attendance", attendanceRouter);
 app.use("/api/payments", paymentRouter);
-/* ================= CUSTOM API ================= */
 
+/* ================= CUSTOM API ================= */
 app.get("/api/home-data", async (req, res, next) => {
   try {
     const [heroImages, authorities, serviceSettings, notices] = await Promise.all([
@@ -84,14 +83,13 @@ app.get("/api/home-data", async (req, res, next) => {
 });
 
 /* ================= ROOT ================= */
-
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is working!" });
 });
 
 // ERROR HANDLER
 app.use((err, req, res, next) => {
-  console.error("Express error:", err);
+  console.error("Express error handler snapshot:", err);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error",
