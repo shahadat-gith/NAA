@@ -38,8 +38,26 @@ const StaffOnboarding = () => {
 
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const fileInputRef = useRef(null);
+
+  const setFieldError = (field, message) => {
+    setFieldErrors((prev) => ({
+      ...prev,
+      [field]: message,
+    }));
+  };
+
+  const clearFieldError = (field) => {
+    setFieldErrors((prev) => {
+      const updated = { ...prev };
+      delete updated[field];
+      return updated;
+    });
+  };
+
+  const hasError = (field) => (fieldErrors[field] ? "so-input-error" : "");
 
   const resetForm = () => {
     setStaffType("");
@@ -63,6 +81,9 @@ const StaffOnboarding = () => {
     setImageFile(null);
     setImagePreview("");
     setTempImage(null);
+    setShowCropModal(false);
+    setFormError("");
+    setFieldErrors({});
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -74,38 +95,33 @@ const StaffOnboarding = () => {
 
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      setFormError("Please select a valid image file.");
-      return;
-    }
-
-    if (!/^[6-9]\d{9}$/.test(contact.trim())) {
-      setFormError(
-        "Please enter a valid 10-digit mobile number without country code or leading zero.",
-      );
-      return;
-    }
-
+    clearFieldError("image");
     setFormError("");
+
+    if (!file.type.startsWith("image/")) {
+      setFieldError("image", "Please select a valid image file.");
+      e.target.value = "";
+      return;
+    }
 
     const imageUrl = URL.createObjectURL(file);
     setTempImage(imageUrl);
     setShowCropModal(true);
+
+    e.target.value = "";
   };
 
   const handleCropSaveSuccess = (croppedFile, croppedPreviewUrl) => {
     setImageFile(croppedFile);
     setImagePreview(croppedPreviewUrl);
     setShowCropModal(false);
+    setTempImage(null);
+    clearFieldError("image");
     setFormError("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (loading) return;
-
-    setFormError("");
+  const validateForm = () => {
+    const errors = {};
 
     const trimmedName = name.trim();
     const trimmedEmail = email.trim().toLowerCase();
@@ -119,59 +135,84 @@ const StaffOnboarding = () => {
     const trimmedQualification = qualification.trim();
     const trimmedSubject = subjectTaught.trim();
 
-    if (!staffType) {
-      setFormError("Please select staff category.");
-      return;
+    if (!staffType) errors.staffType = "Please select staff category.";
+    if (!designation) errors.designation = "Please select designation.";
+
+    if (!trimmedName) errors.name = "Full name is required.";
+
+    if (!trimmedEmail) {
+      errors.email = "Email address is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      errors.email = "Please enter a valid email address.";
     }
 
-    if (!designation) {
-      setFormError("Please select designation.");
-      return;
+    if (!trimmedContact) {
+      errors.contact = "Contact number is required.";
+    } else if (!/^[6-9]\d{9}$/.test(trimmedContact)) {
+      errors.contact =
+        "Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.";
     }
 
-    if (!trimmedName || !trimmedEmail || !trimmedContact || !gender) {
-      setFormError("Please fill all personal information fields.");
-      return;
+    if (!gender) errors.gender = "Please select gender.";
+
+    if (!trimmedVillage) errors.village = "Village / town is required.";
+    if (!trimmedPo) errors.po = "Post office is required.";
+    if (!trimmedPs) errors.ps = "Police station is required.";
+
+    if (!trimmedPin) {
+      errors.pin = "PIN code is required.";
+    } else if (!/^\d{6}$/.test(trimmedPin)) {
+      errors.pin = "Please provide a valid 6-digit PIN code.";
     }
 
-    if (
-      !trimmedVillage ||
-      !trimmedPo ||
-      !trimmedPs ||
-      !trimmedPin ||
-      !trimmedDistrict ||
-      !trimmedState
-    ) {
-      setFormError("Please fill all address fields.");
-      return;
-    }
-
-    if (!/^\d{6}$/.test(trimmedPin)) {
-      setFormError("Please provide a valid 6-digit PIN code.");
-      return;
-    }
+    if (!trimmedDistrict) errors.district = "District is required.";
+    if (!trimmedState) errors.state = "State is required.";
 
     if (!trimmedQualification) {
-      setFormError("Please enter highest qualification.");
-      return;
+      errors.qualification = "Highest qualification is required.";
     }
 
-    if (Number(experience) < 0) {
-      setFormError("Experience cannot be negative.");
-      return;
+    if (experience !== "" && Number(experience) < 0) {
+      errors.experience = "Experience cannot be negative.";
     }
 
     if (staffType === "Teaching" && !trimmedSubject) {
-      setFormError("Subject taught is required for teaching staff.");
-      return;
+      errors.subjectTaught = "Subject taught is required for teaching staff.";
     }
 
     if (!imageFile) {
-      setFormError(
-        "A profile photo is required to submit your onboarding profile.",
-      );
-      return;
+      errors.image = "A profile photo is required.";
     }
+
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      setFormError("Please fix the highlighted fields.");
+      return false;
+    }
+
+    setFormError("");
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (loading) return;
+
+    if (!validateForm()) return;
+
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedContact = contact.trim();
+    const trimmedVillage = village.trim();
+    const trimmedPo = po.trim();
+    const trimmedPs = ps.trim();
+    const trimmedPin = pin.trim();
+    const trimmedDistrict = district.trim();
+    const trimmedState = state.trim();
+    const trimmedQualification = qualification.trim();
+    const trimmedSubject = subjectTaught.trim();
 
     setLoading(true);
 
@@ -194,7 +235,7 @@ const StaffOnboarding = () => {
           pin: trimmedPin,
           district: trimmedDistrict,
           state: trimmedState,
-        }),
+        })
       );
 
       formData.append("qualification", trimmedQualification);
@@ -208,29 +249,25 @@ const StaffOnboarding = () => {
 
       formData.append("image", imageFile);
 
-      for (const [key, value] of formData.entries()) {
-  console.log(key, value);
-}
-
-      const { data } = await axios.post(`${backendUrl}/api/staff/register`,formData,
-
+      const { data } = await axios.post(
+        `${backendUrl}/api/staff/register`,
+        formData
       );
 
-      
-
       toast.success(
-        data?.message || "Staff registration submitted successfully.",
+        data?.message || "Staff registration submitted successfully."
       );
 
       resetForm();
 
       navigate("/teacher");
     } catch (error) {
-      setFormError(
+      const backendMessage =
         error?.response?.data?.message ||
-          error?.response?.data?.error ||
-          "An error occurred during submission.",
-      );
+        error?.response?.data?.error ||
+        "An error occurred during submission.";
+
+      setFormError(backendMessage);
     } finally {
       setLoading(false);
     }
@@ -247,10 +284,12 @@ const StaffOnboarding = () => {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="so-form-wrapper">
+        <form onSubmit={handleSubmit} className="so-form-wrapper" noValidate>
           <div className="so-image-upload-section">
             <div
-              className="so-avatar-preview"
+              className={`so-avatar-preview ${
+                fieldErrors.image ? "so-avatar-error" : ""
+              }`}
               onClick={() => fileInputRef.current?.click()}
             >
               {imagePreview ? (
@@ -297,6 +336,12 @@ const StaffOnboarding = () => {
                 </button>
               )}
             </div>
+
+            {fieldErrors.image && (
+              <p className="so-field-error so-image-error">
+                {fieldErrors.image}
+              </p>
+            )}
           </div>
 
           <div className="so-form-section-title">Employment Role</div>
@@ -310,23 +355,33 @@ const StaffOnboarding = () => {
                   setStaffType(e.target.value);
                   setDesignation("");
                   setSubjectTaught("");
+                  clearFieldError("staffType");
+                  clearFieldError("designation");
+                  clearFieldError("subjectTaught");
                   setFormError("");
                 }}
-                required
+                className={hasError("staffType")}
               >
                 <option value="">Select Category</option>
                 <option value="Teaching">Teaching Staff</option>
                 <option value="Non Teaching">Non-Teaching Staff</option>
               </select>
+              {fieldErrors.staffType && (
+                <p className="so-field-error">{fieldErrors.staffType}</p>
+              )}
             </div>
 
             <div className="so-input-group">
               <label>Designation *</label>
               <select
                 value={designation}
-                onChange={(e) => setDesignation(e.target.value)}
+                onChange={(e) => {
+                  setDesignation(e.target.value);
+                  clearFieldError("designation");
+                  setFormError("");
+                }}
                 disabled={!staffType}
-                required
+                className={hasError("designation")}
               >
                 <option value="">Select Designation</option>
                 {staffType &&
@@ -336,6 +391,9 @@ const StaffOnboarding = () => {
                     </option>
                   ))}
               </select>
+              {fieldErrors.designation && (
+                <p className="so-field-error">{fieldErrors.designation}</p>
+              )}
             </div>
           </div>
 
@@ -347,10 +405,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  clearFieldError("name");
+                  setFormError("");
+                }}
                 placeholder="Full Name"
-                required
+                className={hasError("name")}
               />
+              {fieldErrors.name && (
+                <p className="so-field-error">{fieldErrors.name}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -358,10 +423,17 @@ const StaffOnboarding = () => {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  clearFieldError("email");
+                  setFormError("");
+                }}
                 placeholder="Email Address"
-                required
+                className={hasError("email")}
               />
+              {fieldErrors.email && (
+                <p className="so-field-error">{fieldErrors.email}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -375,25 +447,48 @@ const StaffOnboarding = () => {
 
                   if (/^\d*$/.test(value)) {
                     setContact(value);
+
+                    if (!value.trim()) {
+                      setFieldError("contact", "Contact number is required.");
+                    } else if (!/^[6-9]\d{9}$/.test(value.trim())) {
+                      setFieldError(
+                        "contact",
+                        "Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9."
+                      );
+                    } else {
+                      clearFieldError("contact");
+                    }
+
+                    setFormError("");
                   }
                 }}
                 placeholder="10-digit Mobile Number"
-                required
+                className={hasError("contact")}
               />
+              {fieldErrors.contact && (
+                <p className="so-field-error">{fieldErrors.contact}</p>
+              )}
             </div>
 
             <div className="so-input-group">
               <label>Gender *</label>
               <select
                 value={gender}
-                onChange={(e) => setGender(e.target.value)}
-                required
+                onChange={(e) => {
+                  setGender(e.target.value);
+                  clearFieldError("gender");
+                  setFormError("");
+                }}
+                className={hasError("gender")}
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
               </select>
+              {fieldErrors.gender && (
+                <p className="so-field-error">{fieldErrors.gender}</p>
+              )}
             </div>
           </div>
 
@@ -405,10 +500,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={village}
-                onChange={(e) => setVillage(e.target.value)}
+                onChange={(e) => {
+                  setVillage(e.target.value);
+                  clearFieldError("village");
+                  setFormError("");
+                }}
                 placeholder="Village or Town"
-                required
+                className={hasError("village")}
               />
+              {fieldErrors.village && (
+                <p className="so-field-error">{fieldErrors.village}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -416,10 +518,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={po}
-                onChange={(e) => setPo(e.target.value)}
+                onChange={(e) => {
+                  setPo(e.target.value);
+                  clearFieldError("po");
+                  setFormError("");
+                }}
                 placeholder="Post Office"
-                required
+                className={hasError("po")}
               />
+              {fieldErrors.po && (
+                <p className="so-field-error">{fieldErrors.po}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -427,10 +536,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={ps}
-                onChange={(e) => setPs(e.target.value)}
+                onChange={(e) => {
+                  setPs(e.target.value);
+                  clearFieldError("ps");
+                  setFormError("");
+                }}
                 placeholder="Police Station"
-                required
+                className={hasError("ps")}
               />
+              {fieldErrors.ps && (
+                <p className="so-field-error">{fieldErrors.ps}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -440,13 +556,31 @@ const StaffOnboarding = () => {
                 maxLength={6}
                 value={pin}
                 onChange={(e) => {
-                  if (/^\d*$/.test(e.target.value)) {
-                    setPin(e.target.value);
+                  const value = e.target.value;
+
+                  if (/^\d*$/.test(value)) {
+                    setPin(value);
+
+                    if (!value.trim()) {
+                      setFieldError("pin", "PIN code is required.");
+                    } else if (!/^\d{6}$/.test(value.trim())) {
+                      setFieldError(
+                        "pin",
+                        "Please provide a valid 6-digit PIN code."
+                      );
+                    } else {
+                      clearFieldError("pin");
+                    }
+
+                    setFormError("");
                   }
                 }}
                 placeholder="6-Digit PIN Code"
-                required
+                className={hasError("pin")}
               />
+              {fieldErrors.pin && (
+                <p className="so-field-error">{fieldErrors.pin}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -454,10 +588,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={district}
-                onChange={(e) => setDistrict(e.target.value)}
+                onChange={(e) => {
+                  setDistrict(e.target.value);
+                  clearFieldError("district");
+                  setFormError("");
+                }}
                 placeholder="e.g. Barpeta"
-                required
+                className={hasError("district")}
               />
+              {fieldErrors.district && (
+                <p className="so-field-error">{fieldErrors.district}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -465,10 +606,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={state}
-                onChange={(e) => setState(e.target.value)}
+                onChange={(e) => {
+                  setState(e.target.value);
+                  clearFieldError("state");
+                  setFormError("");
+                }}
                 placeholder="Assam"
-                required
+                className={hasError("state")}
               />
+              {fieldErrors.state && (
+                <p className="so-field-error">{fieldErrors.state}</p>
+              )}
             </div>
           </div>
 
@@ -480,10 +628,17 @@ const StaffOnboarding = () => {
               <input
                 type="text"
                 value={qualification}
-                onChange={(e) => setQualification(e.target.value)}
+                onChange={(e) => {
+                  setQualification(e.target.value);
+                  clearFieldError("qualification");
+                  setFormError("");
+                }}
                 placeholder="e.g. M.A., M.Sc., MCA"
-                required
+                className={hasError("qualification")}
               />
+              {fieldErrors.qualification && (
+                <p className="so-field-error">{fieldErrors.qualification}</p>
+              )}
             </div>
 
             <div className="so-input-group">
@@ -492,9 +647,17 @@ const StaffOnboarding = () => {
                 type="number"
                 min="0"
                 value={experience}
-                onChange={(e) => setExperience(e.target.value)}
+                onChange={(e) => {
+                  setExperience(e.target.value);
+                  clearFieldError("experience");
+                  setFormError("");
+                }}
                 placeholder="Years of Experience"
+                className={hasError("experience")}
               />
+              {fieldErrors.experience && (
+                <p className="so-field-error">{fieldErrors.experience}</p>
+              )}
             </div>
 
             {staffType === "Teaching" && (
@@ -502,8 +665,12 @@ const StaffOnboarding = () => {
                 <label>Subject You Teach *</label>
                 <select
                   value={subjectTaught}
-                  onChange={(e) => setSubjectTaught(e.target.value)}
-                  required
+                  onChange={(e) => {
+                    setSubjectTaught(e.target.value);
+                    clearFieldError("subjectTaught");
+                    setFormError("");
+                  }}
+                  className={hasError("subjectTaught")}
                 >
                   <option value="">Select Subject</option>
                   {subjects.map((s) => (
@@ -512,6 +679,11 @@ const StaffOnboarding = () => {
                     </option>
                   ))}
                 </select>
+                {fieldErrors.subjectTaught && (
+                  <p className="so-field-error">
+                    {fieldErrors.subjectTaught}
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -537,7 +709,10 @@ const StaffOnboarding = () => {
       <CropModal
         isOpen={showCropModal}
         imageSrc={tempImage}
-        onClose={() => setShowCropModal(false)}
+        onClose={() => {
+          setShowCropModal(false);
+          setTempImage(null);
+        }}
         onCropSave={handleCropSaveSuccess}
       />
     </div>

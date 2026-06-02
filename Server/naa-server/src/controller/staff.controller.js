@@ -41,12 +41,22 @@ export const createStaff = async (req, res) => {
       }
     }
 
-    const existingStaff = await Staff.findOne({ email });
+    // 🌟 FIXED: Check if EITHER the email OR the contact number is already registered!
+    const duplicateCheck = await Staff.findOne({
+      $or: [{ email }, { contact }]
+    });
 
-    if (existingStaff) {
-      return res.status(409).json({
-        message: "A staff member with this email already exists.",
-      });
+    if (duplicateCheck) {
+      if (duplicateCheck.email === email) {
+        return res.status(409).json({
+          message: "A staff member with this email already exists.",
+        });
+      }
+      if (duplicateCheck.contact === contact) {
+        return res.status(409).json({
+          message: "This contact number is already linked to another staff account.",
+        });
+      }
     }
 
     if (staffType === "Teaching" && !subjectTaught) {
@@ -59,6 +69,7 @@ export const createStaff = async (req, res) => {
       subjectTaught = null;
     }
 
+    // Default static password for freshly onboarded personnel
     const defaultPassword = "123456";
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(defaultPassword, salt);
@@ -126,7 +137,6 @@ export const createStaff = async (req, res) => {
     });
   }
 };
-
 // =========================================================================
 // 2. UPDATE STAFF DETAILS (Self Modification)
 // =========================================================================

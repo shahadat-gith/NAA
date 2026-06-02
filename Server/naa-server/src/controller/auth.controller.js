@@ -1,4 +1,4 @@
-import Staff from "../models/Staff/staff.js"; // Updated import reference to unified Staff model
+import Staff from "../models/Staff/staff.js"; 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodemailer.js"; 
@@ -6,27 +6,63 @@ import transporter from "../config/nodemailer.js";
 // =========================================================================
 // 1. STAFF LOGIN (Teaching & Non-Teaching Portal Entry)
 // =========================================================================
+
+
 export const staffLogin = async (req, res) => {
   const { contact, password } = req.body;
+
   if (!contact || !password) {
-    return res.status(400).json({ success: false, message: "All fields are required!" });
+    return res.status(400).json({ 
+      success: false, 
+      message: "Please enter both your contact number and password." 
+    });
   }
 
   try {
+    // Look up user by contact number
     const staff = await Staff.findOne({ contact });
+    
     if (!staff) {
-      return res.status(401).json({ success: false, message: "Your account does not exist! Please contact an administrator." });
+      return res.status(401).json({ 
+        success: false, 
+        message: "Account does not exist. Please contact an administrator." 
+      });
     }
 
-    const isMatch = await bcrypt.compare(password, staff.password);
+    if (!staff.password) {
+      return res.status(401).json({ 
+        success: false, 
+        message: "Your account credentials need resetting. Please use 'Forgot Password' to set up your password." 
+      });
+    }
+
+    // Compare passwords using pure bcryptjs (String cast prevents accidental undefined inputs)
+    const isMatch = await bcrypt.compare(String(password), staff.password);
+    
     if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Wrong password! Please enter a correct password!" });
+      return res.status(401).json({ 
+        success: false, 
+        message: "Wrong password! Please enter the correct password." 
+      });
     }
 
-    // Explicit payload role flag set to 'staff' to support unified token authentication
-    const token = jwt.sign({ id: staff._id, staffType: staff.staffType }, process.env.JWT_SECRET, { expiresIn: "365d" });
+    // Safety check for JWT secret before signing
+    if (!process.env.JWT_SECRET) {
+      console.error("CRITICAL CONFIG ERROR: JWT_SECRET is missing in your environment variables!");
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration error. Please contact admin support."
+      });
+    }
 
-    // Dynamic response builder supports optional fields gracefully depending on staffType
+    // Generate token securely
+    const token = jwt.sign(
+      { id: staff._id, staffType: staff.staffType }, 
+      process.env.JWT_SECRET, 
+      { expiresIn: "365d" }
+    );
+
+    // Prepare clean response layout data
     const staffData = {
       id: staff._id,
       staffType: staff.staffType,
@@ -50,11 +86,17 @@ export const staffLogin = async (req, res) => {
       staff: staffData, 
       message: "You have successfully logged in!" 
     });
+
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    // Prints exact failure breakdown directly to your AWS CloudWatch log stream
+    console.error("CRITICAL LOGIN INTERNAL CRASH:", error);
+    
+    return res.status(500).json({ 
+      success: false, 
+      message: "An unexpected error occurred on the server. Please try again." 
+    });
   }
 };
-
 // =========================================================================
 // 2. ADMIN LOGIN
 // =========================================================================
