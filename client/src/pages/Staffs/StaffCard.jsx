@@ -1,7 +1,9 @@
 import React from "react";
 import "./StaffCard.css";
+import { useNavigate } from "react-router-dom";
 
 export const StaffCard = ({ teacher }) => {
+  const navigate = useNavigate();
   const experienceText =
     teacher.experience !== undefined ? `${teacher.experience} years` : "N/A";
 
@@ -9,51 +11,62 @@ export const StaffCard = ({ teacher }) => {
   const profileImage = teacher.image?.url || "/user.png";
 
   return (
-    <div className="stf-teacher-card">
-      <div className="stf-card-media">
+    <div className="stf-staff-card-flat">
+      {/* 1. Media Area */}
+      <div className="stf-media-box">
         <img
           src={profileImage}
           alt={teacher.name}
-          className="stf-card-image"
+          className="stf-profile-img"
           loading="lazy"
         />
       </div>
-      <div className="stf-card-body">
-        <div className="stf-card-top">
-          <h3 className="stf-card-name">{teacher.name}</h3>
-          <div className="stf-card-subtitle">
-            <p>
-              <span style={{ fontWeight: "bold" }}>Designation:</span>{" "}
-              <span style={{ color: "var(--accent-color)" }}>
-                {teacher.designation}
-              </span>
-            </p>
-            <p>
-              <span style={{ fontWeight: "bold" }}>Degree:</span>{" "}
-              <span style={{ color: "var(--accent-color)" }}>
-                {teacher.degree || "Not Provided"} 
-              </span>
-            </p>
+      
+      {/* 2. Content Details Body */}
+      <div className="stf-details-body">
+        <div className="stf-info-header">
+          <h3 className="stf-employee-name">{teacher.name}</h3>
+          <p className="stf-employee-designation">{teacher.designation || "Staff Member"}</p>
+        </div>
+
+        {/* 3. Parameter Stack (Unified Key-Value Layout) */}
+        <div className="stf-parameter-stack">
+          <div className="stf-meta-line">
+            <span className="stf-meta-label">Qualification</span>
+            <span className="stf-meta-value">{teacher.qualification || "Not Provided"}</span>
+          </div>
+
+          {/* Render Subject Specialty for teachers, otherwise show Administrative department status */}
+          <div className="stf-meta-line">
+            <span className="stf-meta-label">
+              {teacher.staffType === "Teaching" ? "Subject" : "Department"}
+            </span>
+            <span className="stf-meta-value">
+              {teacher.staffType === "Teaching" 
+                ? (teacher.subjectTaught || "General") 
+                : "Administration"
+              }
+            </span>
+          </div>
+
+          <div className="stf-meta-line">
+            <span className="stf-meta-label">Experience</span>
+            <span className="stf-meta-value">{experienceText}</span>
           </div>
         </div>
 
-        <div className="stf-card-subjects">
-          <span className="stf-subject-label">Subject Taught</span>
-          <span className="stf-subject-value">
-            {teacher.subjectTaught || "N/A"}
-          </span>
+        {/* 4. Interactive Navigation Link Footer Layer */}
+        <div className="stf-card-footer-action">
+          <button 
+            type="button" 
+            className="stf-know-more-btn"
+            onClick={() => navigate(`/staffs/${teacher._id}`)}
+          >
+            <span>Know More</span>
+            <i className="fas fa-arrow-right stf-btn-icon"></i>
+          </button>
         </div>
 
-        <div className="stf-card-meta">
-          <span className="stf-chip">Experience: {experienceText}</span>
-          {teacher.status && teacher.status !== "Active" && (
-            <span
-              className={`stf-status-badge status-${teacher.status.toLowerCase()}`}
-            >
-              {teacher.status}
-            </span>
-          )}
-        </div>
       </div>
     </div>
   );

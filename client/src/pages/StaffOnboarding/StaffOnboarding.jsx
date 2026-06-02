@@ -1,84 +1,175 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef, useContext } from "react";
 import "./StaffOnboarding.css";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { AppContext } from '../../context/AppContext';
-import CropModal from './CropModal';
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
+import CropModal from "./CropModal";
+
+import { subjects, designationsByRole } from "./utils";
 
 const StaffOnboarding = () => {
   const { backendUrl } = useContext(AppContext);
+  const navigate = useNavigate();
 
-  // Form Fields mapped to your final MongoDB schema
+  const [staffType, setStaffType] = useState("");
+  const [designation, setDesignation] = useState("");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [contact, setContact] = useState("");
   const [gender, setGender] = useState("");
-  
-  // Nested Address Block
+
   const [village, setVillage] = useState("");
   const [po, setPo] = useState("");
   const [ps, setPs] = useState("");
   const [pin, setPin] = useState("");
   const [district, setDistrict] = useState("");
-  const [state, setState] = useState("Assam"); // Smart schema default
+  const [state, setState] = useState("Assam");
 
-  // Academic Profile
   const [subjectTaught, setSubjectTaught] = useState("");
-  const [degree, setDegree] = useState("");
+  const [qualification, setQualification] = useState("");
   const [experience, setExperience] = useState("");
-  
-  // Image Storage & CropModal Handlers
+
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState("");
   const [tempImage, setTempImage] = useState(null);
   const [showCropModal, setShowCropModal] = useState(false);
 
-  // UX Handling
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
 
   const fileInputRef = useRef(null);
 
-  // Populated drop-downs matching your criteria
-  const subjects = [
-    "Mathematics", "Advanced Mathematics", "Physics", "Chemistry", "Biology",
-    "Assamese", "Advance Assamese", "English", "Alternative English",
-    "Geography", "Education", "Political Science", "History", "Arabic",
-    "Social Studies", "Computer", "Garments Design", "Drawing",
-    "Drawing/Handwriting", "General Science", "GK", "EVS", "Hindi", "Retail Management"
-  ];
+  const resetForm = () => {
+    setStaffType("");
+    setDesignation("");
+    setName("");
+    setEmail("");
+    setContact("");
+    setGender("");
+
+    setVillage("");
+    setPo("");
+    setPs("");
+    setPin("");
+    setDistrict("");
+    setState("Assam");
+
+    setSubjectTaught("");
+    setQualification("");
+    setExperience("");
+
+    setImageFile(null);
+    setImagePreview("");
+    setTempImage(null);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        setFormError("Please select a valid image file.");
-        return;
-      }
-      setFormError("");
-      const imageUrl = URL.createObjectURL(file);
-      setTempImage(imageUrl);
-      setShowCropModal(true);
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setFormError("Please select a valid image file.");
+      return;
     }
+
+    if (!/^[6-9]\d{9}$/.test(contact.trim())) {
+      setFormError(
+        "Please enter a valid 10-digit mobile number without country code or leading zero.",
+      );
+      return;
+    }
+
+    setFormError("");
+
+    const imageUrl = URL.createObjectURL(file);
+    setTempImage(imageUrl);
+    setShowCropModal(true);
   };
 
   const handleCropSaveSuccess = (croppedFile, croppedPreviewUrl) => {
     setImageFile(croppedFile);
     setImagePreview(croppedPreviewUrl);
+    setShowCropModal(false);
+    setFormError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (loading) return;
+
     setFormError("");
 
-    if (!imageFile) {
-      setFormError("A profile photo is required to submit your onboarding profile.");
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim().toLowerCase();
+    const trimmedContact = contact.trim();
+    const trimmedVillage = village.trim();
+    const trimmedPo = po.trim();
+    const trimmedPs = ps.trim();
+    const trimmedPin = pin.trim();
+    const trimmedDistrict = district.trim();
+    const trimmedState = state.trim();
+    const trimmedQualification = qualification.trim();
+    const trimmedSubject = subjectTaught.trim();
+
+    if (!staffType) {
+      setFormError("Please select staff category.");
       return;
     }
 
-    if (!/^\d{6}$/.test(pin)) {
+    if (!designation) {
+      setFormError("Please select designation.");
+      return;
+    }
+
+    if (!trimmedName || !trimmedEmail || !trimmedContact || !gender) {
+      setFormError("Please fill all personal information fields.");
+      return;
+    }
+
+    if (
+      !trimmedVillage ||
+      !trimmedPo ||
+      !trimmedPs ||
+      !trimmedPin ||
+      !trimmedDistrict ||
+      !trimmedState
+    ) {
+      setFormError("Please fill all address fields.");
+      return;
+    }
+
+    if (!/^\d{6}$/.test(trimmedPin)) {
       setFormError("Please provide a valid 6-digit PIN code.");
+      return;
+    }
+
+    if (!trimmedQualification) {
+      setFormError("Please enter highest qualification.");
+      return;
+    }
+
+    if (Number(experience) < 0) {
+      setFormError("Experience cannot be negative.");
+      return;
+    }
+
+    if (staffType === "Teaching" && !trimmedSubject) {
+      setFormError("Subject taught is required for teaching staff.");
+      return;
+    }
+
+    if (!imageFile) {
+      setFormError(
+        "A profile photo is required to submit your onboarding profile.",
+      );
       return;
     }
 
@@ -86,40 +177,60 @@ const StaffOnboarding = () => {
 
     try {
       const formData = new FormData();
-      
-      // Basic Info appending
-      formData.append("name", name);
-      formData.append("email", email || "N/A");
-      formData.append("contact", contact);
+
+      formData.append("staffType", staffType);
+      formData.append("designation", designation);
+      formData.append("name", trimmedName);
+      formData.append("email", trimmedEmail);
+      formData.append("contact", trimmedContact);
       formData.append("gender", gender);
 
-      // Address structure object formatting expected by server parser
-      const addressData = { village, po, ps, pin, district, state };
-      formData.append("address", JSON.stringify(addressData));
+      formData.append(
+        "address",
+        JSON.stringify({
+          village: trimmedVillage,
+          po: trimmedPo,
+          ps: trimmedPs,
+          pin: trimmedPin,
+          district: trimmedDistrict,
+          state: trimmedState,
+        }),
+      );
 
-      // Academics
-      formData.append("subjectTaught", subjectTaught);
-      formData.append("degree", degree);
-      formData.append("experience", Number(experience));
-      
-      // File Asset
+      formData.append("qualification", trimmedQualification);
+      formData.append("experience", Number(experience) || 0);
+
+      if (staffType === "Teaching") {
+        formData.append("subjectTaught", trimmedSubject);
+      } else {
+        formData.append("subjectTaught", "");
+      }
+
       formData.append("image", imageFile);
 
-      const { data } = await axios.post(`${backendUrl}/api/teacher/apply-onboarding`, formData);
+      for (const [key, value] of formData.entries()) {
+  console.log(key, value);
+}
 
-      if (data.success) {
-        toast.success("Onboarding registration profile submitted successfully!");
-        
-        // Resetting local parameters cleanly
-        setName(""); setEmail(""); setContact(""); setGender("");
-        setVillage(""); setPo(""); setPs(""); setPin(""); setDistrict(""); setState("Assam");
-        setSubjectTaught(""); setDegree(""); setExperience("");
-        setImageFile(null); setImagePreview("");
-      } else {
-        setFormError(data.message || "Submission failed.");
-      }
+      const { data } = await axios.post(`${backendUrl}/api/staff/register`,formData,
+
+      );
+
+      
+
+      toast.success(
+        data?.message || "Staff registration submitted successfully.",
+      );
+
+      resetForm();
+
+      navigate("/teacher");
     } catch (error) {
-      setFormError(error.response?.data?.message || "An error occurred during submission.");
+      setFormError(
+        error?.response?.data?.message ||
+          error?.response?.data?.error ||
+          "An error occurred during submission.",
+      );
     } finally {
       setLoading(false);
     }
@@ -128,21 +239,26 @@ const StaffOnboarding = () => {
   return (
     <div className="so-onboarding-container">
       <div className="so-onboarding-card">
-        
         <div className="so-header-section">
           <h1 className="so-title">Join Nashib Ali Academy</h1>
-          <p className="so-subtitle">Fill up your application details to apply as an educator.</p>
+          <p className="so-subtitle">
+            Fill up your application details to apply as a staff member or
+            educator.
+          </p>
         </div>
 
-        {formError && <div className="so-error-alert">{formError}</div>}
-
         <form onSubmit={handleSubmit} className="so-form-wrapper">
-          
-          {/* IMAGE SECURE BLOCK */}
           <div className="so-image-upload-section">
-            <div className="so-avatar-preview" onClick={() => fileInputRef.current.click()}>
+            <div
+              className="so-avatar-preview"
+              onClick={() => fileInputRef.current?.click()}
+            >
               {imagePreview ? (
-                <img src={imagePreview} alt="Teacher profile preview" className="so-preview-img" />
+                <img
+                  src={imagePreview}
+                  alt="Staff profile preview"
+                  className="so-preview-img"
+                />
               ) : (
                 <div className="so-upload-placeholder">
                   <i className="fas fa-camera"></i>
@@ -150,54 +266,129 @@ const StaffOnboarding = () => {
                 </div>
               )}
             </div>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              accept="image/*" 
-              onChange={handleImageChange} 
-              className="so-hidden-file-input" 
+
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              onChange={handleImageChange}
+              className="so-hidden-file-input"
             />
-            
+
             <div className="so-avatar-actions">
-              <button type="button" className="so-action-text-btn" onClick={() => fileInputRef.current.click()}>
+              <button
+                type="button"
+                className="so-action-text-btn"
+                onClick={() => fileInputRef.current?.click()}
+              >
                 {imageFile ? "Change Photo" : "Select Photo"}
               </button>
+
               {imagePreview && (
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="so-action-text-btn so-crop-trigger"
                   onClick={() => {
                     setTempImage(imagePreview);
                     setShowCropModal(true);
                   }}
                 >
-                  Recrop Details
+                  Recrop Photo
                 </button>
               )}
             </div>
           </div>
 
-          {/* BASIC USER GRID */}
-          <div className="so-form-section-title">Personal Information</div>
+          <div className="so-form-section-title">Employment Role</div>
+
           <div className="so-form-grid">
             <div className="so-input-group">
-              <label>Full Name *</label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" required />
+              <label>Staff Category *</label>
+              <select
+                value={staffType}
+                onChange={(e) => {
+                  setStaffType(e.target.value);
+                  setDesignation("");
+                  setSubjectTaught("");
+                  setFormError("");
+                }}
+                required
+              >
+                <option value="">Select Category</option>
+                <option value="Teaching">Teaching Staff</option>
+                <option value="Non Teaching">Non-Teaching Staff</option>
+              </select>
             </div>
 
             <div className="so-input-group">
-              <label>Email Address</label>
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email Address (Optional)" />
+              <label>Designation *</label>
+              <select
+                value={designation}
+                onChange={(e) => setDesignation(e.target.value)}
+                disabled={!staffType}
+                required
+              >
+                <option value="">Select Designation</option>
+                {staffType &&
+                  designationsByRole?.[staffType]?.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="so-form-section-title">Personal Information</div>
+
+          <div className="so-form-grid">
+            <div className="so-input-group">
+              <label>Full Name *</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Full Name"
+                required
+              />
+            </div>
+
+            <div className="so-input-group">
+              <label>Email Address *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email Address"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>Contact Number *</label>
-              <input type="tel" value={contact} onChange={(e) => setContact(e.target.value)} placeholder="Contact Number" required />
+              <input
+                type="tel"
+                maxLength={10}
+                value={contact}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (/^\d*$/.test(value)) {
+                    setContact(value);
+                  }
+                }}
+                placeholder="10-digit Mobile Number"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>Gender *</label>
-              <select value={gender} onChange={(e) => setGender(e.target.value)} required>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -206,82 +397,144 @@ const StaffOnboarding = () => {
             </div>
           </div>
 
-          {/* RESIDENTIAL NESTED BLOCK */}
           <div className="so-form-section-title">Residential Address</div>
+
           <div className="so-form-grid">
             <div className="so-input-group">
               <label>Village / Town *</label>
-              <input type="text" value={village} onChange={(e) => setVillage(e.target.value)} placeholder="Village or Town" required />
+              <input
+                type="text"
+                value={village}
+                onChange={(e) => setVillage(e.target.value)}
+                placeholder="Village or Town"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>Post Office (P.O.) *</label>
-              <input type="text" value={po} onChange={(e) => setPo(e.target.value)} placeholder="Post Office" required />
+              <input
+                type="text"
+                value={po}
+                onChange={(e) => setPo(e.target.value)}
+                placeholder="Post Office"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>Police Station (P.S.) *</label>
-              <input type="text" value={ps} onChange={(e) => setPs(e.target.value)} placeholder="Police Station" required />
+              <input
+                type="text"
+                value={ps}
+                onChange={(e) => setPs(e.target.value)}
+                placeholder="Police Station"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>PIN Code *</label>
-              <input type="text" maxLength={6} value={pin} onChange={(e) => /^\d*$/.test(e.target.value) && setPin(e.target.value)} placeholder="6-Digit PIN Code" required />
+              <input
+                type="text"
+                maxLength={6}
+                value={pin}
+                onChange={(e) => {
+                  if (/^\d*$/.test(e.target.value)) {
+                    setPin(e.target.value);
+                  }
+                }}
+                placeholder="6-Digit PIN Code"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>District *</label>
-              <input type="text" value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="e.g. Barpeta" required />
+              <input
+                type="text"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                placeholder="e.g. Barpeta"
+                required
+              />
             </div>
 
             <div className="so-input-group">
               <label>State *</label>
-              <input type="text" value={state} onChange={(e) => setState(e.target.value)} placeholder="Assam" required />
-            </div>
-          </div>
-
-          {/* ACADEMIC INFRASTRUCTURE GRID */}
-          <div className="so-form-section-title">Academic & Professional Credentials</div>
-          <div className="so-form-grid">
-            <div className="so-input-group">
-              <label>Subject You Teach *</label>
-              <select value={subjectTaught} onChange={(e) => setSubjectTaught(e.target.value)} required>
-                <option value="">Select Subject</option>
-                {subjects.map((s) => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-
-            <div className="so-input-group">
-              <label>Highest Qualification / Degree *</label>
-              <input type="text" value={degree} onChange={(e) => setDegree(e.target.value)} placeholder="e.g. M.A., M.Sc., B.Ed." required />
-            </div>
-
-            <div className="so-input-group">
-              <label>Teaching Experience (Years) *</label>
-              <input 
-                type="number" 
-                min="0"
-                value={experience} 
-                onChange={(e) => setExperience(e.target.value)} 
-                placeholder="Years of Experience" 
-                required 
+              <input
+                type="text"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+                placeholder="Assam"
+                required
               />
             </div>
           </div>
 
-          {/* EXECUTE INTERFACE ACTION */}
-          <button type="submit" disabled={loading} className="so-submit-application-btn">
+          <div className="so-form-section-title">Professional Credentials</div>
+
+          <div className="so-form-grid">
+            <div className="so-input-group">
+              <label>Highest Qualification *</label>
+              <input
+                type="text"
+                value={qualification}
+                onChange={(e) => setQualification(e.target.value)}
+                placeholder="e.g. M.A., M.Sc., MCA"
+                required
+              />
+            </div>
+
+            <div className="so-input-group">
+              <label>Experience (Years)</label>
+              <input
+                type="number"
+                min="0"
+                value={experience}
+                onChange={(e) => setExperience(e.target.value)}
+                placeholder="Years of Experience"
+              />
+            </div>
+
+            {staffType === "Teaching" && (
+              <div className="so-input-group">
+                <label>Subject You Teach *</label>
+                <select
+                  value={subjectTaught}
+                  onChange={(e) => setSubjectTaught(e.target.value)}
+                  required
+                >
+                  <option value="">Select Subject</option>
+                  {subjects.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="so-submit-application-btn"
+          >
             {loading ? (
               <>
                 <span className="so-spinner"></span> Processing Application...
               </>
-            ) : "Submit Application"}
+            ) : (
+              "Submit Application"
+            )}
           </button>
-        </form>
 
+          {formError && <div className="so-error-alert">{formError}</div>}
+        </form>
       </div>
 
-      <CropModal 
+      <CropModal
         isOpen={showCropModal}
         imageSrc={tempImage}
         onClose={() => setShowCropModal(false)}

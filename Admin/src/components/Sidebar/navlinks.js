@@ -12,7 +12,7 @@ export const navSections = [
   {
     title: "Staff",
     links: [
-      { to: "/teachers", icon: "fas fa-chalkboard-teacher", label: "Teachers" },
+      { to: "/staffs", icon: "fas fa-chalkboard-teacher", label: "Staffs" },
       {
         to: "/attendance",
         icon: "fas fa-clipboard-check",

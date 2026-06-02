@@ -1,154 +1,142 @@
-/* ─── Teacher Card Container ─────────────────────────────────── */
-.stf-teacher-card {
-  background: var(--bg-card);
+/* ==========================================================================
+   1. CONTAINER STRUCTURE
+   ========================================================================== */
+.stf-staff-card-flat {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-  width: 100%;
-  max-width: 320px;
-}
-
-.stf-teacher-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--accent-border);
-}
-
-/* ─── Media Profile Area ─────────────────────────────────────── */
-.stf-card-media {
-  width: 100%;
-  height: 240px;
-  background: var(--bg-secondary);
   overflow: hidden;
-  position: relative;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.stf-card-image {
+.stf-staff-card-flat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-medium);
+}
+
+/* ==========================================================================
+   2. IMAGE CANVAS
+   ========================================================================== */
+.stf-media-box {
+  position: relative;
+  width: 100%;
+  padding-top: 95%; /* Clean square proportions */
+  background-color: var(--bg-secondary);
+  overflow: hidden;
+}
+
+.stf-profile-img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-normal);
 }
 
-.stf-teacher-card:hover .stf-card-image {
-  transform: scale(1.03);
-}
-
-/* ─── Card Typography & Details ──────────────────────────────── */
-.stf-card-body {
-  padding: 1.5rem;
+/* ==========================================================================
+   3. TEXT FIELDS & UNIFIED METADATA STACK
+   ========================================================================== */
+.stf-details-body {
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   flex-grow: 1;
 }
 
-.stf-card-top {
+.stf-info-header {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.15rem;
 }
 
-.stf-card-name {
-  font-size: 1.25rem;
-  font-weight: 700;
+.stf-employee-name {
   color: var(--text-main);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 
-.stf-card-subtitle {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+.stf-employee-designation {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-color); /* Emphasizes their actual title safely using the theme color */
   margin: 0;
 }
 
-.stf-divider {
-  margin: 0 4px;
-  color: var(--text-muted);
-}
-
-.stf-degree {
-  font-weight: 500;
-  opacity: 0.85;
-}
-
-/* ─── Specialized Subject Field ─────────────────────────────── */
-.stf-card-subjects {
+.stf-parameter-stack {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.6rem;
+  border-top: 1px solid var(--bg-secondary);
+  padding-top: 0.85rem;
 }
 
-.stf-subject-label {
-  color: var(--text-muted);
-  font-weight: 700;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.stf-subject-value {
-  color: var(--accent-color);
-  font-weight: 600;
-  font-size: 0.95rem;
-}
-
-/* ─── Meta Badges & Chips ────────────────────────────────────── */
-.stf-card-meta {
+.stf-meta-line {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
-  margin-top: auto;
-  flex-wrap: wrap;
+  font-size: 0.85rem;
+  line-height: 1.4;
 }
 
-.stf-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 0.8rem;
+.stf-meta-label {
+  color: var(--text-muted);
   font-weight: 500;
-  background: var(--bg-secondary);
-  color: var(--text-secondary);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-light);
 }
 
-.stf-status-badge {
-  display: inline-flex;
+.stf-meta-value {
+  color: var(--text-main);
+  font-weight: 700;
+  text-align: right;
+  max-width: 60%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.stf-card-footer-action {
+  margin-top: auto; /* Aligns the button to the absolute bottom of the body element grid */
+  border-top: 1px dashed var(--border-light);
+  padding-top: 1rem;
+}
+
+.stf-know-more-btn {
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
   align-items: center;
-  padding: 4px 10px;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  width: max-content;
+}
+
+.stf-btn-icon {
   font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: var(--radius-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
+  transition: transform var(--transition-fast);
 }
 
-/* Handle system specific contextual flag indicators cleanly */
-.stf-status-badge.status-onleave {
-  background: var(--bg-warning-light, #fef3c7);
-  color: var(--color-warning, #d97706);
+/* Micro-interaction animation passes on card/button hover states */
+.stf-staff-card-flat:hover .stf-know-more-btn,
+.stf-know-more-btn:hover {
+  color: var(--accent-color);
 }
 
-.stf-status-badge.status-inactive {
-  background: var(--bg-danger-light, #fee2e2);
-  color: var(--color-danger, #dc2626);
-}
-
-/* ─── Responsive Adjustments ─────────────────────────────────── */
-@media (max-width: 480px) {
-  .stf-teacher-card {
-    max-width: 100%;
-  }
-  
-  .stf-card-media {
-    height: 220px;
-  }
+.stf-staff-card-flat:hover .stf-btn-icon {
+  transform: translateX(4px);
 }

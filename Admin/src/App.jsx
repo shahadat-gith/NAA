@@ -10,7 +10,6 @@ import AdminLayout from "./components/AdminLayout/AdminLayout";
 import Loader from "./components/Loader/Loader";
 
 import Home from "./pages/Home/Home";
-import Teacher from "./pages/Teacher/Teacher";
 import Student from "./pages/Student/Student";
 import Settings from "./pages/Settings/Settings";
 import Gallery from "./pages/Gallery/Gallery";
@@ -23,9 +22,10 @@ import StudentImages from "./pages/StudentImages/StudentImages";
 import Exams from "./pages/Exams/Exams";
 import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
-import TeacherDetails from "./pages/Teacher/TeacherDetails";
 import Notices from "./pages/Notices/Notices";
 import Attendance from "./pages/Attendance/Attendance";
+import Staffs from "./pages/Staffs/Staffs";
+import StaffDetails from "./pages/Staffs/StaffDetails";
 
 
 /* ===============================
@@ -85,8 +85,8 @@ const App = () => {
               <AdminLayout>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/teachers" element={<Teacher />} />
-                  <Route path="/teachers/:teacherId" element={<TeacherDetails />} />
+                  <Route path="/staffs" element={<Staffs />} />
+                  <Route path="/staffs/:staffId" element={<StaffDetails/>} />
                   <Route path="/attendance" element={<Attendance />} />
                  
 

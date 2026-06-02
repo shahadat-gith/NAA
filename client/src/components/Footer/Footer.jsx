@@ -1,7 +1,49 @@
+import { useEffect, useState } from "react";
 import "./Footer.css";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+
+const [lastUpdated, setLastUpdated] = useState("Loading...");
+
+useEffect(() => {
+  const fetchLastUpdate = async () => {
+    try {
+      const response = await fetch(
+        "https://api.github.com/repos/shahadat-gith/NAA/commits?per_page=1"
+      );
+
+      if (!response.ok) {
+        throw new Error(`GitHub API Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      const commitDate = data[0]?.commit?.committer?.date;
+
+      if (!commitDate) {
+        throw new Error("Commit date not found");
+      }
+
+      const formattedDate = new Date(commitDate).toLocaleDateString("en-IN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      });
+
+      setLastUpdated(formattedDate);
+    } catch (error) {
+      console.error("Error fetching from GitHub:", error);
+      setLastUpdated("Recently");
+    }
+  };
+
+  fetchLastUpdate();
+}, []);
+
+
   return (
     <footer className="footer-premium">
       <div className="footer-container">
@@ -161,9 +203,10 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="footer-bottom">
-        <p>
-          © {new Date().getFullYear()} Nashib Ali Academy. All rights reserved.
+    <div className="footer-bottom">
+        <p>© {new Date().getFullYear()} Nashib Ali Academy.</p>
+        <p style={{ fontSize: "0.8rem", opacity: 0.7 }}>
+          Last Updated: {lastUpdated}
         </p>
       </div>
     </footer>
