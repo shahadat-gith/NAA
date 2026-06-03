@@ -66,7 +66,7 @@ staffRouter.put("/timetable/update", staffAuthMiddleware, updateTimetable);
  * @route   GET /api/staff/all
  * @desc    Extract master array directory list of all records
  */
-staffRouter.get("/all", adminAuthMiddleware, getAllStaff);
+staffRouter.get("/all", getAllStaff);
 
 /**
  * @route   PUT /api/staff/verify/:id

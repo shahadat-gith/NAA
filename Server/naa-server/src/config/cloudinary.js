@@ -19,7 +19,7 @@ const uploadImageToCloudinary = (file, folder) => {
         folder,
         public_id: fileName,
         use_filename: true,
-        unique_filename: false,
+        unique_filename: true,
       },
       (error, result) => {
         if (error) reject(error);

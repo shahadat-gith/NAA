@@ -13,18 +13,37 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
+  const getFileExtensionFromMimeType = (mimeType) => {
+    if (mimeType === "image/png") return "png";
+    if (mimeType === "image/webp") return "webp";
+    return "jpg";
+  };
+
+  const generateUniqueImageName = (mimeType = "image/jpeg") => {
+    const extension = getFileExtensionFromMimeType(mimeType);
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).slice(2, 8);
+
+    return `teacher-photo-${timestamp}-${randomString}.${extension}`;
+  };
+
   const getCroppedImg = async (src, cropPixels) => {
     const image = new Image();
-    image.crossOrigin = "anonymous"; // Essential to prevent CORS canvas tainting
+    image.crossOrigin = "anonymous";
     image.src = src;
 
     await new Promise((resolve, reject) => {
       image.onload = resolve;
-      image.onerror = () => reject(new Error("Failed to load source image asset for cropping."));
+      image.onerror = () =>
+        reject(new Error("Failed to load source image asset for cropping."));
     });
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+      throw new Error("Canvas context is not available.");
+    }
 
     canvas.width = cropPixels.width;
     canvas.height = cropPixels.height;
@@ -41,17 +60,28 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
       cropPixels.height
     );
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => {
-        const croppedFile = new File([blob], "cropped-avatar.jpg", {
-          type: "image/jpeg",
-        });
+    return new Promise((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error("Failed to create cropped image blob."));
+            return;
+          }
 
-        resolve({
-          file: croppedFile,
-          preview: URL.createObjectURL(blob),
-        });
-      }, "image/jpeg");
+          const uniqueFileName = generateUniqueImageName(blob.type);
+
+          const croppedFile = new File([blob], uniqueFileName, {
+            type: blob.type || "image/jpeg",
+          });
+
+          resolve({
+            file: croppedFile,
+            preview: URL.createObjectURL(blob),
+          });
+        },
+        "image/jpeg",
+        0.95
+      );
     });
   };
 
@@ -63,7 +93,9 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
 
     try {
       setProcessing(true);
+
       const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+
       onCropSave(croppedImage.file, croppedImage.preview);
       onClose();
     } catch (error) {
@@ -74,16 +106,16 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
     }
   };
 
-
-   if (!isOpen || !imageSrc) return null;
+  if (!isOpen || !imageSrc) return null;
 
   return (
     <div className="cm-crop-backdrop" onClick={onClose}>
       <div className="cm-crop-card" onClick={(e) => e.stopPropagation()}>
-        
         <div className="cm-crop-header">
           <h3>Adjust Profile Photo</h3>
-          <button className="cm-close-x" onClick={onClose} disabled={processing}>✕</button>
+          <button className="cm-close-x" onClick={onClose} disabled={processing}>
+            ✕
+          </button>
         </div>
 
         <div className="cm-crop-workspace">
@@ -125,6 +157,7 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
             >
               Cancel
             </button>
+
             <button
               type="button"
               className="cm-btn-primary"
@@ -135,7 +168,6 @@ const CropModal = ({ isOpen, imageSrc, onClose, onCropSave }) => {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
