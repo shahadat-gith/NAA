@@ -9,16 +9,19 @@ import Loader from "../../components/Loader/Loader";
 
 const Staffs = () => {
   const { backendUrl } = useContext(AppContext);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [staffList, setStaffList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // --- Fetch Consolidated Staff Directory Pipeline ---
   const fetchStaffData = useCallback(async () => {
     if (!backendUrl) return;
+
     setLoading(true);
+
     try {
       const { data } = await axios.get(`${backendUrl}/api/staff/all`);
+
       if (data.success) {
         setStaffList(data.staffs || []);
       }
@@ -34,27 +37,55 @@ const Staffs = () => {
     fetchStaffData();
   }, [fetchStaffData]);
 
-  // --- Filtered List handling Search Terms ---
+  const getStaffSequence = (staffId = "") => {
+    const parts = staffId.split("-");
+    return Number(parts[2]) || 0;
+  };
+
   const searchedStaff = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
-    if (!term) return staffList;
 
-    return staffList.filter((item) => {
-      const matchName = item.name?.toLowerCase().includes(term);
-      const matchDesignation = item.designation?.toLowerCase().includes(term);
-      const matchSubject = item.subjectTaught?.toLowerCase().includes(term);
-      return matchName || matchDesignation || matchSubject;
-    });
+    let filtered = staffList.filter(
+      (staff) => staff.status === "Active"
+    );
+
+    if (term) {
+      filtered = filtered.filter((item) => {
+        const matchName = item.name?.toLowerCase().includes(term);
+        const matchDesignation = item.designation?.toLowerCase().includes(term);
+        const matchSubject = item.subjectTaught?.toLowerCase().includes(term);
+        const matchStaffId = item.staffId?.toLowerCase().includes(term);
+
+        return (
+          matchName ||
+          matchDesignation ||
+          matchSubject ||
+          matchStaffId
+        );
+      });
+    }
+
+    return filtered;
   }, [staffList, searchTerm]);
 
-  // --- Column Split 1: Teaching Staff ---
   const teachingStaff = useMemo(() => {
-    return searchedStaff.filter((item) => item.staffType === "Teaching");
+    return [...searchedStaff]
+      .filter((item) => item.staffType === "Teaching")
+      .sort(
+        (a, b) =>
+          getStaffSequence(a.staffId) -
+          getStaffSequence(b.staffId)
+      );
   }, [searchedStaff]);
 
-  // --- Column Split 2: Non-Teaching Staff ---
   const nonTeachingStaff = useMemo(() => {
-    return searchedStaff.filter((item) => item.staffType === "Non Teaching");
+    return [...searchedStaff]
+      .filter((item) => item.staffType === "Non-Teaching")
+      .sort(
+        (a, b) =>
+          getStaffSequence(a.staffId) -
+          getStaffSequence(b.staffId)
+      );
   }, [searchedStaff]);
 
   return (
@@ -68,22 +99,24 @@ const Staffs = () => {
       </Helmet>
 
       <div className="staff-container">
-        
-        {/* Simple & Clean Header Block */}
         <header className="staff-simple-header">
           <h1 className="staff-main-title">Our Staff Directory</h1>
-          <p className="staff-count-meta">Showing {searchedStaff.length} active institution professionals</p>
-          
-          {/* Centered Minimal Search Field */}
+
+          <p className="staff-count-meta">
+            Showing {searchedStaff.length} active institution professionals
+          </p>
+
           <div className="staff-search-box-wrapper">
             <i className="fas fa-search search-icon-left"></i>
+
             <input
               type="text"
-              placeholder="Search staff by name, role, or subject..."
+              placeholder="Search staff by name, role, subject, or staff ID..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input-simple"
             />
+
             {searchTerm && (
               <button
                 className="search-clear-btn-simple"
@@ -96,59 +129,76 @@ const Staffs = () => {
           </div>
         </header>
 
-        {/* Directory Layout Area split into two structural columns */}
         <main className="directory-content-area">
           {loading ? (
             <Loader />
           ) : searchedStaff.length > 0 ? (
             <div className="directory-columns-layout">
-              
-              {/* COLUMN 1: TEACHING STAFF */}
               <div className="directory-column">
                 <div className="column-heading-wrapper">
-                  <h2 className="column-section-title">Teaching Staff</h2>
-                  <span className="column-count-badge">{teachingStaff.length}</span>
+                  <h2 className="column-section-title">
+                    Teaching Staff
+                  </h2>
+
+                  <span className="column-count-badge">
+                    {teachingStaff.length}
+                  </span>
                 </div>
+
                 {teachingStaff.length > 0 ? (
                   <div className="column-cards-grid">
-                    {teachingStaff.map((staffMember, index) => (
-                      <StaffCard key={staffMember._id || index} teacher={staffMember} />
+                    {teachingStaff.map((staffMember) => (
+                      <StaffCard
+                        key={staffMember._id}
+                        teacher={staffMember}
+                      />
                     ))}
                   </div>
                 ) : (
-                  <p className="column-empty-notice">No teaching faculty matches found.</p>
+                  <p className="column-empty-notice">
+                    No teaching faculty matches found.
+                  </p>
                 )}
               </div>
 
-              {/* Vertical Center Border Separator for desktop visuals */}
               <div className="column-vertical-divider"></div>
 
-              {/* COLUMN 2: NON-TEACHING STAFF */}
               <div className="directory-column">
                 <div className="column-heading-wrapper">
-                  <h2 className="column-section-title">Non-Teaching Staff</h2>
-                  <span className="column-count-badge">{nonTeachingStaff.length}</span>
+                  <h2 className="column-section-title">
+                    Non-Teaching Staff
+                  </h2>
+
+                  <span className="column-count-badge">
+                    {nonTeachingStaff.length}
+                  </span>
                 </div>
+
                 {nonTeachingStaff.length > 0 ? (
                   <div className="column-cards-grid">
-                    {nonTeachingStaff.map((staffMember, index) => (
-                      <StaffCard key={staffMember._id || index} teacher={staffMember} />
+                    {nonTeachingStaff.map((staffMember) => (
+                      <StaffCard
+                        key={staffMember._id}
+                        teacher={staffMember}
+                      />
                     ))}
                   </div>
                 ) : (
-                  <p className="column-empty-notice">No support staff matches found.</p>
+                  <p className="column-empty-notice">
+                    No support staff matches found.
+                  </p>
                 )}
               </div>
-
             </div>
           ) : (
             <div className="no-results">
               <h3>No directory files matching found</h3>
-              <p>We couldn't locate active staff details matching "{searchTerm}".</p>
+              <p>
+                We couldn't locate active staff details matching "{searchTerm}".
+              </p>
             </div>
           )}
         </main>
-
       </div>
     </div>
   );

@@ -140,3 +140,12 @@
 .stf-staff-card-flat:hover .stf-btn-icon {
   transform: translateX(4px);
 }
+
+
+.stf-employee-staffid {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.3px;
+}

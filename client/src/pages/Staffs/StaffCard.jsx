@@ -19,19 +19,27 @@ export const StaffCard = ({ teacher }) => {
           loading="lazy"
         />
       </div>
-      
+
       {/* 2. Content Details Body */}
       <div className="stf-details-body">
         <div className="stf-info-header">
           <h3 className="stf-employee-name">{teacher.name}</h3>
-          <p className="stf-employee-designation">{teacher.designation || "Staff Member"}</p>
+          <p className="stf-employee-designation">
+            {teacher.designation || "Staff Member"}
+          </p>
+
+          <p className="stf-employee-staffid">
+            Staff ID: {teacher.staffId || "N/A"}
+          </p>
         </div>
 
         {/* 3. Parameter Stack (Unified Key-Value Layout) */}
         <div className="stf-parameter-stack">
           <div className="stf-meta-line">
             <span className="stf-meta-label">Qualification</span>
-            <span className="stf-meta-value">{teacher.qualification || "Not Provided"}</span>
+            <span className="stf-meta-value">
+              {teacher.qualification || "Not Provided"}
+            </span>
           </div>
 
           {/* Render Subject Specialty for teachers, otherwise show Administrative department status */}
@@ -40,10 +48,9 @@ export const StaffCard = ({ teacher }) => {
               {teacher.staffType === "Teaching" ? "Subject" : "Department"}
             </span>
             <span className="stf-meta-value">
-              {teacher.staffType === "Teaching" 
-                ? (teacher.subjectTaught || "General") 
-                : "Administration"
-              }
+              {teacher.staffType === "Teaching"
+                ? teacher.subjectTaught || "General"
+                : "Administration"}
             </span>
           </div>
 
@@ -52,7 +59,6 @@ export const StaffCard = ({ teacher }) => {
             <span className="stf-meta-value">{experienceText}</span>
           </div>
         </div>
-
       </div>
     </div>
   );
