@@ -54,7 +54,6 @@ import TeacherLogin from "./teachers/pages/TeacherLogin";
 import TeacherProfile from "./teachers/pages/TeacherProfile";
 import Attendance from "./teachers/pages/Attendance";
 import Timetable from "./teachers/pages/Timetable";
-import StaffDetails from "./pages/Staffs/StaffDetails";
 
 const App = () => {
   const location = useLocation();
@@ -115,7 +114,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/staffs" element={<Staffs />} />
-          <Route path="/staffs/:staffId" element={<StaffDetails />} />
           <Route path="/curriculum" element={<CurriculumDetails />} />
           <Route path="/academics" element={<Academics />} />
           <Route path="/gallery" element={<Gallery />} />

@@ -1,9 +1,7 @@
 import React from "react";
 import "./StaffCard.css";
-import { useNavigate } from "react-router-dom";
 
 export const StaffCard = ({ teacher }) => {
-  const navigate = useNavigate();
   const experienceText =
     teacher.experience !== undefined ? `${teacher.experience} years` : "N/A";
 
@@ -53,18 +51,6 @@ export const StaffCard = ({ teacher }) => {
             <span className="stf-meta-label">Experience</span>
             <span className="stf-meta-value">{experienceText}</span>
           </div>
-        </div>
-
-        {/* 4. Interactive Navigation Link Footer Layer */}
-        <div className="stf-card-footer-action">
-          <button 
-            type="button" 
-            className="stf-know-more-btn"
-            onClick={() => navigate(`/staffs/${teacher._id}`)}
-          >
-            <span>Know More</span>
-            <i className="fas fa-arrow-right stf-btn-icon"></i>
-          </button>
         </div>
 
       </div>
