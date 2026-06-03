@@ -19,8 +19,9 @@ export const staffLogin = async (req, res) => {
   }
 
   try {
-    // Look up user by contact number
-    const staff = await Staff.findOne({ contact });
+    // 🌟 Explicitly including the hidden password field using .select("+password")
+    const staff = await Staff.findOne({ contact }).select("+password");
+  
     
     if (!staff) {
       return res.status(401).json({ 
@@ -30,14 +31,15 @@ export const staffLogin = async (req, res) => {
     }
 
     if (!staff.password) {
-      return res.status(401).json({ 
-        success: false, 
-        message: "Your account credentials need resetting. Please use 'Forgot Password' to set up your password." 
+      return res.status(401).json({
+        success: false,
+        message: "Your account is missing login credentials. Please use 'Forgot Password' to set one up."
       });
     }
 
-    // Compare passwords using pure bcryptjs (String cast prevents accidental undefined inputs)
+    // Compare incoming plain password with retrieved hash securely
     const isMatch = await bcrypt.compare(String(password), staff.password);
+    
     
     if (!isMatch) {
       return res.status(401).json({ 
@@ -46,23 +48,14 @@ export const staffLogin = async (req, res) => {
       });
     }
 
-    // Safety check for JWT secret before signing
-    if (!process.env.JWT_SECRET) {
-      console.error("CRITICAL CONFIG ERROR: JWT_SECRET is missing in your environment variables!");
-      return res.status(500).json({
-        success: false,
-        message: "Server configuration error. Please contact admin support."
-      });
-    }
-
-    // Generate token securely
+    // Generate session token securely
     const token = jwt.sign(
       { id: staff._id, staffType: staff.staffType }, 
       process.env.JWT_SECRET, 
       { expiresIn: "365d" }
     );
 
-    // Prepare clean response layout data
+    // Prepare clean response dataset for the phone screen
     const staffData = {
       id: staff._id,
       staffType: staff.staffType,
@@ -88,7 +81,6 @@ export const staffLogin = async (req, res) => {
     });
 
   } catch (error) {
-    // Prints exact failure breakdown directly to your AWS CloudWatch log stream
     console.error("CRITICAL LOGIN INTERNAL CRASH:", error);
     
     return res.status(500).json({ 
@@ -287,30 +279,38 @@ export const forgotPasswordStaff = async (req, res) => {
 // 5. IN-APP PASS CHANGING (Settings Modification Routine)
 // =========================================================================
 export const updatePassword = async (req, res) => {
-  const { currentPassword, newPassword } = req.body;
-  const staffId = req.user.id; 
+  const { newPassword } = req.body;
+  const staffId = req.user?.id; 
 
-  if (!currentPassword || !newPassword) {
-    return res.status(400).json({ success: false, message: "Both current and new passwords are required." });
+  if (!newPassword || !newPassword.trim()) {
+    return res.status(400).json({ 
+      success: false, 
+      message: "The new password field cannot be left blank." 
+    });
   }
 
   try {
     const staff = await Staff.findById(staffId);
     if (!staff) {
-      return res.status(404).json({ success: false, message: "Staff account instance not found." });
-    }
-
-    const isMatch = await bcrypt.compare(currentPassword, staff.password);
-    if (!isMatch) {
-      return res.status(401).json({ success: false, message: "Incorrect current password." });
+      return res.status(404).json({ 
+        success: false, 
+        message: "Staff account instance not found." 
+      });
     }
 
     const salt = await bcrypt.genSalt(10);
-    staff.password = await bcrypt.hash(newPassword, salt);
+    staff.password = await bcrypt.hash(newPassword.trim(), salt);
     await staff.save();
 
-    return res.status(200).json({ success: true, message: "Password updated successfully." });
+    return res.status(200).json({ 
+      success: true, 
+      message: "Password updated successfully." 
+    });
   } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
+    console.error("Backend password update runtime failure:", error);
+    return res.status(500).json({ 
+      success: false, 
+      message: "An unexpected internal error occurred while resetting credentials." 
+    });
   }
 };

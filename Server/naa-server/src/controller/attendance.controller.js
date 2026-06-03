@@ -144,10 +144,9 @@ export const expireAttendanceQR = async (req, res) => {
 export const markAttendance = async (req, res) => {
   try {
     const { token, markedBy, status } = req.body;
-    const staffId = req.user.id; // Pulled from staffAuthMiddleware token context
+    const staffId = req.user.id;
     const { nativeDate, year, month } = getIndianDateDetails(); 
 
-    // Verify current QR token validation tracking states
     const qrDoc = await AttendanceQR.findOne({
       date: nativeDate,
       token,
@@ -157,11 +156,10 @@ export const markAttendance = async (req, res) => {
     if (!qrDoc) {
       return res.status(400).json({
         success: false,
-        message: "Invalid or expired QR code",
+        message: "This attendance QR code is invalid or has expired.",
       });
     }
 
-    // Swapped lookups to filter records by the 'staff' field identifier
     const existingAttendance = await StaffAttendance.findOne({
       staff: staffId,
       date: nativeDate,
@@ -170,40 +168,47 @@ export const markAttendance = async (req, res) => {
     if (existingAttendance) {
       return res.status(400).json({
         success: false,
-        message: "Attendance already marked for this staff member today",
+        message: "Your attendance has already been marked for today.",
       });
     }
 
-    // Instantiating fresh record inside the unified StaffAttendance model
     const newAttendance = new StaffAttendance({
       staff: staffId,
       date: nativeDate, 
       status: status || "Present",
-      markedBy: markedBy || "Teacher",
+      markedBy: markedBy || "Staff",
     });
 
     await newAttendance.save();
 
-    // Compile dynamic rolling historical month window array updates
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+    // Pure dynamic date matching strings without time gap leaks
+    const targetYear = Number(year);
+    const targetMonth = Number(month);
+
+    const startISOString = `${targetYear}-${String(targetMonth).padStart(2, "0")}-01T00:00:00.000Z`;
+    const nextMonth = targetMonth === 12 ? 1 : targetMonth + 1;
+    const nextYear = targetMonth === 12 ? targetYear + 1 : targetYear;
+    const endISOString = `${nextYear}-${String(nextMonth).padStart(2, "0")}-01T00:00:00.000Z`;
 
     const attendanceHistory = await StaffAttendance.find({
       staff: staffId,
-      date: { $gte: startDate, $lte: endDate }
+      date: { 
+        $gte: new Date(startISOString), 
+        $lt: new Date(endISOString) 
+      }
     }).sort({ date: 1 }); 
 
     return res.status(200).json({
       success: true,
-      message: "Attendance marked successfully",
+      message: "Attendance marked successfully.",
       attendance: attendanceHistory, 
     });
 
   } catch (error) {
+    console.error("Attendance marking crash log:", error);
     return res.status(500).json({
       success: false,
-      message: "Error marking attendance",
-      error: error.message,
+      message: "Could not record your attendance. Please try again in a moment.",
     });
   }
 };

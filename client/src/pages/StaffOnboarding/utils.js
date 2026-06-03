@@ -1,8 +1,8 @@
 
 
 export const designationsByRole = {
-    "Teaching": ["Principal", "Managing Director", "Head Teacher", "Teacher", "Librarian", "Lab Assistant", "Other"],
-    "Non Teaching": ["Accountant", "Office Assistant", "Receptionist", "Computer Operator", "Driver", "Peon", "Security Guard", "Cleaner", "Other"]
+    "Teaching": ["Principal", "Head Teacher", "Teacher", "Librarian", "Lab Assistant", "Other"],
+    "Non Teaching": ["Accountant", "Managing Director", "Office Assistant", "Receptionist", "Computer Operator", "Driver", "Peon", "Security Guard", "Cleaner", "Other"]
   };
 
   export const subjects = [

@@ -78,7 +78,7 @@ staffRouter.put("/verify/:id", adminAuthMiddleware, verifyStaff);
  * @route   GET /api/staff/timetable/:id
  * @desc    Inspect a target employee's class scheduling array profile via ID parameter
  */
-staffRouter.get("/timetable/:id", adminAuthMiddleware, getTimetable);
+staffRouter.get("/timetable/me",staffAuthMiddleware, getTimetable);
 
 /**
  * @route   GET /api/staff/:id

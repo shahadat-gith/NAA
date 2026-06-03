@@ -364,7 +364,7 @@ const StaffOnboarding = () => {
               >
                 <option value="">Select Category</option>
                 <option value="Teaching">Teaching Staff</option>
-                <option value="Non Teaching">Non-Teaching Staff</option>
+                <option value="Non-Teaching">Non-Teaching Staff</option>
               </select>
               {fieldErrors.staffType && (
                 <p className="so-field-error">{fieldErrors.staffType}</p>

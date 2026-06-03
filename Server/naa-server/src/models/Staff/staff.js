@@ -4,6 +4,7 @@ const staffSchema = new mongoose.Schema(
   {
     staffType: {
       type: String,
+      enum:["Teaching", "Non-Teaching"],
       required: [true, "Staff type is required"],
     },
 

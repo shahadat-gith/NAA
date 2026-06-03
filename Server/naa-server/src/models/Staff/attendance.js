@@ -20,7 +20,7 @@ const attendanceSchema = new mongoose.Schema(
     },
     markedBy: {
       type: String,
-      enum: ["Teacher", "Admin"],
+      enum: ["Staff", "Admin"],
       required: true,
     },
   },

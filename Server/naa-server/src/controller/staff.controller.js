@@ -147,11 +147,10 @@ export const updateStaffDetails = async (req, res) => {
     if (!staff) {
       return res.status(404).json({
         success: false,
-        message: "Staff profile data trace not found.",
+        message: "Staff profile data record not found.",
       });
     }
 
-    // --- Asset Cloud Media Refactoring & Garbage Cleanup ---
     if (req.file) {
       if (staff.image && staff.image.publicId) {
         try {
@@ -168,13 +167,11 @@ export const updateStaffDetails = async (req, res) => {
       };
     }
 
-    // --- Secured Access Token Configurations ---
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
       staff.password = await bcrypt.hash(req.body.password, salt);
     }
 
-    // --- Nested Address Parsing Engine ---
     if (req.body.address) {
       try {
         const parsedAddress = typeof req.body.address === "string" 
@@ -190,7 +187,7 @@ export const updateStaffDetails = async (req, res) => {
       } catch (parseError) {
         return res.status(400).json({
           success: false,
-          message: "Malformed data structural parsing layout received for address updates.",
+          message: "Malformed address update payload architecture.",
         });
       }
     }
@@ -217,77 +214,79 @@ export const updateStaffDetails = async (req, res) => {
       }
     });
 
-    if (staff.staffType === "Non Teaching") {
+ 
+    if (staff.staffType === "Non-Teaching") {
       staff.subjectTaught = null;
     } else if (staff.staffType === "Teaching" && !staff.subjectTaught) {
       return res.status(400).json({
         success: false,
-        message: "Subject taught is mandatory when setting profile to Teaching staff.",
+        message: "Subject taught is mandatory for teaching staff profiles.",
       });
     }
 
     await staff.save();
 
-    // CRITICAL SECURITY FIX: Sanitize output response payload!
     const staffResponse = staff.toObject();
     delete staffResponse.password;
     delete staffResponse.verificationOtp;
 
     return res.status(200).json({
       success: true,
-      message: "Profile information saved and modified successfully.",
+      message: "Profile information saved successfully.",
       staff: staffResponse    
     });
 
   } catch (error) {
-    console.error("updateStaffDetails runtime anomaly sequence:", error);
+    console.error("updateStaffDetails failure stack:", error);
 
     if (error.code === 11000) {
       return res.status(409).json({
         success: false,
-        message: "An account with that email structural address already exists.",
+        message: "An account with that email address already exists.",
       });
     }
 
     return res.status(500).json({
       success: false,
-      message: "An operational breakdown was encountered while committing profile updates.",
+      message: "An error occurred while saving profile updates.",
       error: error.message,
     });
   }
 };
-
 // =========================================================================
 // 3. GET STAFF PROFILE (Self Profile View)
 // =========================================================================
 export const getStaffProfile = async (req, res) => {
   try {
-    const { id } = req.user;
-    
-    // Clean Projection: Blocks secret auth identifiers from traveling downstream
-    const staff = await Staff.findById(id).select("-password -verificationOtp");
+    const staffId = req.user?.id; 
 
+    if (!staffId) {
+      return res.status(401).json({
+        success: false,
+        message: "Session verification failed. Invalid token signatures context.",
+      });
+    }
+
+    const staff = await Staff.findById(staffId);
     if (!staff) {
       return res.status(404).json({
         success: false,
-        message: "Your profile record could not be located in the system matrix.",
+        message: "Staff profile instance record could not be found.",
       });
     }
 
     return res.status(200).json({
       success: true,
-      profile: staff,
+      staff,
     });
   } catch (error) {
-    console.error("getStaffProfile runtime failure:", error);
+    console.error("Backend getProfile execution breakdown:", error);
     return res.status(500).json({
       success: false,
-      message: "Server failed to fetch profile workspace data.",
-      error: error.message,
+      message: "Internal server error during session token verification loop.",
     });
   }
 };
-
 // =========================================================================
 // 4. GET STAFF BY ID (Admin/Management View)
 // =========================================================================
@@ -490,38 +489,55 @@ export const updateTimetable = async (req, res) => {
 };
 
 // =========================================================================
-// 8. GET TIMETABLE BY STAFF ID (Admin or Faculty Directory Tool)
+// 8. GET TIMETABLE (logged in faculty)
 // =========================================================================
 export const getTimetable = async (req, res) => {
   try {
-    const { id } = req.params; 
+    const staffId = req.user?.id; 
 
-    const staff = await Staff.findById(id);
+    if (!staffId) {
+      return res.status(401).json({
+        success: false,
+        message: "Session expired. Please sign in again.",
+      });
+    }
+
+    const staff = await Staff.findById(staffId);
     if (!staff) {
       return res.status(404).json({
         success: false,
-        message: "Targeted staff profile record not found.",
+        message: "Account record not found.",
       });
     }
 
-    const timetable = await StaffTimetable.findOne({ staff: id });
-    if (!timetable) {
-      return res.status(404).json({
-        success: false,
-        message: "No schedule matrix configured for this staff member.",
-      });
-    }
+    const timetable = await StaffTimetable.findOne({ staff: staffId });
+    
+    // Safety Mapping Layer: Always return a uniform, standard shape back to React Native
+    const scheduleStructure = timetable?.schedule || {
+      Monday: [],
+      Tuesday: [],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Saturday: [],
+    };
 
     return res.status(200).json({
       success: true,
-      timetable,
+      timetable: {
+        _id: timetable?._id || null,
+        staff: staffId,
+        schedule: scheduleStructure
+      },
     });
+
   } catch (error) {
-    console.error("getTimetable runtime failure:", error);
+    // 🌟 CHECK YOUR BACKEND TERMINAL LOGS TO SEE THE EXACT INTERNAL ERROR DETAILED TEXT:
+    console.error("❌ Critical Backend Timetable Crash Details:", error);
+    
     return res.status(500).json({
       success: false,
-      message: "Error fetching timetable details.",
-      error: error.message,
+      message: "An unexpected error occurred while loading your schedule.",
     });
   }
 };
