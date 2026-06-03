@@ -120,67 +120,6 @@ const StaffDetails = () => {
               </div>
             </div>
 
-            {/* CARD AREA 2: VERIFIED CONTACT CREDENTIAL CHANNELS */}
-            <div className="profile-details-section-card">
-              <h2 className="section-card-title">Contact & Communication</h2>
-              
-              <div className="details-parameters-list">
-                <div className="parameter-data-row">
-                  <span className="row-label">Email Address</span>
-                  <span className="row-value contact-link-value">{staff.email || "N/A"}</span>
-                </div>
-
-                <div className="parameter-data-row">
-                  <span className="row-label">Contact</span>
-                  <span className="row-value">{staff.contact || "N/A"}</span>
-                </div>
-
-                <div className="parameter-data-row">
-                  <span className="row-label">Gender</span>
-                  <span className="row-value">{staff.gender || "Not Stated"}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* CARD AREA 3: NESTED PHYSICAL RESIDENTIAL ADDRESS OBJECT FIELD MAP */}
-            {staff.address && (
-              <div className="profile-details-section-card">
-                <h2 className="section-card-title">Address Details</h2>
-                
-                <div className="address-details-block-grid">
-                  <div className="address-grid-item">
-                    <span className="address-item-label">Village / Town</span>
-                    <span className="address-item-value">{staff.address.village || "N/A"}</span>
-                  </div>
-
-                  <div className="address-grid-item">
-                    <span className="address-item-label">Post Office (P.O.)</span>
-                    <span className="address-item-value">{staff.address.po || "N/A"}</span>
-                  </div>
-
-                  <div className="address-grid-item">
-                    <span className="address-item-label">Police Station (P.S.)</span>
-                    <span className="address-item-value">{staff.address.ps || "N/A"}</span>
-                  </div>
-
-                  <div className="address-grid-item">
-                    <span className="address-item-label">PIN Code</span>
-                    <span className="address-item-value inline-code-pin">{staff.address.pin || "N/A"}</span>
-                  </div>
-
-                  <div className="address-grid-item">
-                    <span className="address-item-label">District</span>
-                    <span className="address-item-value">{staff.address.district || "N/A"}</span>
-                  </div>
-
-                  <div className="address-grid-item">
-                    <span className="address-item-label">State Territory</span>
-                    <span className="address-item-value">{staff.address.state || "Assam"}</span>
-                  </div>
-                </div>
-              </div>
-            )}
-
           </div>
 
         </div>

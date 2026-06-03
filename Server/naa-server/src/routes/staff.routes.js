@@ -84,7 +84,7 @@ staffRouter.get("/timetable/me",staffAuthMiddleware, getTimetable);
  * @route   GET /api/staff/:id
  * @desc    Inspect specific profile data attributes
  */
-staffRouter.get("/:id", adminAuthMiddleware, getStaffById);
+staffRouter.get("/:id", getStaffById);
 
 /**
  * @route   DELETE /api/staff/:id
