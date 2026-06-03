@@ -11,7 +11,6 @@ import achieversRouter from "./routes/achiever.routes.js";
 import studentRouter from "./routes/student.routes.js";
 import resultRouter from "./routes/result.routes.js";
 import admissionRouter from "./routes/admission.routes.js";
-import adminRouter from "./routes/admin.routes.js";
 import noticeRouter from "./routes/notice.routes.js";
 import attendanceRouter from "./routes/attendance.routes.js";
 import staffRouter from "./routes/staff.routes.js";
@@ -51,7 +50,6 @@ app.use("/api/achievers", achieversRouter);
 app.use("/api/student", studentRouter);
 app.use("/api/results", resultRouter);
 app.use("/api/admission", admissionRouter);
-app.use("/api/admin", adminRouter);
 app.use("/api/notices", noticeRouter);
 app.use("/api/attendance", attendanceRouter);
 

@@ -249,18 +249,15 @@ const StaffOnboarding = () => {
 
       formData.append("image", imageFile);
 
-      const { data } = await axios.post(
+      await axios.post(
         `${backendUrl}/api/staff/register`,
         formData
       );
 
-      toast.success(
-        data?.message || "Staff registration submitted successfully."
-      );
-
+      toast.success("Staff registration submitted successfully.");
       resetForm();
 
-      navigate("/teacher");
+      navigate("/");
     } catch (error) {
       const backendMessage =
         error?.response?.data?.message ||

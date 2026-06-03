@@ -26,6 +26,7 @@ import Notices from "./pages/Notices/Notices";
 import Attendance from "./pages/Attendance/Attendance";
 import Staffs from "./pages/Staffs/Staffs";
 import StaffDetails from "./pages/Staffs/StaffDetails";
+import AttendanceDashboard from "./pages/Attendance Dashboard/AttendanceDashboard";
 
 
 /* ===============================
@@ -88,6 +89,7 @@ const App = () => {
                   <Route path="/staffs" element={<Staffs />} />
                   <Route path="/staffs/:staffId" element={<StaffDetails/>} />
                   <Route path="/attendance" element={<Attendance />} />
+                  <Route path="/attendance/dashboard" element={<AttendanceDashboard />} />
                  
 
                   <Route path="/students" element={<Student />} />
