@@ -1,98 +1,81 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, ClipboardX } from "lucide-react";
+import { ArrowUpRight, Clock, CalendarX } from "lucide-react";
 
-const RecentAttendance = ({ attendance = [] }) => {
-  const formatDate = (isoString) => {
-    if (!isoString) return "—";
-    return new Date(isoString).toLocaleDateString("en-GB", { 
-      day: "2-digit", 
-      month: "short", 
-      year: "numeric" 
-    });
-  };
+const emptyScheduleStructure = {
+  Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: []
+};
 
-  const formatCheckInTime = (isoString) => {
-    if (!isoString) return "—";
-    return new Date(isoString).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-  };
-
-  const statusThemeMap = {
-    present: { cardBg: "bg-success/10 border-success/20", text: "text-success" },
-    absent: { cardBg: "bg-danger/10 border-danger/20", text: "text-danger" },
-    leave: { cardBg: "bg-amber-500/10 border-amber-500/20", text: "text-amber-600" },
-    "on leave": { cardBg: "bg-amber-500/10 border-amber-500/20", text: "text-amber-600" },
-  };
+const TodaySchedule = ({ timetableData }) => {
+  const schedule = timetableData?.schedule || emptyScheduleStructure;
+  const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
+  const todaySchedule = schedule?.[today] || [];
 
   return (
     <div className="bg-card border border-border rounded-2xl p-4 shadow-xs">
       
-      {/* ================= MOBILE STREAMLINED HEADER ================= */}
+      {/* Header Area */}
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-border/40 select-none">
         <div>
           <h3 className="text-xs font-black uppercase tracking-wide text-text-primary">
-            Recent Attendance Logs
+            Today's Schedule
           </h3>
           <p className="mt-0.5 text-[11px] font-medium text-text-secondary leading-none">
-            Showing last 5 check-ins
+            {today} &bull; <span className="text-primary font-bold">{todaySchedule.length} classes</span> scheduled
           </p>
         </div>
 
-        {/* Small Tappable Action Trigger */}
+        {/* Small Mobile Tappable Navigation Action Trigger */}
         <Link
-          to="/attendance"
-          className="w-8 h-8 rounded-lg flex items-center justify-center bg-accent text-white hover:bg-primary/90 transition-transform active:scale-90 cursor-pointer shrink-0"
-          aria-label="View Attendance Dashboard"
+          to="/timetable"
+          className="w-8 h-8 rounded-lg flex items-center justify-center bg-accent text-white hover:bg-primary/90 transition-transform active:scale-90 cursor-pointer"
+          aria-label="View Full Timetable"
         >
           <ArrowUpRight size={15} />
         </Link>
       </div>
 
-      {/* ================= MOBILE SEQUENTIAL LOGS LIST ================= */}
-      {attendance.length > 0 ? (
+      {/* Sequential Mobile Slots Grid */}
+      {todaySchedule.length > 0 ? (
         <div className="space-y-2.5">
-          {attendance.slice(0, 5).map((log) => {
-            const rawStatus = log.status || "Present";
-            const normalizedStatus = rawStatus.toLowerCase();
-            
-            const theme = statusThemeMap[normalizedStatus] || { 
-              cardBg: "bg-text-secondary/10 border-text-secondary/20", 
-              text: "text-text-secondary" 
-            };
-
+          {todaySchedule.map((slot, index) => {
+            const hasStream = slot.stream && slot.stream !== "null" && slot.stream !== "None";
             return (
               <div
-                key={log._id}
+                key={index}
                 className="flex items-center justify-between gap-3 p-3 rounded-xl bg-background border border-border/80"
               >
-                {/* Check-In Telemetry Track */}
+                {/* Subject Identity Data Track */}
                 <div className="min-w-0 flex-1">
                   <h4 className="text-xs font-black text-text-primary truncate leading-tight">
-                    {formatDate(log.date)}
+                    {slot.subject || "Subject"}
                   </h4>
-                  <p className="text-[11px] mt-1 font-medium text-text-secondary truncate leading-none">
-                    Check-In: {formatCheckInTime(log.createdAt)}
+                  <p className="mt-1 text-[11px] font-medium text-text-secondary truncate leading-none">
+                    Class {slot.class || "N/A"} {hasStream ? `(${slot.stream})` : ""} &bull; {slot.medium || "N/A"}
                   </p>
                 </div>
-
-                {/* Status Badge Capsule */}
-                <div className={`px-2 py-0.5 rounded-md text-center text-[9px] font-black uppercase tracking-wider shrink-0 border select-none ${theme.cardBg} ${theme.text}`}>
-                  {rawStatus}
+                
+                {/* Micro Time Badge Indicator Container */}
+                <div className="flex items-center space-x-1 bg-primary/5 px-2 py-1 rounded-lg border border-primary/10 shrink-0 select-none">
+                  <Clock size={11} className="text-primary" />
+                  <span className="font-black text-[10px] text-primary tracking-wide">
+                    {slot.timeSlot || "N/A"}
+                  </span>
                 </div>
               </div>
             );
           })}
         </div>
       ) : (
-        /* Compact Empty Placeholder */
+        /* Compact Responsive Empty State Framework Illustration */
         <div className="flex flex-col items-center justify-center py-8 text-center select-none">
           <div className="w-10 h-10 rounded-xl bg-text-secondary/5 flex items-center justify-center text-text-secondary/30 mb-2">
-            <ClipboardX size={20} />
+            <CalendarX size={20} />
           </div>
           <h4 className="text-xs font-black text-text-primary uppercase tracking-wide">
-            No Logs Available
+            No Classes Scheduled
           </h4>
-          <p className="max-w-60 mt-0.5 text-[11px] font-medium text-text-secondary leading-normal">
-            There are no recent attendance records mapped to your profile sheet yet.
+          <p className="max-w-[240px] mt-0.5 text-[11px] font-medium text-text-secondary leading-normal">
+            You do not have any scheduled academic routines assigned for today.
           </p>
         </div>
       )}
@@ -100,4 +83,4 @@ const RecentAttendance = ({ attendance = [] }) => {
   );
 };
 
-export default RecentAttendance;
+export default TodaySchedule;
