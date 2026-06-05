@@ -8,7 +8,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Attendance from "./pages/Attendance";
 import Timetable from "./pages/Timetable";
-import TimetableUpdate from "./pages/TimeTableUpdate";
+import TimetableUpdate from "./pages/TimetableUpdate";
 import Settings from "./pages/Settings";
 import Developer from "./pages/Developer";
 import BottomTabs from "./components/common/BottomTabs";
