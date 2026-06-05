@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   IoCallOutline,
   IoLockClosedOutline,
   IoEyeOutline,
   IoEyeOffOutline,
+  IoInformationCircleOutline,
 } from "react-icons/io5";
 
 import { apis } from "../services/api";
@@ -16,6 +17,7 @@ import Alert from "../components/common/Alert";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { staff, setStaff } = useAppContext();
 
   const [contact, setContact] = useState("");
@@ -24,6 +26,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Check if staff redirected straight from the main site onboarding funnel
+  const isFromMainSite = searchParams.get("source") === "main-site";
 
   useEffect(() => {
     if (staff) {
@@ -95,6 +100,21 @@ const Login = () => {
             Staff Portal
           </p>
         </div>
+
+        {/* ================= CONTEXTUAL ONBOARDING WELCOME BANNER ================= */}
+        {isFromMainSite && (
+          <div className="mx-5 mt-5 p-3.5 rounded-xl border bg-primary/5 border-primary/20 flex items-start space-x-2.5 animate-slide-up select-none">
+            <IoInformationCircleOutline size={18} className="text-primary shrink-0 mt-0.5" />
+            <div className="space-y-0.5">
+              <h4 className="text-[10px] font-black text-primary uppercase tracking-wider">
+                Registration Successful
+              </h4>
+              <p className="text-[11px] font-bold text-text-secondary leading-normal">
+                Your default password is <span className="text-text-primary font-black underline">123456</span>. Please sign in and change your password from the settings.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* ================= INTERACTIVE INPUT FORM LAYOUT ================= */}
         <form onSubmit={handleLogin} className="p-5 space-y-4">
