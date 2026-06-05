@@ -197,7 +197,6 @@ const StaffOnboarding = () => {
     e.preventDefault();
 
     if (loading) return;
-
     if (!validateForm()) return;
 
     const trimmedName = name.trim();
@@ -213,6 +212,7 @@ const StaffOnboarding = () => {
     const trimmedSubject = subjectTaught.trim();
 
     setLoading(true);
+    setFormError("");
 
     try {
       const formData = new FormData();
@@ -233,28 +233,35 @@ const StaffOnboarding = () => {
           pin: trimmedPin,
           district: trimmedDistrict,
           state: trimmedState,
-        })
+        }),
       );
 
       formData.append("qualification", trimmedQualification);
       formData.append("experience", Number(experience) || 0);
 
-      if (staffType === "Teaching") {
-        formData.append("subjectTaught", trimmedSubject);
-      } else {
-        formData.append("subjectTaught", "");
-      }
+      formData.append(
+        "subjectTaught",
+        staffType === "Teaching" ? trimmedSubject : "",
+      );
 
       formData.append("image", imageFile);
 
-      await axios.post(
+      const res = await axios.post(
         `${backendUrl}/api/staff/register`,
-        formData
+        formData,
       );
 
-      toast.success("Staff registration submitted successfully.");
+      toast.success(
+        res.data?.message || "Staff registration submitted successfully.",
+      );
+
       resetForm();
-      window.location.replace("https://staff.nashibaliacademy.in/?source=main-site");
+
+      setTimeout(() => {
+        window.location.replace(
+          "https://staff.nashibaliacademy.in/login?source=main-site",
+        );
+      }, 800);
     } catch (error) {
       const backendMessage =
         error?.response?.data?.message ||
@@ -262,7 +269,7 @@ const StaffOnboarding = () => {
         "An error occurred during submission.";
 
       setFormError(backendMessage);
-    } finally {
+      toast.error(backendMessage);
       setLoading(false);
     }
   };
@@ -447,7 +454,7 @@ const StaffOnboarding = () => {
                     } else if (!/^[6-9]\d{9}$/.test(value.trim())) {
                       setFieldError(
                         "contact",
-                        "Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9."
+                        "Enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.",
                       );
                     } else {
                       clearFieldError("contact");
@@ -560,7 +567,7 @@ const StaffOnboarding = () => {
                     } else if (!/^\d{6}$/.test(value.trim())) {
                       setFieldError(
                         "pin",
-                        "Please provide a valid 6-digit PIN code."
+                        "Please provide a valid 6-digit PIN code.",
                       );
                     } else {
                       clearFieldError("pin");
@@ -674,9 +681,7 @@ const StaffOnboarding = () => {
                   ))}
                 </select>
                 {fieldErrors.subjectTaught && (
-                  <p className="so-field-error">
-                    {fieldErrors.subjectTaught}
-                  </p>
+                  <p className="so-field-error">{fieldErrors.subjectTaught}</p>
                 )}
               </div>
             )}
