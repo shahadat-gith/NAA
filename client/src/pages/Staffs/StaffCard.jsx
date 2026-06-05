@@ -1,65 +1,22 @@
-import React from "react";
-import "./StaffCard.css";
+import "./StaffCard.css"
 
-export const StaffCard = ({ teacher }) => {
-  const experienceText =
-    teacher.experience !== undefined ? `${teacher.experience} years` : "N/A";
+const getInitials = (name = "") =>
+  name.split(" ").filter(Boolean).slice(0, 2).map(w => w[0].toUpperCase()).join("");
 
-  // Safely grab the image URL from your nested asset schema layout
-  const profileImage = teacher.image?.url || "/user.png";
-
-  return (
-    <div className="stf-staff-card-flat">
-      {/* 1. Media Area */}
-      <div className="stf-media-box">
-        <img
-          src={profileImage}
-          alt={teacher.name}
-          className="stf-profile-img"
-          loading="lazy"
-        />
-      </div>
-
-      {/* 2. Content Details Body */}
-      <div className="stf-details-body">
-        <div className="stf-info-header">
-          <h3 className="stf-employee-name">{teacher.name}</h3>
-          <p className="stf-employee-designation">
-            {teacher.designation || "Staff Member"}
-          </p>
-
-          <p className="stf-employee-staffid">
-            Staff ID: {teacher.staffId || "N/A"}
-          </p>
-        </div>
-
-        {/* 3. Parameter Stack (Unified Key-Value Layout) */}
-        <div className="stf-parameter-stack">
-          <div className="stf-meta-line">
-            <span className="stf-meta-label">Qualification</span>
-            <span className="stf-meta-value">
-              {teacher.qualification || "Not Provided"}
-            </span>
-          </div>
-
-          {/* Render Subject Specialty for teachers, otherwise show Administrative department status */}
-          <div className="stf-meta-line">
-            <span className="stf-meta-label">
-              {teacher.staffType === "Teaching" ? "Subject" : "Department"}
-            </span>
-            <span className="stf-meta-value">
-              {teacher.staffType === "Teaching"
-                ? teacher.subjectTaught || "General"
-                : "Administration"}
-            </span>
-          </div>
-
-          <div className="stf-meta-line">
-            <span className="stf-meta-label">Experience</span>
-            <span className="stf-meta-value">{experienceText}</span>
-          </div>
-        </div>
-      </div>
+export const StaffCard = ({ teacher, avatarClass }) => (
+  <li className="scard">
+    <div className={`scard__avatar ${avatarClass}`}>
+      {teacher.image.url
+        ? <img src={teacher.image.url} alt={teacher.name} className="scard__avatar-img" />
+        : getInitials(teacher.name)}
     </div>
-  );
-};
+    <div className="scard__info">
+      <p className="scard__name">{teacher.name}</p>
+      <p className="scard__role">{teacher.designation}</p>
+      {teacher.subjectTaught && (
+        <span className="scard__subject">{teacher.subjectTaught}</span>
+      )}
+    </div>
+    <span className="scard__id">{teacher.staffId}</span>
+  </li>
+);

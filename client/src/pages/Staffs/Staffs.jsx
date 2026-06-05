@@ -6,120 +6,82 @@ import { StaffCard } from "./StaffCard";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Loader from "../../components/Loader/Loader";
+import { Section } from "./Section";
 
 const Staffs = () => {
   const { backendUrl } = useContext(AppContext);
-
   const [searchTerm, setSearchTerm] = useState("");
   const [staffList, setStaffList] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchStaffData = useCallback(async () => {
     if (!backendUrl) return;
-
     setLoading(true);
-
     try {
       const { data } = await axios.get(`${backendUrl}/api/staff/all`);
-
-      if (data.success) {
-        setStaffList(data.staffs || []);
-      }
+      if (data.success) setStaffList(data.staffs || []);
     } catch (error) {
-      console.error("Failed to fetch Staff records:", error);
+      console.error("Failed to fetch staff records:", error);
       toast.error("Could not load staff directory");
     } finally {
       setLoading(false);
     }
   }, [backendUrl]);
 
-  useEffect(() => {
-    fetchStaffData();
-  }, [fetchStaffData]);
+  useEffect(() => { fetchStaffData(); }, [fetchStaffData]);
 
-  const getStaffSequence = (staffId = "") => {
-    const parts = staffId.split("-");
-    return Number(parts[2]) || 0;
-  };
+  const getSeq = (staffId = "") => Number(staffId.split("-")[2]) || 0;
+
+  const activeStaff = useMemo(() =>
+    staffList.filter(s => s.status === "Active"), [staffList]);
 
   const searchedStaff = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
-
-    let filtered = staffList.filter(
-      (staff) => staff.status === "Active"
+    if (!term) return activeStaff;
+    return activeStaff.filter(s =>
+      s.name?.toLowerCase().includes(term) ||
+      s.staffId?.toLowerCase().includes(term)
     );
+  }, [activeStaff, searchTerm]);
 
-    if (term) {
-      filtered = filtered.filter((item) => {
-        const matchName = item.name?.toLowerCase().includes(term);
-        const matchDesignation = item.designation?.toLowerCase().includes(term);
-        const matchSubject = item.subjectTaught?.toLowerCase().includes(term);
-        const matchStaffId = item.staffId?.toLowerCase().includes(term);
+  const teachingStaff = useMemo(() =>
+    [...searchedStaff]
+      .filter(s => s.staffType === "Teaching")
+      .sort((a, b) => getSeq(a.staffId) - getSeq(b.staffId)),
+    [searchedStaff]);
 
-        return (
-          matchName ||
-          matchDesignation ||
-          matchSubject ||
-          matchStaffId
-        );
-      });
-    }
-
-    return filtered;
-  }, [staffList, searchTerm]);
-
-  const teachingStaff = useMemo(() => {
-    return [...searchedStaff]
-      .filter((item) => item.staffType === "Teaching")
-      .sort(
-        (a, b) =>
-          getStaffSequence(a.staffId) -
-          getStaffSequence(b.staffId)
-      );
-  }, [searchedStaff]);
-
-  const nonTeachingStaff = useMemo(() => {
-    return [...searchedStaff]
-      .filter((item) => item.staffType === "Non-Teaching")
-      .sort(
-        (a, b) =>
-          getStaffSequence(a.staffId) -
-          getStaffSequence(b.staffId)
-      );
-  }, [searchedStaff]);
+  const nonTeachingStaff = useMemo(() =>
+    [...searchedStaff]
+      .filter(s => s.staffType === "Non-Teaching")
+      .sort((a, b) => getSeq(a.staffId) - getSeq(b.staffId)),
+    [searchedStaff]);
 
   return (
     <div className="staff-page">
       <Helmet>
         <title>Our Staff Directory | Nashib Ali Academy</title>
-        <meta
-          name="description"
-          content="Browse the teaching faculty and supporting administration members of Nashib Ali Academy."
-        />
+        <meta name="description" content="Browse the teaching faculty and supporting administration members of Nashib Ali Academy." />
       </Helmet>
 
       <div className="staff-container">
-        <header className="staff-simple-header">
-          <h1 className="staff-main-title">Our Staff Directory</h1>
-
-          <p className="staff-count-meta">
-            Showing {searchedStaff.length} active institution professionals
+        <header className="staff-header">
+          <h1 className="staff-title">Our Staff Directory</h1>
+          <p className="staff-meta">
+            Showing {searchedStaff.length} active institution professional{searchedStaff.length !== 1 ? "s" : ""}
           </p>
-
-          <div className="staff-search-box-wrapper">
-            <i className="fas fa-search search-icon-left"></i>
-
+          <div className="staff-search">
+            <i className="fas fa-search staff-search__icon" aria-hidden="true"></i>
             <input
               type="text"
-              placeholder="Search staff by name, role, subject, or staff ID..."
+              className="staff-search__input"
+              placeholder="Search by name, or staff ID…"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input-simple"
+              onChange={e => setSearchTerm(e.target.value)}
+              aria-label="Search staff"
             />
-
             {searchTerm && (
               <button
-                className="search-clear-btn-simple"
+                className="staff-search__clear"
                 onClick={() => setSearchTerm("")}
                 aria-label="Clear search"
               >
@@ -129,72 +91,30 @@ const Staffs = () => {
           </div>
         </header>
 
-        <main className="directory-content-area">
-          {loading ? (
-            <Loader />
-          ) : searchedStaff.length > 0 ? (
-            <div className="directory-columns-layout">
-              <div className="directory-column">
-                <div className="column-heading-wrapper">
-                  <h2 className="column-section-title">
-                    Teaching Staff
-                  </h2>
+        <main className="staff-main">
+          {loading ? ( <Loader overlay={false}/>) : searchedStaff.length > 0 ? (
+            <div className="staff-section">
+              <Section
+                title="Teaching staff"
+                staff={teachingStaff}
+                emptyMsg="No teaching faculty matches found."
+                avatarClass="avatar--teach"
+              />
 
-                  <span className="column-count-badge">
-                    {teachingStaff.length}
-                  </span>
-                </div>
 
-                {teachingStaff.length > 0 ? (
-                  <div className="column-cards-grid">
-                    {teachingStaff.map((staffMember) => (
-                      <StaffCard
-                        key={staffMember._id}
-                        teacher={staffMember}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <p className="column-empty-notice">
-                    No teaching faculty matches found.
-                  </p>
-                )}
-              </div>
-
-              <div className="column-vertical-divider"></div>
-
-              <div className="directory-column">
-                <div className="column-heading-wrapper">
-                  <h2 className="column-section-title">
-                    Non-Teaching Staff
-                  </h2>
-
-                  <span className="column-count-badge">
-                    {nonTeachingStaff.length}
-                  </span>
-                </div>
-
-                {nonTeachingStaff.length > 0 ? (
-                  <div className="column-cards-grid">
-                    {nonTeachingStaff.map((staffMember) => (
-                      <StaffCard
-                        key={staffMember._id}
-                        teacher={staffMember}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <p className="column-empty-notice">
-                    No support staff matches found.
-                  </p>
-                )}
-              </div>
+              <Section
+                title="Non-teaching staff"
+                staff={nonTeachingStaff}
+                emptyMsg="No support staff matches found."
+                avatarClass="avatar--nonteach"
+              />
             </div>
           ) : (
-            <div className="no-results">
-              <h3>No directory files matching found</h3>
-              <p>
-                We couldn't locate active staff details matching "{searchTerm}".
+            <div className="staff-empty">
+              <i className="fas fa-search staff-empty__icon" aria-hidden="true"></i>
+              <h3 className="staff-empty__heading">No staff found</h3>
+              <p className="staff-empty__body">
+                No active staff match &ldquo;{searchTerm}&rdquo;. Try a different search term.
               </p>
             </div>
           )}
@@ -203,5 +123,6 @@ const Staffs = () => {
     </div>
   );
 };
+
 
 export default Staffs;

@@ -28,7 +28,7 @@ const Dashboard = () => {
   }, []);
 
   // Dashboard data
-  const {teacher,timetable,attendance} = dashboard;
+  const { staff, timetable, attendance } = dashboard;
 
   // Refresh timetable state
   const refreshTimetableState = (newScheduleArray) => {
@@ -50,7 +50,7 @@ const Dashboard = () => {
       <div className="db-header">
         <div className="db-greeting-block">
           <h1 className="db-title">
-            <span style={{color:"#e94560"}}>{greeting}</span>, {teacher?.name || "Teacher"}!
+            <span style={{color:"#e94560"}}>{greeting}</span>, {staff?.name || "Staff Member"}!
           </h1>
         </div>
 

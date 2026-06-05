@@ -14,7 +14,7 @@ const TimetableUpdateModal = ({
 }) => {
   const { backendUrl } = useContext(AppContext);
 
-  const token = localStorage.getItem("teacher-token");
+  const token = localStorage.getItem("staff-token");
 
   // Only selected day's schedule
   const [scheduleList, setScheduleList] = useState(currentSchedule || []);
@@ -99,7 +99,7 @@ const TimetableUpdateModal = ({
       setSubmitting(true);
 
       const response = await axios.put(
-        `${backendUrl}/api/teacher/timetable/update`,
+        `${backendUrl}/api/staff/timetable/update`,
         {
           day: selectedDay,
           schedule: scheduleList,

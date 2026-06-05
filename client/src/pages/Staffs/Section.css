@@ -1,0 +1,93 @@
+/* ==========================================================================
+   Staff Section - Light Theme & Responsive Grid
+   ========================================================================== */
+
+:root {
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-badge: #f1f5f9;
+  --border-subtle: #e2e8f0;
+  --transition-fast: all 0.2s ease;
+}
+
+/* Section Column Container */
+.staff-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Section Header (Icon, Title, Badge) */
+.staff-col__header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--border-subtle);
+  margin-bottom: 0.5rem;
+}
+
+
+.staff-col__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  text-transform: capitalize;
+  margin: 0;
+}
+
+/* Count Badge next to Title */
+.staff-col__badge {
+  background-color: var(--bg-badge);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+}
+
+/* Section-Specific Empty Message */
+.staff-col__empty {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+  padding: 2rem 1rem;
+  background-color: #ffffff;
+  border: 1px dashed var(--border-subtle);
+  border-radius: 12px;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Responsive Grid System (Strict Requirement)
+   ========================================================================== */
+
+.staff-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1.75rem; /* Gap between cards */
+  
+  /* Mobile First: 1 card per row */
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+/* Tablets: 2 cards per row */
+@media (min-width: 640px) {
+  .staff-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+/* Large Screens / Desktops: 3 cards per row */
+@media (min-width: 1024px) {
+  .staff-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}

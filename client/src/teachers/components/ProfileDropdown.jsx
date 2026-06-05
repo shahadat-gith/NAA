@@ -7,9 +7,10 @@ const ProfileDropdown = ({ teacher, handleLogout }) => {
   const dropdownRef = useRef(null);
 
   const menuOptions = [
-    { label: "Profile", to: "/teacher/profile", icon: "far fa-user" },
-    { label: "Attendance", to: "/teacher/attendance", icon: "far fa-calendar-check" },
-    { label: "Timetable", to: "/teacher/timetable", icon: "far fa-clock" },
+    { label: "Profile", to: "/staff/profile", icon: "far fa-user" },
+    { label: "Attendance", to: "/staff/attendance", icon: "far fa-calendar-check" },
+    { label: "Timetable", to: "/staff/timetable", icon: "far fa-clock" },
+    { label: "Settings", to: "/staff/settings", icon: "fas fa-cog" },
   ];
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const ProfileDropdown = ({ teacher, handleLogout }) => {
               />
             </div>
             <div className="profile-dropdown__meta">
-              <h4 className="profile-dropdown__name">{teacher?.name || "Teacher Profile"}</h4>
+              <h4 className="profile-dropdown__name">{teacher?.name || "Staff Profile"}</h4>
               <p className="profile-dropdown__email">{teacher?.email || "no-email@academy.com"}</p>
             </div>
           </div>

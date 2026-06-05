@@ -1,34 +1,34 @@
 import React, { useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import "../styles/TeacherProfile.css";
+import "../styles/StaffProfile.css";
 import ProfileUpdateModal from "../components/ProfileUpdateModal";
 
-const TeacherProfile = () => {
+const StaffProfile = () => {
   const { dashboard, setDashboard } = useOutletContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { teacher } = dashboard;
+  const { staff } = dashboard;
 
   // Safeguard if address isn't populated or fallback defaults are required
-  const address = teacher.address || {};
+  const address = staff?.address || {};
 
   return (
     <div className="teacher-profile-page">
       {/* Header Panel */}
       <div className="teacher-profile-header">
         <div className="teacher-profile-header-left">
-          {teacher.image?.url && (
+          {staff?.image?.url && (
             <img 
-              src={teacher.image.url} 
-              alt={teacher.name} 
+              src={staff.image.url} 
+              alt={staff.name} 
               className="teacher-profile-avatar-thumb"
             />
           )}
           <div>
             <p className="teacher-dashboard-tag">
-              Designation: {teacher.designation || " "} — <span className="teacher-id-pill">ID: {teacher.teacherId || "N/A"}</span>
+              Designation: {staff?.designation || " "} — <span className="teacher-id-pill">ID: {staff?.staffId || "N/A"}</span>
             </p>
-            <h1 className="teacher-dashboard-title">{teacher.name}</h1>
+            <h1 className="teacher-dashboard-title">{staff?.name}</h1>
           </div>
         </div>
         <div className="edit-tbn">
@@ -52,38 +52,38 @@ const TeacherProfile = () => {
           <div className="teacher-details-display-grid">
             <div className="teacher-info-field">
               <span className="teacher-info-label">Full Name</span>
-              <span className="teacher-info-value">{teacher.name}</span>
+              <span className="teacher-info-value">{staff?.name}</span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Email Address</span>
               <span className="teacher-info-value">
-                {teacher.email && teacher.email !== "N/A" ? teacher.email : "Not Provided"}
+                {staff?.email && staff.email !== "N/A" ? staff.email : "Not Provided"}
               </span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Contact Number</span>
-              <span className="teacher-info-value">{teacher.contact}</span>
+              <span className="teacher-info-value">{staff?.contact}</span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Subject</span>
               <span className="teacher-info-value teacher-subject-highlight">
-                {teacher.subjectTaught || "N/A"}
+                {staff?.subjectTaught || staff?.subject || "N/A"}
               </span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Degree / Qualifications</span>
-              <span className="teacher-info-value">{teacher.degree}</span>
+              <span className="teacher-info-value">{staff?.degree || staff?.qualification || "N/A"}</span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Experience</span>
               <span className="teacher-info-value">
-                {teacher.experience} Years
+                {staff?.experience ? `${staff.experience} Years` : "N/A"}
               </span>
             </div>
             <div className="teacher-info-field">
               <span className="teacher-info-label">Account Status</span>
-              <span className={`teacher-info-value status-tag-${teacher.status?.toLowerCase() || "pending"}`}>
-                {teacher.status || "Pending"}
+              <span className={`teacher-info-value status-tag-${staff?.status?.toLowerCase() || "pending"}`}>
+                {staff?.status || "Pending"}
               </span>
             </div>
           </div>
@@ -129,13 +129,13 @@ const TeacherProfile = () => {
         <ProfileUpdateModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          teacherData={teacher}
-          onUpdateSuccess={(updatedTeacher) =>
+          teacherData={staff}
+          onUpdateSuccess={(updatedStaff) =>
             setDashboard((prev) => ({
               ...prev,
-              teacher: {
-                ...prev.teacher,
-                ...updatedTeacher,
+              staff: {
+                ...prev.staff,
+                ...updatedStaff,
               },
             }))
           }
@@ -145,4 +145,4 @@ const TeacherProfile = () => {
   );
 };
 
-export default TeacherProfile;
+export default StaffProfile;

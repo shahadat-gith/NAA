@@ -5,7 +5,7 @@ import "../styles/Navbar.css";
 import ProfileDropdown from "./ProfileDropdown";
 
 const Navbar = ({ teacher }) => {
-  const token = localStorage.getItem("teacher-token");
+  const token = localStorage.getItem("staff-token");
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
@@ -16,7 +16,7 @@ const Navbar = ({ teacher }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("teacher-token");
+    localStorage.removeItem("staff-token");
     navigate("/", { replace: true });
   };
 

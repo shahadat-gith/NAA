@@ -3,10 +3,10 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { AppContext } from "../../context/AppContext";
-import "../styles/TeacherLogin.css";
+import "../styles/StaffLogin.css";
 import background from "/search.webp";
 
-const TeacherLogin = () => {
+const StaffLogin = () => {
   const { backendUrl } = useContext(AppContext);
   const [contact, setContact] = useState("");
   const [password, setPassword] = useState("");
@@ -27,14 +27,14 @@ const TeacherLogin = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${backendUrl}/api/auth/teacher-login`,
+        `${backendUrl}/api/auth/staff-login`,
         { contact, password }
       );
 
       if (response.data?.success) {
-        localStorage.setItem("teacher-token", response.data.token);
+        localStorage.setItem("staff-token", response.data.token);
         toast.success(response.data.message || "Login successful");
-        navigate("/teacher");
+        navigate("/staff");
       } else {
         toast.error(
           response.data?.message || "Login failed. Please check your credentials."
@@ -56,7 +56,7 @@ const TeacherLogin = () => {
     >
       <div className="teacher-login-card">
         <header className="teacher-login-header">
-          <h1>Teacher Login</h1>
+          <h1>Staff Login</h1>
           
         </header>
 
@@ -93,7 +93,7 @@ const TeacherLogin = () => {
             <button
               type="button"
               className="teacher-forgot-button"
-              onClick={() => navigate("/teacher/forgot-password")}
+              onClick={() => navigate("/staff/forgot-password")}
             >
               Forgot password?
             </button>
@@ -112,4 +112,4 @@ const TeacherLogin = () => {
   );
 };
 
-export default TeacherLogin;
+export default StaffLogin;

@@ -47,13 +47,15 @@ import StudentProfile from "./pages/Student/StudentProfile/StudentProfile";
 import PageNotFound from "./components/404/PageNotFound";
 import Notices from "./pages/Notices/Notices";
 
-/* ===== Teacher Dashboard ===== */
-import TeacherLayout from "./teachers/pages/TeacherLayout";
+/* ===== Staff Dashboard ===== */
+import StaffLayout from "./teachers/pages/StaffLayout";
 import Dashboard from "./teachers/pages/Dashboard";
-import TeacherLogin from "./teachers/pages/TeacherLogin";
-import TeacherProfile from "./teachers/pages/TeacherProfile";
+import StaffLogin from "./teachers/pages/StaffLogin";
+import ForgotPassword from "./teachers/pages/ForgotPassword";
+import StaffProfile from "./teachers/pages/StaffProfile";
 import Attendance from "./teachers/pages/Attendance";
 import Timetable from "./teachers/pages/Timetable";
+import Settings from "./teachers/pages/Settings";
 
 const App = () => {
   const location = useLocation();
@@ -66,10 +68,15 @@ const App = () => {
     });
   }, [location.pathname]);
 
-  const teacherToken = localStorage.getItem("teacher-token");
+  const staffToken = localStorage.getItem("staff-token");
 
-  /* ===== TEACHER APP ===== */
-  if (location.pathname.startsWith("/teacher")) {
+  /* ===== STAFF APP ===== */
+  const isStaffPortal =
+    location.pathname === "/staff" ||
+    (location.pathname.startsWith("/staff/") &&
+      location.pathname !== "/staff/onboard");
+
+  if (isStaffPortal) {
     return (
       <>
         <Toaster position="top-center" />
@@ -77,19 +84,24 @@ const App = () => {
         <Routes>
           {/* Login route */}
           <Route
-            path="/teacher/login"
-            element={teacherToken ? (<Navigate to="/teacher" replace />) : (<TeacherLogin />)}
+            path="/staff/login"
+            element={staffToken ? (<Navigate to="/staff" replace />) : (<StaffLogin />)}
+          />
+          <Route
+            path="/staff/forgot-password"
+            element={<ForgotPassword />}
           />
 
-          {/* Protected Teacher Routes */}
+          {/* Protected Staff Routes */}
           <Route
-            path="/teacher/*"
-            element={teacherToken ? (<TeacherLayout />) : (<Navigate to="/teacher/login" replace />)}
+            path="/staff/*"
+            element={staffToken ? (<StaffLayout />) : (<Navigate to="/staff/login" replace />)}
           >
             <Route index element={<Dashboard />} />
-            <Route path="profile" element={<TeacherProfile />} />
+            <Route path="profile" element={<StaffProfile />} />
             <Route path="attendance" element={<Attendance />} />
             <Route path="timetable" element={<Timetable />} />
+            <Route path="settings" element={<Settings />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>

@@ -1,44 +1,46 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import "../styles/TeacherLayout.css";
+import "../styles/StaffLayout.css";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Loader from "../../components/Loader/Loader";
 import toast from "react-hot-toast";
 
-const TeacherLayout = () => {
+const StaffLayout = () => {
   const { backendUrl } = useContext(AppContext);
   const navigate = useNavigate();
-  const token = localStorage.getItem("teacher-token");
+  const token = localStorage.getItem("staff-token");
   const [loading, setLoading] = useState(true);
   
   const [dashboard, setDashboard] = useState({
-    teacher: {},
+    staff: {},
     timetable: { schedule: [] },
     attendance: [],
-    payments: [],
-    dues: { totalDue: 0, dueMonths: [] },
   });
 
   useEffect(() => {
     // 1. Unified Route Protection Check
     if (!token) {
-      toast.error("Please log in as a teacher to view the portal.");
-      navigate("/teacher/login", { replace: true });
+      toast.error("Please log in as staff to view the portal.");
+      navigate("/staff/login", { replace: true });
       return;
     }
 
     const fetchDashboardData = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/api/teacher/dashboard`, {
+const response = await axios.get(`${backendUrl}/api/staff/dashboard`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
 
         if (response.data.success) {
-          setDashboard(response.data.dashboard);
+          const dashboardResponse = response.data.dashboard || {};
+          setDashboard({
+            ...dashboardResponse,
+            staff: dashboardResponse.profile || dashboardResponse.staff || {},
+          });
         }
       } catch (err) {
         const message =
@@ -49,8 +51,8 @@ const TeacherLayout = () => {
         
         // Handle token expiration or invalidity immediately
         if (err.response?.status === 401) {
-          localStorage.removeItem("teacher-token");
-          navigate("/teacher/login", { replace: true });
+          localStorage.removeItem("staff-token");
+          navigate("/staff/login", { replace: true });
         }
       } finally {
         setLoading(false);
@@ -74,7 +76,7 @@ const TeacherLayout = () => {
     <div className="teacher-layout loader-parent">
       {loading && <Loader overlay={false} />}
 
-      <Navbar teacher={dashboard.teacher} />
+      <Navbar teacher={dashboard.staff} />
 
       <main className="teacher-page-content">
         <Outlet context={{ dashboard, setDashboard, loading, setLoading }} />
@@ -83,4 +85,4 @@ const TeacherLayout = () => {
   );
 };
 
-export default TeacherLayout;
+export default StaffLayout;

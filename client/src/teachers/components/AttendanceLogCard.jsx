@@ -32,7 +32,7 @@ const AttendanceLogCard = ({ attendance = [] }) => {
 
         <button
           className="alc-navigate-btn"
-          onClick={() => navigate("/teacher/attendance")}
+          onClick={() => navigate("/staff/attendance")}
           aria-label="Navigate to full history"
         >
           {/* Fixed syntax error from class to className */}

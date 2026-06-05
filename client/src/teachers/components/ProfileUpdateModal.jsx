@@ -7,7 +7,7 @@ import "../styles/ProfileUpdateModal.css";
 
 const ProfileUpdateModal = ({ isOpen, onClose, teacherData, onUpdateSuccess }) => {
   const { backendUrl } = useContext(AppContext);
-  const token = localStorage.getItem("teacher-token");
+  const token = localStorage.getItem("staff-token");
 
   const [form, setForm] = useState({
     name: "",
@@ -191,7 +191,7 @@ const ProfileUpdateModal = ({ isOpen, onClose, teacherData, onUpdateSuccess }) =
         return;
       }
 
-      const response = await axios.post(`${backendUrl}/api/teacher/update`, formData, {
+      const response = await axios.put(`${backendUrl}/api/staff/update`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -199,7 +199,7 @@ const ProfileUpdateModal = ({ isOpen, onClose, teacherData, onUpdateSuccess }) =
 
       if (response.data?.success) {
         toast.success(response.data.message || "Profile updated successfully!");
-        onUpdateSuccess(response.data.teacher);
+        onUpdateSuccess(response.data.staff || response.data.staffProfile || response.data.data?.staff);
         onClose();
       } else {
         toast.error(response.data?.message || "Failed to update profile.");

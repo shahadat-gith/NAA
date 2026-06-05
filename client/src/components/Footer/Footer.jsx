@@ -193,12 +193,12 @@ useEffect(() => {
       <div className="footer-teacher-portal" >
         <div className="footer-teacher-onboarding">
           <Link to="/staff/onboard" className="onboard-link">
-            Teacher Registration
+            Staff Registration
           </Link>
         </div>
         <div className="footer-staff-portal">
-          <Link to="/teacher" className="teacher-portal-link">
-            Teacher Portal
+          <Link to="/staff" className="teacher-portal-link">
+            Staff Portal
           </Link>
         </div>
       </div>

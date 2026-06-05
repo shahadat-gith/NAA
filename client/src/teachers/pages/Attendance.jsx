@@ -21,7 +21,7 @@ const Attendance = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
-  const token = localStorage.getItem("teacher-token");
+  const token = localStorage.getItem("staff-token");
 
   const fetchMonthlyAttendance = useCallback(async () => {
     if (!backendUrl) return;
@@ -59,7 +59,7 @@ const Attendance = () => {
         `${backendUrl}/api/attendance/mark-attendance`,
         {
           token: qrToken,
-          markedBy: "Teacher",
+          markedBy: "Staff",
           status: "Present",
         },
         { headers: { Authorization: `Bearer ${token}` } },
