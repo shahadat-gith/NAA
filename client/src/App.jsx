@@ -47,16 +47,6 @@ import StudentProfile from "./pages/Student/StudentProfile/StudentProfile";
 import PageNotFound from "./components/404/PageNotFound";
 import Notices from "./pages/Notices/Notices";
 
-/* ===== Staff Dashboard ===== */
-import StaffLayout from "./teachers/pages/StaffLayout";
-import Dashboard from "./teachers/pages/Dashboard";
-import StaffLogin from "./teachers/pages/StaffLogin";
-import ForgotPassword from "./teachers/pages/ForgotPassword";
-import StaffProfile from "./teachers/pages/StaffProfile";
-import Attendance from "./teachers/pages/Attendance";
-import Timetable from "./teachers/pages/Timetable";
-import Settings from "./teachers/pages/Settings";
-
 const App = () => {
   const location = useLocation();
   const { loading } = useContext(AppContext);
@@ -68,46 +58,7 @@ const App = () => {
     });
   }, [location.pathname]);
 
-  const staffToken = localStorage.getItem("staff-token");
 
-  /* ===== STAFF APP ===== */
-  const isStaffPortal =
-    location.pathname === "/staff" ||
-    (location.pathname.startsWith("/staff/") &&
-      location.pathname !== "/staff/onboard");
-
-  if (isStaffPortal) {
-    return (
-      <>
-        <Toaster position="top-center" />
-
-        <Routes>
-          {/* Login route */}
-          <Route
-            path="/staff/login"
-            element={staffToken ? (<Navigate to="/staff" replace />) : (<StaffLogin />)}
-          />
-          <Route
-            path="/staff/forgot-password"
-            element={<ForgotPassword />}
-          />
-
-          {/* Protected Staff Routes */}
-          <Route
-            path="/staff/*"
-            element={staffToken ? (<StaffLayout />) : (<Navigate to="/staff/login" replace />)}
-          >
-            <Route index element={<Dashboard />} />
-            <Route path="profile" element={<StaffProfile />} />
-            <Route path="attendance" element={<Attendance />} />
-            <Route path="timetable" element={<Timetable />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Route>
-        </Routes>
-      </>
-    );
-  }
 
   /* ===== FULL PAGE LOADER ===== */
   if (loading) {
