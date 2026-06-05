@@ -27,7 +27,6 @@ export const ROOT_PATHS =  ["/", "/attendance", "/timetable", "/settings"];
 
 export const getHeaderTitle = (pathname) => {
   if (pathname === "/") return "Dashboard";
-  if (pathname.includes("/profile/edit")) return "Edit Your Profile";
   if (pathname.includes("/profile")) return "Account Details";
   if (pathname.includes("/attendance")) return "Attendance";
   if (pathname.includes("/timetable/update")) return "Update Timetable";
@@ -57,12 +56,6 @@ export const getSearchableRegistry = (navigate) => [
     keywords: ["profile", "me", "identity"], 
     icon: FileText, 
     action: () => navigate("/profile") 
-  },
-  { 
-    label: "Edit Profile Credentials", 
-    keywords: ["edit profile", "change name"], 
-    icon: FileText, 
-    action: () => navigate("/profile/edit") 
   },
   { 
     label: "Staff Attendance Roster", 

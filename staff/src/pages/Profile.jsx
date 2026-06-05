@@ -97,19 +97,18 @@ const Profile = () => {
 
         <div className="space-y-3.5">
           <div className="grid grid-cols-2 gap-3.5">
-            <DetailRow label="Village" value={address.village} icon={MapPin} />
-            <DetailRow label="Post Office" value={address.po} icon={MapPin} />
+            <DetailRow label="Village" value={address.village || "N/A"} icon={MapPin} />
+            <DetailRow label="Post Office" value={address.po || "N/A"} icon={MapPin} />
           </div>
           <div className="grid grid-cols-2 gap-3.5">
-            <DetailRow label="Police Station" value={address.ps} icon={MapPin} />
-            <DetailRow label="District" value={address.district} icon={MapPin} />
+            <DetailRow label="Police Station" value={address.ps || "N/A"} icon={MapPin} />
+            <DetailRow label="District" value={address.district || "N/A"} icon={MapPin} />
           </div>
           <div className="grid grid-cols-2 gap-3.5">
-            <DetailRow label="PIN Code" value={address.pin} icon={MapPin} />
+            <DetailRow label="PIN Code" value={address.pin || "N/A"} icon={MapPin} />
             <DetailRow label="State" value={address.state || "Assam"} icon={MapPin} />
           </div>
-        </div>
-      </div>
+        </div>      </div>
 
       {/* ================= MODULAR SHEET CONTEXTS OVERLAYS ================= */}
       <AccountEditDrawer

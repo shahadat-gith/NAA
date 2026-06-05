@@ -59,10 +59,11 @@ const AccountEditDrawer = ({ visible, onClose, triggerAlert }) => {
         formData.append("contact", form.contact);
       if (form.qualification !== staff?.qualification)
         formData.append("qualification", form.qualification);
-      if (Number(form.experience) !== Number(staff?.experience)) {
-        formData.append("experience", Number(form.experience));
+      const newExp = form.experience === "" ? undefined : Number(form.experience);
+      const oldExp = staff?.experience;
+      if (newExp !== oldExp && !(isNaN(newExp) && isNaN(oldExp))) {
+        formData.append("experience", newExp ?? 0);
       }
-
       let hasEntries = false;
       for (let pair of formData.entries()) {
         hasEntries = true;

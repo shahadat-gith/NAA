@@ -60,6 +60,21 @@ const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
 
   const handleScanError = (err) => {
     console.error("Web Camera Target Capture Rejection: ", err);
+
+    let message = "An error occurred while accessing the camera. Please try again.";
+
+    const errMsg = err?.message || "";
+    const errName = err?.name || "";
+
+    if (/permission/i.test(errMsg) || errName === "NotAllowedError") {
+      message = "Camera access denied. Please enable camera permissions in your browser.";
+    } else if (errName === "NotFoundError" || /not found|no device/i.test(errMsg)) {
+      message = "No camera found. Please connect a camera and try again.";
+    } else if (errName === "NotReadableError") {
+      message = "Camera is currently in use by another application. Close other apps and retry.";
+    }
+
+    triggerAlert("Camera Error", message, "danger");
   };
 
   const handleAlertClose = () => {

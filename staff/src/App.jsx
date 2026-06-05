@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Smartphone, Monitor, ShieldAlert } from "lucide-react";
 import { useAppContext } from "./context/Context";
 import Login from "./pages/Login";
 import Header from "./components/Header/Header";
@@ -70,8 +69,7 @@ const App = () => {
             />
           </Routes>
         </div>
-
-        {/* Render mobile-only sticky bottom tabs if the user is authenticated */}
+        
         {staff && <BottomTabs />}
       </div>
     </>

@@ -56,7 +56,7 @@ export const Logs = ({ logs = [] }) => {
                   ) : (
                     <span>
                       You marked <span className={colorClass}>{statusLower}</span>
-                      {status !== "On-Leave" && status !== "Absent" && (
+                      {statusLower !== "on-leave" && statusLower !== "absent" && (
                         <span>
                           {" "}at <span className="font-bold text-text-primary">{formatTime(log.createdAt)}</span>
                         </span>

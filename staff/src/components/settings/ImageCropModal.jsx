@@ -27,7 +27,7 @@ const ImageCropModal = ({ src, visible, onClose, onCropComplete }) => {
             image={src}
             crop={crop}
             zoom={zoom}
-            aspect={1} // Strict golden ratio square constraints
+            aspect={1} 
             cropShape="round"
             showGrid={false}
             onCropChange={setCrop}

@@ -17,9 +17,32 @@ export const Calendar = ({ selectedMonth, setSelectedMonth, selectedYear, setSel
   const attendanceMap = useMemo(() => {
     const map = {};
     history.forEach((att) => {
-      if (att.date) {
-        const dayNum = parseInt(att.date.split("T")[0].split("-")[2], 10);
+      if (!att || att.date == null) return;
+
+      let dateObj = null;
+
+      // Accept Date objects, numeric timestamps, and strings.
+      if (att.date instanceof Date) {
+        dateObj = att.date;
+      } else if (typeof att.date === "number") {
+        dateObj = new Date(att.date);
+      } else if (typeof att.date === "string") {
+        // Try built-in parser first
+        dateObj = new Date(att.date);
+        // Fallback: extract YYYY-MM-DD if parser failed for some backend formats
+        if (isNaN(dateObj.getTime())) {
+          const isoMatch = att.date.match(/\d{4}-\d{2}-\d{2}/);
+          if (isoMatch) dateObj = new Date(isoMatch[0]);
+        }
+      }
+
+      // If date is valid, extract day number; otherwise skip and warn.
+      if (dateObj && !isNaN(dateObj.getTime())) {
+        const dayNum = dateObj.getDate();
         map[dayNum] = att.status;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn("Attendance entry has invalid date:", att.date);
       }
     });
     return map;

@@ -91,6 +91,15 @@ const AddressEditDrawer = ({ visible, onClose, triggerAlert }) => {
           "Residential address updated safely.",
           "success",
         );
+      } else {
+       
+        // eslint-disable-next-line no-console
+        console.warn("updateProfile returned unsuccessful response:", data);
+        triggerAlert(
+          "Error",
+          data?.message || "Failed to update residential address.",
+          "error",
+        );
       }
     } catch (err) {
       triggerAlert(

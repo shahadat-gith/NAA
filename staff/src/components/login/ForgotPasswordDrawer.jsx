@@ -122,6 +122,9 @@ const ForgotPasswordDrawer = ({ visible, onClose }) => {
           alert(backendMessage);
           handleDismiss();
         }
+      } else {
+        // Surface backend-provided error message and keep user on current step
+        setFeedback({ type: "error", message: data?.message || "An error occurred." });
       }
     } catch (error) {
       setFeedback({

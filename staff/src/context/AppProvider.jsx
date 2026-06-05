@@ -32,13 +32,14 @@ const AppProvider = ({ children }) => {
         throw new Error("Commit metrics or date string missing from targeted directory tracking.");
       }
 
-      // Consistent localization string mapping matching your Indian standard timezone parameters
-      const formattedDate = new Date(commitDate).toLocaleDateString("en-IN", {
+      // Force formatting to India Standard Time (IST) by specifying the Asia/Kolkata timezone
+      const formattedDate = new Date(commitDate).toLocaleString("en-IN", {
         day: "numeric",
         month: "long",
         year: "numeric",
-        hour:"2-digit",
-        minute:"2-digit"
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Asia/Kolkata",
       });
 
       setLastUpdated(formattedDate);

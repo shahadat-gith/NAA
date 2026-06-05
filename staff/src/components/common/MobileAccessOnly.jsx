@@ -28,9 +28,8 @@ const MobileAccessOnly = () => {
 
         {/* Descriptive User Alert */}
         <p className="text-xs font-medium text-text-secondary leading-relaxed">
-         This portal is design to view in mobile phone only.Open this site on any android or ios devices!
-        </p>
-        
+         This portal is designed to be viewed on mobile phones only. Please open this site on any Android or iOS device!
+        </p>        
       </div>
     </div>
   );
