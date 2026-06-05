@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
 import AttendanceHistoryByTeacher from './AttendanceHistoryByTeacher';
-import './attendance.css'; // Importing your custom cyber-theme variables
+import './Attendance.css'; // Importing your custom cyber-theme variables
 
 const AttendanceDashboard = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);

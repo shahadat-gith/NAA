@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { AdminContext } from '../../context/AdminContext';
-import './attendance.css'; // Importing your custom cyber-theme variables
+import './Attendance.css'; // Importing your custom cyber-theme variables
 
 const AttendanceHistoryByTeacher = ({ teacherId, onBack }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
