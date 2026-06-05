@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useAppContext } from "./context/Context";
+import { useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Header from "./components/Header/Header";
 import Loader from "./components/common/Loader";
@@ -15,14 +16,28 @@ import AcademicRules from "./pages/AcademicRules";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import MobileAccessOnly from "./components/common/MobileAccessOnly";
+import { useEffect } from "react";
 
 const App = () => {
   const { staff, sessionChecking } = useAppContext();
+
+  const location = useLocation();
 
   if (sessionChecking) {
     return <Loader fullScreen={true} size="large" />;
   }
 
+  useEffect(() => {
+    try {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    } catch (error) {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
   return (
     <>
       {/* ================= DESKTOP & TABLET BLOCKER SCREEN ================= */}
@@ -69,7 +84,7 @@ const App = () => {
             />
           </Routes>
         </div>
-        
+
         {staff && <BottomTabs />}
       </div>
     </>
