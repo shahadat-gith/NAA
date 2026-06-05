@@ -2,7 +2,6 @@ import React, { useState, useRef, useContext } from "react";
 import "./StaffOnboarding.css";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import CropModal from "./CropModal";
 
@@ -10,7 +9,6 @@ import { subjects, designationsByRole } from "./utils";
 
 const StaffOnboarding = () => {
   const { backendUrl } = useContext(AppContext);
-  const navigate = useNavigate();
 
   const [staffType, setStaffType] = useState("");
   const [designation, setDesignation] = useState("");
@@ -256,8 +254,7 @@ const StaffOnboarding = () => {
 
       toast.success("Staff registration submitted successfully.");
       resetForm();
-
-      navigate("/");
+      window.location.replace("https://staff.nashibaliacademy.in/?source=main-site");
     } catch (error) {
       const backendMessage =
         error?.response?.data?.message ||
