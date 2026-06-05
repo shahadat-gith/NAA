@@ -2,39 +2,58 @@ import { useEffect, useState } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { X, CameraOff, Loader2 } from "lucide-react";
 import Button from "../common/Button";
+import Alert from "../common/Alert";
 
 const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
   const [scanned, setScanned] = useState(false);
   const [cameraError, setCameraError] = useState(false);
 
+  // Local notification manager layer
+  const [alertState, setAlertState] = useState({
+    visible: false,
+    title: "",
+    message: "",
+    variant: "info",
+  });
+
   useEffect(() => {
     if (visible) {
       setScanned(false);
       setCameraError(false);
+      setAlertState((prev) => ({ ...prev, visible: false }));
     }
   }, [visible]);
 
   if (!visible) return null;
+
+  const triggerAlert = (title, message, variant) => {
+    setAlertState({ visible: true, title, message, variant });
+  };
 
   const handleScan = (text) => {
     if (scanned || isMarking || !text) return;
     setScanned(true);
 
     try {
-      // Safely read payload mapping parameters mirroring original native regex splits
       const parsed = JSON.parse(text);
       const token = parsed?.token;
 
       if (!token) {
-        alert("Invalid QR Code: This QR code format cannot be verified for institutional roster logs.");
-        setScanned(false);
+        triggerAlert(
+          "Invalid QR Code",
+          "This QR code format cannot be verified for institutional roster logs.",
+          "warning",
+        );
         return;
       }
 
       onScanSuccess(token);
     } catch (error) {
-      alert("Invalid QR Code: Please present a valid administration attendance token.");
-      setScanned(false);
+      triggerAlert(
+        "Invalid QR Code",
+        "Please present a valid administration attendance token.",
+        "danger",
+      );
     }
   };
 
@@ -43,17 +62,22 @@ const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
     setCameraError(true);
   };
 
+  const handleAlertClose = () => {
+    setAlertState((prev) => ({ ...prev, visible: false }));
+    // Unlock scanner only if the modal wrapper is still actively mounted
+    setScanned(false);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-fade-in">
       {/* Dimmed Overlay Layer Closer Guard */}
-      <div 
-        className="absolute inset-0 -z-10" 
-        onClick={isMarking ? undefined : onClose} 
+      <div
+        className="absolute inset-0 -z-10"
+        onClick={isMarking || alertState.visible ? undefined : onClose}
       />
 
       {/* Main Scanner Container Box */}
       <div className="w-full max-w-md rounded-3xl border bg-card border-border shadow-2xl transition-all overflow-hidden flex flex-col">
-        
         {/* Header Block Row */}
         <div className="flex items-center justify-between p-5 border-b border-border/60">
           <div className="min-w-0">
@@ -82,7 +106,8 @@ const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
             <div className="flex flex-col items-center justify-center text-center p-6 space-y-3">
               <CameraOff size={38} className="text-danger/70" />
               <p className="text-white text-sm font-medium max-w-xs leading-relaxed">
-                Camera initialization rejected. Please verify browser hardware permissions are approved for this domain.
+                Camera initialization rejected. Please verify browser hardware
+                permissions are approved for this domain.
               </p>
             </div>
           ) : isMarking || scanned ? (
@@ -97,14 +122,14 @@ const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
             /* Active Yudiel Engine Portal Node */
             <div className="w-full h-full scale-102">
               <Scanner
-                onResult={(text) => handleScan(text)}
+                onScan={(text) => handleScan(text)}
                 onError={(err) => handleScanError(err)}
-                options={{
-                  delayBetweenScans: 2000,
-                }}
+                constraints={{ facingMode: "environment" }}
+                scanDelay={250}
+                allowMultiple={false}
                 styles={{
                   container: { width: "100%", height: "100%" },
-                  video: { objectFit: "cover" }
+                  video: { objectFit: "cover" },
                 }}
               />
             </div>
@@ -124,8 +149,23 @@ const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
             Close Scanner
           </Button>
         </div>
-
       </div>
+
+      {/* App Component Custom Alert Interceptor */}
+      <Alert
+        visible={alertState.visible}
+        title={alertState.title}
+        message={alertState.message}
+        variant={alertState.variant}
+        onClose={handleAlertClose}
+        buttons={[
+          {
+            text: "Okay",
+            variant: "accent",
+            onClick: handleAlertClose,
+          },
+        ]}
+      />
     </div>
   );
 };

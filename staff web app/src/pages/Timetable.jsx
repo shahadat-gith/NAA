@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2, CalendarRange, CalendarOff } from "lucide-react";
+import { CalendarRange, CalendarOff } from "lucide-react";
 
 import { apis } from "../services/api";
 import { useAppContext } from "../context/Context";
 import DayScheduleCard from "../components/timetable/DayScheduleCard";
+import Loader from "../components/common/Loader";
 
 const emptyScheduleStructure = {
   Monday: [],
@@ -57,14 +58,14 @@ const Timetable = () => {
     navigate(`/timetable/update?day=${day}`);
   };
 
+  // Using the custom shared global layout loader component instead of inline spinners
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-32 text-center">
-        <Loader2 className="w-10 h-10 animate-spin text-primary" />
-        <p className="mt-3 text-sm font-medium text-text-secondary">
-          Loading academic timetable...
-        </p>
-      </div>
+      <Loader 
+        fullScreen={true} 
+        size="medium" 
+        text="Loading academic timetable..." 
+      />
     );
   }
 
@@ -81,7 +82,7 @@ const Timetable = () => {
             Weekly Timetable
           </h1>
         </div>
-        <p className="text-sm font-medium text-text-secondary ml-13">
+        <p className="text-sm font-medium text-text-secondary sm:ml-13">
           Review, analyze, and update scheduled daily academic classroom distributions.
         </p>
       </div>
