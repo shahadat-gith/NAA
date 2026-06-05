@@ -26,26 +26,29 @@ const ProfileDropdown = () => {
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative cursor-pointer" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         type="button"
-        className={`flex items-center space-x-2 p-1.5 rounded-2xl border transition-all duration-200 focus:outline-none cursor-pointer bg-background ${
-          dropdownOpen ? "border-primary" : "border-border"
+        className={`flex items-center space-x-2 md:p-1.5 rounded-2xl md:border transition-all duration-200 focus:outline-none bg-transparent md:bg-background border-none pointer-events-none md:pointer-events-auto ${
+          dropdownOpen ? "md:border-primary" : "md:border-border"
         }`}
         onClick={() => setDropdownOpen(!dropdownOpen)}
         aria-haspopup="true"
         aria-expanded={dropdownOpen}
       >
-        <div className="w-8 h-8 rounded-xl overflow-hidden border flex-shrink-0 border-border">
+        {/* Profile Image Container - Visually isolated on mobile */}
+        <div className="w-8 h-8 rounded-xl overflow-hidden border shrink-0 border-border shadow-2xs ">
           <img
             src={staff?.image?.url || "/user.png"}
             alt={staff?.name || "Profile"}
             className="w-full h-full object-cover"
           />
         </div>
+        
+        {/* Arrow Down Indicator Icon (Hidden completely on mobile viewports) */}
         <svg 
-          className={`w-4 h-4 transition-transform duration-200 flex-shrink-0 text-text-secondary ${
+          className={`w-4 h-4 transition-transform duration-200 shrink-0 text-text-secondary hidden md:block ${
             dropdownOpen ? "rotate-180" : ""
           }`}
           viewBox="0 0 20 20" 
@@ -59,9 +62,9 @@ const ProfileDropdown = () => {
         </svg>
       </button>
 
-      {/* Floating Menu Overlay */}
+      {/* Floating Menu Overlay (Hidden completely on mobile viewports via 'hidden md:block') */}
       {dropdownOpen && (
-        <div className="absolute right-0 mt-2.5 w-64 rounded-2xl border shadow-xl overflow-hidden z-50 animate-fade-in bg-card border-border">
+        <div className="absolute right-0 mt-2.5 w-64 rounded-2xl border shadow-xl overflow-hidden z-50 animate-fade-in bg-card border-border hidden md:block">
           {/* Metadata Section */}
           <div className="p-4 flex items-center space-x-3">
             <div className="w-12 h-12 rounded-xl overflow-hidden border flex-shrink-0 border-border">
@@ -102,11 +105,10 @@ const ProfileDropdown = () => {
                 >
                   {({ isActive }) => (
                     <>
-                      {/* Left side edge accent line for the active tab */}
                       {isActive && (
                         <div className="absolute left-0 top-1/4 bottom-1/4 w-1 rounded-r-md bg-primary" />
                       )}
-                      <IconComponent size={16} className="flex-shrink-0" />
+                      <IconComponent size={16} className="shrink-0" />
                       <span className="truncate">{option.label}</span>
                     </>
                   )}
@@ -127,7 +129,7 @@ const ProfileDropdown = () => {
                 logout();
               }}
             >
-              <LogOut size={16} className="flex-shrink-0" />
+              <LogOut size={16} className="shrink-0" />
               <span>Log Out</span>
             </button>
           </div>

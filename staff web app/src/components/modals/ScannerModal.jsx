@@ -1,122 +1,132 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Alert, Modal, Text, TouchableOpacity, View } from "react-native";
-
-import { Ionicons } from "@expo/vector-icons";
-import { CameraView, useCameraPermissions } from "expo-camera";
-
-import { ThemeContext } from "@/context/ThemeProvider";
+import { useEffect, useState } from "react";
+import { Scanner } from "@yudiel/react-qr-scanner";
+import { X, CameraOff, Loader2 } from "lucide-react";
+import Button from "../common/Button";
 
 const ScannerModal = ({ visible, onClose, onScanSuccess, isMarking }) => {
-  const { COLORS } = useContext(ThemeContext);
-  const [permission, requestPermission] = useCameraPermissions();
   const [scanned, setScanned] = useState(false);
+  const [cameraError, setCameraError] = useState(false);
 
   useEffect(() => {
     if (visible) {
       setScanned(false);
-      requestPermission();
+      setCameraError(false);
     }
   }, [visible]);
 
-  const handleBarcodeScanned = ({ data }) => {
-    if (scanned || isMarking) return;
+  if (!visible) return null;
+
+  const handleScan = (text) => {
+    if (scanned || isMarking || !text) return;
     setScanned(true);
 
     try {
-      const parsed = JSON.parse(data);
+      // Safely read payload mapping parameters mirroring original native regex splits
+      const parsed = JSON.parse(text);
       const token = parsed?.token;
 
       if (!token) {
-        Alert.alert(
-          "Invalid QR Code",
-          "This QR code cannot be used for attendance.",
-        );
+        alert("Invalid QR Code: This QR code format cannot be verified for institutional roster logs.");
         setScanned(false);
         return;
       }
 
       onScanSuccess(token);
     } catch (error) {
-      Alert.alert("Invalid QR Code", "Please scan a valid attendance QR code.");
+      alert("Invalid QR Code: Please present a valid administration attendance token.");
       setScanned(false);
     }
   };
 
+  const handleScanError = (err) => {
+    console.error("Web Camera Target Capture Rejection: ", err);
+    setCameraError(true);
+  };
+
   return (
-    <Modal visible={visible} animationType="slide" transparent>
-      <View className="flex-1 bg-black/80 justify-center px-5">
-        <View
-          className="rounded-3xl overflow-hidden"
-          style={{ backgroundColor: COLORS.card }}
-        >
-          <View className="flex-row items-center justify-between p-5">
-            <View className="flex-1 pr-2">
-              <Text
-                className="text-xl font-bold"
-                style={{ color: COLORS.textPrimary }}
-              >
-                Scan Attendance QR
-              </Text>
-              <Text
-                className="mt-1 text-xs"
-                style={{ color: COLORS.textSecondary }}
-              >
-                Position the QR code inside the frame
-              </Text>
-            </View>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-fade-in">
+      {/* Dimmed Overlay Layer Closer Guard */}
+      <div 
+        className="absolute inset-0 -z-10" 
+        onClick={isMarking ? undefined : onClose} 
+      />
 
-            <TouchableOpacity onPress={onClose} disabled={isMarking}>
-              <Ionicons name="close" size={26} color={COLORS.textPrimary} />
-            </TouchableOpacity>
-          </View>
+      {/* Main Scanner Container Box */}
+      <div className="w-full max-w-md rounded-3xl border bg-card border-border shadow-2xl transition-all overflow-hidden flex flex-col">
+        
+        {/* Header Block Row */}
+        <div className="flex items-center justify-between p-5 border-b border-border/60">
+          <div className="min-w-0">
+            <h3 className="text-xl font-bold text-text-primary tracking-tight">
+              Scan QR
+            </h3>
+            <p className="mt-0.5 text-xs font-medium text-text-secondary">
+              Position the digital voucher inside the live view window frame.
+            </p>
+          </div>
 
-          <View className="h-96 bg-black mx-5 rounded-3xl overflow-hidden mb-5">
-            {permission?.granted ? (
-              <CameraView
-                style={{ flex: 1 }}
-                facing="back"
-                barcodeScannerSettings={{
-                  barcodeTypes: ["qr"],
-                }}
-                onBarcodeScanned={
-                  scanned || isMarking ? undefined : handleBarcodeScanned
-                }
-              />
-            ) : (
-              <View className="flex-1 items-center justify-center px-5">
-                <Ionicons
-                  name="camera-outline"
-                  size={44}
-                  color={COLORS.white}
-                />
-                <Text className="text-white text-center mt-3 text-sm">
-                  Camera permission is required to scan QR codes.
-                </Text>
-
-                <TouchableOpacity
-                  onPress={requestPermission}
-                  className="mt-5 px-5 py-3 rounded-2xl"
-                  style={{ backgroundColor: COLORS.primary }}
-                >
-                  <Text className="text-white font-semibold">Allow Camera</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
-
-          <TouchableOpacity
-            onPress={onClose}
+          <button
+            type="button"
             disabled={isMarking}
-            className="mx-5 mb-5 rounded-2xl py-4 items-center"
-            style={{
-              backgroundColor: isMarking ? COLORS.inactive : COLORS.primary,
-            }}
+            onClick={onClose}
+            className="p-1 rounded-lg text-text-secondary hover:text-text-primary hover:bg-text-primary/5 transition-colors disabled:opacity-50 cursor-pointer border-none bg-transparent outline-none shrink-0"
           >
-            <Text className="text-white font-semibold">Close Scanner</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Viewfinder Capture Area Frame */}
+        <div className="bg-black relative aspect-square mx-5 my-5 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center">
+          {cameraError ? (
+            /* Error Fallback Display (Permissions / Device block) */
+            <div className="flex flex-col items-center justify-center text-center p-6 space-y-3">
+              <CameraOff size={38} className="text-danger/70" />
+              <p className="text-white text-sm font-medium max-w-xs leading-relaxed">
+                Camera initialization rejected. Please verify browser hardware permissions are approved for this domain.
+              </p>
+            </div>
+          ) : isMarking || scanned ? (
+            /* Loading/Processing Stamped Logs Overlay State */
+            <div className="absolute inset-0 z-10 bg-black/60 backdrop-blur-xs flex flex-col items-center justify-center space-y-2">
+              <Loader2 className="w-8 h-8 text-white animate-spin" />
+              <p className="text-white text-xs font-semibold uppercase tracking-wider">
+                Verifying Stamped Token...
+              </p>
+            </div>
+          ) : (
+            /* Active Yudiel Engine Portal Node */
+            <div className="w-full h-full scale-102">
+              <Scanner
+                onResult={(text) => handleScan(text)}
+                onError={(err) => handleScanError(err)}
+                options={{
+                  delayBetweenScans: 2000,
+                }}
+                styles={{
+                  container: { width: "100%", height: "100%" },
+                  video: { objectFit: "cover" }
+                }}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Close Button Anchor Trigger */}
+        <div className="px-5 pb-5 mt-auto">
+          <Button
+            type="button"
+            variant="outline"
+            size="md"
+            fullWidth
+            disabled={isMarking}
+            onClick={onClose}
+          >
+            Close Scanner
+          </Button>
+        </div>
+
+      </div>
+    </div>
   );
 };
 

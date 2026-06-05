@@ -27,8 +27,8 @@ const Navbar = () => {
       <div className="mx-auto h-16 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
         
         {/* Left Side: Brand, Academy, and Staff Name */}
-        <div className="flex items-center space-x-3 min-w-0 md:w-64 flex-shrink-0">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center border flex-shrink-0 bg-background border-border">
+        <div className="flex items-center space-x-3 min-w-0 md:w-64 shrink-0">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center border shrink-0 bg-background border-border">
             <img 
               src="/logo.png" 
               alt="Nashib Ali Academy" 
@@ -40,7 +40,7 @@ const Navbar = () => {
               Nashib Ali Academy
             </span>
             <span className="text-xs font-semibold uppercase tracking-wider truncate text-primary">
-              {staff?.name || "Staff Portal"}
+              Staff Portal
             </span>
           </div>
         </div>
@@ -71,7 +71,7 @@ const Navbar = () => {
         </div>
 
         {/* Right Side: Profile Dropdown */}
-        <div className="flex items-center flex-shrink-0 md:w-64 justify-end">
+        <div className="flex items-center shrink-0 md:w-64 justify-end">
           {/* Mobile search icon button if you choose to build a mobile dropdown/modal toggle layer later */}
           <button 
             type="button" 

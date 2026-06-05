@@ -1,11 +1,5 @@
-import { Ionicons } from "@expo/vector-icons";
-import React, { useContext } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-
-import { CalendarGrid } from "@/components/attendance/CalendarGrid";
-import { Legend } from "@/components/attendance/Legend";
-import { SummaryTile } from "@/components/attendance/SummaryTile";
-import { ThemeContext } from "@/context/ThemeProvider";
+import React from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const CalendarCard = ({
   history = [],
@@ -14,25 +8,12 @@ const CalendarCard = ({
   onMonthChange,
   onYearChange,
 }) => {
-  const { COLORS } = useContext(ThemeContext);
-
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
   ];
 
-  const getDaysInMonth = (month, year) =>
-    new Date(year, month + 1, 0).getDate();
+  const getDaysInMonth = (month, year) => new Date(year, month + 1, 0).getDate();
 
   const handlePrevMonth = () => {
     if (selectedMonth === 0) {
@@ -61,111 +42,143 @@ const CalendarCard = ({
     return acc;
   }, {});
 
-  const presentCount = history.filter(
-    (item) => item.status === "Present",
-  ).length;
+  const presentCount = history.filter((item) => item.status === "Present").length;
   const absentCount = history.filter((item) => item.status === "Absent").length;
-  const onLeaveCount = history.filter(
-    (item) => item.status === "On-Leave",
-  ).length;
+  const onLeaveCount = history.filter((item) => item.status === "On-Leave").length;
 
   const activeTrackedDays = presentCount + absentCount + onLeaveCount;
   const attendancePercentage = activeTrackedDays
     ? Math.round((presentCount / activeTrackedDays) * 100)
     : 0;
 
-  const leaveColor = COLORS.warning || "#d97706";
-  const unmarkedColor =
-    COLORS.card === "#ffffff" ? "#f3f4f6" : "rgba(107, 114, 128, 0.2)";
-
   return (
-    <View className="mb-5">
-      <View className="flex-row gap-2 mb-4">
-        <SummaryTile
-          title="Present"
-          value={presentCount}
-          color={COLORS.success}
-          colors={COLORS}
-        />
-        <SummaryTile
-          title="Leave"
-          value={onLeaveCount}
-          color={leaveColor}
-          colors={COLORS}
-        />
-        <SummaryTile
-          title="Absent"
-          value={absentCount}
-          color={COLORS.danger}
-          colors={COLORS}
-        />
-        <SummaryTile
-          title="Rate"
-          value={`${attendancePercentage}%`}
-          color={COLORS.textPrimary}
-          colors={COLORS}
-        />
-      </View>
+    <div className="space-y-4 max-w-md mx-auto lg:mx-0">
+      {/* 1. Compact Analytic Counter Row Grid */}
+      <div className="grid grid-cols-4 gap-2.5">
+        <SummaryTile title="Present" value={presentCount} textColor="text-success" />
+        <SummaryTile title="Leave" value={onLeaveCount} textColor="text-amber-600" />
+        <SummaryTile title="Absent" value={absentCount} textColor="text-danger" />
+        <SummaryTile title="Rate" value={`${attendancePercentage}%`} textColor="text-text-primary" />
+      </div>
 
-      <View
-        className="rounded-3xl p-5"
-        style={{ backgroundColor: COLORS.card, elevation: 3 }}
-      >
-        <View className="flex-row items-center justify-between mb-5">
-          <TouchableOpacity
-            onPress={handlePrevMonth}
-            className="w-10 h-10 rounded-xl items-center justify-center"
-            style={{ backgroundColor: COLORS.background }}
-            activeOpacity={0.7}
+      {/* 2. Main Space-Optimized Month Matrix Wrapper */}
+      <div className="bg-card border border-border rounded-2xl p-4 shadow-xs">
+        {/* Month Selector Navigation Bar */}
+        <div className="flex items-center justify-between mb-4">
+          <button
+            type="button"
+            onClick={handlePrevMonth}
+            className="w-8 h-8 rounded-lg flex items-center justify-center bg-background border border-border/60 hover:border-primary/30 text-text-primary transition-all cursor-pointer outline-none"
           >
-            <Ionicons
-              name="chevron-back"
-              size={22}
-              color={COLORS.textPrimary}
-            />
-          </TouchableOpacity>
+            <ChevronLeft size={14} />
+          </button>
 
-          <View className="items-center">
-            <Text
-              className="text-lg font-bold"
-              style={{ color: COLORS.textPrimary }}
-            >
-              {monthNames[selectedMonth]} {selectedYear}
-            </Text>
-          </View>
+          <h3 className="text-xs sm:text-sm font-bold text-text-primary tracking-tight select-none">
+            {monthNames[selectedMonth]} {selectedYear}
+          </h3>
 
-          <TouchableOpacity
-            onPress={handleNextMonth}
-            className="w-10 h-10 rounded-xl items-center justify-center"
-            style={{ backgroundColor: COLORS.background }}
-            activeOpacity={0.7}
+          <button
+            type="button"
+            onClick={handleNextMonth}
+            className="w-8 h-8 rounded-lg flex items-center justify-center bg-background border border-border/60 hover:border-primary/30 text-text-primary transition-all cursor-pointer outline-none"
           >
-            <Ionicons
-              name="chevron-forward"
-              size={22}
-              color={COLORS.textPrimary}
-            />
-          </TouchableOpacity>
-        </View>
+            <ChevronRight size={14} />
+          </button>
+        </div>
 
+        {/* Compact Calendar Core Grid */}
         <CalendarGrid
           selectedMonth={selectedMonth}
           selectedYear={selectedYear}
           attendanceMap={attendanceMap}
           daysInMonth={daysInMonth}
-          COLORS={COLORS}
         />
 
-        <View className="flex-row flex-wrap mt-4 gap-x-4 gap-y-2">
-          <Legend color={COLORS.success} text="Present" colors={COLORS} />
-          <Legend color={leaveColor} text="On Leave" colors={COLORS} />
-          <Legend color={COLORS.danger} text="Absent" colors={COLORS} />
-          <Legend color={COLORS.border} text="Sunday" colors={COLORS} />
-          <Legend color={unmarkedColor} text="Unmarked" colors={COLORS} />
-        </View>
-      </View>
-    </View>
+        {/* Bottom Legend Color Label References */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mt-4 pt-3 border-t border-border/40">
+          <Legend dotClass="bg-success" text="Present" />
+          <Legend dotClass="bg-amber-500" text="On Leave" />
+          <Legend dotClass="bg-danger" text="Absent" />
+          <Legend dotClass="bg-text-secondary/10" text="Unmarked" />
+        </div>
+      </div>
+    </div>
   );
 };
+
+/* ================= COMPONENT: COMPACT SUMMARY TILE ================= */
+const SummaryTile = ({ title, value, textColor }) => (
+  <div className="bg-card border border-border rounded-xl p-2 text-center shadow-xs">
+    <span className={`block text-base font-black tracking-tight ${textColor}`}>
+      {value}
+    </span>
+    <span className="block text-[9px] font-bold text-text-secondary uppercase tracking-wider mt-0.5">
+      {title}
+    </span>
+  </div>
+);
+
+/* ================= COMPONENT: COMPACT CALENDAR GRID ================= */
+const CalendarGrid = ({
+  selectedMonth,
+  selectedYear,
+  attendanceMap,
+  daysInMonth,
+}) => {
+  const firstDay = new Date(selectedYear, selectedMonth, 1).getDay();
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const getStatusStyle = (status, isSunday) => {
+    if (status === "Present") return "bg-success/10 text-success border-success/10";
+    if (status === "Absent") return "bg-danger/10 text-danger border-danger/10";
+    if (status === "On-Leave") return "bg-amber-500/10 text-amber-600 border-amber-500/10";
+    if (isSunday) return "bg-border text-text-secondary border-transparent";
+    return "bg-text-secondary/5 text-inactive border-transparent";
+  };
+
+  return (
+    <div className="grid grid-cols-7 text-center">
+      {/* Header Day Text Blocks */}
+      {weekDays.map((day) => (
+        <div key={day} className="text-[10px] font-bold uppercase tracking-wider mb-2">
+          <span className={day === "Sun" ? "text-danger" : "text-text-secondary"}>
+            {day}
+          </span>
+        </div>
+      ))}
+
+      {/* Leading Blank Cells Offset */}
+      {Array.from({ length: firstDay }).map((_, idx) => (
+        <div key={`empty-${idx}`} className="w-8 h-8 mx-auto" />
+      ))}
+
+      {/* Days Interactive Mapping Grid */}
+      {Array.from({ length: daysInMonth }).map((_, idx) => {
+        const day = idx + 1;
+        const dateStr = `${selectedYear}-${String(selectedMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const status = attendanceMap[dateStr];
+        const isSunday = new Date(selectedYear, selectedMonth, day).getDay() === 0;
+
+        return (
+          <div key={day} className="py-0.5 flex items-center justify-center">
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs border shadow-2xs select-none ${getStatusStyle(status, isSunday)}`}
+            >
+              {day}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+/* ================= COMPONENT: COMPACT LEGEND ================= */
+const Legend = ({ dotClass, text }) => (
+  <div className="flex items-center text-[10px] font-semibold text-text-secondary">
+    <div className={`w-2 h-2 rounded-xs mr-1 border border-border/40 shrink-0 ${dotClass}`} />
+    <span>{text}</span>
+  </div>
+);
 
 export default CalendarCard;

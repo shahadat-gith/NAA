@@ -65,7 +65,7 @@ const Home = () => {
     fetchDashboardData();
   }, [staff, navigate, setStaff]);
 
-  if (loading) return <Loader fullScreen={true} size="large" />;
+  if (loading) return <Loader fullScreen={true} size="medium" />;
 
   const profile = dashboard?.profile || staff;
   const timetable = dashboard?.timetable;
