@@ -117,6 +117,7 @@ export const navGroups = [
   {
     title: "Explore",
     items: [
+      { label: "Staff Portal", href: "https://staff.nashibaliacademy.in" },
       { label: "Gallery", to: "/gallery" },
       { label: "About", to: "/about" },
       { label: "Contact", to: "/contact" },
