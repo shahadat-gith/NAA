@@ -2,7 +2,6 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Home,
   CalendarDays,
-  User,
   Settings as SettingsIcon,
   CalendarCheck,
 } from "lucide-react";
@@ -15,7 +14,7 @@ const BottomTabs = () => {
     { label: "Home", path: "/", icon: Home },
     { label: "Attendance", path: "/attendance", icon: CalendarCheck },
     { label: "Timetable", path: "/timetable", icon: CalendarDays },
-    { label: "Profile", path: "/profile", icon: User },
+    { label: "Settings", path: "/settings", icon: SettingsIcon },
   ];
 
   return (

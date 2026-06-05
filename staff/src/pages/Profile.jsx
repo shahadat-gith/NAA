@@ -1,141 +1,144 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAppContext } from "../context/Context";
-import Button from "../components/common/Button";
-import { User, MapPin, ShieldCheck, Mail, Phone, GraduationCap, Briefcase } from "lucide-react";
+import Alert from "../components/common/Alert";
+import AccountEditDrawer from "../components/profile/AccountEditDrawer";
+import AddressEditDrawer from "../components/profile/AddressEditDrawer";
+import DetailRow from "../components/profile/DetailRow";
+import {
+  User,
+  MapPin,
+  ShieldCheck,
+  Mail,
+  Phone,
+  GraduationCap,
+  Briefcase,
+  SquarePen,
+} from "lucide-react";
 
 const Profile = () => {
-  const navigate = useNavigate();
   const { staff } = useAppContext();
+
+  // Modal Drawer presentation triggers
+  const [showAccountDrawer, setShowAccountDrawer] = useState(false);
+  const [showAddressDrawer, setShowAddressDrawer] = useState(false);
+
+  const [alertConfig, setAlertConfig] = useState({
+    visible: false,
+    title: "",
+    message: "",
+    variant: "info",
+  });
 
   if (!staff) return null;
 
   const address = staff.address || {};
-  const profileImage = staff?.image?.url || staff?.image || "/user.png";
+
+  const triggerAlert = (title, message, variant) => {
+    setAlertConfig({ visible: true, title, message, variant });
+  };
 
   return (
-    <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+    <main className="w-full px-4 py-6 space-y-5 max-w-md mx-auto animate-fade-in">
       
-      {/* 1. Main Profile Top Header Section */}
-      <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-xs mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="flex items-center space-x-5 min-w-0">
-            <img
-              src={profileImage}
-              alt={staff?.name || "Staff Avatar"}
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border border-border shrink-0"
-              onError={(e) => { e.target.src = "/user.png"; }}
-            />
-            <div className="min-w-0">
-              <span className="text-xs font-bold uppercase tracking-wider text-text-secondary">
-                {staff?.designation || "Staff Member"}
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-text-primary mt-0.5 truncate">
-                {staff?.name}
-              </h1>
-              <div className="inline-flex items-center space-x-1.5 bg-background border border-border px-3 py-1 rounded-full mt-2">
-                <span className="text-xs font-bold tracking-wider text-primary">
-                  ID: {staff?.staffId || "N/A"}
-                </span>
-              </div>
-            </div>
-          </div>
+      {/* ================= ACCOUNT DETAILS SECTION BLOCK ================= */}
+      <div className="bg-card border relative border-border rounded-2xl p-4 shadow-xs">
+        <div className="flex items-center space-x-2 mb-4 border-b border-border/40 pb-2.5 select-none">
+          <GraduationCap className="text-primary shrink-0" size={16} />
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+            Account Info
+          </h3>
+        </div>
 
-          <Button
-            type="button"
-            variant="accent"
-            size="md"
-            className="self-start sm:self-auto px-6"
-            onClick={() => navigate("/profile/edit")}
-          >
-            Edit Profile
-          </Button>
+        <button
+          type="button"
+          onClick={() => setShowAccountDrawer(true)}
+          className="absolute top-3.5 right-3.5 w-8 h-8 rounded-lg flex items-center justify-center border border-border bg-background text-text-secondary hover:text-primary active:scale-90 transition-transform cursor-pointer outline-none shadow-3xs"
+          aria-label="Edit Account Info"
+        >
+          <SquarePen size={14} strokeWidth={2.2} />
+        </button>
+
+        <div className="space-y-3.5">
+          <DetailRow label="Full Name" value={staff?.name} icon={User} />
+          <DetailRow
+            label="Email Address"
+            value={staff?.email && staff.email !== "N/A" ? staff.email : "Not Provided"}
+            icon={Mail}
+          />
+          <DetailRow label="Contact Number" value={staff?.contact} icon={Phone} />
+          <DetailRow label="Subject Taught" value={staff?.subjectTaught || "N/A"} icon={GraduationCap} />
+          <DetailRow label="Degree / Qualifications" value={staff?.qualification || "N/A"} icon={Briefcase} />
+          <DetailRow
+            label="Experience"
+            value={staff?.experience !== undefined ? `${staff.experience} Years` : "N/A"}
+            icon={Briefcase}
+          />
+          <DetailRow label="Account Status" value={staff?.status || "Pending"} icon={ShieldCheck} isStatus />
         </div>
       </div>
 
-      {/* 2. Unified Master Details Grid */}
-      <div className="space-y-8">
-        
-        {/* Account & Academic Block */}
-        <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-xs">
-          <div className="flex items-center space-x-2.5 mb-6 border-b border-border/60 pb-4">
-            <GraduationCap className="text-primary shrink-0" size={20} />
-            <h3 className="text-lg font-bold text-text-primary tracking-tight">
-              Account & Academic Details
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-            <DetailRow label="Full Name" value={staff?.name} icon={User} />
-            <DetailRow 
-              label="Email Address" 
-              value={staff?.email && staff.email !== "N/A" ? staff.email : "Not Provided"} 
-              icon={Mail} 
-            />
-            <DetailRow label="Contact Number" value={staff?.contact} icon={Phone} />
-            <DetailRow label="Subject Taught" value={staff?.subjectTaught || "N/A"} icon={GraduationCap} />
-            <DetailRow label="Degree / Qualifications" value={staff?.qualification || "N/A"} icon={Briefcase} />
-            <DetailRow 
-              label="Experience" 
-              value={staff?.experience !== undefined ? `${staff.experience} Years` : "N/A"} 
-              icon={Briefcase} 
-            />
-            <DetailRow 
-              label="Account Status" 
-              value={staff?.status || "Pending"} 
-              icon={ShieldCheck}
-              isStatus 
-            />
-          </div>
+      {/* ================= RESIDENTIAL ADDRESS SECTION BLOCK ================= */}
+      <div className="bg-card relative border border-border rounded-2xl p-4 shadow-xs">
+        <div className="flex items-center space-x-2 mb-4 border-b border-border/40 pb-2.5 select-none">
+          <MapPin className="text-primary shrink-0" size={16} />
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-text-primary">
+            Address
+          </h3>
         </div>
 
-        {/* Residential Address Block */}
-        <div className="bg-card border border-border rounded-3xl p-6 sm:p-8 shadow-xs">
-          <div className="flex items-center space-x-2.5 mb-6 border-b border-border/60 pb-4">
-            <MapPin className="text-primary shrink-0" size={20} />
-            <h3 className="text-lg font-bold text-text-primary tracking-tight">
-              Residential Address
-            </h3>
-          </div>
+        <button
+          type="button"
+          onClick={() => setShowAddressDrawer(true)}
+          className="absolute top-3.5 right-3.5 w-8 h-8 rounded-lg flex items-center justify-center border border-border bg-background text-text-secondary hover:text-primary active:scale-90 transition-transform cursor-pointer outline-none shadow-3xs"
+          aria-label="Edit Address Info"
+        >
+          <SquarePen size={14} strokeWidth={2.2} />
+        </button>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-5">
-            <DetailRow label="Village / Town" value={address.village} />
-            <DetailRow label="Post Office (P.O.)" value={address.po} />
-            <DetailRow label="Police Station (P.S.)" value={address.ps} />
-            <DetailRow label="District" value={address.district} />
-            <DetailRow label="PIN Code" value={address.pin} />
-            <DetailRow label="State" value={address.state || "Assam"} />
+        <div className="space-y-3.5">
+          <div className="grid grid-cols-2 gap-3.5">
+            <DetailRow label="Village" value={address.village} icon={MapPin} />
+            <DetailRow label="Post Office" value={address.po} icon={MapPin} />
+          </div>
+          <div className="grid grid-cols-2 gap-3.5">
+            <DetailRow label="Police Station" value={address.ps} icon={MapPin} />
+            <DetailRow label="District" value={address.district} icon={MapPin} />
+          </div>
+          <div className="grid grid-cols-2 gap-3.5">
+            <DetailRow label="PIN Code" value={address.pin} icon={MapPin} />
+            <DetailRow label="State" value={address.state || "Assam"} icon={MapPin} />
           </div>
         </div>
-
       </div>
+
+      {/* ================= MODULAR SHEET CONTEXTS OVERLAYS ================= */}
+      <AccountEditDrawer
+        visible={showAccountDrawer}
+        onClose={() => setShowAccountDrawer(false)}
+        triggerAlert={triggerAlert}
+      />
+      <AddressEditDrawer
+        visible={showAddressDrawer}
+        onClose={() => setShowAddressDrawer(false)}
+        triggerAlert={triggerAlert}
+      />
+
+      {/* Shared Application Alert Popups */}
+      <Alert
+        visible={alertConfig.visible}
+        title={alertConfig.title}
+        message={alertConfig.message}
+        variant={alertConfig.variant}
+        onClose={() => setAlertConfig((p) => ({ ...p, visible: false }))}
+        buttons={[
+          {
+            text: "Okay",
+            variant: "accent",
+            onClick: () => setAlertConfig((p) => ({ ...p, visible: false })),
+          },
+        ]}
+      />
     </main>
-  );
-};
-
-/* ================= REUSABLE CLEAN GRID ROW SUB-COMPONENT ================= */
-const DetailRow = ({ label, value, icon: Icon, isStatus = false }) => {
-  return (
-    <div className="flex items-start py-1 min-w-0">
-      {Icon && (
-        <div className="mt-0.5 mr-3 text-text-secondary/40 shrink-0">
-          <Icon size={16} />
-        </div>
-      )}
-      <div className="flex flex-col min-w-0">
-        <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
-          {label}
-        </span>
-        {isStatus ? (
-          <span className={`text-sm font-bold mt-0.5 ${value === "Active" || value === "Approved" ? "text-success" : "text-amber-500"}`}>
-            {value}
-          </span>
-        ) : (
-          <span className="text-sm font-bold text-text-primary mt-0.5 wrap-break-word">
-            {value || "—"}
-          </span>
-        )}
-      </div>
-    </div>
   );
 };
 

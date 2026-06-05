@@ -12,36 +12,41 @@ const AppProvider = ({ children }) => {
   const [lastUpdated, setLastUpdated] = useState("Loading...");
 
   useEffect(() => {
-    const fetchLastUpdate = async () => {
-      try {
-        const response = await fetch(
-          "https://api.github.com/repos/shahadat-gith/Staff-Dashboard/commits?per_page=1",
-        );
+  const fetchLastUpdate = async () => {
+    try {
+      const response = await fetch(
+        "https://api.github.com/repos/shahadat-gith/NAA/commits?path=staff&per_page=1"
+      );
 
-        if (!response.ok) {
-          throw new Error(`GitHub API Error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const commitDate = data[0]?.commit?.committer?.date;
-
-        if (!commitDate) {
-          throw new Error("Commit date not found");
-        }
-
-        const formattedDate = new Date(commitDate).toLocaleDateString("en-IN", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        });
-
-        setLastUpdated(formattedDate);
-      } catch (error) {
-        console.error("Error fetching from GitHub:", error);
-        setLastUpdated("Recently");
+      if (!response.ok) {
+        throw new Error(`GitHub API Error: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+      
+      // Ensure data array contains a valid head pointer item
+      const latestCommit = data?.[0];
+      const commitDate = latestCommit?.commit?.committer?.date;
+
+      if (!commitDate) {
+        throw new Error("Commit metrics or date string missing from targeted directory tracking.");
+      }
+
+      // Consistent localization string mapping matching your Indian standard timezone parameters
+      const formattedDate = new Date(commitDate).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      });
+
+      setLastUpdated(formattedDate);
+    } catch (error) {
+      console.error("Error fetching from GitHub telemetry API:", error);
+      setLastUpdated("Recently");
+    }
+  };
     fetchLastUpdate();
   }, []);
 

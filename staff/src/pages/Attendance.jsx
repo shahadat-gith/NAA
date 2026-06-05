@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
-import { QrCode, Loader2 } from "lucide-react";
-
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { apis } from "../services/api";
 import { useAppContext } from "../context/Context";
-import Button from "../components/common/Button";
 import Alert from "../components/common/Alert";
 import Loader from "../components/common/Loader";
 
-import CalendarCard from "../components/attendance/CalendarCard";
-import AttendanceHistory from "../components/attendance/AttendanceHistory";
+import { Logs } from "../components/attendance/Logs";
+import { SummaryTile } from "../components/attendance/SummaryTile";
+import { Calendar } from "../components/attendance/Calendar";
+import { Header } from "../components/attendance/Header";
 import ScannerModal from "../components/modals/ScannerModal";
 
 const Attendance = () => {
@@ -21,6 +20,7 @@ const Attendance = () => {
 
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+
   const [alertConfig, setAlertConfig] = useState({
     visible: false,
     title: "",
@@ -35,7 +35,6 @@ const Attendance = () => {
         selectedMonth + 1,
         selectedYear,
       );
-
       if (data?.success) {
         setHistory(data.attendance || []);
       }
@@ -63,7 +62,6 @@ const Attendance = () => {
     setMarking(true);
     try {
       const data = await apis.markAttendance(qrToken, "Staff", "Present");
-
       if (data?.success) {
         setShowScanner(false);
         setHistory(data.attendance || []);
@@ -90,70 +88,90 @@ const Attendance = () => {
     }
   };
 
-  const getTodayISTString = () => {
-    return new Date().toLocaleDateString("en-CA", {
+  const isTodayAttendanceMarked = useMemo(() => {
+    const todayIST = new Date().toLocaleDateString("en-CA", {
       timeZone: "Asia/Kolkata",
     });
-  };
+    return history.some(
+      (att) => att.date && att.date.split("T")[0] === todayIST,
+    );
+  }, [history]);
 
-  const isTodayAttendanceMarked = history.some((att) => {
-    if (!att.date) return false;
-    return att.date.split("T")[0] === getTodayISTString();
-  });
+  const analyticsSummary = useMemo(() => {
+    if (!history.length) return { present: 0, leave: 0, absent: 0, rate: 0 };
+    let [present, leave, absent] = [0, 0, 0];
+
+    history.forEach((log) => {
+      const status = log.status?.toLowerCase();
+      if (status === "present") present++;
+      else if (status === "leave" || status === "on leave") leave++;
+      else if (status === "absent") absent++;
+    });
+
+    const totalTracked = present + leave + absent;
+    return {
+      present,
+      leave,
+      absent,
+      rate: totalTracked > 0 ? Math.round((present / totalTracked) * 100) : 0,
+    };
+  }, [history]);
 
   return (
-    <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
       {loading && <Loader fullScreen={true} size="medium" />}
 
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border">
-        <div className="mb-4 flex justify-end border-b border-border pb-6">
-          <Button
-            type="button"
-            variant={isTodayAttendanceMarked ? "outline" : "accent"}
-            size="lg"
-            disabled={marking || isTodayAttendanceMarked}
-            onClick={() => setShowScanner(true)}
-            icon={marking ? undefined : QrCode}
-            className="w-full sm:w-auto px-6 h-14 shrink-0"
-          >
-            {marking ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : isTodayAttendanceMarked ? (
-              "Verified for Today"
-            ) : (
-              "Scan QR"
-            )}
-          </Button>
+      {/* Modern, micro-gradient action header */}
+      <Header
+        isTodayAttendanceMarked={isTodayAttendanceMarked}
+        marking={marking}
+        onScanTrigger={() => setShowScanner(true)}
+      />
+
+      <div className="space-y-6">
+        {/* FIXED POSITIONING: Analytics summary rows are rendered immediately at the top */}
+        <div className="bg-card border border-border rounded-2xl p-4 shadow-xs">
+          <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary/50 block mb-3 px-0.5 select-none">
+            Monthly Analytics Summary
+          </span>
+          <div className="grid grid-cols-4 gap-2">
+            <SummaryTile
+              title="Present"
+              value={analyticsSummary.present}
+              textColor="text-success"
+            />
+            <SummaryTile
+              title="Leave"
+              value={analyticsSummary.leave}
+              textColor="text-amber-500"
+            />
+            <SummaryTile
+              title="Absent"
+              value={analyticsSummary.absent}
+              textColor="text-danger"
+            />
+            <SummaryTile
+              title="Rate"
+              value={`${analyticsSummary.rate}%`}
+              textColor="text-text-primary"
+            />
+          </div>
         </div>
+
+        {/* Autonomous Interactive Calendar Sub-Component */}
+        <Calendar
+          selectedMonth={selectedMonth}
+          setSelectedMonth={setSelectedMonth}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          history={history}
+        />
+
+        {/* Chronological List History Stream Log */}
+        <Logs logs={history} />
       </div>
 
-      {/* Flattened Alert Status Banner */}
-      {isTodayAttendanceMarked && (
-        <div className="mb-6 p-4 rounded-2xl border bg-success/5 border-success/20 text-success text-sm font-bold flex items-center space-x-2 animate-fade-in">
-          <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
-          <span>Attendance has been marked for today.</span>
-        </div>
-      )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-        {/* Interactive Month-by-Month Matrix */}
-        <div className="lg:col-span-2">
-          <CalendarCard
-            history={history}
-            selectedMonth={selectedMonth}
-            selectedYear={selectedYear}
-            onMonthChange={setSelectedMonth}
-            onYearChange={setSelectedYear}
-          />
-        </div>
-
-        {/* Chronological List Sidebar */}
-        <div className="lg:col-span-1 lg:sticky lg:top-24">
-          <AttendanceHistory history={history} />
-        </div>
-      </div>
-
-      {/* Web Standard Modular Camera QR Overlay Frame Component */}
+      {/* Camera Scanning Overlay Device Sheet */}
       <ScannerModal
         visible={showScanner}
         onClose={() => setShowScanner(false)}
@@ -161,7 +179,7 @@ const Attendance = () => {
         isMarking={marking}
       />
 
-      {/* System Popup Notification Alert */}
+      {/* Shared Interceptor Custom Global Notification System */}
       <Alert
         visible={alertConfig.visible}
         title={alertConfig.title}

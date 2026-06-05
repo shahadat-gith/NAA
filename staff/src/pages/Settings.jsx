@@ -7,21 +7,22 @@ import {
   BookOpen,
   FileText,
   Shield,
-  Code2,
-  RefreshCw,
-  Layers,
   LogOut,
-  Camera,
-  Loader2,
 } from "lucide-react";
 
 import { apis } from "../services/api";
 import { useAppContext } from "../context/Context";
-import Button from "../components/common/Button";
 import Alert from "../components/common/Alert";
+import ChangePasswordDrawer from "../components/settings/ChangePasswordDrawer";
 
-// Web layout modular drop-ins
-import ChangePasswordModal from "../components/modals/ChangePasswordModal";
+// Sub-Component modular array layers
+import AvatarSection from "../components/settings/AvatarSection";
+import StaticRowItem from "../components/settings/StaticRowItem";
+import InteractiveRowItem from "../components/settings/InteractiveRowItem";
+import DeveloperSection from "../components/settings/DeveloperSection";
+import ImageCropModal from "../components/settings/ImageCropModal";
+
+import { getCroppedImg } from "../configs/cropper";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -30,6 +31,9 @@ const Settings = () => {
 
   const [uploadingImage, setUploadingImage] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
+  const [cropModalVisible, setCropModalVisible] = useState(false);
+
   const [alertConfig, setAlertConfig] = useState({
     visible: false,
     title: "",
@@ -57,30 +61,43 @@ const Settings = () => {
     );
   };
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
       return triggerAlert(
         "Format Error",
-        "Please select a valid image file configuration.",
-        "warning",
-      );
-    }
-    if (file.size > 3 * 1024 * 1024) {
-      return triggerAlert(
-        "File Too Large",
-        "Profile picture asset profile size must not exceed 3MB.",
+        "Please select a valid image file.",
         "warning",
       );
     }
 
+    const reader = new FileReader();
+    reader.addEventListener("load", () => {
+      setImageToCrop(reader.result);
+      setCropModalVisible(true);
+    });
+    reader.readAsDataURL(file);
+  };
+
+  const handleUpdateProfile = async (croppedAreaPixels) => {
+    setCropModalVisible(false);
     setUploadingImage(true);
-    const formData = new FormData();
-    formData.append("image", file);
 
     try {
+      const croppedBlob = await getCroppedImg(imageToCrop, croppedAreaPixels);
+
+      const uniqueStringSignature = `${staff?.staffId || "STAFF"}_${Date.now()}`;
+      const uniqueFileName = `profile_${uniqueStringSignature}.jpg`;
+
+      const filePayload = new File([croppedBlob], uniqueFileName, {
+        type: "image/jpeg",
+      });
+
+      const formData = new FormData();
+      formData.append("image", filePayload);
+
       const data = await apis.updateProfile(formData);
       if (data?.success) {
         setStaff(data.staff);
@@ -100,93 +117,42 @@ const Settings = () => {
       );
     } finally {
       setUploadingImage(false);
+      setImageToCrop(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
   return (
-    <main className="flex-1 w-full max-w-3xl mx-auto px-4 sm:px-6 py-10 animate-fade-in">
-      {/* One Unified Single Column Layout Stack */}
-      <div className="space-y-6">
-        {/* Section: Profile Avatar Information Row Card */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider px-1">
-            Profile
-          </h3>
-          <div className="bg-card border border-border rounded-2xl p-4 flex items-center justify-between shadow-xs">
-            <div className="flex items-center space-x-4 min-w-0">
-              {/* Avatar Wrapper without redundant overlay buttons */}
-              <div className="relative w-14 h-14 shrink-0">
-                <img
-                  src={profileImage}
-                  alt={staff?.name || "Avatar"}
-                  className="w-full h-full rounded-full object-cover border border-border bg-background"
-                  onError={(e) => {
-                    e.target.src = "/user.png";
-                  }}
-                />
-
-                {/* Hidden native file input connector */}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
-
-              <div className="min-w-0">
-                <h4 className="text-sm font-bold text-text-primary truncate">
-                  {staff?.name || "Staff Member"}
-                </h4>
-                <p className="text-xs font-semibold text-primary mt-0.5 uppercase tracking-wider">
-                  ID: {staff?.staffId || "NAA-STAFF"}
-                </p>
-              </div>
-            </div>
-
-            {/* Main Action Trigger resized to Medium size */}
-            <Button
-              type="button"
-              variant="accent"
-              size="sm"
-              disabled={uploadingImage}
-              onClick={() => fileInputRef.current?.click()}
-              className="text-xs font-bold border-border px-5"
-            >
-              {uploadingImage ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 size={14} className="animate-spin" />
-                  Updating...
-                </span>
-              ) : (
-                profileImage ? "Change" : "Upload"
-              )}
-            </Button>
-          </div>
-        </div>
+    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
+      <div className="space-y-5">
+        
+        {/* Modular Profile Avatar Sub-Section */}
+        <AvatarSection
+          profileImage={profileImage}
+          staff={staff}
+          uploadingImage={uploadingImage}
+          onUploadClick={() => fileInputRef.current?.click()}
+          fileInputRef={fileInputRef}
+          onFileChange={handleFileChange}
+        />
 
         {/* Section: Account Information */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider px-1">
+        <div className="space-y-1.5">
+          <h3 className="text-[10px] font-black text-text-secondary/60 uppercase tracking-widest px-1 select-none">
             Account Details
           </h3>
-          <div className="bg-card border border-border rounded-2xl divide-y divide-border/50 shadow-xs">
+          <div className="bg-card border border-border rounded-2xl divide-y divide-border/40 shadow-xs overflow-hidden">
             <StaticRowItem label="Name" value={staff?.name} icon={User} />
-            <StaticRowItem
-              label="Email"
-              value={staff?.email}
-              icon={Mail}
-            />
+            <StaticRowItem label="Email" value={staff?.email} icon={Mail} />
           </div>
         </div>
 
         {/* Section: Security Management */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider px-1">
+        <div className="space-y-1.5">
+          <h3 className="text-[10px] font-black text-text-secondary/60 uppercase tracking-widest px-1 select-none">
             Security
           </h3>
-          <div className="bg-card border border-border rounded-2xl shadow-xs">
+          <div className="bg-card border border-border rounded-2xl shadow-xs overflow-hidden">
             <InteractiveRowItem
               icon={Key}
               title="Change Password"
@@ -197,11 +163,11 @@ const Settings = () => {
         </div>
 
         {/* Section: Institutional Compliance Regulations */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider px-1">
+        <div className="space-y-1.5">
+          <h3 className="text-[10px] font-black text-text-secondary/60 uppercase tracking-widest px-1 select-none">
             Academy Documentation
           </h3>
-          <div className="bg-card border border-border rounded-2xl divide-y divide-border/50 shadow-xs overflow-hidden">
+          <div className="bg-card border border-border rounded-2xl divide-y divide-border/40 shadow-xs overflow-hidden">
             <InteractiveRowItem
               icon={BookOpen}
               title="Academic Rules"
@@ -223,74 +189,49 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Section: Diagnostics and Technical Telemetry */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold text-text-secondary uppercase tracking-wider px-1">
-            System Architecture
-          </h3>
-          <div className="bg-card border border-border rounded-2xl divide-y divide-border/50 shadow-xs">
-            <div className="flex items-center justify-between p-4 text-sm font-medium">
-              <div className="flex items-center space-x-3 text-text-secondary">
-                <Code2 size={16} className="text-primary" />
-                <span>Developer</span>
-              </div>
-              <button
-                onClick={() => navigate("/developer")}
-                className="font-bold text-primary hover:underline bg-transparent border-none outline-none cursor-pointer"
-              >
-                Shahadat Ali
-              </button>
-            </div>
+        {/* Section: Modular System Telemetry Metadata */}
+        <DeveloperSection
+          lastUpdated={lastUpdated}
+          onDeveloperClick={() => navigate("/developer")}
+        />
 
-            <div className="flex items-center justify-between p-4 text-sm font-medium">
-              <div className="flex items-center space-x-3 text-text-secondary">
-                <RefreshCw size={16} className="text-primary" />
-                <span>Last Updated on</span>
-              </div>
-              <span className="text-xs text-success font-semibold">
-                {lastUpdated || "Just now"}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-4 text-sm font-medium">
-              <div className="flex items-center space-x-3 text-text-secondary">
-                <Layers size={16} className="text-primary" />
-                <span>Curent Version</span>
-              </div>
-              <span className="text-text-primary font-bold">
-                v1.0.0 
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Section: Explicit Session Destroy Anchor */}
+        {/* Mobile Explicit Session Sign Out Trigger Button */}
         <button
           type="button"
           onClick={handleLogoutConfirmation}
-          className="md:hidden w-full rounded-2xl p-4 border border-danger/20 hover:border-danger bg-danger/5 text-danger font-bold text-sm flex items-center justify-center space-x-2 cursor-pointer transition-colors outline-none group"
+          className="w-full rounded-2xl p-3.5 border border-danger/20 bg-danger/5 text-danger font-bold text-xs uppercase tracking-wider flex items-center justify-center space-x-2 transition-transform active:scale-98 cursor-pointer outline-none group"
         >
           <LogOut
-            size={16}
+            size={14}
             className="transition-transform group-hover:translate-x-0.5"
           />
-          <span>Logout</span>
+          <span>Logout Session</span>
         </button>
 
-        {/* Copyright Footnotes Label */}
-        <p className="text-[10px] font-semibold text-text-secondary/50 text-center pt-2 tracking-wide">
-          Nashib Ali Academy &bull; &copy; {new Date().getFullYear()} All Rights
-          Reserved
+        {/* Minimal Bottom Brand Copyright Stack */}
+        <p className="text-[9px] font-black text-text-secondary/40 text-center pt-2 uppercase tracking-widest select-none">
+          Nashib Ali Academy &bull; &copy; {new Date().getFullYear()} All Rights Reserved
         </p>
       </div>
 
-      {/* Standalone Interactive Password Overhaul Modular Modal Dropdown Sheet */}
-      <ChangePasswordModal
+      {/* Dynamic Image Easy-Crop Context Modal overlay */}
+      <ImageCropModal
+        src={imageToCrop}
+        visible={cropModalVisible}
+        onClose={() => {
+          setCropModalVisible(false);
+          setImageToCrop(null);
+        }}
+        onCropComplete={handleUpdateProfile}
+      />
+
+      {/* Secure Password Update Overhaul Context Overlay Drawer */}
+      <ChangePasswordDrawer
         visible={passwordModalVisible}
         onClose={() => setPasswordModalVisible(false)}
       />
 
-      {/* Central Confirmation Alert Dialog */}
+      {/* Shared Application Context Confirmation Interceptor Alert */}
       <Alert
         visible={alertConfig.visible}
         title={alertConfig.title}
@@ -321,39 +262,5 @@ const Settings = () => {
     </main>
   );
 };
-
-/* ================= COMPONENT: STATIC INFO ROW ================= */
-const StaticRowItem = ({ label, value, icon: Icon }) => (
-  <div className="flex items-center justify-between p-4 text-sm font-medium">
-    <div className="flex items-center space-x-3 text-text-secondary shrink-0">
-      <Icon size={16} className="text-primary" />
-      <span>{label}</span>
-    </div>
-    <span className="text-text-primary font-bold truncate max-w-60 text-right">
-      {value || "—"}
-    </span>
-  </div>
-);
-
-/* ================= COMPONENT: INTERACTIVE LINK ROW ================= */
-const InteractiveRowItem = ({ icon: Icon, title, description, onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className="w-full p-4 flex items-start text-left bg-transparent border-none outline-none cursor-pointer hover:bg-text-primary/5 transition-colors group first:rounded-t-2xl last:rounded-b-2xl"
-  >
-    <div className="mt-0.5 mr-3 text-primary shrink-0">
-      <Icon size={16} />
-    </div>
-    <div className="flex-1 min-w-0">
-      <h4 className="text-sm font-bold text-text-primary group-hover:text-primary transition-colors tracking-tight">
-        {title}
-      </h4>
-      <p className="text-xs font-medium text-text-secondary mt-0.5 leading-relaxed">
-        {description}
-      </p>
-    </div>
-  </button>
-);
 
 export default Settings;

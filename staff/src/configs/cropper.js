@@ -1,37 +1,42 @@
-import * as ImagePicker from "expo-image-picker";
-import { Alert } from "react-native";
 
-export const pickAndCropProfileImage = async () => {
-  const permission =
-    await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-  if (!permission.granted) {
-    Alert.alert(
-      "Permission Required",
-      "Please allow gallery access."
-    );
-    return null;
-  }
+export const getCroppedImg = (imageSrc, pixelCrop) => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.src = imageSrc;
+    image.crossOrigin = "anonymous"; 
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ["images"],
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 1,
+      if (!ctx) {
+        reject(new Error("Canvas context construction missing."));
+        return;
+      }
+
+      canvas.width = pixelCrop.width;
+      canvas.height = pixelCrop.height;
+
+      ctx.drawImage(
+        image,
+        pixelCrop.x,
+        pixelCrop.y,
+        pixelCrop.width,
+        pixelCrop.height,
+        0,
+        0,
+        pixelCrop.width,
+        pixelCrop.height
+      );
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error("Canvas execution generated empty pixel array."));
+          return;
+        }
+        resolve(blob);
+      }, "image/jpeg");
+    };
+    image.onerror = (error) => reject(error);
   });
-
-  if (result.canceled) {
-    return null;
-  }
-
-  const image = result.assets[0];
-
-  return {
-    preview: image.uri,
-    file: {
-      uri: image.uri,
-      name: "profile.jpg",
-      type: image.mimeType || "image/jpeg",
-    },
-  };
 };

@@ -25,7 +25,7 @@ const Home = () => {
     attendance: [],
   });
   const [loading, setLoading] = useState(true);
-  const [errorMsg, setErrorMsg] = useState(""); // Dynamic state for managing error modal text
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [greeting] = useState(() => {
     const hour = new Date().getHours();
@@ -35,7 +35,6 @@ const Home = () => {
   });
 
   useEffect(() => {
-    // Structural session safety check for web route guards
     if (!staff) {
       navigate("/login", { replace: true });
       return;
@@ -54,7 +53,6 @@ const Home = () => {
           navigate("/login", { replace: true });
           return;
         }
-        // Gracefully trap the layout sync failure in state instead of freezing the UI with alert()
         setErrorMsg(
           error?.response?.data?.message || "Unable to load workspace records.",
         );
@@ -72,46 +70,39 @@ const Home = () => {
   const attendance = dashboard?.attendance || [];
 
   return (
-    <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
-      {/* Header Section */}
-      <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
-            <span className="text-accent">{greeting}</span>,{" "}
-            {profile?.name || "Staff Member"}!
-          </h1>
-          <p className="text-sm font-medium text-text-secondary mt-1.5">
-            Welcome back to your academy administration panel.
-          </p>
-        </div>
+    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
+      
+      {/* ================= MOBILE STREAMLINED HERO HEADER ================= */}
+      <div className="bg-linear-to-br from-card to-background border border-border p-5 rounded-2xl shadow-xs select-none">
+        <h1 className="text-xl font-black tracking-tight text-text-primary">
+          <span className="text-primary">{greeting}</span>, {" "}
+          {profile?.name || "Staff Member"}
+        </h1>
+        <p className="text-[11px] font-medium text-text-secondary mt-1 leading-normal">
+          Welcome back to your academy administration workspace panel.
+        </p>
       </div>
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-        {/* Timetable Section */}
-        <div
-          className={
-            profile?.staffType === "Teaching" ? "lg:col-span-2" : "lg:col-span-3"
-          }
-        >
+      {/* ================= VERTICAL MOBILE CONTENT LAYOUT STACK ================= */}
+      <div className="space-y-6">
+        
+        {/* Academic Timetable Section Row */}
+        <div>
           {profile?.staffType === "Teaching" && timetable ? (
             <TodaySchedule timetableData={timetable} />
           ) : (
-            <div className="text-sm font-medium text-text-secondary text-center p-8 bg-card border border-border rounded-2xl">
-              Non-Teaching profile dashboard layer. Academic timetable mapping disabled.
-            </div>
+            null
           )}
         </div>
 
-        {/* Attendance Section */}
+        {/* Attendance Activity Logger Section */}
         {profile?.staffType === "Teaching" && (
-          <div className="lg:col-span-1 lg:sticky lg:top-24">
-            <RecentAttendance attendance={attendance} />
-          </div>
+          <RecentAttendance attendance={attendance} />
         )}
+        
       </div>
 
-      {/* Modern React Native Pop-Up Alert Modal Fallback */}
+      {/* Shared Interceptor Structural Alert Modal */}
       <Alert
         visible={!!errorMsg}
         title="Sync Error"
@@ -121,7 +112,7 @@ const Home = () => {
         buttons={[
           {
             text: "Acknowledge",
-            variant: "outline",
+            variant: "accent",
             onClick: () => setErrorMsg(""),
           },
         ]}

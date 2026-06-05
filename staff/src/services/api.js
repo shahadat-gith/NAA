@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: "https://xd538otww4.execute-api.ap-south-1.amazonaws.com",
 });
 
 api.interceptors.request.use(

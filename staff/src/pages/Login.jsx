@@ -9,10 +9,10 @@ import {
 
 import { apis } from "../services/api";
 import { useAppContext } from "../context/Context";
-import ForgotPasswordModal from "../components/modals/ForgotPasswordModal";
+import ForgotPasswordDrawer from "../components/login/ForgotPasswordDrawer";
 import { cleanPhoneNumber } from "../services/utils";
 import Button from "../components/common/Button";
-import Alert from "../components/common/Alert"; // Imported your new renamed component
+import Alert from "../components/common/Alert";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -56,9 +56,7 @@ const Login = () => {
         const staffProfileData = data.staff;
 
         if (!token || !staffProfileData) {
-          setErrorMsg(
-            "Could not set up your secure session. Please try again.",
-          );
+          setErrorMsg("Could not set up your secure session. Please try again.");
           return;
         }
 
@@ -75,107 +73,108 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-background transition-colors duration-300">
-      <div className="w-full max-w-md">
-        {/* Card Container */}
-        <div className="rounded-3xl shadow-2xl shadow-black/5 border bg-card border-border overflow-hidden transition-all duration-300">
-          {/* Header Section */}
-          <div className="flex flex-col items-center pt-4 pb-4 sm:pt-5 sm:pb-5 px-4 sm:px-8 text-center border-b border-border">
-            <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-2 sm:mb-3 shadow-inner bg-card border border-border shadow-primary/5">
-              <img
-                src="/logo.png"
-                alt="Nashib Ali Academy"
-                className="w-11 h-11 sm:w-16 sm:h-16 object-contain drop-shadow-sm"
-              />
-            </div>
-
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tighter text-text-primary transition-all duration-200">
-              Nashib Ali Academy
-            </h1>
-            <p className="text-xs sm:text-sm font-semibold uppercase tracking-[2px] sm:tracking-[3px] mt-1 sm:mt-1.5 text-primary transition-all duration-200">
-              STAFF PORTAL
-            </p>
+    <div className="w-full min-h-screen px-4 py-8 flex flex-col justify-center max-w-md mx-auto bg-background animate-fade-in">
+      
+      {/* Container Box Wrapper */}
+      <div className="bg-card border border-border rounded-2xl shadow-xl shadow-black/[0.02] overflow-hidden">
+        
+        {/* ================= MOBILE-FIRST BRAND HEADER ================= */}
+        <div className="flex flex-col items-center pt-6 pb-4 px-4 text-center border-b border-border/40 select-none">
+          <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-2.5 shadow-inner bg-background border border-border/80 shadow-primary/5">
+            <img
+              src="/logo.png"
+              alt="Nashib Ali Academy Logo"
+              className="w-10 h-10 object-contain drop-shadow-xs"
+            />
           </div>
 
-          {/* Form Section */}
-          <form onSubmit={handleLogin} className="p-6 sm:p-8 space-y-6">
-            {/* Contact Input */}
-            <div className="space-y-2">
-              <div className="flex items-center border rounded-2xl px-3 sm:px-5 py-1 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all duration-200 min-w-0 border-border bg-background">
-                <div className="flex-shrink-0 flex items-center justify-center text-text-secondary">
-                  <IoCallOutline size={20} />
-                </div>
-                <input
-                  type="tel"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  placeholder="Contact Number"
-                  disabled={loading}
-                  className="flex-1 min-w-0 py-2 ml-2 sm:ml-3 bg-transparent text-sm sm:text-base outline-none font-medium text-text-primary placeholder:text-text-secondary/50"
-                />
-              </div>
-            </div>
+          <h1 className="text-xl font-black tracking-tight text-text-primary">
+            Nashib Ali Academy
+          </h1>
+          <p className="text-[10px] font-black uppercase tracking-widest mt-0.5 text-primary">
+            Staff Portal
+          </p>
+        </div>
 
-            {/* Password Input */}
-            <div className="space-y-2">
-              <div className="flex items-center border rounded-2xl px-3 sm:px-5 py-1 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all duration-200 min-w-0 border-border bg-background">
-                <div className="flex-shrink-0 flex items-center justify-center text-text-secondary">
-                  <IoLockClosedOutline size={20} />
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password"
-                  disabled={loading}
-                  className="flex-1 min-w-0 py-2 ml-2 sm:ml-3 bg-transparent text-sm sm:text-base outline-none font-medium text-text-primary placeholder:text-text-secondary/50"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="p-1 sm:p-2 text-text-secondary hover:text-text-primary transition-colors flex-shrink-0 border-none bg-transparent cursor-pointer outline-none"
-                >
-                  {showPassword ? (
-                    <IoEyeOffOutline size={20} />
-                  ) : (
-                    <IoEyeOutline size={20} />
-                  )}
-                </button>
+        {/* ================= INTERACTIVE INPUT FORM LAYOUT ================= */}
+        <form onSubmit={handleLogin} className="p-5 space-y-4">
+          
+          {/* Field: Phone Input Box */}
+          <div className="space-y-1">
+            <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
+              <div className="shrink-0 text-text-secondary/60">
+                <IoCallOutline size={16} />
               </div>
+              <input
+                type="tel"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                placeholder="Contact Number"
+                disabled={loading}
+                className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+              />
             </div>
+          </div>
 
-            {/* Forgot Password */}
-            <div className="flex justify-end">
+          {/* Field: Password Input Box */}
+          <div className="space-y-1">
+            <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
+              <div className="shrink-0 text-text-secondary/60">
+                <IoLockClosedOutline size={16} />
+              </div>
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                disabled={loading}
+                className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+              />
               <button
                 type="button"
-                onClick={() => setIsModalVisible(true)}
-                className="text-sm font-medium hover:underline transition-all cursor-pointer bg-transparent border-none outline-none text-text-secondary hover:text-text-primary"
+                onClick={() => setShowPassword(!showPassword)}
+                className="p-1 text-text-secondary/60 hover:text-text-primary transition-colors shrink-0 border-none bg-transparent cursor-pointer outline-none"
               >
-                Forgot Password?
+                {showPassword ? <IoEyeOffOutline size={16} /> : <IoEyeOutline size={16} />}
               </button>
             </div>
+          </div>
 
-            {/* Form Submission Button */}
+          {/* Auxiliary Account Help Links */}
+          <div className="flex justify-end pt-0.5">
+            <button
+              type="button"
+              onClick={() => setIsModalVisible(true)}
+              className="text-xs font-bold transition-colors bg-transparent border-none outline-none text-text-secondary hover:text-primary cursor-pointer"
+            >
+              Forgot Password?
+            </button>
+          </div>
+
+          {/* Primary Form Submission Capsule */}
+          <div className="pt-2">
             <Button
               type="submit"
               variant="accent"
               size="lg"
               fullWidth={true}
               loading={loading}
+              className="rounded-xl font-black tracking-wide text-xs uppercase"
             >
-              SIGN IN
+              Sign In
             </Button>
-          </form>
-        </div>
+          </div>
+
+        </form>
       </div>
 
-      {/* Forgot Password Configuration Overlay Modal */}
-      <ForgotPasswordModal
+      {/* Forgot Password Overhaul Overlay sheet Context */}
+      <ForgotPasswordDrawer
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
       />
 
-      {/* Converted React Native Pop-Up Alert Modal Equivalent */}
+      {/* Interceptor System Popup Context Overlay notifications */}
       <Alert
         visible={!!errorMsg}
         title="Login Error"

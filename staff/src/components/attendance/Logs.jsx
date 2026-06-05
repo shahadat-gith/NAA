@@ -1,6 +1,6 @@
 import React from "react";
 
-const AttendanceHistory = ({ history = [] }) => {
+export const Logs = ({ logs = [] }) => {
   const formatDate = (isoString) => {
     if (!isoString) return "—";
     return new Date(isoString).toLocaleDateString("en-GB", {
@@ -31,9 +31,9 @@ const AttendanceHistory = ({ history = [] }) => {
         Attendance Logs
       </h3>
 
-      {history.length > 0 ? (
+      {logs.length > 0 ? (
         <div className="space-y-3 overflow-y-auto pr-1 custom-scrollbar flex-1">
-          {history.map((log) => {
+          {logs.map((log) => {
             const status = log.status || "Present";
             const statusLower = status.toLowerCase();
             const colorClass = statusThemeMap[status] || "text-text-secondary";
@@ -78,5 +78,3 @@ const AttendanceHistory = ({ history = [] }) => {
     </div>
   );
 };
-
-export default AttendanceHistory;
