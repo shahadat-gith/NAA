@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 
 import { AdminContext } from "./context/AdminContext";
 
-import Layout from "./components/Layout/Layout";
+import Layout from "./components/layout/Layout";
 import Loader from "./components/common/Loader";
 
 import Home from "./pages/Home";
