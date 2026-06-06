@@ -74,7 +74,7 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
                     <td className="atd-td">
                       <div className="atd-faculty-profile-cell">
                          <img 
-                            src={record.teacher.image.url || "/user.png"} 
+                            src={record.teacher?.image.url || "/user.png"} 
                             alt={record.teacher?.name || "Profile"} 
                             className="atd-faculty-avatar"
                           />

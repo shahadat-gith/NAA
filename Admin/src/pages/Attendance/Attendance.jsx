@@ -48,7 +48,6 @@ const Attendance = () => {
       }
     } catch (error) {
       console.error("Dashboard fetching runtime exception:", error);
-      toast.error("Error getting dashboard data!");
       setQrDetails(null);
     } finally {
       setQrLoading(false);
