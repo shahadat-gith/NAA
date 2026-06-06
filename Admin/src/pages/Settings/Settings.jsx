@@ -6,7 +6,7 @@ import ServiceTab from "./Tabs/ServiceTab/ServiceTab";
 import FeesTab from "./Tabs/FeesTab/FeesTab";
 import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
 import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/common/Loader";
 import { AdminContext } from "../../context/AdminContext";
 
 const Settings = () => {

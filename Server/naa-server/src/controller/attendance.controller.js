@@ -1,6 +1,6 @@
 import AttendanceQR from "../models/Staff/qr.js";
 import StaffAttendance from "../models/Staff/attendance.js";
-import Staff from "../models/Staff/staff.js"; // Imported the new unified Staff schema
+import Staff from "../models/Staff/staff.js";
 import QRCode from "qrcode";
 import crypto from "crypto";
 import mongoose from "mongoose";
@@ -20,9 +20,6 @@ const getIndianDateDetails = () => {
   };
 };
 
-// ==========================================
-// ADMIN ROUTINES
-// ==========================================
 
 // 1. GENERATE OR UPDATE DAILY QR CODE 
 export const generateAttendanceQR = async (req, res) => {
@@ -137,10 +134,6 @@ export const expireAttendanceQR = async (req, res) => {
   }
 }; 
 
-// ==========================================
-// STAFF SELF ROUTINES
-// ==========================================
-
 // 4. SCAN AND MARK INDIVIDUAL DAILY ATTENDANCE
 export const markAttendance = async (req, res) => {
   try {
@@ -245,338 +238,172 @@ export const getMyAttendanceHistory = async (req, res) => {
   }
 };
 
-// 6. ADMINISTRATIVE GRANULAR INQUIRY PARAMS TRACE (Admin Looking up specific Staff Member)
-export const getStaffAttendanceHistoryForAdmin = async (req, res) => {
+
+
+
+// =========================================================================
+// ==================== ADMINISTRATIVE CONTROL ENDPOINTS ====================
+// =========================================================================
+
+export const adminGetStaffList = async (req, res) => {
   try {
-    const { staffId } = req.params; // Remapped path reference from teacherId to staffId
-    const { month, year } = req.query;
+    const staffs = await Staff.find().select("name staffId image staffType");
+    
+    const date = getIndianDateDetails();
+    const startOfMonth = new Date(date.year, date.month - 1, 1);
+    const endOfMonth = new Date(date.year, date.month, 0, 23, 59, 59, 999);
 
-    let query = { staff: staffId };
-
-    if (month && year) {
-      const startDate = new Date(year, month - 1, 1); 
-      const endDate = new Date(year, month, 0, 23, 59, 59, 999); 
-      query.date = { $gte: startDate, $lte: endDate };
-    }
-
-    const attendanceRecords = await StaffAttendance.find(query)
-      .populate("staff", "name image email contact designation staffType")
-      .sort({ date: -1 });
-
-    return res.status(200).json({
-      success: true,
-      attendance: attendanceRecords,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Admin error fetching staff attendance history",
-      error: error.message,
-    });
-  }
-};
-
-
-
-export const getStaffAttendanceOverview = async (req, res) => {
-  try {
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-
-    const fiveMonthsAgo = new Date();
-    fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
-    fiveMonthsAgo.setDate(1);
-    fiveMonthsAgo.setHours(0, 0, 0, 0);
-
-    const staffOverview = await Staff.aggregate([
-      // Exclude suspended staff
-      { $match: { status: { $ne: "Suspended" } } },
-      
-      // Lookup last 5 months of attendance records
-      {
-        $lookup: {
-          from: "staffattendances", // Double check your MongoDB collection name matches this
-          let: { staffId: "$_id" },
-          pipeline: [
-            {
-              $match: {
-                $expr: { $eq: ["$staff", "$$staffId"] },
-                date: { $gte: fiveMonthsAgo },
-              },
-            },
-          ],
-          as: "attendanceRecords",
-        },
+    const attendanceStats = await StaffAttendance.aggregate([
+      { 
+        $match: {
+          date: { $gte: startOfMonth, $lte: endOfMonth }
+        }
       },
-      
-      // Shape the output metrics
       {
-        $project: {
-          name: 1,
-          staffId: 1,
-          staffType: 1,
-          designation: 1,
-          image: 1,
-          email: 1,
-
-          // Current Month Stats calculation
-          currentMonthStats: {
-            $reduce: {
-              input: "$attendanceRecords",
-              initialValue: { present: 0, absent: 0, leave: 0, total: 0 },
-              in: {
-                $cond: [
-                  {
-                    $and: [
-                      { $eq: [{ $year: "$$this.date" }, currentYear] },
-                      { $eq: [{ $month: "$$this.date" }, currentMonth] },
-                    ],
-                  },
-                  {
-                    present: {
-                      $add: [
-                        "$$value.present",
-                        { $cond: [{ $eq: ["$$this.status", "Present"] }, 1, 0] },
-                      ],
-                    },
-                    absent: {
-                      $add: [
-                        "$$value.absent",
-                        { $cond: [{ $eq: ["$$this.status", "Absent"] }, 1, 0] },
-                      ],
-                    },
-                    leave: {
-                      $add: [
-                        "$$value.leave",
-                        { $cond: [{ $eq: ["$$this.status", "On-Leave"] }, 1, 0] }, // Fixed: "Leave" -> "On-Leave"
-                      ],
-                    },
-                    total: { $add: ["$$value.total", 1] },
-                  },
-                  "$$value",
-                ],
-              },
-            },
-          },
-
-          // 5-Month History breakdown bucketed by Month/Year
-          monthlyHistory: {
-            $map: {
-              input: {
-                $setUnion: {
-                  $map: {
-                    input: "$attendanceRecords",
-                    as: "r",
-                    in: {
-                      year: { $year: "$$r.date" },
-                      month: { $month: "$$r.date" },
-                    },
-                  },
-                },
-              },
-              as: "bucket",
-              in: {
-                year: "$$bucket.year",
-                month: "$$bucket.month",
-                presentCount: {
-                  $size: {
-                    $filter: {
-                      input: "$attendanceRecords",
-                      as: "rec",
-                      cond: {
-                        $and: [
-                          { $eq: [{ $year: "$$rec.date" }, "$$bucket.year"] },
-                          { $eq: [{ $month: "$$rec.date" }, "$$bucket.month"] },
-                          { $eq: ["$$rec.status", "Present"] },
-                        ],
-                      },
-                    },
-                  },
-                },
-                totalCount: {
-                  $size: {
-                    $filter: {
-                      input: "$attendanceRecords",
-                      as: "rec",
-                      cond: {
-                        $and: [
-                          { $eq: [{ $year: "$$rec.date" }, "$$bucket.year"] },
-                          { $eq: [{ $month: "$$rec.date" }, "$$bucket.month"] },
-                        ],
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      { $sort: { name: 1 } },
+        $group: {
+          _id: "$staff",
+          totalDays: { $sum: 1 },
+          presentDays: { $sum: { $cond: [{ $eq: ["$status", "Present"] }, 1, 0] } },
+          absentDays: { $sum: { $cond: [{ $eq: ["$status", "Absent"] }, 1, 0] } },
+          onLeaveDays: { $sum: { $cond: [{ $eq: ["$status", "On-Leave"] }, 1, 0] } }
+        }
+      }
     ]);
 
+
+    const attendanceMap = {};
+    attendanceStats.forEach(stat => {
+      attendanceMap[stat._id.toString()] = stat;
+    });
+
+
+    const staffList = staffs.map(staff => {
+      const stats = attendanceMap[staff._id.toString()] || {
+        totalDays: 0,
+        presentDays: 0,
+        absentDays: 0,
+        onLeaveDays: 0
+      };
+
+      return {
+        _id: staff._id,
+        name: staff.name,
+        staffId: staff.staffId,
+        image: staff.image, 
+        staffType: staff.staffType,
+        attendanceStats: stats
+      };
+    });
     return res.status(200).json({
       success: true,
-      overview: staffOverview,
+      staffs: staffList 
     });
+
   } catch (error) {
-    console.error("Staff attendance overview error:", error);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Admin error compiling registered staff data records.",
+      error: error.message
     });
   }
 };
 
 
-
-export const getDetailedTeacherAttendance = async (req, res) => {
+export const adminGetIndividualStaffAttendance = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { month, year } = req.query;
+    const { id } = req.params; // MongoDB Native _id assigned to staff document
+    const { startDate, endDate } = req.query; // Expects structural format: YYYY-MM-DD
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid staff ID",
+      return res.status(400).json({ 
+        success: false, 
+        message: "Invalid staff object footprint locator signature schema reference." 
       });
     }
 
-    const staffObjectId = new mongoose.Types.ObjectId(id);
-
-    const current = new Date();
-    const selectedYear = year ? parseInt(year, 10) : current.getFullYear();
-    const selectedMonth = month ? parseInt(month, 10) : current.getMonth() + 1;
-
-    const startDate = new Date(selectedYear, selectedMonth - 1, 1);
-    const endDate = new Date(selectedYear, selectedMonth, 0, 23, 59, 59, 999);
-
-    const records = await StaffAttendance.find({
-      staff: staffObjectId,
-      date: { $gte: startDate, $lte: endDate },
-    }).sort({ date: -1 });
-
-    // Target monthly aggregation statistics
-    const monthSummaryAgg = await StaffAttendance.aggregate([
-      {
-        $match: {
-          staff: staffObjectId,
-          date: { $gte: startDate, $lte: endDate },
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          present: {
-            $sum: { $cond: [{ $eq: ["$status", "Present"] }, 1, 0] },
-          },
-          absent: {
-            $sum: { $cond: [{ $eq: ["$status", "Absent"] }, 1, 0] },
-          },
-          leave: {
-            $sum: { $cond: [{ $eq: ["$status", "On-Leave"] }, 1, 0] }, // Fixed: "Leave" -> "On-Leave"
-          },
-          total: { $sum: 1 },
-        },
-      },
-    ]);
-
-    const monthSummary = monthSummaryAgg[0] || {
-      present: 0,
-      absent: 0,
-      leave: 0,
-      total: 0,
-    };
-
-    monthSummary.percentage = monthSummary.total
-      ? Math.round((monthSummary.present / monthSummary.total) * 100)
-      : 0;
-
-    const fiveMonthsAgo = new Date();
-    fiveMonthsAgo.setMonth(fiveMonthsAgo.getMonth() - 5);
-    fiveMonthsAgo.setDate(1);
-    fiveMonthsAgo.setHours(0, 0, 0, 0);
-
-    // Historic monthly breakdowns
-    const monthlyAggregate = await StaffAttendance.aggregate([
-      {
-        $match: {
-          staff: staffObjectId,
-          date: { $gte: fiveMonthsAgo },
-        },
-      },
-      {
-        $group: {
-          _id: {
-            year: { $year: "$date" },
-            month: { $month: "$date" },
-          },
-          present: {
-            $sum: { $cond: [{ $eq: ["$status", "Present"] }, 1, 0] },
-          },
-          absent: {
-            $sum: { $cond: [{ $eq: ["$status", "Absent"] }, 1, 0] },
-          },
-          leave: {
-            $sum: { $cond: [{ $eq: ["$status", "On-Leave"] }, 1, 0] }, // Fixed: "Leave" -> "On-Leave"
-          },
-          total: { $sum: 1 },
-        },
-      },
-      { $sort: { "_id.year": 1, "_id.month": 1 } },
-    ]);
-
-    const lastFiveMonthsSummary = monthlyAggregate.map((item) => ({
-      year: item._id.year,
-      month: item._id.month,
-      present: item.present,
-      absent: item.absent,
-      leave: item.leave,
-      total: item.total,
-      percentage: item.total
-        ? Math.round((item.present / item.total) * 100)
-        : 0,
-    }));
-
-    const overallTotals = lastFiveMonthsSummary.reduce(
-      (acc, item) => ({
-        present: acc.present + item.present,
-        absent: acc.absent + item.absent,
-        leave: acc.leave + item.leave,
-        total: acc.total + item.total,
-      }),
-      { present: 0, absent: 0, leave: 0, total: 0 }
-    );
-
-    const overallPercentage = overallTotals.total
-      ? Math.round((overallTotals.present / overallTotals.total) * 100)
-      : 0;
-
-    const teacherInfo = await Staff.findById(staffObjectId).select(
-      "name staffId designation image staffType"
-    );
-
-    if (!teacherInfo) {
-      return res.status(404).json({
-        success: false,
-        message: "Staff not found",
+    const staffProfile = await Staff.findById(id).select("name staffId image staffType designation contact email");
+    if (!staffProfile) {
+      return res.status(404).json({ 
+        success: false, 
+        message: "Requested staff target entity could not be verified." 
       });
     }
+
+    let query = { staff: id };
+
+    // Dynamic chronological date window filtering matching staff self lookup parameters
+    if (startDate && endDate) {
+      query.date = {
+        $gte: new Date(`${startDate}T00:00:00.000Z`),
+        $lte: new Date(`${endDate}T23:59:59.999Z`)
+      };
+    }
+
+    const logs = await StaffAttendance.find(query).sort({ date: -1 });
 
     return res.status(200).json({
       success: true,
-      teacher: teacherInfo,
-      records,
-      monthSummary,
-      lastFiveMonthsSummary,
-      overallPercentage,
+      profile: staffProfile,
+      logs: logs || []
     });
   } catch (error) {
-    console.error("Detailed staff attendance error:", error);
     return res.status(500).json({
       success: false,
-      message: error.message,
+      message: "Admin error retrieving targeted staff chronological attendance log metrics.",
+      error: error.message
+    });
+  }
+};
+
+export const adminOverrideAttendance = async (req, res) => {
+  try {
+    const { id, targetDate, status } = req.body; // id: Staff document object native _id, targetDate format: YYYY-MM-DD
+
+    if (!id || !targetDate || !status) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Missing required execution parameters payload fields." 
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Invalid targeted staff identifier token structure references." 
+      });
+    }
+
+    if (!["Present", "Absent", "On-Leave"].includes(status)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Invalid status enum mapping layout criteria applied." 
+      });
+    }
+
+    // Force normalized midnight timestamp matching getIndianDateDetails() criteria schema precisely
+    const [year, month, day] = targetDate.split("-");
+    const normalizedTargetDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), 0, 0, 0, 0);
+
+    // Atomic update or insert tracking parameters loop matching unique index requirements ({ staff: 1, date: 1 })
+    const overridenLog = await StaffAttendance.findOneAndUpdate(
+      { staff: id, date: normalizedTargetDate },
+      {
+        status: status,
+        markedBy: "Admin"
+      },
+      { upsert: true, new: true, runValidators: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: `Staff marked as ${status} successfully for date: ${targetDate}`,
+      log: overridenLog
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Admin workspace attendance overwrite modification request failed.",
+      error: error.message
     });
   }
 };

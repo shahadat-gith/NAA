@@ -2,8 +2,6 @@ import { CLASS_OPTIONS } from "./academicOptions";
 
 
 
-
-
 export const formatDate = (date) => {
   const d = new Date(date);
 

@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import UploadResults from "./UploadResults";
 import "./Styles/Result.css";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/common/Loader";
 import { AdminContext } from "../../context/AdminContext";
 import { capitalizeWords } from "../../utils/utility";
 import { CLASS_OPTIONS, STREAM_OPTIONS } from "../../utils/academicOptions";

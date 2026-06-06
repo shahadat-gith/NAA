@@ -3,7 +3,7 @@ import "./Notices.css";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/common/Loader";
 import NoticeModal from "./NoticeModal";
 
 const Notices = () => {

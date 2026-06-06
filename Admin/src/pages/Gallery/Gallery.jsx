@@ -3,7 +3,7 @@ import { AdminContext } from "../../context/AdminContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import "./Gallery.css";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../../components/common/Loader";
 import ImagePreviewModal from "./ImagePreviewModal";
 import UploadModal from "./UploadModal";
 

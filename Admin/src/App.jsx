@@ -6,27 +6,33 @@ import { Toaster } from "react-hot-toast";
 
 import { AdminContext } from "./context/AdminContext";
 
-import AdminLayout from "./components/AdminLayout/AdminLayout";
-import Loader from "./components/Loader/Loader";
+import Layout from "./components/Layout/Layout";
+import Loader from "./components/common/Loader";
 
-import Home from "./pages/Home/Home";
+import Home from "./pages/Home";
+
 import Student from "./pages/Student/Student";
+import StudentDetails from "./pages/Student/StudentDetails";
+import StudentImages from "./pages/Student/StudentImages";
+
 import Settings from "./pages/Settings/Settings";
 import Gallery from "./pages/Gallery/Gallery";
-import Achievers from "./pages/Achievers/Achievers";
-import StudentDetails from "./pages/Student/StudentDetails/StudentDetails";
+import Achievers from "./pages//Achievers";
+
 import Login from "./pages/Login/Login";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
-import StudentImages from "./pages/StudentImages/StudentImages";
-import Exams from "./pages/Exams/Exams";
+
+import Exams from "./pages/Exams";
 import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
 import Notices from "./pages/Notices/Notices";
-import Attendance from "./pages/Attendance/Attendance";
+
 import Staffs from "./pages/Staffs/Staffs";
 import StaffDetails from "./pages/Staffs/StaffDetails";
-import AttendanceDashboard from "./pages/Attendance Dashboard/AttendanceDashboard";
+import Attendance from "./pages/Attendance/Attendance";
+import AttendanceDashboard from "./pages/Attendance/AttendanceDashboard";
+import AttendanceHistory from "./pages/Attendance/AttendanceHistory";
 
 
 /* ===============================
@@ -83,13 +89,14 @@ const App = () => {
           path="/*"
           element={
             <ProtectedAdminRoute>
-              <AdminLayout>
+              <Layout>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/staffs" element={<Staffs />} />
                   <Route path="/staffs/:staffId" element={<StaffDetails/>} />
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/attendance/dashboard" element={<AttendanceDashboard />} />
+                  <Route path="/attendance/dashboard/history" element={<AttendanceHistory />} />
                  
 
                   <Route path="/students" element={<Student />} />
@@ -109,7 +116,7 @@ const App = () => {
 
                   <Route path="/settings" element={<Settings />} />
                 </Routes>
-              </AdminLayout>
+              </Layout>
             </ProtectedAdminRoute>
           }
         />

@@ -1,15 +1,16 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
-    port: 5174, // Only for local development
+    port: 5174, 
   },
   build: {
-    outDir: 'dist', // Ensure output folder is correct
+    outDir: 'dist', 
   },
   preview: {
-    port: 4173, // Change the preview port to test before deploying
+    port: 4173, 
   },
 });

@@ -1,32 +1,28 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AdminContext } from "../../context/AdminContext";
-import toast from "react-hot-toast";
 import axios from "axios";
-import Loader from "../../components/Loader/Loader";
-import VerifyModal from "./VerifyModal";
-import "./StaffDetails.css";
+import toast from "react-hot-toast";
+import { ArrowLeft, Edit2, Trash2, User, Phone, Mail, MapPin } from "lucide-react";
+
+import { AdminContext } from "../../context/AdminContext";
+import Loader from "../../components/common/Loader";
+import VerifyModal from "../../components/staffs/VerifyModal";
 
 const StaffDetails = () => {
   const { staffId } = useParams();
   const navigate = useNavigate();
-  const { adminToken, backendUrl } = useContext(AdminContext);
+  const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [staff, setStaff] = useState(null);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const fetchStaffProfile = useCallback(async () => {
-    if (!backendUrl || !staffId || !adminToken) return;
-
-    setLoading(true);
-
+  const fetchStaffProfile = async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${backendUrl}/api/staff/${staffId}`, {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
 
       if (data.success) {
@@ -34,20 +30,19 @@ const StaffDetails = () => {
       }
     } catch (error) {
       console.error("Error fetching staff details:", error);
-      toast.error(error.response?.data?.message || "Failed to locate profile.");
+      toast.error("Failed to load staff profile");
     } finally {
       setLoading(false);
     }
-  }, [backendUrl, staffId, adminToken]);
+  };
 
   useEffect(() => {
-    fetchStaffProfile();
-  }, [fetchStaffProfile]);
+    if (staffId) fetchStaffProfile();
+  }, [staffId]);
 
-/* ================= DELETE PROFILE ================= */
   const handleDeleteProfile = async () => {
     const confirmation = window.confirm(
-      `Are you sure you want to completely delete the profile record for ${staff?.name}? This action cannot be undone.`
+      `Are you sure you want to permanently delete ${staff?.name}'s profile?`
     );
 
     if (!confirmation) return;
@@ -55,41 +50,25 @@ const StaffDetails = () => {
     setActionLoading(true);
     try {
       await axios.delete(`${backendUrl}/api/staff/${staffId}`, {
-        headers: { 
-          Authorization: `Bearer ${adminToken}` 
-        },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
 
-      toast.success("Staff profile deleted successfully.");
-      navigate(-1); 
-      
+      toast.success("Staff profile deleted successfully");
+      navigate("/staffs");
     } catch (error) {
-      console.error("Delete staff runtime execution error:", error);
-      toast.error(
-        error.response?.data?.message || "An error occurred while deleting the profile."
-      );
+      console.error(error);
+      toast.error(error.response?.data?.message || "Failed to delete profile");
     } finally {
       setActionLoading(false);
     }
   };
-  if (loading) return <Loader text="Loading staff profile details..." />;
+
+  if (loading) return <Loader text="Loading staff profile..." />;
 
   if (!staff) {
     return (
-      <div className="adm-details-error-pane">
-        <div className="adm-error-card">
-          <i className="fas fa-search-minus adm-error-icon"></i>
-          <h3>Profile Not Found</h3>
-          <p>No valid staff record found for ID: {staffId}</p>
-
-          <button
-            type="button"
-            className="adm-fallback-btn"
-            onClick={() => navigate(-1)}
-          >
-            Return to Directory
-          </button>
-        </div>
+      <div className="min-h-screen flex items-center justify-center text-[var(--text-secondary)]">
+        Staff profile not found
       </div>
     );
   }
@@ -97,199 +76,175 @@ const StaffDetails = () => {
   const avatar = staff.image?.url || "/user.png";
 
   return (
-    <div className="adm-details-page">
-      <div className="adm-details-container">
-        <div className="adm-details-nav-row">
-          <button
-            type="button"
-            className="adm-back-btn"
-            onClick={() => navigate(-1)}
-          >
-            <i className="fas fa-arrow-left"></i>
-            <span>Back</span>
-          </button>
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div className="max-w-5xl mx-auto md:p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-[var(--text-primary)]">
+                {staff.name}
+              </h1>
+              <p className="text-[var(--text-secondary)]">{staff.designation}</p>
+            </div>
+          </div>
 
-          <div className="adm-action-buttons-cluster">
+          <div className="flex gap-3">
             {staff.status === "Pending" && (
               <button
-                type="button"
-                className="adm-control-action-btn profile-verify-btn"
                 onClick={() => setIsModalOpen(true)}
                 disabled={actionLoading}
+                className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold transition-all"
               >
-                <i className="fas fa-check-circle"></i>
-                <span>Verify Staff</span>
+                <Edit2 size={18} />
+                Verify Staff
               </button>
             )}
 
             <button
-              type="button"
-              className="adm-control-action-btn profile-purge-btn"
               onClick={handleDeleteProfile}
               disabled={actionLoading}
+              className="flex items-center gap-2 px-6 py-3 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-2xl font-semibold transition-all"
             >
-              <i className="fas fa-trash-alt"></i>
-              <span>Delete Profile</span>
+              <Trash2 size={18} />
+              Delete
             </button>
           </div>
         </div>
 
-        <div className="adm-details-split-grid">
-          <aside className="adm-details-sidebar-card">
-            <div className="adm-details-avatar-box">
-              <img
-                src={avatar}
-                alt={staff.name}
-                className="adm-details-avatar-img"
-              />
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Profile Sidebar */}
+          <div className="lg:col-span-4">
+            <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8 text-center">
+              <div className="w-32 h-32 mx-auto rounded-3xl overflow-hidden border-4 border-[var(--bg-surface)] shadow-md mb-6">
+                <img
+                  src={avatar}
+                  alt={staff.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-            <div className="adm-details-meta-summary">
-              <h1 className="adm-profile-display-name">{staff.name}</h1>
-              <p className="adm-profile-display-role">{staff.designation}</p>
+              <h2 className="text-2xl font-bold text-[var(--text-primary)]">{staff.name}</h2>
+              <p className="text-[var(--text-secondary)] mt-1">{staff.designation}</p>
 
-              <div className="adm-profile-badges-row">
-                <span className="adm-profile-pill-tag">
-                  Staff ID: {staff.staffId || "Not Assigned"}
-                </span>
-
-                <span className="adm-profile-pill-tag type-pill">
+              <div className="flex justify-center gap-3 mt-6">
+                <span
+                  className={`px-4 py-1 text-sm font-medium rounded-full border ${
+                    staff.staffType?.toLowerCase() === "teaching"
+                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500"
+                      : "bg-amber-500/10 border-amber-500/30 text-amber-500"
+                  }`}
+                >
                   {staff.staffType || "Staff"}
                 </span>
-
                 <span
-                  className={`adm-profile-status-pill status-${staff.status?.toLowerCase()}`}
+                  className={`px-4 py-1 text-sm font-medium rounded-full border ${
+                    staff.status === "Active"
+                      ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-500"
+                      : "bg-amber-500/10 border-amber-500/30 text-amber-500"
+                  }`}
                 >
                   {staff.status || "Pending"}
                 </span>
               </div>
             </div>
-          </aside>
+          </div>
 
-          <main className="adm-details-main-stream">
-            <div className="adm-profile-attribute-panel">
-              <h2 className="adm-panel-section-title">
-                Institutional Details
-              </h2>
+          {/* Main Content */}
+          <div className="lg:col-span-8 space-y-6">
+            {/* Institutional Details */}
+            <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <User className="text-[var(--color-primary)]" size={26} />
+                <h3 className="text-xl font-semibold">Institutional Details</h3>
+              </div>
 
-              <div className="adm-parameter-rows-list">
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Staff Type</span>
-                  <span className="adm-row-value">
-                    {staff.staffType || "Not Registered"}
-                  </span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Staff ID</p>
+                  <p className="text-md font-mono font-semibold mt-1">{staff.staffId || "—"}</p>
                 </div>
-
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Designation</span>
-                  <span className="adm-row-value">
-                    {staff.designation || "Not Registered"}
-                  </span>
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Designation</p>
+                  <p className="text-md font-medium mt-1">{staff.designation || "—"}</p>
                 </div>
-
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">
-                    Academic Qualification
-                  </span>
-                  <span className="adm-row-value">
-                    {staff.qualification || "Not Registered"}
-                  </span>
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Staff Type</p>
+                  <p className="text-md font-medium mt-1 capitalize">{staff.staffType || "—"}</p>
                 </div>
-
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Experience</span>
-                  <span className="adm-row-value">
-                    {staff.experience ?? 0} Years
-                  </span>
-                </div>
-
-                {staff.staffType === "Teaching" && (
-                  <div className="adm-parameter-row">
-                    <span className="adm-row-label">Subject Taught</span>
-                    <span className="adm-row-value highlighting-cyan-text">
-                      {staff.subjectTaught || "General"}
-                    </span>
+                {staff.subjectTaught && (
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">Subject Taught</p>
+                    <p className="text-md font-medium mt-1">{staff.subjectTaught}</p>
                   </div>
                 )}
               </div>
             </div>
 
-            <div className="adm-profile-attribute-panel">
-              <h2 className="adm-panel-section-title">Contact Details</h2>
+            {/* Contact Details */}
+            <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <Phone className="text-[var(--color-primary)]" size={26} />
+                <h3 className="text-xl font-semibold">Contact Details</h3>
+              </div>
 
-              <div className="adm-parameter-rows-list">
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Email</span>
-                  <span className="adm-row-value tracking-bright-link">
-                    {staff.email || "N/A"}
-                  </span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Phone</p>
+                  <p className="text-md font-medium mt-1">{staff.contact || "—"}</p>
                 </div>
-
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Contact</span>
-                  <span className="adm-row-value">{staff.contact || "N/A"}</span>
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Email</p>
+                  <p className="text-md font-medium mt-1">{staff.email || "—"}</p>
                 </div>
-
-                <div className="adm-parameter-row">
-                  <span className="adm-row-label">Gender</span>
-                  <span className="adm-row-value">{staff.gender || "N/A"}</span>
+                <div>
+                  <p className="text-sm text-[var(--text-muted)]">Gender</p>
+                  <p className="text-md font-medium mt-1 capitalize">{staff.gender || "—"}</p>
                 </div>
               </div>
             </div>
 
+            {/* Address Details */}
             {staff.address && (
-              <div className="adm-profile-attribute-panel">
-                <h2 className="adm-panel-section-title">Address Details</h2>
+              <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <MapPin className="text-[var(--color-primary)]" size={26} />
+                  <h3 className="text-xl font-semibold">Address Details</h3>
+                </div>
 
-                <div className="adm-address-quad-grid">
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">Village / Town</span>
-                    <span className="adm-cell-data">
-                      {staff.address.village || "N/A"}
-                    </span>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">Village / Town</p>
+                    <p className="text-md mt-1">{staff.address.village || "—"}</p>
                   </div>
-
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">Post Office (P.O.)</span>
-                    <span className="adm-cell-data">
-                      {staff.address.po || "N/A"}
-                    </span>
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">Post Office</p>
+                    <p className="text-md mt-1">{staff.address.po || "—"}</p>
                   </div>
-
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">Police Station (P.S.)</span>
-                    <span className="adm-cell-data">
-                      {staff.address.ps || "N/A"}
-                    </span>
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">Police Station</p>
+                    <p className="text-md mt-1">{staff.address.ps || "—"}</p>
                   </div>
-
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">PIN Code</span>
-                    <span className="adm-cell-data structural-code-badge">
-                      {staff.address.pin || "N/A"}
-                    </span>
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">District</p>
+                    <p className="text-md mt-1">{staff.address.district || "—"}</p>
                   </div>
-
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">District</span>
-                    <span className="adm-cell-data">
-                      {staff.address.district || "N/A"}
-                    </span>
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">State</p>
+                    <p className="text-md mt-1">{staff.address.state || "Assam"}</p>
                   </div>
-
-                  <div className="adm-address-grid-cell">
-                    <span className="adm-cell-tag">State</span>
-                    <span className="adm-cell-data">
-                      {staff.address.state || "Assam"}
-                    </span>
+                  <div>
+                    <p className="text-sm text-[var(--text-muted)]">Pincode</p>
+                    <p className="text-md mt-1">{staff.address.pin || "—"}</p>
                   </div>
                 </div>
               </div>
             )}
-          </main>
+          </div>
         </div>
       </div>
 
+      {/* Verify Modal */}
       <VerifyModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
