@@ -3,13 +3,13 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Settings as SettingsIcon, Wrench, IndianRupee, Users, Image } from "lucide-react";
 
-import { AdminContext } from "../../context/AdminContext";
-import Loader from "../../components/common/Loader";
+import { AdminContext } from "../context/AdminContext";
+import Loader from "../components/common/Loader";
 
-import ServiceTab from "../../components/settings/ServiceTab";
-import FeesTab from "../../components/settings/FeesTab";
-import Authoritiestab from "../../components/settings/Authoritiestab";
-import BannerImagesTab from "../../components/settings/BannerImagesTab";
+import ServiceTab from "../components/settings/ServiceTab";
+import FeesTab from "../components/settings/FeesTab";
+import Authoritiestab from "../components/settings/AuthoritiesTab";
+import BannerImagesTab from "../components/settings/BannerImagesTab";
 
 const Settings = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
