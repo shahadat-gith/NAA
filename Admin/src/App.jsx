@@ -9,24 +9,23 @@ import { AdminContext } from "./context/AdminContext";
 import Layout from "./components/layout/Layout";
 import Loader from "./components/common/Loader";
 
+import Login from "./pages/Login/Login";
 import Home from "./pages/Home";
 
 import Student from "./pages/Student/Student";
 import StudentDetails from "./pages/Student/StudentDetails";
 import StudentImages from "./pages/Student/StudentImages";
-
-import Settings from "./pages/Settings/Settings";
-import Gallery from "./pages/Gallery/Gallery";
-import Achievers from "./pages//Achievers";
-
-import Login from "./pages/Login/Login";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
-
 import Exams from "./pages/Exams";
 import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
+
+import Settings from "./pages/Settings";
+import Gallery from "./pages/Gallery/Gallery";
+import Achievers from "./pages//Achievers";
 import Notices from "./pages/Notices/Notices";
+
 
 import Staffs from "./pages/Staffs/Staffs";
 import StaffDetails from "./pages/Staffs/StaffDetails";
