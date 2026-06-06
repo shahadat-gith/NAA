@@ -75,24 +75,27 @@ const PromoteStudentsModal = ({ isOpen, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
       <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-lg overflow-hidden"
+        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-lg max-h-[70vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">Promote Students</h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
           >
-            <X size={24} />
+            <X size={26} />
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-8 space-y-6">
+        {/* Scrollable Form Content */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex-1 overflow-auto p-8 space-y-6"
+        >
           <div className="space-y-5">
             {/* Medium */}
             <div>
@@ -183,16 +186,19 @@ const PromoteStudentsModal = ({ isOpen, onClose, onSuccess }) => {
               </select>
             </div>
           </div>
+        </form>
 
-          {/* Submit Button */}
+        {/* Fixed Footer */}
+        <div className="p-6 border-t border-[var(--border-default)] flex-shrink-0">
           <button
-            type="submit"
+            type="button"
+            onClick={handleSubmit}
             disabled={loading}
-            className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70 mt-4"
+            className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
           >
             {loading ? "Promoting Students..." : "Promote Students"}
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

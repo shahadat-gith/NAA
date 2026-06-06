@@ -1,5 +1,4 @@
 import React from "react";
-import "./FeesTab.css";
 
 const FeesTab = ({data, loading}) => {
   return (

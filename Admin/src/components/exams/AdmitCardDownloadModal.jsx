@@ -54,7 +54,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
   const isSearchMode = query.trim().length > 0;
   const studentsToShow = isSearchMode ? searchedStudents : classStudents;
 
-  // Determine which students to download
   let studentsToDownload = [];
   let admitCard = null;
   let errorMessage = "";
@@ -80,7 +79,6 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
     else studentsToDownload = classStudents;
   }
 
-  // Get admit card template
   if (studentsToDownload.length > 0) {
     admitCard = (settings?.admitCards || []).find((card) => {
       const stu = studentsToDownload[0];
@@ -154,17 +152,21 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
     <>
       <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1100] flex items-center justify-center p-4">
         <div
-          className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col"
+          className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[60vh] flex flex-col overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+          {/* Fixed Header */}
+          <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
             <h2 className="text-2xl font-bold text-[var(--text-primary)]">Download Admit Cards</h2>
-            <button onClick={resetAndClose} className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors">
+            <button
+              onClick={resetAndClose}
+              className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
+            >
               <X size={26} />
             </button>
           </div>
 
+          {/* Scrollable Content */}
           <div className="flex-1 overflow-auto p-8 space-y-8">
             {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -239,7 +241,7 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
               </div>
             </div>
 
-            {/* Student List with Selection */}
+            {/* Student List */}
             <StudentList
               students={studentsToShow}
               selectable={isSearchMode}
@@ -252,8 +254,8 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
             )}
           </div>
 
-          {/* Footer */}
-          <div className="p-6 border-t border-[var(--border-default)] flex gap-3">
+          {/* Fixed Footer */}
+          <div className="p-6 border-t border-[var(--border-default)] flex gap-3 flex-shrink-0">
             <button
               onClick={onClose}
               className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
@@ -267,12 +269,13 @@ const AdmitCardDownloadModal = ({ open, onClose }) => {
               className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-60 flex items-center justify-center gap-2"
             >
               <Download size={20} />
-              Download Admit Card{studentsToDownload.length > 1 ? "s" : ""}
+              Download
             </button>
           </div>
         </div>
       </div>
 
+      {/* Progress Modal */}
       <DownloadProgressModal
         isOpen={isProgressOpen}
         progress={progress}

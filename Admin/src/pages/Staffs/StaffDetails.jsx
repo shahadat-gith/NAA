@@ -77,7 +77,7 @@ const StaffDetails = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
-      <div className="max-w-5xl mx-auto md:p-6">
+      <div className="mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
@@ -97,7 +97,7 @@ const StaffDetails = () => {
                 className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold transition-all"
               >
                 <Edit2 size={18} />
-                Verify Staff
+                Verify
               </button>
             )}
 
@@ -112,10 +112,10 @@ const StaffDetails = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Profile Sidebar */}
-          <div className="lg:col-span-4">
-            <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8 text-center">
+        <div className="gap-6">
+          {/* Main Content */}
+          <div className="space-y-6">
+             <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8 text-center">
               <div className="w-32 h-32 mx-auto rounded-3xl overflow-hidden border-4 border-[var(--bg-surface)] shadow-md mb-6">
                 <img
                   src={avatar}
@@ -148,10 +148,6 @@ const StaffDetails = () => {
                 </span>
               </div>
             </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-8 space-y-6">
             {/* Institutional Details */}
             <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
               <div className="flex items-center gap-3 mb-6">

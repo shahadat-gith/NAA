@@ -149,7 +149,7 @@ const Exams = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
-      <div className="max-w-7xl mx-auto p-4 md:p-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
@@ -160,9 +160,8 @@ const Exams = () => {
           <div className="flex gap-3 mt-4 md:mt-0">
             <button
               onClick={() => setRoutineModalOpen(true)}
-              className="flex items-center gap-2 px-5 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
+              className="flex items-center gap-2 px-3 py-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
             >
-              <Plus size={20} />
               Add Schedule
             </button>
 
@@ -179,10 +178,9 @@ const Exams = () => {
         <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-6 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Calendar className="text-[var(--color-primary)]" size={28} />
               <div>
-                <h3 className="text-xl font-semibold">Current Exam</h3>
-                <p className="text-[var(--text-secondary)]">
+                <h3 className="text-sm md:text-xl font-semibold">Current Exam</h3>
+                <p className="text-[var(--text-secondary)] text-sm">
                   {currentExam?.examName || "No exam configured"} 
                   {currentExam?.academicSession && ` (${currentExam.academicSession})`}
                 </p>
@@ -191,20 +189,20 @@ const Exams = () => {
 
             <button
               onClick={() => setCurrentExamModalOpen(true)}
-              className="px-5 py-2.5 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
+              className="px-5 py-2.5 border bg-[var(--color-primary)] border-[var(--border-default)] hover:bg-[var(--bg-surface)] rounded-2xl font-medium transition-all"
             >
-              Update Exam
+              Update
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
             <div>
               <p className="text-sm text-[var(--text-muted)]">Morning Shift</p>
-              <p className="text-2xl font-semibold mt-1">{currentExam?.time?.morning || "Not Set"}</p>
+              <p className="text-md font-semibold mt-1">{currentExam?.time?.morning || "Not Set"}</p>
             </div>
             <div>
               <p className="text-sm text-[var(--text-muted)]">Afternoon Shift</p>
-              <p className="text-2xl font-semibold mt-1">{currentExam?.time?.afternoon || "Not Set"}</p>
+              <p className="text-md font-semibold mt-1">{currentExam?.time?.afternoon || "Not Set"}</p>
             </div>
           </div>
         </div>

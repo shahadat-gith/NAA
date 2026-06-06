@@ -89,7 +89,7 @@ const AttendanceDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] p-4 md:p-6">
+    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -98,7 +98,7 @@ const AttendanceDashboard = () => {
               <Users size={24} />
             </div>
             <div>
-              <h1 className="text-3xl font-bold">Staff Attendance</h1>
+              <h1 className="text-xl font-bold">Staff Attendance</h1>
               <p className="text-[var(--text-secondary)]">
                 Current Month Overview
               </p>

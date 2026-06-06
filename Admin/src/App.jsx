@@ -92,13 +92,15 @@ const App = () => {
               <Layout>
                 <Routes>
                   <Route path="/" element={<Home />} />
+
+                  {/* Staffs  */}
                   <Route path="/staffs" element={<Staffs />} />
                   <Route path="/staffs/:staffId" element={<StaffDetails/>} />
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/attendance/dashboard" element={<AttendanceDashboard />} />
                   <Route path="/attendance/dashboard/history" element={<AttendanceHistory />} />
                  
-
+                  {/* Students */}
                   <Route path="/students" element={<Student />} />
                   <Route path="/student/images" element={<StudentImages />} />
                   <Route path="/students/:id" element={<StudentDetails />} />
@@ -108,12 +110,12 @@ const App = () => {
 
                   <Route path="/admissions" element={<Admissions/>}/>
                   <Route path="/admissions/:id" element={<AdmissionDetails/>}/>
+
+
+                  {/* System  */}
                   <Route path="/notices" element={<Notices/>}/>
-
-
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/achievers" element={<Achievers />} />
-
                   <Route path="/settings" element={<Settings />} />
                 </Routes>
               </Layout>

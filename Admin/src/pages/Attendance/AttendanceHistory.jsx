@@ -94,8 +94,8 @@ const StaffAttendanceHistory = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] p-4 md:p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)]">
+      <div className="mx-auto">
         {/* Back Button & Header */}
         <div className="flex items-center gap-3 mb-6">
           <div>
@@ -146,7 +146,7 @@ const StaffAttendanceHistory = () => {
                 <button
                   disabled={submittingOverride}
                   onClick={() => handleOverrideSubmit("On-Leave")}
-                  className="py-4 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-950/50 text-amber-500 font-semibold transition-all active:scale-95 disabled:opacity-60"
+                  className="py-4 rounded-md border border-amber-500/30 bg-amber-500/10 hover:bg-amber-950/50 text-amber-500 font-semibold transition-all active:scale-95 disabled:opacity-60"
                 >
                   Mark On Leave
                 </button>

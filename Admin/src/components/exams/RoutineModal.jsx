@@ -111,14 +111,13 @@ const RoutineModal = ({
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1200] flex items-center justify-center p-4">
       <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col"
+        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[60vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
           <div className="flex items-center gap-3">
-            <Calendar className="text-[var(--color-primary)]" size={26} />
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">
               {initialData ? "Edit Exam Schedule" : "Add New Exam Schedule"}
             </h2>
           </div>
@@ -130,11 +129,17 @@ const RoutineModal = ({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-8 space-y-8">
+        {/* Scrollable Content */}
+        <form
+          onSubmit={handleSubmit}
+          className="flex-1 overflow-auto p-8 space-y-8"
+        >
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Class <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Class <span className="text-red-500">*</span>
+              </label>
               <select
                 value={selectedClass}
                 onChange={(e) => setSelectedClass(e.target.value)}
@@ -142,15 +147,22 @@ const RoutineModal = ({
                 required
               >
                 <option value="">Select Class</option>
-                {Object.values(CLASS_OPTIONS).flat().filter((v, i, a) => a.indexOf(v) === i).map((cls) => (
-                  <option key={cls} value={cls}>{cls}</option>
-                ))}
+                {Object.values(CLASS_OPTIONS)
+                  .flat()
+                  .filter((v, i, a) => a.indexOf(v) === i)
+                  .map((cls) => (
+                    <option key={cls} value={cls}>
+                      {cls}
+                    </option>
+                  ))}
               </select>
             </div>
 
             {["11", "12"].includes(selectedClass) && (
               <div>
-                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Stream <span className="text-red-500">*</span></label>
+                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                  Stream <span className="text-red-500">*</span>
+                </label>
                 <select
                   value={selectedStream}
                   onChange={(e) => setSelectedStream(e.target.value)}
@@ -212,7 +224,10 @@ const RoutineModal = ({
               {exams.map((exam, index) => {
                 const [startTime = "", endTime = ""] = (exam.time || "").split(" - ");
                 return (
-                  <div key={index} className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl p-5 grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                  <div
+                    key={index}
+                    className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl p-5 grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
+                  >
                     <div className="md:col-span-2">
                       <label className="block text-xs text-[var(--text-muted)] mb-1">Subject</label>
                       <select
@@ -294,25 +309,26 @@ const RoutineModal = ({
               })}
             </div>
           </div>
-
-          {/* Submit Buttons */}
-          <div className="flex gap-4 pt-6">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
-            >
-              {loading ? "Saving Schedule..." : "Save Schedule"}
-            </button>
-          </div>
         </form>
+
+        {/* Fixed Footer */}
+        <div className="flex gap-4 p-6 border-t border-[var(--border-default)] flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,19 +1,29 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import "./Settings.css";
-import ServiceTab from "./Tabs/ServiceTab/ServiceTab";
-import FeesTab from "./Tabs/FeesTab/FeesTab";
-import Authoritiestab from "./Tabs/AuthoritiesTab/AuthoritiesTab";
-import BannerImagesTab from "./Tabs/BannerImagesTab/BannerImagesTab";
-import Loader from "../../components/common/Loader";
+import { Settings as SettingsIcon, Wrench, IndianRupee, Users, Image } from "lucide-react";
+
 import { AdminContext } from "../../context/AdminContext";
+import Loader from "../../components/common/Loader";
+
+import ServiceTab from "../../components/settings/ServiceTab";
+import FeesTab from "../../components/settings/FeesTab";
+import Authoritiestab from "../../components/settings/Authoritiestab";
+import BannerImagesTab from "../../components/settings/BannerImagesTab";
 
 const Settings = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("services");
+
+  const tabs = [
+    { id: "services", label: "Services", icon: Wrench },
+    { id: "fees", label: "Fees", icon: IndianRupee },
+    { id: "authorities", label: "Authorities", icon: Users },
+    { id: "BannerImages", label: "Banner Images", icon: Image },
+  ];
 
   /* ================= FETCH SETTINGS ================= */
   const fetchSettings = async () => {
@@ -21,9 +31,7 @@ const Settings = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${backendUrl}/api/settings/`, {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
 
       if (response.data.success) {
@@ -43,103 +51,67 @@ const Settings = () => {
     }
   };
 
-  /* ================= LOAD ON MOUNT ================= */
   useEffect(() => {
     fetchSettings();
   }, [adminToken]);
-  const tabs = [
-    {
-      id: "services",
-      label: "Services",
-      icon: "fa-solid fa-gear",
-    },
-
-    {
-      id: "fees",
-      label: "Fees",
-      icon: "fa-solid fa-indian-rupee-sign",
-    },
-    {
-      id: "authorities",
-      label: "authorities",
-      icon: "fa-solid fa-person",
-    },
-    {
-      id: "BannerImages",
-      label: "Banner Images",
-      icon: "fa-solid fa-image",
-    },
-  ];
-
-  const [activeTab, setActiveTab] = useState("services");
 
   const renderTab = () => {
     switch (activeTab) {
       case "services":
-        return (
-          <ServiceTab
-            data={settings?.serviceSettings}
-            loading={loading}
-            onRefresh={fetchSettings}
-          />
-        );
-
+        return <ServiceTab data={settings?.serviceSettings} loading={loading} onRefresh={fetchSettings} />;
       case "fees":
-        return (
-          <FeesTab
-            data={settings?.feesSettings}
-            loading={loading}
-            onRefresh={fetchSettings}
-          />
-        );
-
+        return <FeesTab data={settings?.feesSettings} loading={loading} onRefresh={fetchSettings} />;
       case "authorities":
-        return (
-          <Authoritiestab
-            authorities={settings?.authorities}
-            loading={loading}
-            onRefresh={fetchSettings}
-          />
-        );
-
+        return <Authoritiestab authorities={settings?.authorities} loading={loading} onRefresh={fetchSettings} />;
       case "BannerImages":
-        return (
-          <BannerImagesTab
-            heroImages={settings?.heroImages}
-            loading={loading}
-            onRefresh={fetchSettings}
-          />
-        );
-
+        return <BannerImagesTab heroImages={settings?.heroImages} loading={loading} onRefresh={fetchSettings} />;
       default:
         return null;
     }
   };
 
-  if (loading) {
-    return <Loader text="Loading settings..." />;
-  }
+  if (loading) return <Loader text="Loading settings..." />;
 
   return (
-    <div className="st-container">
-      <div className="st-header">
-        <h2 className="st-title">System Settings</h2>
-      </div>
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div className="mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-xl font-bold text-[var(--text-primary)]">Settings</h1>
+           
+          </div>
+        </div>
 
-      <div className="st-tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`st-tab ${activeTab === tab.id ? "st-tab-active" : ""}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            <i className={`st-tab-icon ${tab.icon}`} />
-            <span className="st-tab-label">{tab.label}</span>
-          </button>
-        ))}
-      </div>
+        {/* Tabs - Horizontal Scroll on Mobile */}
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-2 mb-8 overflow-x-auto">
+          <div className="flex gap-1 min-w-max">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl text-sm font-medium whitespace-nowrap transition-all ${
+                    isActive
+                      ? "bg-[var(--color-primary)] text-white shadow-md"
+                      : "hover:bg-[var(--bg-surface-2)] text-[var(--text-primary)]"
+                  }`}
+                >
+                  <Icon size={18} />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-      <div className="st-content">{renderTab()}</div>
+        {/* Content Area */}
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-6 md:p-8">
+          {renderTab()}
+        </div>
+      </div>
     </div>
   );
 };

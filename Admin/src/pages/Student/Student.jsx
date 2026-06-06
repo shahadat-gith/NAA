@@ -119,16 +119,16 @@ const Student = () => {
               onClick={() => setStudentModal(true)}
               className="flex items-center gap-2 px-5 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
             >
-              <Plus size={20} />
-              Add Student
+             
+              Add 
             </button>
 
             <button
               onClick={() => setPromoteModalOpen(true)}
-              className="flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-semibold transition-all"
+              className="flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] bg-[var(--text-muted)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-semibold transition-all"
             >
-              <ArrowUp size={20} />
-              Promote Students
+              
+              Promote
             </button>
           </div>
         </div>

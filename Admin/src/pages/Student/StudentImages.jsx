@@ -106,16 +106,16 @@ const StudentImages = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
-      <div className="max-w-7xl mx-auto p-4 md:p-6">
+      <div className="mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
           <div>
-            <h1 className="text-4xl font-bold text-[var(--text-primary)]">Student Images</h1>
+            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Student Images</h1>
             <p className="text-[var(--text-secondary)] mt-1">Manage and upload student photos</p>
           </div>
           <button
             onClick={clearFilters}
-            className="mt-4 md:mt-0 flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
+            className="mt-4 md:mt-0 flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] bg-[var(--text-muted)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
           >
             <X size={18} />
             Clear Filters

@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { X, Upload, RotateCw, Image as ImageIcon } from "lucide-react";
 
 import { AdminContext } from "../../context/AdminContext";
-import { capitalizeWords } from "../../utils/utility";
 
 const ImageUploadModal = ({ isOpen, student, onClose, onSuccess }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -137,16 +136,14 @@ const ImageUploadModal = ({ isOpen, student, onClose, onSuccess }) => {
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1100] flex items-center justify-center p-4">
       <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-5xl max-h-[95vh] overflow-hidden flex flex-col"
+        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-5xl max-h-[70vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
           <div>
-            <h2 className="text-2xl font-bold">Upload Student Photo</h2>
-            <p className="text-[var(--text-secondary)]">
-              {capitalizeWords(student?.name)} • Class {student?.class}
-            </p>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">Upload Photo</h2>
+           
           </div>
           <button
             onClick={onClose}
@@ -156,6 +153,7 @@ const ImageUploadModal = ({ isOpen, student, onClose, onSuccess }) => {
           </button>
         </div>
 
+        {/* Scrollable Content */}
         <div className="flex-1 overflow-auto p-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Crop Area */}
@@ -248,22 +246,13 @@ const ImageUploadModal = ({ isOpen, student, onClose, onSuccess }) => {
                   ) : (
                     <>
                       <Upload size={18} />
-                      Upload Photo
+                      Upload
                     </>
                   )}
                 </button>
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="p-6 border-t border-[var(--border-default)] flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-8 py-3 text-[var(--text-secondary)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-          >
-            Cancel
-          </button>
         </div>
 
         <input

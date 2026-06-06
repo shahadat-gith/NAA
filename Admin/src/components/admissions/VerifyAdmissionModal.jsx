@@ -65,8 +65,7 @@ const VerifyAdmissionModal = ({
         {/* Header */}
         <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
           <div className="flex items-center gap-3">
-            <CheckCircle className="text-emerald-500" size={26} />
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Verify Admission</h2>
+            <h2 className="text-xl font-bold text-[var(--text-primary)]">Verify Admission</h2>
           </div>
           <button
             onClick={onClose}
@@ -115,7 +114,6 @@ const VerifyAdmissionModal = ({
               "Verifying..."
             ) : (
               <>
-                <FileText size={20} />
                 Verify
               </>
             )}

@@ -137,7 +137,7 @@ const StudentModal = ({ isOpen, onClose, onSuccess, student, setStudent }) => {
         toast.success(
           isEditMode
             ? "Student updated successfully"
-            : "Student added successfully",
+            : "Student added successfully"
         );
         if (isEditMode && typeof setStudent === "function") {
           setStudent(res.data.student);
@@ -153,13 +153,13 @@ const StudentModal = ({ isOpen, onClose, onSuccess, student, setStudent }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1000] flex items-center justify-center p-4">
       <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[95vh] overflow-hidden flex flex-col"
+        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[70vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">
             {isEditMode ? "Edit Student" : "Add New Student"}
           </h2>
@@ -167,11 +167,11 @@ const StudentModal = ({ isOpen, onClose, onSuccess, student, setStudent }) => {
             onClick={handleClose}
             className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
           >
-            <X size={24} />
+            <X size={26} />
           </button>
         </div>
 
-        {/* Form */}
+        {/* Scrollable Form Content */}
         <form
           onSubmit={handleSubmit}
           className="flex-1 overflow-auto p-8 space-y-8"
@@ -423,24 +423,25 @@ const StudentModal = ({ isOpen, onClose, onSuccess, student, setStudent }) => {
               </div>
             </div>
           </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
-            >
-              {loading
-                ? isEditMode
-                  ? "Updating Student..."
-                  : "Adding Student..."
-                : isEditMode
-                  ? "Update Student"
-                  : "Add Student"}
-            </button>
-          </div>
         </form>
+
+        {/* Fixed Footer */}
+        <div className="p-6 border-t border-[var(--border-default)] flex-shrink-0">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
+          >
+            {loading
+              ? isEditMode
+                ? "Updating Student..."
+                : "Adding Student..."
+              : isEditMode
+              ? "Update Student"
+              : "Add Student"}
+          </button>
+        </div>
       </div>
     </div>
   );

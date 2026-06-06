@@ -100,16 +100,13 @@ const AddAchieverModal = ({
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1100] flex items-center justify-center p-4">
       <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-2xl max-h-[95vh] overflow-hidden flex flex-col"
+        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-2xl max-h-[70vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
+        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-[var(--color-primary)] rounded-2xl flex items-center justify-center text-white">
-              <Plus size={20} />
-            </div>
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Add New Achiever</h2>
+            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Add Achiever</h2>
           </div>
           <button
             onClick={onClose}
@@ -119,6 +116,7 @@ const AddAchieverModal = ({
           </button>
         </div>
 
+        {/* Scrollable Content */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-8 space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -252,25 +250,26 @@ const AddAchieverModal = ({
               </label>
             </div>
           </div>
-
-          {/* Submit Buttons */}
-          <div className="flex gap-4 pt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={uploading}
-              className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
-            >
-              {uploading ? "Adding..." : "Add Achiever"}
-            </button>
-          </div>
         </form>
+
+        {/* Fixed Footer */}
+        <div className="p-6 border-t border-[var(--border-default)] flex gap-4 flex-shrink-0">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={uploading}
+            className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+          >
+            {uploading ? "Adding..." : "Add"}
+          </button>
+        </div>
       </div>
     </div>
   );
