@@ -2,6 +2,7 @@ import React from 'react';
 import './AttendanceLogs.css';
 
 const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
+  console.log(attendanceList)
   
   const getStatusStyle = (status) => {
     switch(status) {
@@ -42,7 +43,6 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
             <thead>
               <tr>
                 <th><i className="fa-solid fa-user-tie" style={{ marginRight: '6px' }}></i> Faculty</th>
-                <th><i className="fa-regular fa-calendar" style={{ marginRight: '6px' }}></i> Date</th>
                 <th><i className="fa-regular fa-clock" style={{ marginRight: '6px' }}></i> Time</th>
                 <th><i className="fa-solid fa-shield-halved" style={{ marginRight: '6px' }}></i> Status</th>
                 <th><i className="fa-solid fa-fingerprint" style={{ marginRight: '6px' }}></i> Marked By</th>
@@ -50,12 +50,7 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
             </thead>
             <tbody>
               {attendanceList.map((record) => {
-                // Formatting the Midnight-Normalized Date safe for presentation
-                const attendanceDate = new Date(record.date).toLocaleDateString('en-GB', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric'
-                });
+  
 
                 // UPDATED: Falling back cleanly on MongoDB's native 'createdAt' timestamp token
                 const checkInTimestamp = record.createdAt || null;
@@ -74,17 +69,16 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
                     <td className="atd-td">
                       <div className="atd-faculty-profile-cell">
                          <img 
-                            src={record.teacher?.image.url || "/user.png"} 
-                            alt={record.teacher?.name || "Profile"} 
+                            src={record.staff?.image.url || "/user.png"} 
+                            alt={record.staff?.name || "Profile"} 
                             className="atd-faculty-avatar"
                           />
                         <div className="atd-faculty-meta-info">
-                          <div className="faculty-name">{record.teacher?.name || "N/A"}</div>
-                          <div className="faculty-dept">{record.teacher?.contact || "No Contact Ext."}</div>
+                          <div className="faculty-name">{record.staff?.name || "N/A"}</div>
+                          <div className="faculty-dept">{record.staff?.contact || "No Contact Ext."}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="atd-td">{attendanceDate}</td>
                     <td className="atd-td time-cell">
                       <span className={checkInTimestamp ? "" : "no-time"}>{attendanceTime}</span>
                     </td>

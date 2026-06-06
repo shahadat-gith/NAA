@@ -138,7 +138,7 @@ const Attendance = () => {
                   ) : (
                     <>
                       <i className="fa-solid fa-power-off m-right"></i>
-                      Expire Session
+                      Expire QR
                     </>
                   )}
                 </button>
@@ -171,12 +171,12 @@ const Attendance = () => {
                 {actionLoading ? (
                   <>
                     <i className="fa-solid fa-spinner fa-spin m-right"></i>
-                    Compiling Safe Hash...
+                    generating...
                   </>
                 ) : (
                   <>
                     <i className="fa-solid fa-wand-magic-sparkles m-right"></i>
-                    Initialize Today's Session
+                    Generate QR
                   </>
                 )}
               </button>
