@@ -1,16 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, Image as ImageIcon, Edit2 } from "lucide-react";
 
-import EditBannerModal from "./EditBannerModal";
 import { Button } from "../common/Button";
 
 const MAX_IMAGES = 12;
 
 const BannerImagesTab = ({ heroImages = [], loading }) => {
-  const [editingImage, setEditingImage] = useState(null);
-  const [isAddMode, setIsAddMode] = useState(false);
-
+  const navigate = useNavigate();
   const images = heroImages || [];
+
+  /* ================= NAVIGATE TO ACTION PAGE ================= */
+  const openAddBanner = () => {
+    navigate("/actions?type=EditBannerImage", { 
+      state: { isAddMode: true } 
+    });
+  };
+
+  const openEditBanner = (img) => {
+    navigate("/actions?type=EditBannerImage", { 
+      state: { image: img, isAddMode: false } 
+    });
+  };
 
   return (
     <div>
@@ -22,6 +33,11 @@ const BannerImagesTab = ({ heroImages = [], loading }) => {
             </h3>
           </div>
         </div>
+
+        <Button onClick={openAddBanner} disabled={images.length >= MAX_IMAGES}>
+          <Plus size={18} className="mr-2" />
+          Add Banner
+        </Button>
       </div>
 
       {loading ? (
@@ -41,13 +57,11 @@ const BannerImagesTab = ({ heroImages = [], loading }) => {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {images.map((img) => (
+          {images.map((img, index) => (
             <div
               key={img._id}
               className="group relative bg-[var(--bg-base)] border border-[var(--border-default)] rounded-3xl overflow-hidden hover:shadow-lg transition-all"
             >
-              {/* Edit Button */}
-
               <img
                 src={img.url}
                 alt="Banner"
@@ -55,9 +69,13 @@ const BannerImagesTab = ({ heroImages = [], loading }) => {
               />
 
               <div className="flex items-center justify-between p-4 text-sm text-[var(--text-secondary)]">
-                <h2>Banner #{images.indexOf(img) + 1}</h2>
+                <h2>Banner #{index + 1}</h2>
 
-                <Button onClick={() => setEditingImage(img)} variant="warning">
+                <Button 
+                  onClick={() => openEditBanner(img)} 
+                  variant="warning"
+                  size="sm"
+                >
                   <Edit2 size={18} />
                 </Button>
               </div>
@@ -65,17 +83,6 @@ const BannerImagesTab = ({ heroImages = [], loading }) => {
           ))}
         </div>
       )}
-
-      {/* Edit / Add Modal */}
-      <EditBannerModal
-        open={!!editingImage || isAddMode}
-        image={editingImage}
-        isAddMode={isAddMode}
-        onClose={() => {
-          setEditingImage(null);
-          setIsAddMode(false);
-        }}
-      />
     </div>
   );
 };
