@@ -14,6 +14,7 @@ import {
   Briefcase,
   SquarePen,
 } from "lucide-react";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const Profile = () => {
   const { staff } = useAppContext();
@@ -38,7 +39,8 @@ const Profile = () => {
   };
 
   return (
-    <main className="w-full px-4 py-6 space-y-5 max-w-md mx-auto animate-fade-in">
+   <AnimatedScreen>
+     <main className="w-full px-4 py-6 space-y-5 max-w-md mx-auto animate-fade-in">
       
       {/* ================= ACCOUNT DETAILS SECTION BLOCK ================= */}
       <div className="bg-card border relative border-border rounded-2xl p-4 shadow-xs">
@@ -138,6 +140,7 @@ const Profile = () => {
         ]}
       />
     </main>
+   </AnimatedScreen>
   );
 };
 

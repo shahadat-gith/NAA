@@ -14,6 +14,7 @@ import ForgotPasswordDrawer from "../components/login/ForgotPasswordDrawer";
 import { cleanPhoneNumber } from "../services/utils";
 import Button from "../components/common/Button";
 import Alert from "../components/common/Alert";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,7 +62,9 @@ const Login = () => {
         const staffProfileData = data.staff;
 
         if (!token || !staffProfileData) {
-          setErrorMsg("Could not set up your secure session. Please try again.");
+          setErrorMsg(
+            "Could not set up your secure session. Please try again.",
+          );
           return;
         }
 
@@ -78,138 +81,147 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full min-h-screen px-4 py-8 flex flex-col justify-center max-w-md mx-auto bg-background animate-fade-in">
-      
-      {/* Container Box Wrapper */}
-      <div className="bg-card border border-border rounded-2xl shadow-xl shadow-black/[0.02] overflow-hidden">
-        
-        {/* ================= MOBILE-FIRST BRAND HEADER ================= */}
-        <div className="flex flex-col items-center pt-6 pb-4 px-4 text-center border-b border-border/40 select-none">
-          <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-2.5 shadow-inner bg-background border border-border/80 shadow-primary/5">
-            <img
-              src="/logo.png"
-              alt="Nashib Ali Academy Logo"
-              className="w-10 h-10 object-contain drop-shadow-xs"
-            />
-          </div>
-
-          <h1 className="text-xl font-black tracking-tight text-text-primary">
-            Nashib Ali Academy
-          </h1>
-          <p className="text-[10px] font-black uppercase tracking-widest mt-0.5 text-primary">
-            Staff Portal
-          </p>
-        </div>
-
-        {/* ================= CONTEXTUAL ONBOARDING WELCOME BANNER ================= */}
-        {isFromMainSite && (
-          <div className="mx-5 mt-5 p-3.5 rounded-xl border bg-primary/5 border-primary/20 flex items-start space-x-2.5 animate-slide-up select-none">
-            <IoInformationCircleOutline size={18} className="text-primary shrink-0 mt-0.5" />
-            <div className="space-y-0.5">
-              <h4 className="text-[10px] font-black text-primary uppercase tracking-wider">
-                Registration Successful
-              </h4>
-              <p className="text-[11px] font-bold text-text-secondary leading-normal">
-                Your default password is <span className="text-text-primary font-black underline">123456</span>. Please sign in and change your password from the settings.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* ================= INTERACTIVE INPUT FORM LAYOUT ================= */}
-        <form onSubmit={handleLogin} className="p-5 space-y-4">
-          
-          {/* Field: Phone Input Box */}
-          <div className="space-y-1">
-            <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
-              <div className="shrink-0 text-text-secondary/60">
-                <IoCallOutline size={16} />
-              </div>
-              <input
-                type="tel"
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                placeholder="Contact Number"
-                disabled={loading}
-                className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+    <AnimatedScreen>
+      <div className="w-full min-h-screen px-4 py-8 flex flex-col justify-center max-w-md mx-auto bg-background animate-fade-in">
+        {/* Container Box Wrapper */}
+        <div className="bg-card border border-border rounded-2xl shadow-xl shadow-black/[0.02] overflow-hidden">
+          {/* ================= MOBILE-FIRST BRAND HEADER ================= */}
+          <div className="flex flex-col items-center pt-6 pb-4 px-4 text-center border-b border-border/40 select-none">
+            <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-2.5 shadow-inner bg-background border border-border/80 shadow-primary/5">
+              <img
+                src="/logo.png"
+                alt="Nashib Ali Academy Logo"
+                className="w-10 h-10 object-contain drop-shadow-xs"
               />
             </div>
+
+            <h1 className="text-xl font-black tracking-tight text-text-primary">
+              Nashib Ali Academy
+            </h1>
+            <p className="text-[10px] font-black uppercase tracking-widest mt-0.5 text-primary">
+              Staff Portal
+            </p>
           </div>
 
-          {/* Field: Password Input Box */}
-          <div className="space-y-1">
-            <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
-              <div className="shrink-0 text-text-secondary/60">
-                <IoLockClosedOutline size={16} />
-              </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-                disabled={loading}
-                className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+          {/* ================= CONTEXTUAL ONBOARDING WELCOME BANNER ================= */}
+          {isFromMainSite && (
+            <div className="mx-5 mt-5 p-3.5 rounded-xl border bg-primary/5 border-primary/20 flex items-start space-x-2.5 animate-slide-up select-none">
+              <IoInformationCircleOutline
+                size={18}
+                className="text-primary shrink-0 mt-0.5"
               />
+              <div className="space-y-0.5">
+                <h4 className="text-[10px] font-black text-primary uppercase tracking-wider">
+                  Registration Successful
+                </h4>
+                <p className="text-[11px] font-bold text-text-secondary leading-normal">
+                  Your default password is{" "}
+                  <span className="text-text-primary font-black underline">
+                    123456
+                  </span>
+                  . Please sign in and change your password from the settings.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ================= INTERACTIVE INPUT FORM LAYOUT ================= */}
+          <form onSubmit={handleLogin} className="p-5 space-y-4">
+            {/* Field: Phone Input Box */}
+            <div className="space-y-1">
+              <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
+                <div className="shrink-0 text-text-secondary/60">
+                  <IoCallOutline size={16} />
+                </div>
+                <input
+                  type="tel"
+                  value={contact}
+                  onChange={(e) => setContact(e.target.value)}
+                  placeholder="Contact Number"
+                  disabled={loading}
+                  className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+                />
+              </div>
+            </div>
+
+            {/* Field: Password Input Box */}
+            <div className="space-y-1">
+              <div className="flex items-center border rounded-xl px-3.5 py-1 focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all duration-200 border-border/80 bg-background">
+                <div className="shrink-0 text-text-secondary/60">
+                  <IoLockClosedOutline size={16} />
+                </div>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                  disabled={loading}
+                  className="w-full py-2.5 ml-2.5 bg-transparent text-sm outline-none font-bold text-text-primary placeholder:text-text-secondary/40"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="p-1 text-text-secondary/60 hover:text-text-primary transition-colors shrink-0 border-none bg-transparent cursor-pointer outline-none"
+                >
+                  {showPassword ? (
+                    <IoEyeOffOutline size={16} />
+                  ) : (
+                    <IoEyeOutline size={16} />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            {/* Auxiliary Account Help Links */}
+            <div className="flex justify-end pt-0.5">
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="p-1 text-text-secondary/60 hover:text-text-primary transition-colors shrink-0 border-none bg-transparent cursor-pointer outline-none"
+                onClick={() => setIsModalVisible(true)}
+                className="text-xs font-bold transition-colors bg-transparent border-none outline-none text-text-secondary hover:text-primary cursor-pointer"
               >
-                {showPassword ? <IoEyeOffOutline size={16} /> : <IoEyeOutline size={16} />}
+                Forgot Password?
               </button>
             </div>
-          </div>
 
-          {/* Auxiliary Account Help Links */}
-          <div className="flex justify-end pt-0.5">
-            <button
-              type="button"
-              onClick={() => setIsModalVisible(true)}
-              className="text-xs font-bold transition-colors bg-transparent border-none outline-none text-text-secondary hover:text-primary cursor-pointer"
-            >
-              Forgot Password?
-            </button>
-          </div>
+            {/* Primary Form Submission Capsule */}
+            <div className="pt-2">
+              <Button
+                type="submit"
+                variant="accent"
+                size="lg"
+                fullWidth={true}
+                loading={loading}
+                className="rounded-xl font-black tracking-wide text-xs uppercase"
+              >
+                Sign In
+              </Button>
+            </div>
+          </form>
+        </div>
 
-          {/* Primary Form Submission Capsule */}
-          <div className="pt-2">
-            <Button
-              type="submit"
-              variant="accent"
-              size="lg"
-              fullWidth={true}
-              loading={loading}
-              className="rounded-xl font-black tracking-wide text-xs uppercase"
-            >
-              Sign In
-            </Button>
-          </div>
+        {/* Forgot Password Overhaul Overlay sheet Context */}
+        <ForgotPasswordDrawer
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+        />
 
-        </form>
+        {/* Interceptor System Popup Context Overlay notifications */}
+        <Alert
+          visible={!!errorMsg}
+          title="Login Error"
+          message={errorMsg}
+          variant="danger"
+          onClose={() => setErrorMsg("")}
+          buttons={[
+            {
+              text: "Try Again",
+              variant: "accent",
+              onClick: () => setErrorMsg(""),
+            },
+          ]}
+        />
       </div>
-
-      {/* Forgot Password Overhaul Overlay sheet Context */}
-      <ForgotPasswordDrawer
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-      />
-
-      {/* Interceptor System Popup Context Overlay notifications */}
-      <Alert
-        visible={!!errorMsg}
-        title="Login Error"
-        message={errorMsg}
-        variant="danger"
-        onClose={() => setErrorMsg("")}
-        buttons={[
-          {
-            text: "Try Again",
-            variant: "accent",
-            onClick: () => setErrorMsg(""),
-          },
-        ]}
-      />
-    </div>
+    </AnimatedScreen>
   );
 };
 

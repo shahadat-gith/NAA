@@ -7,6 +7,7 @@ import { useAppContext } from "../context/Context";
 import Button from "../components/common/Button";
 import Alert from "../components/common/Alert";
 import { Input } from "../components/common/Input";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -174,7 +175,8 @@ const EditProfile = () => {
   };
 
   return (
-    <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+    <AnimatedScreen>
+      <main className="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
       {/* Upper Navigation Action Bar */}
       <div className="flex items-center justify-center border-b border-border pb-5 mb-8">
         <h1 className="text-xl font-black tracking-tight text-text-primary hidden sm:block">
@@ -327,6 +329,7 @@ const EditProfile = () => {
         ]}
       />
     </main>
+    </AnimatedScreen>
   );
 };
 

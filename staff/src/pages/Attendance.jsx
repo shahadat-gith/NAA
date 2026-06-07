@@ -9,6 +9,7 @@ import { SummaryTile } from "../components/attendance/SummaryTile";
 import { Calendar } from "../components/attendance/Calendar";
 import { Header } from "../components/attendance/Header";
 import ScannerModal from "../components/modals/ScannerModal";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const Attendance = () => {
   const { staff } = useAppContext();

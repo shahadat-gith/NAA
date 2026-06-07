@@ -6,6 +6,7 @@ import {
   Users, 
   Clock 
 } from "lucide-react";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const AcademicRules = () => {
 
@@ -69,7 +70,8 @@ const AcademicRules = () => {
   ];
 
   return (
-    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
+    <AnimatedScreen>
+       <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
 
       {/* ================= VERTICAL MOBILE STACK CONTENT ================= */}
       <div className="space-y-5">
@@ -121,6 +123,8 @@ const AcademicRules = () => {
         </p>
       </div>
     </main>
+    </AnimatedScreen>
+   
   );
 };
 

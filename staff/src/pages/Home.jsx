@@ -6,6 +6,8 @@ import Loader from "../components/common/Loader";
 import TodaySchedule from "../components/home/TodaySchedule";
 import RecentAttendance from "../components/home/RecentAttendance";
 import Alert from "../components/common/Alert";
+import IdentityCard from "../components/home/IdentityCard";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const emptyScheduleStructure = {
   Monday: [],
@@ -65,59 +67,59 @@ const Home = () => {
 
   if (loading) return <Loader fullScreen={true} size="medium" />;
 
-  const profile = dashboard?.profile || staff;
   const timetable = dashboard?.timetable;
   const attendance = dashboard?.attendance || [];
 
   return (
-    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
-      
-      {/* ================= MOBILE STREAMLINED HERO HEADER ================= */}
-      <div className="bg-linear-to-br from-card to-background border border-border p-5 rounded-2xl shadow-xs select-none">
-        <h1 className="text-xl font-black tracking-tight text-text-primary">
-          <span className="text-primary">{greeting}</span>, {" "}
-          {profile?.name || "Staff Member"}
-        </h1>
-        <p className="text-[11px] font-medium text-text-secondary mt-1 leading-normal">
-          Welcome back to your academy administration workspace panel.
-        </p>
-      </div>
-
-      {/* ================= VERTICAL MOBILE CONTENT LAYOUT STACK ================= */}
-      <div className="space-y-6">
+    <AnimatedScreen>
+      <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto select-none">
         
-        {/* Academic Timetable Section Row */}
-        <div>
-          {profile?.staffType === "Teaching" && timetable ? (
-            <TodaySchedule timetableData={timetable} />
-          ) : (
-            null
-          )}
+        {/* ================= MOBILE STREAMLINED HERO HEADER ================= */}
+        <div className="bg-linear-to-br from-card to-background border border-border p-5 rounded-2xl shadow-xs">
+          <h1 className="text-xl font-black tracking-tight text-text-primary">
+            <span className="text-primary">{greeting}</span>, {" "}
+            {staff?.name || "Staff Member"}
+          </h1>
+          <p className="text-[11px] font-medium text-text-secondary mt-1 leading-normal">
+            Welcome back to your academy administration workspace panel.
+          </p>
         </div>
 
-        {/* Attendance Activity Logger Section */}
-        {profile?.staffType === "Teaching" && (
-          <RecentAttendance attendance={attendance} />
-        )}
-        
-      </div>
+        {/* ================= VERTICAL MOBILE CONTENT LAYOUT STACK ================= */}
+        <div className="space-y-6">
 
-      {/* Shared Interceptor Structural Alert Modal */}
-      <Alert
-        visible={!!errorMsg}
-        title="Sync Error"
-        message={errorMsg}
-        variant="danger"
-        onClose={() => setErrorMsg("")}
-        buttons={[
-          {
-            text: "Acknowledge",
-            variant: "accent",
-            onClick: () => setErrorMsg(""),
-          },
-        ]}
-      />
-    </main>
+          {/* Identity Card */}
+          <IdentityCard staff={staff} />
+          
+          {/* Academic Timetable Section Row */}
+          {staff?.staffType === "Teaching" && timetable && (
+            <TodaySchedule timetableData={timetable} />
+          )}
+
+          {/* Attendance Activity Logger Section */}
+          {staff?.staffType === "Teaching" && (
+            <RecentAttendance attendance={attendance} />
+          )}
+          
+        </div>
+
+        {/* Shared Interceptor Structural Alert Modal */}
+        <Alert
+          visible={!!errorMsg}
+          title="Sync Error"
+          message={errorMsg}
+          variant="danger"
+          onClose={() => setErrorMsg("")}
+          buttons={[
+            {
+              text: "Okay",
+              variant: "accent",
+              onClick: () => setErrorMsg(""),
+            },
+          ]}
+        />
+      </main>
+    </AnimatedScreen>
   );
 };
 

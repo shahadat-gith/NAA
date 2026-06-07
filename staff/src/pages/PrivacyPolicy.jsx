@@ -1,4 +1,5 @@
 import { ShieldCheck, Lock, EyeOff, Database } from "lucide-react";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const PrivacyPolicy = () => {
   const securityEncryptionStandard = "AES-256";
@@ -35,7 +36,8 @@ const PrivacyPolicy = () => {
   ];
 
   return (
-    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
+   <AnimatedScreen>
+     <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
       
 
       {/* ================= VERTICAL MOBILE CONTENT LAYOUT ================= */}
@@ -88,6 +90,7 @@ const PrivacyPolicy = () => {
         </p>
       </div>
     </main>
+   </AnimatedScreen>
   );
 };
 

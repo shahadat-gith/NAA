@@ -1,4 +1,5 @@
 import { FileText, ShieldAlert, Scale, CheckCircle2 } from "lucide-react";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const TermsAndConditions = () => {
   const lastReviewedDate = "June 2026";
@@ -35,7 +36,8 @@ const TermsAndConditions = () => {
   ];
 
   return (
-    <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
+    <AnimatedScreen>
+      <main className="w-full px-4 py-6 space-y-6 max-w-md mx-auto animate-fade-in">
 
       {/* ================= MAIN VERTICAL LAYER STACK ================= */}
       <div className="space-y-5">
@@ -87,6 +89,7 @@ const TermsAndConditions = () => {
         </p>
       </div>
     </main>
+    </AnimatedScreen>
   );
 };
 

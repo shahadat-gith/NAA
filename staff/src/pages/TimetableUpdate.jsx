@@ -12,6 +12,7 @@ import {
   STREAM_OPTIONS,
   SUBJECT_OPTIONS,
 } from "../constants/academy";
+import AnimatedScreen from "../components/common/AnimatedScreen";
 
 const TimetableUpdate = () => {
   const navigate = useNavigate();
@@ -142,7 +143,8 @@ const TimetableUpdate = () => {
   }
 
   return (
-    <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
+   <AnimatedScreen>
+     <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 animate-fade-in">
       
       {/* Navigation and Title Header Row */}
       <div className="flex sm:items-center sm:justify-between gap-4 border-b border-border pb-6 mb-8">
@@ -334,6 +336,7 @@ const TimetableUpdate = () => {
         ]}
       />
     </main>
+   </AnimatedScreen>
   );
 };
 

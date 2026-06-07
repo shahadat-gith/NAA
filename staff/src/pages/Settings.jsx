@@ -24,6 +24,7 @@ import ImageCropModal from "../components/settings/ImageCropModal";
 
 import { getCroppedImg } from "../configs/cropper";
 
+
 const Settings = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);

@@ -16,7 +16,9 @@ import AcademicRules from "./pages/AcademicRules";
 import TermsAndConditions from "./pages/TermsAndConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import MobileAccessOnly from "./components/common/MobileAccessOnly";
+
 import { useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 const App = () => {
   const { staff, sessionChecking } = useAppContext();
@@ -49,7 +51,8 @@ const App = () => {
 
         {/* Main Page Workspace Shell */}
         <div className={`flex-1 flex flex-col ${staff ? "pb-16" : ""}`}>
-          <Routes>
+         <AnimatePresence mode="wait">
+           <Routes>
             <Route
               path="/login"
               element={!staff ? <Login /> : <Navigate to="/" replace />}
@@ -83,6 +86,7 @@ const App = () => {
               }
             />
           </Routes>
+         </AnimatePresence>
         </div>
 
         {staff && <BottomTabs />}
