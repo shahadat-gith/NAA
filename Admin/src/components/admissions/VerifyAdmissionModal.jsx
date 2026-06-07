@@ -6,6 +6,8 @@ import { X, CheckCircle, FileText } from "lucide-react";
 import { AdminContext } from "../../context/AdminContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../common/Button";
+
 
 const VerifyAdmissionModal = ({
   isOpen,
@@ -97,27 +99,21 @@ const VerifyAdmissionModal = ({
 
         {/* Footer Actions */}
         <div className="flex gap-3 px-8 py-6 border-t border-[var(--border-default)]">
-          <button
-            onClick={onClose}
-            disabled={loading}
-            className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-          >
-            Cancel
-          </button>
-
-          <button
+          <Button
             onClick={handleVerifySubmit}
             disabled={loading || !registrationNo.trim()}
-            className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+            variant="success"
+            loading={loading}
+            className="w-full"
           >
             {loading ? (
-              "Verifying..."
+              "Verifying"
             ) : (
               <>
                 Verify
               </>
             )}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import Loader from "../../components/common/Loader";
+import { Button } from "../../components/common/Button.jsx";
+
 
 const StaffAttendanceHistory = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -136,20 +138,20 @@ const StaffAttendanceHistory = () => {
               </p>
 
               <div className="grid grid-cols-2 gap-4">
-                <button
+                <Button
                   disabled={submittingOverride}
                   onClick={() => handleOverrideSubmit("Absent")}
                   className="py-4 rounded-xl border border-red-500/30 bg-red-500/10 hover:bg-red-950/50 text-red-500 font-semibold transition-all active:scale-95 disabled:opacity-60"
                 >
                   Mark Absent
-                </button>
-                <button
+                </Button>
+                <Button
                   disabled={submittingOverride}
                   onClick={() => handleOverrideSubmit("On-Leave")}
                   className="py-4 rounded-md border border-amber-500/30 bg-amber-500/10 hover:bg-amber-950/50 text-amber-500 font-semibold transition-all active:scale-95 disabled:opacity-60"
                 >
                   Mark On Leave
-                </button>
+                </Button>
               </div>
             </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Edit2, Trash2, ArrowLeft } from "lucide-react";
 import axios from "axios";
@@ -7,14 +7,13 @@ import toast from "react-hot-toast";
 import { AdminContext } from "../../context/AdminContext";
 import { capitalizeWords, capitalizeFirst } from "../../utils/utility";
 import Loader from "../../components/common/Loader";
-import StudentModal from "../../components/student/StudentModal";
+import { Button } from "../../components/common/Button";
 
 const StudentDetails = () => {
   const { id: studentId } = useParams();
   const navigate = useNavigate();
   const { backendUrl, adminToken } = useContext(AdminContext);
 
-  const [showEditModal, setShowEditModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState(null);
 
@@ -54,7 +53,7 @@ const StudentDetails = () => {
 
     try {
       const { data } = await axios.delete(
-        `${backendUrl}/api/student/delete/${studentId}`,
+        `${backendUrl}/api/student/${studentId}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -70,6 +69,13 @@ const StudentDetails = () => {
     }
   };
 
+  /* ================= EDIT NAVIGATION ================= */
+  const openEditStudent = () => {
+    navigate("/actions?type=StudentForm", { 
+      state: { student } 
+    });
+  };
+
   if (loading) return <Loader text="Loading student details..." />;
 
   if (!student) {
@@ -82,43 +88,35 @@ const StudentDetails = () => {
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
-      <div className="max-w-5xl mx-auto p-4 md:p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate("/students")}
-              className="p-3 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] transition-all"
-            >
-              <ArrowLeft size={22} />
-            </button>
-            <div>
-              <h1 className="text-4xl font-bold text-[var(--text-primary)]">
-                {capitalizeWords(student.name)}
-              </h1>
-              <p className="text-[var(--text-secondary)]">Student Profile</p>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              onClick={() => setShowEditModal(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
-            >
-              <Edit2 size={18} />
-              Edit
-            </button>
-
-            <button
-              onClick={handleDeleteStudent}
-              className="flex items-center gap-2 px-6 py-3 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-2xl font-semibold transition-all"
-            >
-              <Trash2 size={18} />
-              Delete
-            </button>
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-[var(--border-default)]">
+        <div className="flex items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-[var(--text-primary)]">
+              {capitalizeWords(student.name)}
+            </h1>
+            <p className="text-[var(--text-secondary)]">Student Profile</p>
           </div>
         </div>
 
+        <div className="flex gap-3">
+          <Button
+            onClick={openEditStudent}
+            variant="warning"
+          >
+            Edit
+          </Button>
+
+          <Button
+            onClick={handleDeleteStudent}
+            variant="danger"
+          >
+            Delete
+          </Button>
+        </div>
+      </div>
+
+      <div className="p-6">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Academic Information */}
           <div className="lg:col-span-2 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
@@ -216,17 +214,6 @@ const StudentDetails = () => {
           </div>
         </div>
       </div>
-
-      {/* Edit Modal */}
-      {showEditModal && (
-        <StudentModal
-          isOpen={showEditModal}
-          onClose={() => setShowEditModal(false)}
-          student={student}
-          setStudent={setStudent}
-          onSuccess={fetchStudent}
-        />
-      )}
     </div>
   );
 };

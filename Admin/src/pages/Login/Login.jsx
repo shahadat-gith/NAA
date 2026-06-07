@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AdminContext } from "../../context/AdminContext";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/common/Button";
 import "./Login.css"
 
 const Login = () => {
@@ -72,9 +73,9 @@ const Login = () => {
           required
         />
 
-        <button type="submit" disabled={loading}>
+        <Button type="submit" variant="primary" loading={loading}>
           {loading ? "Signing in..." : "Login"}
-        </button>
+        </Button>
       </form>
     </div>
   );

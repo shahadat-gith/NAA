@@ -10,6 +10,8 @@ import { toast } from "react-hot-toast";
 import { Search, Users, Eye, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/common/Loader";
+import { Button } from "../../components/common/Button";
+
 
 const AttendanceDashboard = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -238,13 +240,12 @@ const AttendanceDashboard = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 text-center">
-                            <button
-                              className="inline-flex items-center gap-2 px-5 py-2 bg-[var(--bg-base)] hover:bg-[var(--color-primary)] hover:text-white border border-[var(--border-default)] rounded-2xl text-sm font-semibold transition-all group-hover:border-[var(--color-primary)]"
+                            <Button
+                             variant="success"
                             >
-                              <Eye size={16} />
                               View
-                              <ChevronRight size={16} />
-                            </button>
+                              
+                            </Button>
                           </td>
                         </tr>
                       );

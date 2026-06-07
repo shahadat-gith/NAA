@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
 
 /* ================= PDF DOCUMENT ================= */
 
-const ExamRoutinePDF = ({ routine, signatories, examDetails }) => {
+const ExamRoutinePDF = ({ routine, principal, examDetails }) => {
   const formatDate = (date) =>
     new Date(date).toLocaleDateString("en-IN", {
       day: "2-digit",
@@ -257,12 +257,12 @@ const ExamRoutinePDF = ({ routine, signatories, examDetails }) => {
 
         {/* ================= SIGNATURE (RIGHT SIDE) ================= */}
         <View style={styles.signatureSection}>
-          {signatories?.principal && (
+          {principal && (
             <View style={styles.signatureBlock}>
-              <Image src={signatories.principal.signature} style={styles.signatureImage} />
+              <Image src={principal.signature} style={styles.signatureImage} />
               <View style={styles.signatureLine} />
-              <Text style={styles.signatureName}>{signatories.principal.name}</Text>
-              <Text style={styles.signatureDesignation}>{signatories.principal.designation}</Text>
+              <Text style={styles.signatureName}>{principal.name}</Text>
+              <Text style={styles.signatureDesignation}>{principal.designation}</Text>
             </View>
           )}
         </View>

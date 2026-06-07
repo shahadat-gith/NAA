@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { X, Calendar, Clock } from "lucide-react";
+
+import { Button } from "../common/Button";
+import { AdminContext } from "../../context/AdminContext";
 
 import {
   EXAM_OPTIONS,
@@ -8,13 +13,10 @@ import {
   TIME_OPTIONS,
 } from "../../utils/academicOptions";
 
-const CurrentExamModal = ({
-  open,
-  onClose,
-  onSubmit,
-  initialData,
-  loading,
-}) => {
+const CurrentExamUpdate = () => {
+  const navigate = useNavigate();
+  const { backendUrl, adminToken } = useContext(AdminContext);
+
   const [examName, setExamName] = useState("");
   const [academicSession, setAcademicSession] = useState("");
 
@@ -24,9 +26,15 @@ const CurrentExamModal = ({
   const [afternoonStart, setAfternoonStart] = useState("");
   const [afternoonEnd, setAfternoonEnd] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const location = useLocation()
+
+  const {initialData} = location.state;
+
   // Load initial data
   useEffect(() => {
-    if (open && initialData) {
+    if (initialData) {
       setExamName(initialData.examName || "");
       setAcademicSession(initialData.academicSession || "");
 
@@ -37,7 +45,7 @@ const CurrentExamModal = ({
       setMorningEnd(mEnd);
       setAfternoonStart(aStart);
       setAfternoonEnd(aEnd);
-    } else if (open) {
+    } else {
       // Reset form
       setExamName("");
       setAcademicSession("");
@@ -46,11 +54,9 @@ const CurrentExamModal = ({
       setAfternoonStart("");
       setAfternoonEnd("");
     }
-  }, [open, initialData]);
+  }, [initialData]);
 
-  if (!open) return null;
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!examName || !academicSession) {
@@ -61,35 +67,50 @@ const CurrentExamModal = ({
       return toast.error("Please set both morning and afternoon timings");
     }
 
-    onSubmit({
+    setLoading(true);
+
+    const payload = {
       examName,
       academicSession,
       morning: `${morningStart} - ${morningEnd}`,
       afternoon: `${afternoonStart} - ${afternoonEnd}`,
-    });
+    };
+
+    try {
+      const res = await axios.post(
+        `${backendUrl}/api/settings/exam/upsert`,
+        payload,
+        { headers: { Authorization: `Bearer ${adminToken}` } }
+      );
+
+      if (res.data.success) {
+        toast.success("Current exam updated successfully");
+        navigate(-1);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update exam");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1200] flex items-center justify-center p-4">
-      <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-lg overflow-hidden flex flex-col"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div>
         {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)]">
-          <div className="flex items-center gap-3">
-            <Calendar className="text-[var(--color-primary)]" size={26} />
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Update Current Exam</h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
+        <div className="flex justify-between items-center gap-4 mb-8">
+         
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">Update Current Exam</h1>
+
+           <button
+            onClick={() => navigate(-1)}
+            className="p-3 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] transition-all"
           >
-            <X size={26} />
+            <X size={24} />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-8 space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Exam Name & Session */}
           <div className="space-y-6">
             <div>
@@ -201,27 +222,19 @@ const CurrentExamModal = ({
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex gap-4 pt-6">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
-            >
-              {loading ? "Saving..." : "Save Exam Details"}
-            </button>
-          </div>
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            variant="primary"
+            loading={loading}
+            className="w-full"
+          >
+            Save Exam Details
+          </Button>
         </form>
       </div>
     </div>
   );
 };
 
-export default CurrentExamModal;
+export default CurrentExamUpdate;

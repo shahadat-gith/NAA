@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
+import { Button } from "../../components/common/Button";
+
 
 const Admissions = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -137,7 +139,7 @@ const Admissions = () => {
 
             {/* Class */}
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Class</label>
+             
               <select
                 value={filters.class}
                 onChange={(e) => setFilters({ ...filters, class: e.target.value, stream: "" })}
@@ -152,7 +154,7 @@ const Admissions = () => {
 
             {/* Medium */}
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Medium</label>
+             
               <select
                 value={filters.medium}
                 onChange={(e) => setFilters({ ...filters, medium: e.target.value })}
@@ -167,7 +169,7 @@ const Admissions = () => {
             {/* Stream (conditional) */}
             {(filters.class === "11" || filters.class === "12") && (
               <div>
-                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Stream</label>
+                
                 <select
                   value={filters.stream}
                   onChange={(e) => setFilters({ ...filters, stream: e.target.value })}
@@ -182,7 +184,7 @@ const Admissions = () => {
 
             {/* Status */}
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Status</label>
+             
               <select
                 value={filters.status}
                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
@@ -196,13 +198,13 @@ const Admissions = () => {
             </div>
           </div>
 
-          <button
+          <Button
             onClick={clearFilters}
-            className="mt-6 flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
+            className="mt-6 "
+            variant="warning"
           >
-            <X size={18} />
             Clear Filters
-          </button>
+          </Button>
         </div>
 
         {/* Results Count */}
@@ -246,18 +248,18 @@ const Admissions = () => {
                       </td>
                       <td className="px-6 py-4 text-center">
                         <div className="flex items-center justify-center gap-3">
-                          <button
+                          <Button
                             onClick={() => navigate(`/admissions/${adm._id}`)}
-                            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors text-[var(--color-primary)]"
+                            variant="success"
                           >
-                            <Eye size={18} />
-                          </button>
-                          <button
+                            View
+                          </Button>
+                          <Button
                             onClick={() => handleDelete(adm._id)}
-                            className="p-2 hover:bg-red-500/10 rounded-xl transition-colors text-red-500"
+                           variant="danger"
                           >
-                            <Trash2 size={18} />
-                          </button>
+                            delete
+                          </Button>
                         </div>
                       </td>
                     </tr>

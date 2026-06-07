@@ -36,7 +36,7 @@ resultRouter.get("/student/toppers", getAllClassToppers);
 
 // Update result (Admin only)
 resultRouter.put(
-  "/:registrationNo",
+  "/:resultId",
   adminAuthMiddleware,
   updateResult
 );

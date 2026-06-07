@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"
 
 export const AdminContext = createContext();
 
@@ -8,6 +9,8 @@ export const AdminContextProvider = ({ children }) => {
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("adminToken") || ""
   );
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (adminToken) {
@@ -23,6 +26,7 @@ export const AdminContextProvider = ({ children }) => {
         backendUrl,
         adminToken,
         setAdminToken,
+        navigate,
       }}
     >
       {children}

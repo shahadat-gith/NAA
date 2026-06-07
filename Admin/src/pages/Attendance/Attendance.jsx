@@ -3,9 +3,11 @@ import axios from "axios";
 import { AdminContext } from "../../context/AdminContext";
 import { toast } from "react-hot-toast";
 import Loader from "../../components/common/Loader";
-import AttendanceLogs from "./AttendanceLogs";
+import AttendanceLogs from "../../components/attendance/AttendanceLogs";
 import { QrCode, Power, RefreshCw, Users, Calendar, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "../../components/common/Button";
+
 
 const Attendance = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -117,13 +119,12 @@ const Attendance = () => {
           </div>
 
           {/* Link to Staff List Dashboard */}
-          <button
+          <Button
             onClick={goToStaffDashboard}
-            className="flex items-center gap-2 px-5 py-3 bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-2)] border border-[var(--border-default)] rounded-2xl text-sm font-semibold transition-all hover:border-[var(--color-primary)] group"
+            variant="success"
           >
             Dashboard
-            <ArrowRight size={18} className="group-hover:translate-x-0.5 transition-transform" />
-          </button>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -145,23 +146,23 @@ const Attendance = () => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <button
+                    <Button
                       onClick={expireActiveQR}
                       disabled={actionLoading}
-                      className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl border border-red-500/30 bg-red-500/10 hover:bg-red-500/20 text-red-500 font-semibold transition-all disabled:opacity-60"
+                      variant="warning"
+                      loading = {actionLoading}
                     >
-                      <Power size={20} />
-                      Expire QR
-                    </button>
+                      {actionLoading ? "expiring" :"Expire QR" }
+                    </Button>
 
-                    <button
+                    <Button
                       onClick={generateTodayQR}
                       disabled={actionLoading}
-                      className="flex items-center justify-center gap-2 py-4 px-6 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] font-semibold transition-all disabled:opacity-60"
+                      loading={actionLoading}
+                      variant="secondary"
                     >
-                      <RefreshCw size={20} className={actionLoading ? "animate-spin" : ""} />
-                      Regenerate
-                    </button>
+                     {actionLoading ? "generating" : "Regenerate"}
+                    </Button>
                   </div>
                 </div>
               ) : (
@@ -174,20 +175,16 @@ const Attendance = () => {
                     Generate QR to start today's attendance marking session.
                   </p>
 
-                  <button
+                  <Button
                     onClick={generateTodayQR}
                     disabled={actionLoading}
-                    className="w-full py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70 flex items-center justify-center gap-3"
+                    loading={actionLoading}
+                    variant="success"
+                    className="w-full"
+                    
                   >
-                    {actionLoading ? (
-                      <>
-                        <RefreshCw size={20} className="animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                     "Generate QR"
-                    )}
-                  </button>
+                    {actionLoading ? "generating" : "Generate QR"}
+                  </Button>
                 </div>
               )}
             </div>

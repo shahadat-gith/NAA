@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { X, CheckCircle, UserCheck } from "lucide-react";
 
 import { AdminContext } from "../../context/AdminContext";
+import { Button } from "../common/Button";
+
 
 const VerifyModal = ({ isOpen, onClose, staffId, staffName, setStaff }) => {
   const { backendUrl, adminToken } = React.useContext(AdminContext);
@@ -93,29 +95,15 @@ const VerifyModal = ({ isOpen, onClose, staffId, staffName, setStaff }) => {
 
             {/* Actions */}
             <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                disabled={submitting}
-                className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-              >
-                Cancel
-              </button>
-
-              <button
+              <Button
                 type="submit"
                 disabled={submitting || !assignedStaffId.trim()}
-                className="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl transition-all flex items-center justify-center gap-2 disabled:opacity-60"
+                className="w-full"
+                loading={submitting}
+                variant="success"
               >
-                {submitting ? (
-                  "Verifying..."
-                ) : (
-                  <>
-                    <CheckCircle size={20} />
-                    Verify & Activate
-                  </>
-                )}
-              </button>
+                {submitting ? "verifying" : "verify"}
+              </Button>
             </div>
           </form>
         </div>

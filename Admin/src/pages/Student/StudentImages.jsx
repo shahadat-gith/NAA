@@ -1,16 +1,18 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Search, Upload, X } from 'lucide-react';
+import { Search, Upload } from 'lucide-react';
 
 import Loader from '../../components/common/Loader';
-import ImageUploadModal from '../../components/student/ImageUploadModal';
 import { CLASS_OPTIONS } from '../../utils/academicOptions';
 import { capitalizeWords } from '../../utils/utility';
 import { AdminContext } from '../../context/AdminContext';
+import { Button } from "../../components/common/Button.jsx";
 
 const StudentImages = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
+  const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,9 +22,6 @@ const StudentImages = () => {
   const [mediumFilter, setMediumFilter] = useState("");
   const [classFilter, setClassFilter] = useState("");
   const [streamFilter, setStreamFilter] = useState("");
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeStudent, setActiveStudent] = useState(null);
 
   /* ================= FETCH STUDENTS ================= */
   const fetchStudentImages = async () => {
@@ -92,36 +91,29 @@ const StudentImages = () => {
     setStreamFilter("");
   };
 
-  const openUploadModal = (student) => {
-    setActiveStudent(student);
-    setIsModalOpen(true);
-  };
-
-  const closeUploadModal = () => {
-    setIsModalOpen(false);
-    setActiveStudent(null);
+  /* ================= OPEN IMAGE UPLOAD ACTION PAGE ================= */
+  const openImageUpload = (student) => {
+    navigate("/actions?type=StudentImageUpload", { 
+      state: { student } 
+    });
   };
 
   if (loading) return <Loader text="Loading student images..." />;
 
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
-      <div className="mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
-          <div>
-            <h1 className="text-2xl font-bold text-[var(--text-primary)]">Student Images</h1>
-            <p className="text-[var(--text-secondary)] mt-1">Manage and upload student photos</p>
-          </div>
-          <button
-            onClick={clearFilters}
-            className="mt-4 md:mt-0 flex items-center gap-2 px-5 py-3 border border-[var(--border-default)] bg-[var(--text-muted)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-          >
-            <X size={18} />
-            Clear Filters
-          </button>
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between p-4 border-b border-[var(--border-default)]">
+        <div>
+          <h1 className="text-2xl font-bold text-[var(--text-primary)]">Student Images</h1>
+          <p className="text-[var(--text-secondary)] mt-1">Manage and upload student photos</p>
         </div>
+        <Button onClick={clearFilters} variant="warning">
+          Clear Filters
+        </Button>
+      </div>
 
+      <div className="p-4">
         {/* Search & Filters */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -141,7 +133,6 @@ const StudentImages = () => {
 
             {/* Medium */}
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Medium</label>
               <select
                 value={mediumFilter}
                 onChange={(e) => {
@@ -160,7 +151,6 @@ const StudentImages = () => {
             {/* Class */}
             {mediumFilter && (
               <div>
-                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Class</label>
                 <select
                   value={classFilter}
                   onChange={(e) => {
@@ -180,7 +170,6 @@ const StudentImages = () => {
             {/* Stream */}
             {mediumFilter === "assamese" && ["11", "12"].includes(classFilter) && (
               <div>
-                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Stream</label>
                 <select
                   value={streamFilter}
                   onChange={(e) => setStreamFilter(e.target.value)}
@@ -224,13 +213,13 @@ const StudentImages = () => {
                     {student.registrationNo} • {student.class} {student.medium}
                   </p>
 
-                  <button
-                    onClick={() => openUploadModal(student)}
-                    className="mt-5 w-full flex items-center justify-center gap-2 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)] rounded-2xl transition-all font-medium"
+                  <Button
+                    onClick={() => openImageUpload(student)}
+                    className="mt-5 w-full flex items-center justify-center gap-2 py-3"
+                    variant="success"
                   >
-                    <Upload size={18} />
                     Update Image
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))
@@ -240,14 +229,6 @@ const StudentImages = () => {
             </div>
           )}
         </div>
-
-        {/* Image Upload Modal */}
-        <ImageUploadModal
-          isOpen={isModalOpen}
-          student={activeStudent}
-          onClose={closeUploadModal}
-          onSuccess={fetchStudentImages}
-        />
       </div>
     </div>
   );

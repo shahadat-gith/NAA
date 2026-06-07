@@ -11,6 +11,7 @@ import FeesTab from "../components/settings/FeesTab";
 import Authoritiestab from "../components/settings/AuthoritiesTab";
 import BannerImagesTab from "../components/settings/BannerImagesTab";
 
+
 const Settings = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
 
@@ -90,10 +91,10 @@ const Settings = () => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
-                <button
+                <div
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl text-sm font-medium whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl text-sm font-medium whitespace-nowrap transition-all cursor-pointer ${
                     isActive
                       ? "bg-[var(--color-primary)] text-white shadow-md"
                       : "hover:bg-[var(--bg-surface-2)] text-[var(--text-primary)]"
@@ -101,7 +102,7 @@ const Settings = () => {
                 >
                   <Icon size={18} />
                   {tab.label}
-                </button>
+                </div>
               );
             })}
           </div>

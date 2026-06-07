@@ -1,21 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { X, Upload, Image as ImageIcon } from "lucide-react";
 
 import { AdminContext } from "../../context/AdminContext";
+import { Button } from "../common/Button";
 
-const EditBannerModal = ({ open, image, isAddMode, onClose, onSuccess }) => {
+const EditBannerImage = ({ image, isAddMode, onSuccess }) => {
+  const navigate = useNavigate();
   const { backendUrl, adminToken } = useContext(AdminContext);
 
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!open) setFile(null);
-  }, [open]);
-
-  if (!open) return null;
+    setFile(null);
+  }, [isAddMode, image]);
 
   const handleSubmit = async () => {
     if (!file) {
@@ -44,7 +45,7 @@ const EditBannerModal = ({ open, image, isAddMode, onClose, onSuccess }) => {
 
       toast.success(isAddMode ? "Banner image added successfully!" : "Banner image updated successfully!");
       onSuccess?.();
-      onClose();
+      navigate(-1);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to upload image");
     } finally {
@@ -53,32 +54,28 @@ const EditBannerModal = ({ open, image, isAddMode, onClose, onSuccess }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1100] flex items-center justify-center p-4">
-      <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-md max-h-[70vh] flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Fixed Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div className="max-w-md mx-auto p-4 md:p-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <ImageIcon className="text-[var(--color-primary)]" size={26} />
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">
+            <ImageIcon className="text-[var(--color-primary)]" size={28} />
+            <h1 className="text-3xl font-bold text-[var(--text-primary)]">
               {isAddMode ? "Add Banner Image" : "Update Banner Image"}
-            </h2>
+            </h1>
           </div>
           <button
-            onClick={onClose}
-            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
+            onClick={() => navigate(-1)}
+            className="p-3 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] transition-all"
           >
             <X size={26} />
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <div className="flex-1 overflow-auto p-8 space-y-8">
-          {/* Current Image Preview (for edit mode) */}
+        <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+          {/* Current Image Preview (Edit Mode) */}
           {!isAddMode && image?.url && (
-            <div>
+            <div className="mb-8">
               <p className="text-sm font-medium text-[var(--text-muted)] mb-3">Current Banner</p>
               <img
                 src={image.url}
@@ -121,19 +118,21 @@ const EditBannerModal = ({ open, image, isAddMode, onClose, onSuccess }) => {
           </div>
         </div>
 
-        {/* Fixed Footer */}
-        <div className="p-6 border-t border-[var(--border-default)] flex gap-3 flex-shrink-0">
-          <button
+        {/* Save Button */}
+        <div className="mt-8">
+          <Button
             onClick={handleSubmit}
             disabled={loading || !file}
-            className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-60"
+            variant="primary"
+            loading={loading}
+            className="w-full"
           >
             {loading ? "Uploading..." : "Save Banner"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default EditBannerModal;
+export default EditBannerImage;

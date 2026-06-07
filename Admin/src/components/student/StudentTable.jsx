@@ -4,9 +4,14 @@ import { Edit2, ToggleLeft, ToggleRight } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { capitalizeFirst, capitalizeWords, sortStudents } from "../../utils/utility";
+import {
+  capitalizeFirst,
+  capitalizeWords,
+  sortStudents,
+} from "../../utils/utility";
 import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
+import { Button } from "../common/Button";
 
 const StudentTable = ({
   filteredStudents = [],
@@ -31,23 +36,21 @@ const StudentTable = ({
   });
 
   const handleRowClick = (student) => {
-    setSelectedStudent(
-      selectedStudent?._id === student._id ? null : student
-    );
+    setSelectedStudent(selectedStudent?._id === student._id ? null : student);
     navigate(`/students/${student._id}`);
   };
 
   const onToggleAdmitCard = async (id) => {
     if (loadingId) return;
 
-    const student = students.find(s => s._id === id);
+    const student = students.find((s) => s._id === id);
     const currentValue = student?.canDownloadAdmitCard;
 
     // Optimistic update
-    setStudents(prev =>
-      prev.map(s =>
-        s._id === id ? { ...s, canDownloadAdmitCard: !currentValue } : s
-      )
+    setStudents((prev) =>
+      prev.map((s) =>
+        s._id === id ? { ...s, canDownloadAdmitCard: !currentValue } : s,
+      ),
     );
 
     setLoadingId(id);
@@ -56,14 +59,14 @@ const StudentTable = ({
       await axios.put(
         `${backendUrl}/api/student/toggle-admit-card/${id}`,
         {},
-        { headers: { Authorization: `Bearer ${adminToken}` } }
+        { headers: { Authorization: `Bearer ${adminToken}` } },
       );
     } catch (error) {
-      console.log("Error in Student table: ", error)
-      setStudents(prev =>
-        prev.map(s =>
-          s._id === id ? { ...s, canDownloadAdmitCard: currentValue } : s
-        )
+      console.log("Error in Student table: ", error);
+      setStudents((prev) =>
+        prev.map((s) =>
+          s._id === id ? { ...s, canDownloadAdmitCard: currentValue } : s,
+        ),
       );
       toast.error("Failed to update admit card permission");
     } finally {
@@ -74,7 +77,9 @@ const StudentTable = ({
   if (sortedStudents.length === 0) {
     return (
       <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-12 text-center">
-        <p className="text-[var(--text-secondary)] text-lg">No students found matching your criteria.</p>
+        <p className="text-[var(--text-secondary)] text-lg">
+          No students found matching your criteria.
+        </p>
       </div>
     );
   }
@@ -85,13 +90,27 @@ const StudentTable = ({
         <table className="w-full min-w-full">
           <thead>
             <tr className="border-b border-[var(--border-default)] bg-[var(--bg-surface-2)]">
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">S.No.</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Registration No</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Student Name</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Class</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Medium</th>
-              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Stream</th>
-              <th className="px-6 py-4 text-center text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">Admit Card</th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                S.No.
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Registration No
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Student Name
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Class
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Medium
+              </th>
+              <th className="px-6 py-4 text-left text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Stream
+              </th>
+              <th className="px-6 py-4 text-center text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                Admit Card
+              </th>
             </tr>
           </thead>
 
@@ -102,8 +121,10 @@ const StudentTable = ({
                 onClick={() => handleRowClick(student)}
                 className="hover:bg-[var(--bg-surface-2)] transition-colors cursor-pointer group"
               >
-                <td className="px-6 py-4 text-sm text-[var(--text-secondary)]">{index + 1}</td>
-                
+                <td className="px-6 py-4 text-sm text-[var(--text-secondary)]">
+                  {index + 1}
+                </td>
+
                 <td className="px-6 py-4 font-medium text-[var(--text-primary)]">
                   {student.registrationNo || "-"}
                 </td>
@@ -115,7 +136,7 @@ const StudentTable = ({
                 </td>
 
                 <td className="px-6 py-4 text-sm">{student.class}</td>
-                
+
                 <td className="px-6 py-4 text-sm capitalize">
                   {capitalizeFirst(student.medium)}
                 </td>
@@ -125,21 +146,23 @@ const StudentTable = ({
                 </td>
 
                 {/* Admit Card Toggle */}
-                <td className="px-6 py-4 text-center" onClick={(e) => e.stopPropagation()}>
-                  <button
+                <td
+                  className="px-6 py-4 text-center"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Button
                     onClick={() => onToggleAdmitCard(student._id)}
                     disabled={loadingId === student._id}
-                    className="inline-flex items-center gap-2 text-sm font-medium transition-all hover:scale-105"
                   >
                     {student.canDownloadAdmitCard ? (
                       <ToggleRight size={28} className="text-emerald-500" />
                     ) : (
-                      <ToggleLeft size={28} className="text-[var(--text-muted)]" />
+                      <ToggleLeft
+                        size={28}
+                        className="text-[var(--text-muted)]"
+                      />
                     )}
-                    <span className={`text-xs ${student.canDownloadAdmitCard ? "text-emerald-500" : "text-[var(--text-muted)]"}`}>
-                      {student.canDownloadAdmitCard ? "Enabled" : "Disabled"}
-                    </span>
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))}

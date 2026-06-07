@@ -223,12 +223,12 @@ export const getResultByRegistration = async (req, res) => {
 
 export const updateResult = async (req, res) => {
   try {
-    const { registrationNo } = req.params;
+    const { resultId } = req.params;
     const updateData = req.body;
-    const result = await Result.findOneAndUpdate({ registrationNo }, updateData, { new: true });
+    const result = await Result.findOneAndUpdate({ _id: resultId }, updateData, { new: true });
 
     if (!result) {
-      return res.status(404).json({ success: false, message: "Result not found for the given registration number." });
+      return res.status(404).json({ success: false, message: "Result not found for the given ID." });
     }
 
     res.status(200).json({
@@ -300,11 +300,7 @@ export const fetchResultForStudent = async (req, res) => {
 
     /* ===== FIND RESULT ===== */
 
-    const result = await Result.findOne({
-      registrationNo,
-      examName: exam.examName,
-      academicSession: exam.academicSession
-    }).lean();
+    const result = await Result.findOne({ registrationNo }).lean();
 
     if (!result) {
       return res.status(404).json({
@@ -350,8 +346,6 @@ export const fetchResultForStudent = async (req, res) => {
     });
   }
 };
-
-
 
 
 export const getAllClassToppers = async (req, res) => {

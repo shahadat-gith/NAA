@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { X, Upload, User, Edit2 } from "lucide-react";
 
 import { AdminContext } from "../../context/AdminContext";
+import { Button } from "../common/Button";
+
 
 const EditAuthorityModal = ({ open, onClose, authority, onSuccess }) => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -169,13 +171,13 @@ const EditAuthorityModal = ({ open, onClose, authority, onSuccess }) => {
 
         {/* Fixed Footer */}
         <div className="p-6 border-t border-[var(--border-default)] flex gap-3 flex-shrink-0">
-          <button
+          <Button
             onClick={handleSubmit}
             disabled={loading}
             className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-60"
           >
             {loading ? "Saving..." : "Save Changes"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

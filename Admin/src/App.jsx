@@ -22,7 +22,7 @@ import Result from "./pages/Result/Result";
 import ResultDetails from "./pages/Result/ResultDetails";
 
 import Settings from "./pages/Settings";
-import Gallery from "./pages/Gallery/Gallery";
+import Gallery from "./pages/Gallery";
 import Achievers from "./pages//Achievers";
 import Notices from "./pages/Notices/Notices";
 
@@ -32,6 +32,8 @@ import StaffDetails from "./pages/Staffs/StaffDetails";
 import Attendance from "./pages/Attendance/Attendance";
 import AttendanceDashboard from "./pages/Attendance/AttendanceDashboard";
 import AttendanceHistory from "./pages/Attendance/AttendanceHistory";
+import Test from "./pages/Test";
+import Action from "./pages/Action";
 
 
 /* ===============================
@@ -91,6 +93,8 @@ const App = () => {
               <Layout>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/actions" element={<Action />} />
+
 
                   {/* Staffs  */}
                   <Route path="/staffs" element={<Staffs />} />

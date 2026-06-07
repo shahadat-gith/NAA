@@ -4,9 +4,7 @@
 
 @import "tailwindcss";
 
-/* ─────────────────────────────────────────────
-   Global Design Tokens — Dark Blue Theme
-   ───────────────────────────────────────────── */
+
 :root {
   /* Backgrounds */
   --bg-base:          #050d1a;   /* deepest page background */
@@ -79,17 +77,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─────────────────────────────────────────────
-   Button Base
-   ───────────────────────────────────────────── */
-button {
+button{
   cursor: pointer;
-  border-radius: var(--radius-full);
-  padding: 12px 16px;
-  font-family: var(--font-body);
-  border: none;
-  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
 }
-
-button:hover  { transform: translateY(-1px); }
-button:active { transform: translateY(0); }

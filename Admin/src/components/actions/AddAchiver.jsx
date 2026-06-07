@@ -1,17 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { X, Upload, Plus } from "lucide-react";
+import { X, Upload } from "lucide-react";
+
 import { Button } from "../common/Button";
+import { AdminContext } from "../../context/AdminContext";
 
+const AddAchiver = ({ onAddSuccess }) => {
+  const navigate = useNavigate();
+  const { backendUrl, adminToken } = useContext(AdminContext);
 
-const AddAchieverModal = ({ 
-  isOpen, 
-  onClose, 
-  backendUrl, 
-  adminToken, 
-  onAddSuccess 
-}) => {
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -30,66 +29,98 @@ const AddAchieverModal = ({
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-    } else {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
       toast.error("Please select a valid image file");
+      return;
     }
+
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setImagePreview("");
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const validateForm = () => {
+    const name = formData.name.trim();
+    const percentage = formData.percentage.trim();
+    const year = formData.year.trim();
+    const className = formData.className.trim();
+
+    if (!name || !percentage || !year || !className) {
+      toast.error("Name, percentage, year, and class are required");
+      return false;
+    }
+
+    const percentageRegex = /^\d+(\.\d{1,2})?$/;
+
+    if (!percentageRegex.test(percentage) || Number(percentage) > 100) {
+      toast.error("Percentage must be a valid number and should not exceed 100");
+      return false;
+    }
+
+    const yearRegex = /^\d{4}$/;
+
+    if (!yearRegex.test(year)) {
+      toast.error("Year must be a valid four-digit number");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.percentage || !formData.year || !formData.className) {
-      return toast.error("Name, Percentage, Year, and Class are required");
-    }
+    if (uploading) return;
+    if (!validateForm()) return;
 
     setUploading(true);
+
     const form = new FormData();
 
-    Object.keys(formData).forEach((key) => {
-      if (formData[key]) form.append(key, formData[key]);
+    Object.entries(formData).forEach(([key, value]) => {
+      form.append(key, value.trim());
     });
 
-    if (imageFile) form.append("image", imageFile);
+    if (imageFile) {
+      form.append("image", imageFile);
+    }
 
     try {
-      await toast.promise(
-        axios.post(`${backendUrl}/api/achievers/add-achiever`, form, {
+      const res = await axios.post(
+        `${backendUrl}/api/achievers/add-achiever`,
+        form,
+        {
           headers: {
             Authorization: `Bearer ${adminToken}`,
-            "Content-Type": "multipart/form-data",
           },
-        }),
-        {
-          pending: "Adding achiever...",
-          success: "Achiever added successfully!",
-          error: "Failed to add achiever.",
         }
       );
 
-      onAddSuccess();
-      onClose();
-      
-      // Reset form
-      setFormData({
-        name: "",
-        father: "",
-        mother: "",
-        village: "",
-        percentage: "",
-        year: "",
-        className: "",
-      });
-      setImageFile(null);
-      setImagePreview("");
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      if (res.data.success) {
+        toast.success("Achiever added successfully");
+        onAddSuccess?.();
+        navigate(-1);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Error adding achiever");
     } finally {
@@ -97,32 +128,30 @@ const AddAchieverModal = ({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1100] flex items-center justify-center p-4">
-      <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-2xl max-h-[70vh] flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <h2 className="text-2xl font-bold text-[var(--text-primary)]">Add Achiever</h2>
-          </div>
+    <div className="min-h-screen p-5 rounded-xl">
+      <div>
+        <div className="flex items-center justify-between gap-4 mb-8">
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">
+            Add Achiever
+          </h1>
+
           <button
-            onClick={onClose}
-            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
+            type="button"
+            onClick={() => navigate(-1)}
+            className="p-3 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] transition-all"
           >
-            <X size={26} />
+            <X size={24} />
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-auto p-8 space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Student Name <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Student Name <span className="text-red-500">*</span>
+              </label>
+
               <input
                 type="text"
                 name="name"
@@ -134,7 +163,10 @@ const AddAchieverModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Percentage (%) <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Percentage (%) <span className="text-red-500">*</span>
+              </label>
+
               <input
                 type="text"
                 name="percentage"
@@ -147,7 +179,10 @@ const AddAchieverModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Year <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Year <span className="text-red-500">*</span>
+              </label>
+
               <input
                 type="text"
                 name="year"
@@ -160,7 +195,10 @@ const AddAchieverModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Class <span className="text-red-500">*</span></label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Class <span className="text-red-500">*</span>
+              </label>
+
               <input
                 type="text"
                 name="className"
@@ -173,7 +211,10 @@ const AddAchieverModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Father's Name</label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Father's Name
+              </label>
+
               <input
                 type="text"
                 name="father"
@@ -184,7 +225,10 @@ const AddAchieverModal = ({
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Mother's Name</label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Mother's Name
+              </label>
+
               <input
                 type="text"
                 name="mother"
@@ -195,7 +239,10 @@ const AddAchieverModal = ({
             </div>
 
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Village</label>
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Village
+              </label>
+
               <input
                 type="text"
                 name="village"
@@ -206,9 +253,11 @@ const AddAchieverModal = ({
             </div>
           </div>
 
-          {/* Image Upload */}
           <div>
-            <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Achiever Photo</label>
+            <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+              Achiever Photo
+            </label>
+
             <div className="border border-dashed border-[var(--border-default)] rounded-3xl p-8 text-center hover:border-[var(--color-primary)] transition-colors">
               {imagePreview ? (
                 <div className="flex flex-col items-center">
@@ -217,22 +266,25 @@ const AddAchieverModal = ({
                     alt="Preview"
                     className="w-40 h-40 object-cover rounded-2xl shadow-md mb-4"
                   />
-                  <Button
+
+                  <button
                     type="button"
-                    onClick={() => {
-                      setImageFile(null);
-                      setImagePreview("");
-                      if (fileInputRef.current) fileInputRef.current.value = "";
-                    }}
+                    onClick={removeImage}
                     className="text-red-500 hover:text-red-600 text-sm font-medium"
                   >
                     Remove Image
-                  </Button>
+                  </button>
                 </div>
               ) : (
                 <div>
-                  <Upload size={48} className="mx-auto text-[var(--text-muted)] mb-3" />
-                  <p className="text-[var(--text-secondary)]">Click to upload achiever photo</p>
+                  <Upload
+                    size={48}
+                    className="mx-auto text-[var(--text-muted)] mb-3"
+                  />
+
+                  <p className="text-[var(--text-secondary)]">
+                    Click to upload achiever photo
+                  </p>
                 </div>
               )}
 
@@ -244,6 +296,7 @@ const AddAchieverModal = ({
                 className="hidden"
                 id="achiever-image"
               />
+
               <label
                 htmlFor="achiever-image"
                 className="mt-4 inline-block px-6 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl cursor-pointer text-sm font-medium transition-all"
@@ -252,24 +305,20 @@ const AddAchieverModal = ({
               </label>
             </div>
           </div>
-        </form>
 
-        {/* Fixed Footer */}
-        <div className="p-6 border-t border-[var(--border-default)] flex gap-4 flex-shrink-0">
-         
           <Button
             type="submit"
+            size="lg"
             variant="primary"
             loading={uploading}
-            className="flex-1"
-            onClick={handleSubmit}
+            className="w-full"
           >
-            Add
+            Add Achiever
           </Button>
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default AddAchieverModal;
+export default AddAchiver;

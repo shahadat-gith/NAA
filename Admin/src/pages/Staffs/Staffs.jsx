@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
+import { Button } from "../../components/common/Button";
+
 
 const Staffs = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -90,7 +92,7 @@ const Staffs = () => {
               <button
                 key={filter}
                 onClick={() => setRoleFilter(filter)}
-                className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                className={`px-5 py-1 rounded-xl text-sm font-semibold transition-all ${
                   roleFilter === filter
                     ? "bg-[var(--color-primary)] text-white shadow-sm"
                     : "hover:bg-[var(--bg-surface-2)] text-[var(--text-secondary)]"

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Edit2, Users } from "lucide-react";
 
 import EditAuthorityModal from "./EditAuthorityModal";
+import { Button } from "../common/Button.jsx";
+
 
 const AuthoritiesTab = ({ authorities = [], loading }) => {
   const [editingAuth, setEditingAuth] = useState(null);
@@ -40,12 +42,12 @@ const AuthoritiesTab = ({ authorities = [], loading }) => {
             className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-3xl p-6 hover:border-[var(--border-strong)] transition-all group relative overflow-hidden"
           >
             {/* Edit Button */}
-            <button
+            <Button
               onClick={() => setEditingAuth(auth)}
               className="absolute top-5 right-5 p-2.5 bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-2xl opacity-0 group-hover:opacity-100 hover:bg-[var(--color-primary)] hover:text-white transition-all"
             >
               <Edit2 size={18} />
-            </button>
+            </Button>
 
             <div className="flex flex-col items-center text-center">
               <div className="w-24 h-24 rounded-3xl overflow-hidden border-4 border-[var(--bg-base)] shadow-md mb-5">

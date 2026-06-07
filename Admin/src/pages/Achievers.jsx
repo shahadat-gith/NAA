@@ -1,30 +1,26 @@
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Edit2, Trash2, Search, Image as ImageIcon } from "lucide-react";
 
 import { AdminContext } from "../context/AdminContext";
 import Loader from "../components/common/Loader";
-
-import AddAchieverModal from "../components/achievers/AddAchieverModal";
-import UpdateAchieverModal from "../components/achievers/UpdateAchieverModal";
+import { Button } from "../components/common/Button.jsx";
 
 const Achievers = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
+  const navigate = useNavigate();
 
   const [achievers, setAchievers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(null);
 
   /* ================= FETCH ACHIEVERS ================= */
   const fetchAchievers = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${backendUrl}/api/achievers/get-achievers`,
-      );
+      const { data } = await axios.get(`${backendUrl}/api/achievers/get-achievers`);
       if (data.success) {
         setAchievers(data.achievers || []);
       }
@@ -43,17 +39,14 @@ const Achievers = () => {
   /* ================= FILTERED DATA ================= */
   const filteredAchievers = useMemo(() => {
     if (!searchTerm.trim()) return achievers;
-
     return achievers.filter((achiever) =>
-      achiever.name?.toLowerCase().includes(searchTerm.toLowerCase()),
+      achiever.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm, achievers]);
 
   /* ================= DELETE ================= */
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this achiever?",
-    );
+    const confirmDelete = window.confirm("Are you sure you want to delete this achiever?");
 
     if (!confirmDelete) return;
 
@@ -66,12 +59,21 @@ const Achievers = () => {
           loading: "Deleting achiever...",
           success: "Achiever deleted successfully!",
           error: "Failed to delete achiever.",
-        },
+        }
       );
       fetchAchievers();
     } catch (error) {
       toast.error(error.response?.data?.message || "Error deleting achiever");
     }
+  };
+
+  /* ================= NAVIGATE TO ACTIONS ================= */
+  const openAddAchiver = () => {
+    navigate("/actions?type=AddAchiver");
+  };
+
+  const openEditAchiver = (achiever) => {
+    navigate("/actions?type=UpdateAchiver", { state: { achiever } });
   };
 
   if (loading) {
@@ -92,13 +94,12 @@ const Achievers = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="mt-4 md:mt-0 flex items-center gap-2 px-6 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
+          <Button
+            variant="primary"
+            onClick={openAddAchiver}
           >
-            <Plus size={20} />
             Add Achiever
-          </button>
+          </Button>
         </div>
 
         {/* Search */}
@@ -171,7 +172,7 @@ const Achievers = () => {
                       <td className="px-6 py-4">
                         <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[var(--border-default)] cursor-pointer hover:scale-105 transition-transform">
                           <img
-                            src={achiever?.image.url || "/user.png"}
+                            src={achiever?.image || "/user.png"}
                             alt={achiever.name}
                             className="w-full h-full object-cover"
                           />
@@ -202,18 +203,20 @@ const Achievers = () => {
 
                       <td className="px-6 py-4 text-center">
                         <div className="flex items-center justify-center gap-2">
-                          <button
-                            onClick={() => setShowUpdateModal(achiever)}
-                            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors text-[var(--color-primary)]"
+                          <Button
+                            variant="secondary"
+                            size="xs"
+                            onClick={() => openEditAchiver(achiever)}
                           >
                             <Edit2 size={18} />
-                          </button>
-                          <button
+                          </Button>
+                          <Button
+                            variant="danger"
+                            size="xs"
                             onClick={() => handleDelete(achiever._id)}
-                            className="p-2 hover:bg-red-500/10 rounded-xl transition-colors text-red-500"
                           >
                             <Trash2 size={18} />
-                          </button>
+                          </Button>
                         </div>
                       </td>
                     </tr>
@@ -233,26 +236,6 @@ const Achievers = () => {
           </div>
         </div>
       </div>
-
-      {/* Modals */}
-      <AddAchieverModal
-        isOpen={showAddModal}
-        onClose={() => setShowAddModal(false)}
-        backendUrl={backendUrl}
-        adminToken={adminToken}
-        onAddSuccess={fetchAchievers}
-      />
-
-      {showUpdateModal && (
-        <UpdateAchieverModal
-          isOpen={!!showUpdateModal}
-          onClose={() => setShowUpdateModal(null)}
-          backendUrl={backendUrl}
-          adminToken={adminToken}
-          achiever={showUpdateModal}
-          onUpdateSuccess={fetchAchievers}
-        />
-      )}
     </div>
   );
 };

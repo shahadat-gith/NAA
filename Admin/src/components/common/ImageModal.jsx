@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { X, Download } from "lucide-react";
 import toast from "react-hot-toast";
+import { Button } from "./Button.jsx";
+
 
 const ImageModal = ({ isOpen, person, onClose }) => {
   // Prevent background scrolling
@@ -48,12 +50,12 @@ const ImageModal = ({ isOpen, person, onClose }) => {
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">
             {person.name}
           </h2>
-          <button
+          <Button
             onClick={onClose}
             className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
           >
             <X size={26} />
-          </button>
+          </Button>
         </div>
 
         {/* Image Display */}
@@ -67,20 +69,14 @@ const ImageModal = ({ isOpen, person, onClose }) => {
 
         {/* Actions */}
         <div className="flex justify-center gap-4 p-6 border-t border-[var(--border-default)]">
-          <button
-            onClick={onClose}
-            className="px-8 py-3 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-          >
-            Close
-          </button>
-
-          <button
+          <Button
             onClick={() => handleDownload(person.image)}
-            className="flex items-center gap-3 px-8 py-3 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white rounded-2xl font-semibold transition-all"
+            variant="success"
+            className="w-full"
           >
             <Download size={20} />
             Download Image
-          </button>
+          </Button>
         </div>
       </div>
     </div>

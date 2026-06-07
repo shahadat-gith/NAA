@@ -7,6 +7,8 @@ import { ArrowLeft, CheckCircle, User, BookOpen, MapPin } from "lucide-react";
 import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
 import VerifyAdmissionModal from "../../components/admissions/VerifyAdmissionModal";
+import { Button } from "../../components/common/Button";
+
 
 const AdmissionDetails = () => {
   const { id } = useParams();
@@ -65,13 +67,12 @@ const AdmissionDetails = () => {
             </div>
           </div>
 
-          <button
+          <Button
             onClick={() => setShowVerifyModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold transition-all"
+           variant="success"
           >
-            <CheckCircle size={20} />
             Verify
-          </button>
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

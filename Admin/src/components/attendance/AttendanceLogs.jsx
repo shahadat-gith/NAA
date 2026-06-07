@@ -1,5 +1,7 @@
 import React from "react";
 import { RefreshCw, Clock, UserCheck, Users } from "lucide-react";
+import { Button } from "../common/Button";
+
 
 const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
   const getStatusStyle = (status) => {
@@ -35,14 +37,15 @@ const AttendanceLogs = ({ attendanceList, onRefresh, actionLoading }) => {
 
         <div className="flex items-center gap-4">
          
-          <button
+          <Button
             onClick={onRefresh}
             disabled={actionLoading}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[var(--bg-base)] hover:bg-[var(--bg-surface-2)] border border-[var(--border-default)] rounded-2xl text-sm font-semibold transition-all disabled:opacity-60"
+            loading={actionLoading}
+            variant="warning"
+           
           >
-            <RefreshCw size={18} className={actionLoading ? "animate-spin" : ""} />
-            Refresh
-          </button>
+            {actionLoading ? "refreshing" : "Refresh"}
+          </Button>
         </div>
       </div>
 

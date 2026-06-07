@@ -7,6 +7,8 @@ import { ArrowLeft, Edit2, Trash2, User, Phone, Mail, MapPin } from "lucide-reac
 import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
 import VerifyModal from "../../components/staffs/VerifyModal";
+import { Button } from "../../components/common/Button";
+
 
 const StaffDetails = () => {
   const { staffId } = useParams();
@@ -91,24 +93,24 @@ const StaffDetails = () => {
 
           <div className="flex gap-3">
             {staff.status === "Pending" && (
-              <button
+              <Button
                 onClick={() => setIsModalOpen(true)}
                 disabled={actionLoading}
-                className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-semibold transition-all"
+               variant="success"
               >
-                <Edit2 size={18} />
                 Verify
-              </button>
+              </Button>
             )}
 
-            <button
+            <Button
               onClick={handleDeleteProfile}
               disabled={actionLoading}
-              className="flex items-center gap-2 px-6 py-3 border border-red-500/30 text-red-500 hover:bg-red-500/10 rounded-2xl font-semibold transition-all"
+             variant="danger"
+             loading={actionLoading}
             >
-              <Trash2 size={18} />
-              Delete
-            </button>
+
+              {actionLoading ? "deleting" :" delete"}
+            </Button>
           </div>
         </div>
 

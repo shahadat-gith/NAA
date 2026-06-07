@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 import toast from "react-hot-toast";
 import { X, Plus, Trash2, Calendar } from "lucide-react";
+
+import { Button } from "../common/Button";
+import { AdminContext } from "../../context/AdminContext";
 
 import {
   CLASS_OPTIONS,
@@ -10,18 +15,19 @@ import {
   EXAM_CENTER_OPTIONS,
 } from "../../utils/academicOptions";
 
-const RoutineModal = ({
-  open,
-  onClose,
-  onSubmit,
-  initialData,
-  loading,
-}) => {
+const ExamRoutine = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { backendUrl, adminToken } = useContext(AdminContext);
+
+  const initialData = location.state?.initialData;
+
   const [selectedClass, setSelectedClass] = useState("");
   const [selectedStream, setSelectedStream] = useState("");
   const [medium, setMedium] = useState("");
   const [examCenter, setExamCenter] = useState("");
   const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   /* ================= RESET FORM ================= */
   const resetForm = () => {
@@ -34,18 +40,16 @@ const RoutineModal = ({
 
   /* ================= LOAD EDIT DATA ================= */
   useEffect(() => {
-    if (initialData && open) {
+    if (initialData) {
       setSelectedClass(initialData.class || "");
       setSelectedStream(initialData.stream || "");
       setMedium(initialData.medium || "");
       setExamCenter(initialData.examCenter || "");
       setExams(initialData.exams || []);
-    } else if (open) {
+    } else {
       resetForm();
     }
-  }, [initialData, open]);
-
-  if (!open) return null;
+  }, [initialData]);
 
   /* ================= EXAM HELPERS ================= */
   const addExam = () => {
@@ -69,7 +73,7 @@ const RoutineModal = ({
     if (type === "start") start = value;
     if (type === "end") end = value;
 
-    updated[index].time = start && end ? `${start} - ${end}` : (start || end || "");
+    updated[index].time = start && end ? `${start} - ${end}` : start || end || "";
     setExams(updated);
   };
 
@@ -78,7 +82,7 @@ const RoutineModal = ({
   };
 
   /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedClass) return toast.error("Class is required");
@@ -92,132 +96,140 @@ const RoutineModal = ({
       }
     }
 
-    onSubmit({
+    setLoading(true);
+
+    const payload = {
       class: selectedClass,
       stream: selectedStream,
       medium,
       examCenter,
       exams,
-    });
+    };
 
-    resetForm();
-  };
+    try {
+      const res = await axios.put(
+        `${backendUrl}/api/settings/update`,
+        payload,
+        { headers: { Authorization: `Bearer ${adminToken}` } }
+      );
 
-  const handleClose = () => {
-    resetForm();
-    onClose();
+      if (res.data.success) {
+        toast.success(initialData ? "Exam schedule updated successfully!" : "Exam schedule saved successfully!");
+        navigate(-1);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to save schedule");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[1200] flex items-center justify-center p-4">
-      <div
-        className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl w-full max-w-4xl max-h-[60vh] flex flex-col overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Fixed Header */}
-        <div className="flex items-center justify-between px-8 py-5 border-b border-[var(--border-default)] flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <h2 className="text-xl font-bold text-[var(--text-primary)]">
-              {initialData ? "Edit Exam Schedule" : "Add New Exam Schedule"}
-            </h2>
-          </div>
+    <div className="min-h-screen bg-[var(--bg-base)]">
+      <div>
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">
+            {initialData ? "Edit Exam Schedule" : "Create New Exam Schedule"}
+          </h1>
           <button
-            onClick={handleClose}
-            className="p-2 hover:bg-[var(--bg-surface-2)] rounded-xl transition-colors"
+            onClick={() => navigate(-1)}
+            className="p-3 rounded-2xl border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] transition-all"
           >
             <X size={26} />
           </button>
         </div>
 
-        {/* Scrollable Content */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex-1 overflow-auto p-8 space-y-8"
-        >
+        <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Info */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
-                Class <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
-                required
-              >
-                <option value="">Select Class</option>
-                {Object.values(CLASS_OPTIONS)
-                  .flat()
-                  .filter((v, i, a) => a.indexOf(v) === i)
-                  .map((cls) => (
-                    <option key={cls} value={cls}>
-                      {cls}
-                    </option>
-                  ))}
-              </select>
-            </div>
-
-            {["11", "12"].includes(selectedClass) && (
+          <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
-                  Stream <span className="text-red-500">*</span>
+                  Class <span className="text-red-500">*</span>
                 </label>
                 <select
-                  value={selectedStream}
-                  onChange={(e) => setSelectedStream(e.target.value)}
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
                   className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
                   required
                 >
-                  <option value="">Select Stream</option>
-                  {STREAM_OPTIONS.map((s) => (
-                    <option key={s} value={s}>{s.toUpperCase()}</option>
-                  ))}
+                  <option value="">Select Class</option>
+                  {Object.values(CLASS_OPTIONS)
+                    .flat()
+                    .filter((v, i, a) => a.indexOf(v) === i)
+                    .map((cls) => (
+                      <option key={cls} value={cls}>
+                        {cls}
+                      </option>
+                    ))}
                 </select>
               </div>
-            )}
 
-            <div>
-              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Medium</label>
+              {["11", "12"].includes(selectedClass) && (
+                <div>
+                  <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                    Stream <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={selectedStream}
+                    onChange={(e) => setSelectedStream(e.target.value)}
+                    className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
+                    required
+                  >
+                    <option value="">Select Stream</option>
+                    {STREAM_OPTIONS.map((s) => (
+                      <option key={s} value={s}>
+                        {s.toUpperCase()}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                  Medium
+                </label>
+                <select
+                  value={medium}
+                  onChange={(e) => setMedium(e.target.value)}
+                  className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
+                >
+                  <option value="">Select Medium</option>
+                  <option value="english">English</option>
+                  <option value="assamese">Assamese</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Exam Center */}
+            <div className="mt-6">
+              <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">
+                Exam Center
+              </label>
               <select
-                value={medium}
-                onChange={(e) => setMedium(e.target.value)}
+                value={examCenter}
+                onChange={(e) => setExamCenter(e.target.value)}
                 className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
               >
-                <option value="">Select Medium</option>
-                <option value="english">English</option>
-                <option value="assamese">Assamese</option>
+                <option value="">Select Exam Center</option>
+                {EXAM_CENTER_OPTIONS.map((center) => (
+                  <option key={center} value={center}>
+                    {center}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
 
-          {/* Exam Center */}
-          <div>
-            <label className="block text-sm font-medium text-[var(--text-muted)] mb-1.5">Exam Center</label>
-            <select
-              value={examCenter}
-              onChange={(e) => setExamCenter(e.target.value)}
-              className="w-full px-4 py-3 bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl focus:border-[var(--border-strong)] outline-none"
-            >
-              <option value="">Select Exam Center</option>
-              {EXAM_CENTER_OPTIONS.map((center) => (
-                <option key={center} value={center}>{center}</option>
-              ))}
-            </select>
-          </div>
-
           {/* Dynamic Exams */}
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h4 className="font-semibold text-lg">Exam Schedule</h4>
-              <button
-                type="button"
-                onClick={addExam}
-                className="flex items-center gap-2 px-5 py-2 bg-[var(--bg-base)] border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl text-sm font-medium transition-all"
-              >
-                <Plus size={18} />
+          <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl p-8">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-semibold">Exam Schedule</h3>
+              <Button type="button" onClick={addExam}>
                 Add Exam
-              </button>
+              </Button>
             </div>
 
             <div className="space-y-4">
@@ -226,8 +238,9 @@ const RoutineModal = ({
                 return (
                   <div
                     key={index}
-                    className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl p-5 grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
+                    className="bg-[var(--bg-base)] border border-[var(--border-default)] rounded-2xl p-6 grid grid-cols-1 md:grid-cols-5 gap-4 items-end"
                   >
+                    {/* Subject */}
                     <div className="md:col-span-2">
                       <label className="block text-xs text-[var(--text-muted)] mb-1">Subject</label>
                       <select
@@ -238,11 +251,14 @@ const RoutineModal = ({
                       >
                         <option value="">Select Subject</option>
                         {SUBJECT_OPTIONS.map((s) => (
-                          <option key={s} value={s}>{s}</option>
+                          <option key={s} value={s}>
+                            {s}
+                          </option>
                         ))}
                       </select>
                     </div>
 
+                    {/* Date */}
                     <div>
                       <label className="block text-xs text-[var(--text-muted)] mb-1">Date</label>
                       <input
@@ -254,6 +270,7 @@ const RoutineModal = ({
                       />
                     </div>
 
+                    {/* Shift */}
                     <div>
                       <label className="block text-xs text-[var(--text-muted)] mb-1">Shift</label>
                       <select
@@ -266,6 +283,7 @@ const RoutineModal = ({
                       </select>
                     </div>
 
+                    {/* Time Range */}
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-xs text-[var(--text-muted)] mb-1">Start</label>
@@ -277,7 +295,9 @@ const RoutineModal = ({
                         >
                           <option value="">Start</option>
                           {TIME_OPTIONS.map((t) => (
-                            <option key={t} value={t}>{t}</option>
+                            <option key={t} value={t}>
+                              {t}
+                            </option>
                           ))}
                         </select>
                       </div>
@@ -291,47 +311,41 @@ const RoutineModal = ({
                         >
                           <option value="">End</option>
                           {TIME_OPTIONS.map((t) => (
-                            <option key={t} value={t}>{t}</option>
+                            <option key={t} value={t}>
+                              {t}
+                            </option>
                           ))}
                         </select>
                       </div>
                     </div>
 
-                    <button
+                    <Button
                       type="button"
+                      variant="danger"
+                      size="sm"
                       onClick={() => removeExam(index)}
-                      className="text-red-500 hover:text-red-600 p-3 self-end"
                     >
                       <Trash2 size={20} />
-                    </button>
+                    </Button>
                   </div>
                 );
               })}
             </div>
           </div>
-        </form>
 
-        {/* Fixed Footer */}
-        <div className="flex gap-4 p-6 border-t border-[var(--border-default)] flex-shrink-0">
-          <button
-            type="button"
-            onClick={handleClose}
-            className="flex-1 py-4 border border-[var(--border-default)] hover:bg-[var(--bg-surface-2)] rounded-2xl font-medium transition-all"
-          >
-            Cancel
-          </button>
-          <button
+          {/* Submit Button */}
+          <Button
             type="submit"
-            onClick={handleSubmit}
-            disabled={loading}
-            className="flex-1 py-4 bg-[var(--color-primary)] hover:bg-[var(--color-primary-bright)] text-white font-semibold rounded-2xl transition-all disabled:opacity-70"
+            variant="primary"
+            className="w-full"
+            loading={loading}
           >
-            {loading ? "Saving..." : "Save"}
-          </button>
-        </div>
+            {initialData ? "Update Schedule" : "Save Schedule"}
+          </Button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default RoutineModal;
+export default ExamRoutine;
