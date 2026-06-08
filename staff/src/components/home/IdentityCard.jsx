@@ -47,9 +47,7 @@ const IdentityCard = ({ staff }) => {
             <p className="text-[10px] font-black uppercase tracking-wider text-[var(--color-accent)] mt-0.5 font-[var(--font-poppins)] truncate">
               {staff?.designation || "Faculty Member"}
             </p>
-            <span className="inline-block mt-1.5 px-1.5 py-0.5 rounded-md text-[8px] font-black uppercase tracking-wider bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/15 font-[var(--font-poppins)]">
-              {staff?.staffType || "Staff"}
-            </span>
+           
           </div>
         </div>
 
