@@ -14,7 +14,6 @@ import Home from "./pages/Home";
 
 import Student from "./pages/Student/Student";
 import StudentDetails from "./pages/Student/StudentDetails";
-import StudentImages from "./pages/Student/StudentImages";
 import Admissions from "./pages/Admissions/Admissions";
 import AdmissionDetails from "./pages/Admissions/AdmissionDetails";
 import Exams from "./pages/Exams";
@@ -105,7 +104,6 @@ const App = () => {
                  
                   {/* Students */}
                   <Route path="/students" element={<Student />} />
-                  <Route path="/student/images" element={<StudentImages />} />
                   <Route path="/students/:id" element={<StudentDetails />} />
                   <Route path="/exams" element={<Exams />} />
                   <Route path="/result" element={<Result />} />

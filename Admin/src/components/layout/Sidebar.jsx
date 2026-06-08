@@ -7,7 +7,6 @@ const pages = [
     title: "Students",
     links: [
       { to: "/students", icon: "Users", label: "Students" },
-      { to: "/student/images", icon: "Image", label: "Student Images" },
       { to: "/exams", icon: "BookOpen", label: "Exams" },
       { to: "/result", icon: "Trophy", label: "Result" },
       { to: "/admissions", icon: "UserPlus", label: "Admissions" },

@@ -5,19 +5,20 @@ import { authorityModel } from "../models/Academic/authorities.js";
 import AdmitCard from "../models/Settings/admitcard.js";
 import Exam from "../models/Settings/exam.js";
 import ServiceSettings from "../models/Settings/services.js";
-import { uploadImageToCloudinary,deleteFromCloudinary } from "../config/cloudinary.js";
-
+import {
+  uploadImageToCloudinary,
+  deleteFromCloudinary,
+} from "../config/cloudinary.js";
 
 export const getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find({ isActive: true })
+    const students = await Student.find({ status: "current" });
 
     return res.status(200).json({
       success: true,
       count: students.length,
       students,
     });
-
   } catch (error) {
     console.error("getAllStudents error:", error);
     return res.status(500).json({
@@ -34,7 +35,7 @@ export const getStudentById = async (req, res) => {
 
     const student = await Student.findOne({
       _id: studentId,
-      isActive: true,
+      status: "current",
     }).lean();
 
     if (!student) {
@@ -78,7 +79,6 @@ export const getStudentById = async (req, res) => {
   }
 };
 
-
 export const SearchStudent = async (req, res) => {
   try {
     const { registrationNo, key } = req.body;
@@ -94,7 +94,7 @@ export const SearchStudent = async (req, res) => {
     // 2. Fetch Core Student Document First
     const student = await Student.findOne({
       registrationNo: registrationNo.trim(),
-      isActive: true,
+      status: "current",
     }).lean();
 
     // 3. Confirm Existence Before Accessing Properties or Sub-Queries
@@ -130,10 +130,10 @@ export const SearchStudent = async (req, res) => {
         principal: principal || null,
         admitCard: admitCard || null,
         examDetails: examDetails || null,
-        services: services || null
+        services: services || null,
       });
     }
-    if(key === "fees"){
+    if (key === "fees") {
       // For fee related lookups, we can add more queries here in the future (e.g., FeePaymentHistory)
     }
 
@@ -142,7 +142,6 @@ export const SearchStudent = async (req, res) => {
       success: true,
       student,
     });
-
   } catch (error) {
     console.error("SearchStudent error:", error);
     return res.status(500).json({
@@ -153,8 +152,6 @@ export const SearchStudent = async (req, res) => {
   }
 };
 
-
-
 export const deleteStudent = async (req, res) => {
   try {
     const { id } = req.params;
@@ -164,13 +161,24 @@ export const deleteStudent = async (req, res) => {
         message: "Invalid student ID",
       });
     }
-    const student = await Student.findByIdAndDelete(id);
+
+    const student = await Student.findById(id);
     if (!student) {
       return res.status(404).json({
         success: false,
         message: "Student not found",
       });
     }
+
+    if (student.image && student.image.public_id) {
+      try {
+        await deleteFromCloudinary(student.image.public_id);
+      } catch (error) {
+        console.error("Error deleting image from Cloudinary:", error);
+      }
+    }
+    await Student.findByIdAndDelete(id);
+
     return res.status(200).json({
       success: true,
       message: "Student deleted successfully",
@@ -182,114 +190,20 @@ export const deleteStudent = async (req, res) => {
       error: error.message,
     });
   }
-}
-
-
-export const addSingleStudent = async (req, res) => {
-  try {
-    const {
-      name,
-      fatherName,
-      motherName,
-      dob,
-      gender,
-      phone,
-      registrationNo,
-      aadhar,
-      pen,
-      class: studentClass,
-      medium,
-      stream,
-      address,
-    } = req.body;
-
-    const student = await Student.create({
-      /* BASIC */
-      name,
-      class: studentClass,
-      medium,
-      stream: stream || "",
-
-      /* PERSONAL */
-      fatherName,
-      motherName,
-      dob,
-      gender,
-      phone,
-
-      /* ACADEMIC */
-      registrationNo,
-      aadhar,
-      pen,
-
-      /* ADDRESS */
-      address: {
-        village: address?.village || "",
-        postOffice: address?.postOffice || "",
-        policeStation: address?.policeStation || "",
-        district: address?.district || "",
-        state: address?.state || "",
-        pincode: address?.pincode || "",
-      },
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: "Student added successfully",
-      student,
-    });
-  } catch (error) {
-    console.error("student adding error:", error);
-
-    // duplicate registration no
-    if (error.code === 11000) {
-      return res.status(400).json({
-        success: false,
-        message: "Registration number already exists",
-      });
-    }
-
-    return res.status(500).json({
-      success: false,
-      message: "Error adding student",
-    });
-  }
 };
-
 
 export const updateStudent = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // ✅ Whitelisted editable fields
-    const allowedFields = [
-      "name",
-      "fatherName",
-      "motherName",
-      "dob",
-      "gender",
-      "phone",
-      "aadhar",
-      "class",
-      "medium",
-      "stream",
-      "address",
-    ];
-
-    const updatedData = {};
-
-    // ✅ Pick only allowed fields
-    for (const field of allowedFields) {
-      if (req.body[field] !== undefined) {
-        updatedData[field] = req.body[field];
-      }
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid student ID",
+      });
     }
 
-    const student = await Student.findByIdAndUpdate(
-      id,
-      { $set: updatedData },
-      { new: true, runValidators: true }
-    );
+    const student = await Student.findById(id);
 
     if (!student) {
       return res.status(404).json({
@@ -297,6 +211,40 @@ export const updateStudent = async (req, res) => {
         message: "Student not found",
       });
     }
+
+    if (req.body.address && typeof req.body.address === "string") {
+      req.body.address = JSON.parse(req.body.address);
+    }
+
+    const blockedFields = ["_id", "__v", "createdAt", "updatedAt", "image"];
+
+    for (const key in req.body) {
+      if (!blockedFields.includes(key)) {
+        student[key] = req.body[key];
+      }
+    }
+
+    if (req.file) {
+      if (student.image?.public_id) {
+        try {
+          await deleteFromCloudinary(student.image.public_id);
+        } catch (err) {
+          console.error("Old image delete failed:", err);
+        }
+      }
+
+      const result = await uploadImageToCloudinary(
+        req.file,
+        "naa_profile_pictures"
+      );
+
+      student.image = {
+        url: result.secure_url,
+        public_id: result.public_id,
+      };
+    }
+
+    await student.save();
 
     return res.status(200).json({
       success: true,
@@ -306,103 +254,19 @@ export const updateStudent = async (req, res) => {
   } catch (error) {
     console.error("Update student error:", error);
 
-    return res.status(500).json({
-      success: false,
-      message: "Failed to update student",
-    });
-  }
-};
-
-
-export const promoteStudents = async (req, res) => {
-  try {
-    const {
-      class: studentClass,
-      medium,
-      stream = "",
-      nextClass,
-    } = req.body;
-
-    if (!studentClass || !medium || !nextClass) {
-      return res.status(400).json({
+    if (error.code === 11000) {
+      return res.status(409).json({
         success: false,
-        message: "class, medium and nextClass are required",
+        message: "Registration number already exists",
       });
     }
 
-    const normalizedClass = studentClass.toString().toLowerCase();
-    const normalizedNextClass = nextClass.toString().toLowerCase();
-    const normalizedMedium = medium.toLowerCase();
-    const normalizedStream = stream.toLowerCase();
-
-    /* ================= FILTER ================= */
-
-    const filter = {
-      class: normalizedClass,
-      medium: normalizedMedium,
-      isActive: true,
-    };
-
-    // Stream filter only for 11 / 12
-    if (["11", "12"].includes(normalizedClass)) {
-      if (!normalizedStream) {
-        return res.status(400).json({
-          success: false,
-          message: "Stream is required for class 11 and 12",
-        });
-      }
-      filter.stream = normalizedStream;
-    }
-
-    /* ================= UPDATE DATA ================= */
-
-    const updateData = {
-      class: normalizedNextClass,
-    };
-
-    // Class 10 → 11 : stream MUST be set
-    if (normalizedClass === "10" && normalizedNextClass === "11") {
-      if (!normalizedStream) {
-        return res.status(400).json({
-          success: false,
-          message: "Stream is required when promoting to class 11",
-        });
-      }
-      updateData.stream = normalizedStream;
-    }
-
-    // 11 → 12 : keep same stream
-    if (normalizedClass === "11" && normalizedNextClass === "12") {
-      updateData.stream = normalizedStream;
-    }
-
-    // Any other promotion → remove stream
-    if (!["11", "12"].includes(normalizedNextClass)) {
-      updateData.stream = "";
-    }
-
-    /* ================= PROMOTE ================= */
-
-    const result = await Student.updateMany(filter, {
-      $set: updateData,
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: "Students promoted successfully",
-      promotedCount: result.modifiedCount,
-    });
-  } catch (error) {
-    console.error("student promotion error:", error);
     return res.status(500).json({
       success: false,
-      message: "Error promoting students",
-      error: error.message,
+      message: error.message || "Failed to update student",
     });
   }
 };
-
-
 export const toggleAdmitCardPermission = async (req, res) => {
   try {
     const { id } = req.params;
@@ -436,188 +300,77 @@ export const toggleAdmitCardPermission = async (req, res) => {
   }
 };
 
-
-
-const CLASS_OPTIONS = {
-  english: ["nursery", "kg", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-  assamese: [
-    "ankur",
-    "mukul",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
-    "11",
-    "12",
-  ],
-};
-
-
-const getRegistrationNo = ({
-  studentClass,
-  medium,
-  sequence,
-  stream = "",
-}) => {
-  const PREFIX = "NAA26";
-
-  const normalizedClass = studentClass.toString().toLowerCase();
-  const normalizedMedium = medium.toLowerCase();
-  const normalizedStream = stream.toLowerCase();
-
-  const mediumCode = normalizedMedium === "english" ? "E" : "A";
-
-  const classList = CLASS_OPTIONS[normalizedMedium];
-  if (!classList) throw new Error("Invalid medium");
-
-  const classIndex = classList.indexOf(normalizedClass);
-  if (classIndex === -1)
-    throw new Error("Invalid class for selected medium");
-
-  const classCode = String(classIndex).padStart(2, "0");
-  const seqCode = String(sequence).padStart(3, "0");
-
-  let streamCode = "";
-  if (normalizedClass === "11" || normalizedClass === "12") {
-    if (normalizedStream === "arts") streamCode = "A";
-    else if (normalizedStream === "science") streamCode = "S";
-    else throw new Error("Invalid stream for class 11 or 12");
-  }
-
-  return `${PREFIX}${classCode}${seqCode}${mediumCode}${streamCode}`;
-};
-
-
-export const addMassStudents = async (req, res) => {
+export const promoteStudents = async (req, res) => {
   try {
-    const { class: studentClass, medium, stream = "" } = req.body;
+    const { studentIds, nextClass, stream = "" } = req.body;
 
-    if (!req.file) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Excel file required" });
-    }
-
-    /* ---------- READ EXCEL ---------- */
-    const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
-    const sheet = workbook.Sheets[workbook.SheetNames[0]];
-    const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-
-    if (!rows.length) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Excel file is empty" });
-    }
-
-    /* ---------- PREPARE STUDENTS ---------- */
-    const students = rows.map((row, index) => {
-      const sequence = index + 1;
-
-      const registrationNo = getRegistrationNo({
-        studentClass,
-        medium,
-        stream,
-        sequence,
+    if (!Array.isArray(studentIds) || studentIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "studentIds must be a non-empty array",
       });
-
-      // 🔥 normalize row values (lowercase)
-      const normalizedRow = Object.fromEntries(
-        Object.entries(row).map(([key, value]) => [
-          key,
-          typeof value === "string" ? value.trim().toLowerCase() : value,
-        ])
-      );
-
-      return {
-        ...normalizedRow,
-        class: studentClass.toString().toLowerCase(),
-        medium: medium.toLowerCase(),
-        stream: stream.toLowerCase(),
-        registrationNo,
-      };
-    });
-
-    /* ---------- INSERT ---------- */
-    await Student.insertMany(students);
-
-    res.status(201).json({
-      success: true,
-      message: "Students admitted successfully",
-      total: students.length,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Mass Addition failed",
-      error: error.message,
-    });
-  }
-};
-
-
-export const uploadStudentProfilePicture = async (req, res) => {
-  try {
-    const { id } = req.query;
-    const { oldPublicId } = req.body;
-
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ success: false, message: "Invalid student ID" });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ success: false, message: "Image file is required" });
+    if (!nextClass) {
+      return res.status(400).json({
+        success: false,
+        message: "next class is required",
+      });
     }
 
-    // --- DELETE OLD IMAGE FROM CLOUDINARY ---
-    if (oldPublicId) {
-      try {
-        await deleteFromCloudinary(oldPublicId);
-      } catch (err) {
-        console.error("Cloudinary Delete Error:", err);
-        // We continue anyway so the new upload isn't blocked by a failed deletion
+    const invalidIds = studentIds.filter(
+      (id) => !mongoose.Types.ObjectId.isValid(id)
+    );
+
+    if (invalidIds.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Some student IDs are invalid",
+        invalidIds,
+      });
+    }
+
+    const normalizedNextClass = nextClass.toString().toLowerCase();
+    const normalizedStream = stream.toString().toLowerCase();
+
+    const updateData = {
+      class: normalizedNextClass,
+    };
+
+    if (["11", "12"].includes(normalizedNextClass)) {
+      if (!normalizedStream) {
+        return res.status(400).json({
+          success: false,
+          message: "Stream is required when promoting to class 11 or 12",
+        });
       }
+
+      updateData.stream = normalizedStream;
+    } else {
+      updateData.stream = "";
     }
 
-    // --- UPLOAD NEW IMAGE ---
-    const result = await uploadImageToCloudinary(
-      req.file,
-      "naa_profile_pictures"
-    );
-
-    const student = await Student.findByIdAndUpdate(
-      id,
+    const result = await Student.updateMany(
       {
-        image: {
-          url: result.secure_url,
-          public_id: result.public_id,
-        },
+        _id: { $in: studentIds },
       },
-      { new: true }
+      {
+        $set: updateData,
+      }
     );
 
-    if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
-    }
-
-    const students = await Student.find({ isActive: true });
-
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
-      message: "Profile picture updated successfully",
-      students,
+      message: "Students promoted successfully",
+      matchedCount: result.matchedCount,
+      promotedCount: result.modifiedCount,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
+    console.error("student promotion error:", error);
+
+    return res.status(500).json({
       success: false,
-      message: "Profile picture upload failed",
+      message: "Error promoting students",
       error: error.message,
     });
   }

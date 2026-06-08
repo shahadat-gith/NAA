@@ -104,22 +104,27 @@ const StudentImageUpload = () => {
   };
 
   const handleUpload = async () => {
-    if (!croppedBlob || !student) return;
-
-    setUploading(true);
-    const formData = new FormData();
-    const uniqueFileName = `student-${student._id}-${Date.now()}.jpg`;
-    formData.append("image", croppedBlob, uniqueFileName);
-
-    if (student.image?.public_id) {
-      formData.append("oldPublicId", student.image.public_id);
+    if (!croppedBlob || !student?._id) {
+      return toast.error("Please crop an image first");
     }
 
+    setUploading(true);
+
     try {
-      const { data } = await axios.post(
-        `${backendUrl}/api/student/upload-profile-picture?id=${student._id}`,
+      const formData = new FormData();
+      const uniqueFileName = `student-${student._id}-${Date.now()}.jpg`;
+
+      formData.append("image", croppedBlob, uniqueFileName);
+
+      const { data } = await axios.put(
+        `${backendUrl}/api/student/${student._id}`,
         formData,
-        { headers: { Authorization: `Bearer ${adminToken}` } },
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
       );
 
       if (data.success) {
@@ -127,12 +132,12 @@ const StudentImageUpload = () => {
         navigate(-1);
       }
     } catch (error) {
+      console.error("Student image update error:", error);
       toast.error(error.response?.data?.message || "Upload failed");
     } finally {
       setUploading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-[var(--bg-base)]">
       {/* Header */}

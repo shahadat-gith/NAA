@@ -46,11 +46,10 @@ const studentSchema = new mongoose.Schema(
       required: true, // generated once, admin-verified
       trim: true,
     },
-    isActive: {
-      type: Boolean,
-      default: true,
+    status:{
+      type: String,
+      enum: ["current", "passed_out", "dropped_out"],
     },
-
     canDownloadAdmitCard: {
       type: Boolean,
       default: true,

@@ -65,36 +65,31 @@ export const capitalizeFirst = (text = "") =>
 
 
 export const normaliseStudent = (data) => ({
-  // core fields (editable)
-  name: data.name ? data.name.toLowerCase() : undefined,
-  fatherName: data.fatherName ? data.fatherName.toLowerCase() : undefined,
-  motherName: data.motherName ? data.motherName.toLowerCase() : undefined,
-  registrationNo: data.registrationNo || undefined,
+  name: data.name?.trim().toLowerCase() || undefined,
+  fatherName: data.fatherName?.trim().toLowerCase() || undefined,
+  motherName: data.motherName?.trim().toLowerCase() || undefined,
+  registrationNo: data.registrationNo?.trim() || undefined,
 
-  // personal (optional)
-  dob: data.dob || undefined,
-  gender: data.gender ? data.gender.toLowerCase() : undefined,
-  phone: data.phone || undefined,
-  aadhar: data.aadhar || undefined,
-  pen: data.pen || undefined,
+  dob: data.dob?.trim() || undefined,
+  gender: data.gender?.trim().toLowerCase() || undefined,
+  phone: data.phone?.trim() || undefined,
+  aadhar: data.aadhar?.trim() || undefined,
+  pen: data.pen?.trim() || undefined,
 
-  // academic
-  class: data.class || undefined,
-  medium: data.medium ? data.medium.toLowerCase() : undefined,
-  stream: data.stream ? data.stream.toLowerCase() : undefined,
+  class: data.class?.trim() || undefined,
+  medium: data.medium?.trim().toLowerCase() || undefined,
+  stream: data.stream?.trim().toLowerCase() || undefined,
+  status: data.status?.trim().toLowerCase() || undefined,
 
-  // address (fully optional)
   address: {
-    village: data.village ? data.village.toLowerCase() : undefined,
-    postOffice: data.postOffice ? data.postOffice.toLowerCase() : undefined,
-    policeStation: data.policeStation ? data.policeStation.toLowerCase() : undefined,
-    district: data.district ? data.district.toLowerCase() : undefined,
-    state: data.state ? data.state.toLowerCase() : undefined,
-    pincode: data.pincode || undefined,
+    village: data.village?.trim().toLowerCase() || undefined,
+    postOffice: data.postOffice?.trim().toLowerCase() || undefined,
+    policeStation: data.policeStation?.trim().toLowerCase() || undefined,
+    district: data.district?.trim().toLowerCase() || undefined,
+    state: data.state?.trim().toLowerCase() || undefined,
+    pincode: data.pincode?.trim() || undefined,
   },
 });
-
-
 
 
 const MEDIUM_ORDER = Object.keys(CLASS_OPTIONS);

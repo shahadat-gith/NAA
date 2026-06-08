@@ -30,6 +30,8 @@ const uploadImageToCloudinary = (file, folder) => {
     stream.end(file.buffer);
   });
 };
+
+
 const uploadPdfToCloudinary = (file, folder) => {
   return new Promise((resolve, reject) => {
     const originalName = file.originalname; // e.g. notice.pdf

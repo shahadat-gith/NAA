@@ -21,7 +21,6 @@ const Gallery = () => {
       }
     } catch (error) {
       console.error("Failed to fetch gallery items:", error);
-      toast.error("Could not load gallery images.");
     } finally {
       setLoading(false);
     }

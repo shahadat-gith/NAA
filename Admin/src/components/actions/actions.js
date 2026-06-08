@@ -1,6 +1,4 @@
-// src/components/actions/actions.js
 
-// Import all action pages
 import AddAchiver from "./AddAchiver";
 import UpdateAchiver from "./UpdateAchiver";
 import AdmitCardDownload from "./AdmitCardDownload";
@@ -13,7 +11,7 @@ import UploadResults from "./UploadResults";
 import EditBannerImage from "./EditBannerImage";
 import StudentImageUpload from "./StudentImageUpload";
 import PromoteStudents from "./PromoteStudents";
-import StudentForm from "./StudentForm";
+import UpdateStudent from "./UpdateStudent";
 import NoticeForm from "./NoticeForm";
 
 // Rich configuration map
@@ -78,8 +76,8 @@ export const actionConfig = {
     title: "Promote Students",
     needsAuth: true,
   },
-  StudentForm: {
-    component: StudentForm,
+  UpdateStudent: {
+    component: UpdateStudent,
     title: "Manage Student",
     needsAuth: true,
   },
