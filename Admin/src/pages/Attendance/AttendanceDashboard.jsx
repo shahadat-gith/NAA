@@ -37,7 +37,7 @@ const AttendanceDashboard = () => {
         );
 
         if (data?.success) {
-          setStaffList(data.staff || []); 
+          setStaffList(data.staffs || []); 
         } else {
           toast.error(data?.message || "Failed to load staff list.");
         }

@@ -36,7 +36,7 @@ const Attendance = () => {
     try {
       setQrLoading(true);
       const { data } = await axios.get(
-        `${backendUrl}/api/attendance/today-dashboard-details`,
+        `${backendUrl}/api/attendance/today-details`,
         { headers: { Authorization: `Bearer ${adminToken}` } }
       );
 
