@@ -80,3 +80,40 @@ body {
 button{
   cursor: pointer;
 }
+
+
+
+/* ─────────────────────────────────────────────
+   Global Scrollbar
+   ───────────────────────────────────────────── */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface-3);
+  border: 2px solid var(--bg-base);
+  border-radius: var(--radius-full);
+  transition: background var(--transition-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg-base);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-surface-3) var(--bg-base);
+}
