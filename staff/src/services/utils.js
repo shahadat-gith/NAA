@@ -10,16 +10,21 @@ import { Command, FileText, CalendarCheck, Clock, Settings } from "lucide-react"
  */
 export const cleanPhoneNumber = (phone) => {
   if (!phone) return "";
-  
-  let cleaned = phone
-    .trim()
-    .replace(/[^0-9+]/g, "") // Keep only digits and +
-    .replace(/^(\+91)/, "") // Remove +91 country code
-    .replace(/^0+/, "");     // Remove leading zeros
+
+  let cleaned = phone.replace(/\D/g, "");
+
+  // Remove country code only if number is 12 digits long
+  if (cleaned.length === 12 && cleaned.startsWith("91")) {
+    cleaned = cleaned.slice(2);
+  }
+
+  // Remove leading zero for 11-digit numbers like 09876543210
+  if (cleaned.length === 11 && cleaned.startsWith("0")) {
+    cleaned = cleaned.slice(1);
+  }
 
   return cleaned;
 };
-
 
 
 
