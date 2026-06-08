@@ -105,16 +105,14 @@ const Attendance = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)] p-4 md:p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-[var(--bg-base)] text-[var(--text-primary)]">
+      <div className="mx-auto">
         {/* Header with Navigation */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-[var(--color-primary-subtle)] flex items-center justify-center text-[var(--color-primary)] border border-[var(--border-default)]">
-              <Users size={28} />
-            </div>
+            
             <div>
-              <h1 className="text-1.5xl md:text-3xl font-bold">Attendance Dashboard</h1>
+              <h1 className="text-2xl md:text-3xl font-bold">Attendance</h1>
             </div>
           </div>
 
@@ -137,11 +135,11 @@ const Attendance = () => {
 
               {isQrValid(qrDetails) ? (
                 <div className="space-y-8">
-                  <div className="flex justify-center bg-white p-6 rounded-2xl border border-[var(--border-default)]">
+                  <div className="flex justify-center p-6 rounded-2xl border border-[var(--border-default)]">
                     <img
                       src={qrDetails.qrCodeBase64}
                       alt="Today's Attendance QR"
-                      className="w-64 h-64 object-contain"
+                      className="w-40 h-40 md:w-64 md:h-64 object-contain rounded-2xl"
                     />
                   </div>
 

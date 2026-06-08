@@ -19,12 +19,12 @@ const Navbar = ({ toggleSidebar }) => {
     <nav className="h-20 bg-[var(--bg-surface)] border-b border-[var(--border-default)] px-4 md:px-6 flex items-center justify-between z-30">
       <div className="flex items-center gap-4">
         {/* Mobile Menu Button */}
-        <Button
+        <button
           onClick={toggleSidebar}
           className="lg:hidden p-2 rounded-xl hover:bg-[var(--bg-surface-2)] transition-colors"
         >
           <Menu size={24} />
-        </Button>
+        </button>
       </div>
 
       {/* Right Side */}
