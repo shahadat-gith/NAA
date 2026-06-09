@@ -8,18 +8,18 @@ import { AdminContext } from "../../context/AdminContext";
 import Loader from "../../components/common/Loader";
 import { Button } from "../../components/common/Button";
 
-
 const Staffs = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
   const navigate = useNavigate();
 
   const [staffMembers, setStaffMembers] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
 
   /* ================= FETCH STAFF ================= */
-  const fetchStaffMatrix = async () => {
+  const fetchStaffs = async () => {
     if (!adminToken) return;
     setLoading(true);
     try {
@@ -39,7 +39,7 @@ const Staffs = () => {
   };
 
   useEffect(() => {
-    fetchStaffMatrix();
+    fetchStaffs();
   }, [adminToken]);
 
   /* ================= FILTERED STAFF ================= */
@@ -64,6 +64,12 @@ const Staffs = () => {
 
     return result;
   }, [staffMembers, searchTerm, roleFilter]);
+
+  const visibleStaffs = filteredStaff.slice(0, visibleCount);
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 10, staffMembers.length));
+  };
 
   if (loading) {
     return <Loader text="Loading staff members..." />;
@@ -118,13 +124,19 @@ const Staffs = () => {
           </div>
         </div>
         {/* Results Count */}
-        <div className="mb-6 text-[var(--text-secondary)]">
-          Showing{" "}
-          <span className="font-semibold text-[var(--text-primary)]">
-            {filteredStaff.length}
-          </span>{" "}
-          staff members
-        </div>
+        {staffMembers.length > 0 && (
+          <div className="mb-6 text-[var(--text-secondary)]">
+            Showing{" "}
+            <span className="font-semibold text-[var(--text-primary)]">
+              {visibleStaffs.length}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-[var(--text-primary)]">
+              {staffMembers.length}
+            </span>{" "}
+            images
+          </div>
+        )}
 
         {/* Table */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl overflow-hidden">
@@ -141,8 +153,8 @@ const Staffs = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--border-default)]">
-                {filteredStaff.length > 0 ? (
-                  filteredStaff.map((staff) => (
+                {visibleStaffs.length > 0 ? (
+                  visibleStaffs.map((staff) => (
                     <tr
                       key={staff._id}
                       onClick={() => navigate(`/staffs/${staff._id}`)}
@@ -154,6 +166,7 @@ const Staffs = () => {
                             <img
                               src={staff.image?.url || "/user.png"}
                               alt={staff.name}
+                              loading="lazy"
                               className="w-full h-full object-cover"
                             />
                           </div>
@@ -201,6 +214,14 @@ const Staffs = () => {
             </table>
           </div>
         </div>
+
+        {visibleCount < staffMembers.length && (
+          <div className="flex justify-center mt-8">
+            <Button variant="primary" onClick={handleShowMore}>
+              Show More
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

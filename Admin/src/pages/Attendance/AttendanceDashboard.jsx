@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useMemo,
-} from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -11,7 +6,6 @@ import { Search, Users, Eye, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/common/Loader";
 import { Button } from "../../components/common/Button";
-
 
 const AttendanceDashboard = () => {
   const { backendUrl, adminToken } = useContext(AdminContext);
@@ -21,6 +15,8 @@ const AttendanceDashboard = () => {
   const [loadingList, setLoadingList] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeFilter, setActiveFilter] = useState("All"); // All, Teaching, Non-Teaching
+
+  const [visibleCount, setVisibleCount] = useState(10);
 
   // Fetch Staff List with Monthly Attendance Stats
   useEffect(() => {
@@ -33,18 +29,18 @@ const AttendanceDashboard = () => {
             headers: {
               Authorization: `Bearer ${adminToken}`,
             },
-          }
+          },
         );
 
         if (data?.success) {
-          setStaffList(data.staffs || []); 
+          setStaffList(data.staffs || []);
         } else {
           toast.error(data?.message || "Failed to load staff list.");
         }
       } catch (err) {
         console.error("Error loading staff list:", err);
         toast.error(
-          err?.response?.data?.message || "Network error loading staff list."
+          err?.response?.data?.message || "Network error loading staff list.",
         );
       } finally {
         setLoadingList(false);
@@ -62,7 +58,7 @@ const AttendanceDashboard = () => {
     if (activeFilter !== "All") {
       result = result.filter(
         (staff) =>
-          staff.staffType?.toLowerCase() === activeFilter.toLowerCase()
+          staff.staffType?.toLowerCase() === activeFilter.toLowerCase(),
       );
     }
 
@@ -72,22 +68,27 @@ const AttendanceDashboard = () => {
       result = result.filter(
         (staff) =>
           staff.name?.toLowerCase().includes(query) ||
-          staff.staffId?.toLowerCase().includes(query)
+          staff.staffId?.toLowerCase().includes(query),
       );
     }
 
     return result;
   }, [searchQuery, staffList, activeFilter]);
 
+  const visibleStaffs = filteredStaff.slice(0, visibleCount);
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 10, staffList.length));
+  };
+
   const handleViewHistory = (staffId) => {
     navigate("/attendance/dashboard/history", {
-      state: {staffId}
+      state: { staffId },
     });
   };
 
-
-  if(loadingList){
-    return <Loader text="getting staffs..." />
+  if (loadingList) {
+    return <Loader text="getting staffs..." />;
   }
 
   return (
@@ -96,14 +97,10 @@ const AttendanceDashboard = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[var(--color-primary-subtle)] flex items-center justify-center text-[var(--color-primary)] border border-[var(--border-default)]">
-              <Users size={24} />
-            </div>
             <div>
-              <h1 className="text-xl font-bold">Staff Attendance</h1>
-              <p className="text-[var(--text-secondary)]">
-                Current Month Overview
-              </p>
+              <h1 className="text-xl md:text-2xl font-bold">
+                Staff Attendance
+              </h1>
             </div>
           </div>
         </div>
@@ -142,6 +139,24 @@ const AttendanceDashboard = () => {
           </div>
         </div>
 
+        {staffList.length > 0 && (
+          <div className="mb-6 text-[var(--text-secondary)]">
+            Showing{" "}
+            <span className="font-semibold text-[var(--text-primary)]">
+              {visibleStaffs.length}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-[var(--text-primary)]">
+              {staffList.length}
+            </span>{" "}
+            images
+          </div>
+        )}
+
+        <div className="mb-4 text-center text-xs text-[var(--text-muted)]">
+          Showing current month attendance • Click any row to view full history
+        </div>
+
         {/* Table View */}
         <div className="bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-3xl overflow-hidden shadow-sm">
           {loadingList ? (
@@ -168,14 +183,12 @@ const AttendanceDashboard = () => {
                     <th className="px-6 py-4 text-center text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                       Attendance %
                     </th>
-                    <th className="px-6 py-4 text-center text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                      Action
-                    </th>
+                   
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[var(--border-default)]">
-                  {filteredStaff.length > 0 ? (
-                    filteredStaff.map((staff) => {
+                  {visibleStaffs.length > 0 ? (
+                    visibleStaffs.map((staff) => {
                       const stats = staff.attendanceStats || {};
                       const totalDays = stats.totalDays || 0;
                       const presentDays = stats.presentDays || 0;
@@ -239,14 +252,7 @@ const AttendanceDashboard = () => {
                               </div>
                             </div>
                           </td>
-                          <td className="px-6 py-4 text-center">
-                            <Button
-                             variant="success"
-                            >
-                              View
-                              
-                            </Button>
-                          </td>
+                          
                         </tr>
                       );
                     })
@@ -254,8 +260,13 @@ const AttendanceDashboard = () => {
                     <tr>
                       <td colSpan="6" className="px-6 py-20 text-center">
                         <div className="flex flex-col items-center">
-                          <Users size={48} className="text-[var(--text-muted)] mb-4" />
-                          <h3 className="text-xl font-semibold mb-2">No Staff Found</h3>
+                          <Users
+                            size={48}
+                            className="text-[var(--text-muted)] mb-4"
+                          />
+                          <h3 className="text-xl font-semibold mb-2">
+                            No Staff Found
+                          </h3>
                           <p className="text-[var(--text-secondary)]">
                             No matching records found for the selected filter.
                           </p>
@@ -269,10 +280,13 @@ const AttendanceDashboard = () => {
           )}
         </div>
 
-        {/* Summary */}
-        <div className="mt-4 text-center text-xs text-[var(--text-muted)]">
-          Showing current month attendance • Click any row to view full history
-        </div>
+        {visibleCount < staffList.length && (
+          <div className="flex justify-center mt-8">
+            <Button variant="primary" onClick={handleShowMore}>
+              Show More
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

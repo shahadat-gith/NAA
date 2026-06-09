@@ -1,16 +1,17 @@
-import React, { useState, useContext, useEffect } from 'react';
-import './Gallery.css';
-import toast from 'react-hot-toast';
-import { AppContext } from '../../context/AppContext';
-import { Helmet } from 'react-helmet-async';
-import axios from 'axios';
-import Loader from '../../components/Loader/Loader';
+import React, { useState, useContext, useEffect } from "react";
+import "./Gallery.css";
+import toast from "react-hot-toast";
+import { AppContext } from "../../context/AppContext";
+import { Helmet } from "react-helmet-async";
+import axios from "axios";
+import Loader from "../../components/Loader/Loader";
 
 const Gallery = () => {
   const { backendUrl } = useContext(AppContext);
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const [visibleCount, setVisibleCount] = useState(8);
 
   const fetchGalleryImages = async () => {
     setLoading(true);
@@ -24,41 +25,18 @@ const Gallery = () => {
     } finally {
       setLoading(false);
     }
-  }; 
+  };
 
   useEffect(() => {
     fetchGalleryImages();
   }, []);
 
-  const openModal = (image) => {
-    setSelectedImage(image);
-    document.body.style.overflow = 'hidden';
+  const handleShowMore = () => {
+    setVisibleCount((prev) => Math.min(prev + 8, images.length));
   };
 
-  const closeModal = () => {
-    setSelectedImage(null);
-    document.body.style.overflow = 'unset';
-  };
+  const visibleImages = images.slice(0, visibleCount);
 
-  const handleDownload = async (imageUrl) => {
-    try {
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `gallery-image-${Date.now()}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-
-      link.remove();
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Download failed:', error);
-      toast.error('Failed to download image.');
-    }
-  };
 
   return (
     <div className="gl-gallery-page">
@@ -73,10 +51,22 @@ const Gallery = () => {
       {/* Gallery Header */}
       <div className="gl-gallery-header">
         <h1 className="gl-gallery-title">School Gallery</h1>
-        <p className="gl-gallery-subtitle">
-          Capturing moments of learning, growth, and achievement at our school
-        </p>
+       
       </div>
+
+      {images.length > 0 && (
+        <div className="text-[var(--text-main)] flex justify-center gap-2 mb-4">
+          Showing{" "}
+          <span className="font-semibold text-[var(--text-secondary)]">
+            {visibleImages.length}
+          </span>{" "}
+          of{" "}
+          <span className="font-semibold text-[var(--text-main)]">
+            {images.length}
+          </span>{" "}
+          images
+        </div>
+      )}
 
       {/* Conditional Rendering: Loader vs Layout Grid */}
       {loading ? (
@@ -86,18 +76,14 @@ const Gallery = () => {
           {images.length === 0 ? (
             <p className="gl-no-images">No images available at the moment.</p>
           ) : (
-            images.map((item) => (
+            visibleImages.map((item) => (
               <div
                 key={item._id}
                 className="gl-gallery-item"
-                onClick={() => openModal(item)}
               >
                 <div className="gl-image-wrapper">
                   <img
-                    src={item.url.replace(
-                      '/upload/',
-                      '/upload/w_400,h_300,q_auto,f_webp/'
-                    )}
+                    src={item.url}
                     alt="Nashib Ali Academy gallery moment"
                     className="gl-gallery-img"
                     loading="lazy"
@@ -109,31 +95,11 @@ const Gallery = () => {
         </div>
       )}
 
-      {/* Lightbox Modal Overlay */}
-      {selectedImage && (
-        <div className="gl-modal-overlay" onClick={closeModal}>
-          <div className="gl-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="gl-modal-close-btn" onClick={closeModal} aria-label="Close modal">
-              &times;
-            </button>
-
-            <div className="gl-modal-img-wrapper">
-              <img
-                src={selectedImage.url}
-                alt="Nashib Ali Academy gallery presentation view"
-                className="gl-modal-img"
-              />
-            </div>
-
-            <div className="gl-modal-actions">
-              <button
-                className="gl-download-btn"
-                onClick={() => handleDownload(selectedImage.url)}
-              >
-                <i className="fas fa-download"></i> Download Image
-              </button>
-            </div>
-          </div>
+      {visibleCount < images.length && (
+        <div className="flex justify-center mt-8">
+          <button className="flex justify-center items-center bg-amber-400 text-[var(--text-main)] outline-0 rounded-xl py-2 px-4 cursor-pointer hover:bg-amber-200 transition-all " onClick={handleShowMore}>
+            Show More
+          </button>
         </div>
       )}
     </div>

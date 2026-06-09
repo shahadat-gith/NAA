@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Search, ToggleLeft, ToggleRight, ImagePlus, Eye } from "lucide-react";
+import { Search, ImagePlus, Eye } from "lucide-react";
 
 import { CLASS_OPTIONS } from "../../utils/academicOptions";
 import { capitalizeWords, sortStudents } from "../../utils/utility";
@@ -16,6 +16,8 @@ const Student = () => {
 
   const [students, setStudents] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10);
+
   const [loading, setLoading] = useState(true);
   const [loadingId, setLoadingId] = useState(null);
 
@@ -80,6 +82,12 @@ const Student = () => {
 
     setFilteredStudents(sortStudents(filtered));
   }, [students, searchTerm, mediumFilter, classFilter, streamFilter]);
+
+  useEffect(() => {
+    setVisibleCount(10);
+  }, [searchTerm, mediumFilter, classFilter, streamFilter]);
+
+  const visibleStudents = filteredStudents.slice(0, visibleCount);
 
   const clearFilters = () => {
     setSearchTerm("");
@@ -249,6 +257,10 @@ const Student = () => {
         <div className="mb-6 text-[var(--text-secondary)]">
           Showing{" "}
           <span className="font-semibold text-[var(--text-primary)]">
+            {visibleStudents.length}
+          </span>{" "}
+          of{" "}
+          <span className="font-semibold text-[var(--text-primary)]">
             {filteredStudents.length}
           </span>{" "}
           students
@@ -280,8 +292,8 @@ const Student = () => {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-[var(--border-default)] px-3 ">
-                  {filteredStudents.map((student, index) => (
+                <tbody className="divide-y divide-[var(--border-default)] px-3">
+                  {visibleStudents.map((student, index) => (
                     <tr
                       key={student._id}
                       className="hover:bg-[var(--bg-surface-2)] transition-colors"
@@ -295,6 +307,8 @@ const Student = () => {
                           <img
                             src={student?.image?.url || "/user.png"}
                             alt={student.name}
+                            loading="lazy"
+                            decoding="async"
                             className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl object-cover border border-[var(--border-default)] flex-shrink-0"
                           />
 
@@ -306,6 +320,7 @@ const Student = () => {
                             <p className="text-[11px] md:text-sm text-[var(--text-secondary)] truncate max-w-[150px] sm:max-w-none">
                               {student.registrationNo || "-"}
                             </p>
+
                             <p className="text-[10px] text-[var(--text-secondary)] truncate max-w-[150px] sm:max-w-none">
                               {student.class || "-"} - {student.medium || "-"}
                               {student.stream && ` - ${student.stream}`}
@@ -344,6 +359,21 @@ const Student = () => {
                 </tbody>
               </table>
             </div>
+
+            {visibleCount < filteredStudents.length && (
+              <div className="flex justify-center p-4">
+                <Button
+                  variant="primary"
+                  onClick={() =>
+                    setVisibleCount((prev) =>
+                      Math.min(prev + 10, filteredStudents.length),
+                    )
+                  }
+                >
+                  Show More
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
