@@ -162,14 +162,14 @@ const Staffs = () => {
                     >
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-4">
-                          <div className="w-11 h-11 rounded-2xl overflow-hidden border border-[var(--border-default)] bg-[var(--bg-base)] flex-shrink-0">
+                          {/* <div className="w-11 h-11 rounded-2xl overflow-hidden border border-[var(--border-default)] bg-[var(--bg-base)] flex-shrink-0">
                             <img
                               src={staff.image?.url || "/user.png"}
                               alt={staff.name}
                               loading="lazy"
                               className="w-full h-full object-cover"
                             />
-                          </div>
+                          </div> */}
                           <div>
                             <div className="font-semibold text-[var(--text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
                               {staff.name}

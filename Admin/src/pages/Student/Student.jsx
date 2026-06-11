@@ -304,13 +304,13 @@ const Student = () => {
 
                       <td className="px-2 py-3">
                         <div className="flex items-center gap-2 md:gap-3 min-w-0">
-                          <img
+                          {/* <img
                             src={student?.image?.url || "/user.png"}
                             alt={student.name}
                             loading="lazy"
                             decoding="async"
                             className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl object-cover border border-[var(--border-default)] flex-shrink-0"
-                          />
+                          /> */}
 
                           <div className="min-w-0">
                             <h3 className="font-semibold text-sm md:text-base text-[var(--text-primary)] truncate max-w-[150px] sm:max-w-none">

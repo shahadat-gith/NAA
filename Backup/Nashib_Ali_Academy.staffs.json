@@ -1,0 +1,1988 @@
+[{
+  "_id": {
+    "$oid": "6a1fb2ba1b58f69e20d91d98"
+  },
+  "staffType": "Teaching",
+  "name": "Shahadat Ali",
+  "email": "shahadat.offl@gmail.com",
+  "contact": "7637078247",
+  "gender": "Male",
+  "address": {
+    "village": "kachumara",
+    "po": "kachumara",
+    "ps": "kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.Tech",
+  "experience": 7,
+  "subjectTaught": "Physics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780887290/staff_profiles/profile_STAFF_1780887237489.jpg",
+    "publicId": "staff_profiles/profile_STAFF_1780887237489"
+  },
+  "password": "$2b$10$CpdaRxF0OoAbF8mC/7m2jeiaBy/nnsIk7jLk6ydMp3JSGEC5krSDK",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2026-06-03T04:51:06.741Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T02:54:50.796Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a1fb5071b58f69e20d91dba"
+  },
+  "staffType": "Teaching",
+  "name": "Elizabeth Surong",
+  "email": "surongelizabeth560@gmail.com",
+  "contact": "9366829798",
+  "gender": "Female",
+  "address": {
+    "village": "Wahingdoh shillong",
+    "po": "Mawkhar",
+    "ps": "Lumdiengjri shillong",
+    "pin": "793001",
+    "district": "East khasi hills",
+    "state": "Meghalaya"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A English",
+  "experience": 10,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780462854/staff_profiles/teacher-photo-1780462545684-0aq1se.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780462545684-0aq1se"
+  },
+  "password": "$2b$10$xfvI/PqM1c3ZQRNKs6kUruhg.QaujpuQBmmvcNwjvfc6lywnJ9nL6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:00:55.042Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:13:57.883Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-001-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fb6366d7c20930840e722"
+  },
+  "staffType": "Teaching",
+  "name": "SHAHIDUL  ISLAM",
+  "email": "shahidul241024@gmail.com",
+  "contact": "9678888080",
+  "gender": "Male",
+  "address": {
+    "village": "Kachumara. N.C",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A",
+  "experience": 26,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780463158/staff_profiles/teacher-photo-1780462876995-3jfb80.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780462876995-3jfb80"
+  },
+  "password": "$2b$10$6T612fr5iw2dQisBsJ94nu4giPKxlqFv1G/CLGPi1eUIZVDHzeYpm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:05:58.647Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:14:20.695Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-002-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fb64d6d7c20930840e726"
+  },
+  "staffType": "Teaching",
+  "name": "Jahangir Hussain",
+  "email": "jh6006312@gmail.com",
+  "contact": "9365378808",
+  "gender": "Male",
+  "address": {
+    "village": "2no.Tupamari",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "Computer Science",
+  "experience": 16,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780463181/staff_profiles/teacher-photo-1780463055139-amz9fl.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780463055139-amz9fl"
+  },
+  "password": "$2b$10$QE.4KHeAghYdhAmQCx8JrOhbToJHJdILihGwuTx5dQ9sTxa08sSUm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:06:21.880Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:14:47.674Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-003-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fb6eb2bab454667f6711a"
+  },
+  "staffType": "Teaching",
+  "name": "Roshupa parbin",
+  "email": "roshupaparbin@gmail.com",
+  "contact": "6003962079",
+  "gender": "Female",
+  "address": {
+    "village": "Village",
+    "po": "Kasumara",
+    "ps": "Kasumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 1,
+  "subjectTaught": "Arabic",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780463339/staff_profiles/teacher-photo-1780471946622-umau1s.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780471946622-umau1s"
+  },
+  "password": "$2b$10$sG.g/vyM3ZtjSm1/bvJ.1ejZ1mrHmUz70X5rS2VqyeMU4ZwL47RBG",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:08:59.787Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:15:01.287Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-004-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fb7796d7c20930840e748"
+  },
+  "staffType": "Teaching",
+  "name": "Albinus Sumer",
+  "email": "albethsumer5148@gmail.com",
+  "contact": "9101524750",
+  "gender": "Male",
+  "address": {
+    "village": "Nongshiliang Nongthymmai Shillong",
+    "po": "Nongthymmai",
+    "ps": "Nongthymmai Beat House",
+    "pin": "793014",
+    "district": "East Khasi Hills",
+    "state": "Meghalaya"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A(Political science)",
+  "experience": 8,
+  "subjectTaught": "Social Studies",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780463481/staff_profiles/cropped-avatar.jpg",
+    "publicId": "staff_profiles/cropped-avatar"
+  },
+  "password": "$2b$10$DjmAgMcyrVfxo2E20DAXte73YdeIM/abeo4L7V4zt.LXmr3J6HXpy",
+  "verificationOtp": "149514",
+  "verifyOtpExpireAt": {
+    "$date": "2026-06-08T06:58:51.902Z"
+  },
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:11:21.845Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T06:48:51.903Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-005-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fb9aa6d7c20930840e78e"
+  },
+  "staffType": "Teaching",
+  "name": "Pashan Ali Ahmed",
+  "email": "pashanaliahmed565667@gmail.com",
+  "contact": "9954152489",
+  "gender": "Male",
+  "address": {
+    "village": "1 No Uttar Ranga pani.",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "H.s passed",
+  "experience": 11,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780464042/staff_profiles/teacher-photo-1780463596562-il8ww5.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780463596562-il8ww5"
+  },
+  "password": "$2b$10$BIU4KjTlToNQz6gA5TlzK.LteEw4jMOqN1CUexbydU95s9dTgGLfy",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:20:42.567Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:28:08.304Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-006-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fbb076d7c20930840e7ab"
+  },
+  "staffType": "Teaching",
+  "name": "Monjuwar khatun",
+  "email": "monjuwara766@gmail.com",
+  "contact": "8453182321",
+  "gender": "Female",
+  "address": {
+    "village": "Kachumara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "MA  (english)",
+  "experience": 2,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780464390/staff_profiles/teacher-photo-1780463968797-2tekog.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780463968797-2tekog"
+  },
+  "password": "$2b$10$BpO2XdtM65Zss.oiX/Yjj.UFq6ky2DhRz9tiw1CGFHvt1Wix6S5mi",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:26:31.446Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:28:23.084Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-007-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fbe616d7c20930840e7d8"
+  },
+  "staffType": "Teaching",
+  "name": "Dimple Rafika",
+  "email": "dimplerofika1989@gmail.com",
+  "contact": "8474889456",
+  "gender": "Female",
+  "address": {
+    "village": "Mahachara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Librarian",
+  "qualification": "B.A",
+  "experience": 10,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780465248/staff_profiles/teacher-photo-1780465102931-9s7w2n.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780465102931-9s7w2n"
+  },
+  "password": "$2b$10$Z1xvwoWoCa0wWK5cdlP3uO.ADcVHxRMmEdX92avfgko8zN3j4TzuG",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:40:49.781Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:48:53.451Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-008-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fc0214e90edabd15cf762"
+  },
+  "staffType": "Teaching",
+  "name": "Anchari Shamsul Haque",
+  "email": "ahatul793@gmail.com",
+  "contact": "7896710605",
+  "gender": "Male",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 25,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780465697/staff_profiles/teacher-photo-1780465458597-lcxey4.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780465458597-lcxey4"
+  },
+  "password": "$2b$10$M3bRIaKSC7NBVVKwQ53fOO9.KgPjaUy6lA6YQvx02puW1JOgeMFSG",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:48:17.964Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T05:49:13.822Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-009-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fc0a44e90edabd15cf77c"
+  },
+  "staffType": "Teaching",
+  "name": "Mohor Ali",
+  "email": "mohorali481@gmail.com",
+  "contact": "6900570258",
+  "gender": "Male",
+  "address": {
+    "village": "Aduripara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc,B.Ed(pursuing)",
+  "experience": 1,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780465827/staff_profiles/teacher-photo-1780465691746-sbdlyi.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780465691746-sbdlyi"
+  },
+  "password": "$2b$10$pUCEq4lDzewryPSZWcgdSufBVQi9MuDmLlR05NzRbYcljcaFatD96",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T05:50:28.236Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-10T05:21:22.788Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-010-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fc45de89fff37273927dd"
+  },
+  "staffType": "Teaching",
+  "name": "Rijuana Sultana",
+  "email": "rijuanasultana8@gmail.com",
+  "contact": "8811020642",
+  "gender": "Female",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B. Sc",
+  "experience": 3,
+  "subjectTaught": "General Science",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780466781/staff_profiles/teacher-photo-1780466572385-bzl1jk.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780466572385-bzl1jk"
+  },
+  "password": "$2b$10$bEMs9WWfTIcR8spyM1Nopuec47yXYqONg9RPktygc8SSZv2feQiIa",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T06:06:21.638Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T07:40:57.255Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-011-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fc56be89fff37273927f1"
+  },
+  "staffType": "Teaching",
+  "name": "Abdul Mozid Mondal",
+  "email": "mondalabdulmozid1@gmail.com",
+  "contact": "6001416724",
+  "gender": "Male",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Principal",
+  "qualification": "M.A",
+  "experience": 25,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780467050/staff_profiles/teacher-photo-1780466830428-pvhwsn.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780466830428-pvhwsn"
+  },
+  "password": "$2b$10$d5l/xCuNI9hHKoX4jhzAkOIEdQ4QS3xMJoxxgRx818fFArag.P.Gq",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T06:10:51.114Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T07:41:15.157Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-012-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fc6cb6ed18017b7bfa81b"
+  },
+  "staffType": "Teaching",
+  "name": "Muzammil Hoque",
+  "email": "mhoque01999@gmail.com",
+  "contact": "7099120807",
+  "gender": "Male",
+  "address": {
+    "village": "Kachumara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc",
+  "experience": 3,
+  "subjectTaught": "Biology",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780467402/staff_profiles/teacher-photo-1780467258770-gcsg5k.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780467258770-gcsg5k"
+  },
+  "password": "$2b$10$XpunvB.rg6svmgxbCn3sPOoAD7u8wdXkbPbS6pp841cci.TBzX/L2",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T06:16:43.832Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-03T07:41:45.679Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-013-T"
+},
+{
+  "_id": {
+    "$oid": "6a1fd2fed30247b3314ae852"
+  },
+  "staffType": "Teaching",
+  "name": "Tazmol Hoque",
+  "email": "tazmolhoque0101@gmail.com",
+  "contact": "9365836467",
+  "gender": "Male",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc",
+  "experience": 2,
+  "subjectTaught": "Chemistry",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780470526/staff_profiles/teacher-photo-1780470516821-fevd6w.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780470516821-fevd6w"
+  },
+  "password": "$2b$10$0mu5HrByaOW3S4Zku6BTfe.I18N9ygpQA85fFaH4PntRT4WVFYxcy",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-03T07:08:46.966Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T06:27:29.638Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-014-T"
+},
+{
+  "_id": {
+    "$oid": "6a20e61cde6c8b9964adb991"
+  },
+  "staffType": "Teaching",
+  "name": "Mirza Humayun Kabir",
+  "email": "mhumayunkabir509@gmail.com",
+  "contact": "6002629509",
+  "gender": "Male",
+  "address": {
+    "village": "Bhakhuradia",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup Rural",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.A, B.ED",
+  "experience": 6,
+  "subjectTaught": "History",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780540956/staff_profiles/teacher-photo-1780540707717-ch909g.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780540707717-ch909g"
+  },
+  "password": "$2b$10$RK056RzH.5WuZR.sBBWimeFQos.5uySwzxQk8NoaOMrv33vx3UG9K",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T02:42:36.834Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:12:34.774Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-015-T"
+},
+{
+  "_id": {
+    "$oid": "6a20e61f6b5df75a6d9e4be7"
+  },
+  "staffType": "Teaching",
+  "name": "Amir Uddin",
+  "email": "amiruddin8638@gmail.com",
+  "contact": "8638979521",
+  "gender": "Male",
+  "address": {
+    "village": "No 2 tupamari",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc,B.Ed",
+  "experience": 8,
+  "subjectTaught": "Physics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780540958/staff_profiles/teacher-photo-1780540799527-vf1xml.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780540799527-vf1xml"
+  },
+  "password": "$2b$10$25NH.gPxXJUkDnzb8LP6z.3hzW9jyIkLNhJUqX/xSydFjgzcMCJ9m",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T02:42:39.310Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:13:03.133Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-016-T"
+},
+{
+  "_id": {
+    "$oid": "6a20fc3de3e5166201002d9c"
+  },
+  "staffType": "Teaching",
+  "name": "Md. Emdadul Islam",
+  "email": "mdemdadulislam2016@gmail.com",
+  "contact": "9864294930",
+  "gender": "Male",
+  "address": {
+    "village": "Sontoli",
+    "po": "Mahatoli",
+    "ps": "Boko",
+    "pin": "781136",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.COM",
+  "experience": 5,
+  "subjectTaught": "GK",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780546621/staff_profiles/teacher-photo-1780546432322-w3bgaw.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780546432322-w3bgaw"
+  },
+  "password": "$2b$10$5Su3yKK1BqMpz9y3Qqf3uOo1GRHYb3aH4ZRc2AdMAQ0MFu3l/t1yq",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T04:17:01.499Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T05:58:29.727Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-017-T"
+},
+{
+  "_id": {
+    "$oid": "6a2100eb18277bd1f5088b34"
+  },
+  "staffType": "Teaching",
+  "name": "Abul Kayum",
+  "email": "abulkayum211@gmail.com",
+  "contact": "6901068145",
+  "gender": "Male",
+  "address": {
+    "village": "Rangeswari",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc.",
+  "experience": 4,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780547818/staff_profiles/teacher-photo-1780547723901-xayyzp.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780547723901-xayyzp"
+  },
+  "password": "$2b$10$h8byr4pZrqnViEMsLlwco./jl8qoxsQlXsORYIOkRylWKmW/AZ3XS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T04:36:59.419Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T05:07:13.714Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-018-T"
+},
+{
+  "_id": {
+    "$oid": "6a2105a3e3e5166201002dff"
+  },
+  "staffType": "Teaching",
+  "name": "Shaiqul Hussain",
+  "email": "hussainshaiqul@gmail.com",
+  "contact": "9101999930",
+  "gender": "Male",
+  "address": {
+    "village": "2 no dakshin rangapani",
+    "po": "Badla bazar",
+    "ps": "Boko",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.Sc",
+  "experience": 7,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780549027/staff_profiles/teacher-photo-1780548939860-64fhhr.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780548939860-64fhhr"
+  },
+  "password": "$2b$10$xWb2WQak1PkGJNuXjxtLB.l9u4MBsvY/d1gxEJaEFid46dW58EHMK",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T04:57:07.768Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:13:47.888Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-019-T"
+},
+{
+  "_id": {
+    "$oid": "6a210629e3e5166201002e03"
+  },
+  "staffType": "Teaching",
+  "name": "Md Shahjahan Ali",
+  "email": "as18280050737@gmail.com",
+  "contact": "6002324113",
+  "gender": "Male",
+  "address": {
+    "village": "Kachumara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 16,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780549160/staff_profiles/teacher-photo-1780548973201-lfj1ai.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780548973201-lfj1ai"
+  },
+  "password": "$2b$10$/PVvd3aGRWddtFP.ZudrW.KP6URlxJ/zA9r23T2J/q9RPafuHCTP6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T04:59:21.380Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:14:00.689Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-020-T"
+},
+{
+  "_id": {
+    "$oid": "6a210694e3e5166201002e06"
+  },
+  "staffType": "Teaching",
+  "name": "Ejaj Ali",
+  "email": "ejajali781127@gmail.com",
+  "contact": "8011863135",
+  "gender": "Male",
+  "address": {
+    "village": "Rangeshwari",
+    "po": "Tupamamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup R",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 6,
+  "subjectTaught": "Arabic",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780549267/staff_profiles/teacher-photo-1780548847497-04ypaz.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780548847497-04ypaz"
+  },
+  "password": "$2b$10$ClT3COHfcnnX2AREOlznlOQdx7WMxKKXICfD0DTAhGTIB1ENyHL2y",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-04T05:01:08.016Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:14:14.747Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-021-T"
+},
+{
+  "_id": {
+    "$oid": "6a2236989e58a9f75888d649"
+  },
+  "staffType": "Teaching",
+  "name": "Anchari Tosar Uddin",
+  "email": "ancharitosaruddin@gmail.com",
+  "contact": "8638871014",
+  "gender": "Male",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumar",
+    "ps": "Kachumar",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "BA",
+  "experience": 25,
+  "subjectTaught": "Social Studies",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780627095/staff_profiles/teacher-photo-1780626712972-eaqg8g.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780626712972-eaqg8g"
+  },
+  "password": "$2b$10$agpSyN2df5BM/2FYnIYsUelE/6Gis6AjtvCrtti2HluBJnBbuv9o6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T02:38:16.553Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-07T05:01:56.080Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-022-T"
+},
+{
+  "_id": {
+    "$oid": "6a225ebb516c2f36fd5a3b48"
+  },
+  "staffType": "Non-Teaching",
+  "name": "Sultan Mahmud",
+  "email": "sultanmahmud.786248@gmail.com",
+  "contact": "7086503663",
+  "gender": "Male",
+  "address": {
+    "village": "Mahachara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781136",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Managing Director",
+  "qualification": "B A",
+  "experience": 12,
+  "subjectTaught": "",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780637370/staff_profiles/teacher-photo-1780637157461-hsml89.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780637157461-hsml89"
+  },
+  "password": "$2b$10$/MZVeQtWS/PDW/q0zYKMs.8RruGNfVrijMjQ6wbJFJHTJhheZ8s6e",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T05:29:31.608Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-05T06:17:51.095Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-001-NT"
+},
+{
+  "_id": {
+    "$oid": "6a22e497cdd2050f4e60f39e"
+  },
+  "staffType": "Teaching",
+  "name": "KHAYRUL ALOM",
+  "email": "khayrulalomxyz@gmail.com",
+  "contact": "9678964756",
+  "gender": "Male",
+  "address": {
+    "village": "RANGEWARI",
+    "po": "TUPAMARI",
+    "ps": "NAGARBERA",
+    "pin": "781127",
+    "district": "KAMRUP",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc",
+  "experience": 2,
+  "subjectTaught": "Physics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780671638/staff_profiles/teacher-photo-1780671614466-2f11zh.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780671614466-2f11zh"
+  },
+  "password": "$2b$10$nhzI0Ar0pD11g/ARlH276OpJVAg5GW1QT530RfYaKUVNfse1ptW06",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T15:00:39.527Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T05:05:41.796Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-023-T"
+},
+{
+  "_id": {
+    "$oid": "6a22e514cdd2050f4e60f3aa"
+  },
+  "staffType": "Teaching",
+  "name": "Moidul Islam",
+  "email": "moidulislam707@gmail.com",
+  "contact": "7002830818",
+  "gender": "Male",
+  "address": {
+    "village": "Kashimpur",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M. Sc. D. Pharm. B. Ed . D. El. Ed ratna. CCA",
+  "experience": 5,
+  "subjectTaught": "Chemistry",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780671763/staff_profiles/teacher-photo-1780671679366-gdq9jf.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780671679366-gdq9jf"
+  },
+  "password": "$2b$10$He6kGAHn2sJHRWvo/1UBWes0nu5VQTDBjDXLd26.mZoYQspWzLKcO",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T15:02:44.119Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:03:38.493Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-024-T"
+},
+{
+  "_id": {
+    "$oid": "6a22e536cdd2050f4e60f3ae"
+  },
+  "staffType": "Teaching",
+  "name": "Mofizul Hoque",
+  "email": "hmofizul297@gmail.com",
+  "contact": "9365113136",
+  "gender": "Male",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "BA, Bed,",
+  "experience": 8,
+  "subjectTaught": "Social Studies",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780671798/staff_profiles/teacher-photo-1780671773093-2zd3hl.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780671773093-2zd3hl"
+  },
+  "password": "$2b$10$XFtaRiw9xFDFJbLEew6q9u4gH6xJAmmcfiGlefUUcz.1JuHajxNBe",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T15:03:18.734Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:03:54.114Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-025-T"
+},
+{
+  "_id": {
+    "$oid": "6a22e7a7874bdfe77fc14ae8"
+  },
+  "staffType": "Teaching",
+  "name": "Ajahar Ali",
+  "email": "aliajahar923@gmail.com",
+  "contact": "6002183587",
+  "gender": "Male",
+  "address": {
+    "village": "Jawkata Dia",
+    "po": "Dekachang",
+    "ps": "Boko",
+    "pin": "781136",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.A.  Deled",
+  "experience": 6,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780672422/staff_profiles/teacher-photo-1780672303617-h2qz4x.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780672303617-h2qz4x"
+  },
+  "password": "$2b$10$xOUc8jv.dIVD/25.ob7d/.obn18DHGuoRPgSfSxRoGdcjCsRleNi2",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T15:13:43.610Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:04:14.797Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-026-T"
+},
+{
+  "_id": {
+    "$oid": "6a22f35882beeea030b3939e"
+  },
+  "staffType": "Teaching",
+  "name": "AMIR HUSSAIN",
+  "email": "amirbpcc@gmail.com",
+  "contact": "8099485348",
+  "gender": "Male",
+  "address": {
+    "village": "Shimul Bari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "MA In English, B.Ed",
+  "experience": 9,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780675415/staff_profiles/teacher-photo-1780675283411-q8uhxv.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780675283411-q8uhxv"
+  },
+  "password": "$2b$10$SKk/Fgv/J98.df8doYMgVOQcyhv.LzM.LsZFBQy6TPZGwmdotLfle",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T16:03:36.247Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T05:26:15.767Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-027-T"
+},
+{
+  "_id": {
+    "$oid": "6a22f85bd48c8536ad75a825"
+  },
+  "staffType": "Teaching",
+  "name": "Portia R. Marak",
+  "email": "portiamarak65@gmail.com",
+  "contact": "6900598559",
+  "gender": "Female",
+  "address": {
+    "village": "Khasi salbari",
+    "po": "Aradonga",
+    "ps": "Athiabari",
+    "pin": "793119",
+    "district": "West khasi hills",
+    "state": "Meghalaya"
+  },
+  "designation": "Teacher",
+  "qualification": "Graduate",
+  "experience": 1,
+  "subjectTaught": "Education",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780676698/staff_profiles/teacher-photo-1780676295816-isvo73.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780676295816-isvo73"
+  },
+  "password": "$2b$10$4wFRDayGvE1Zt4q5pY4OHOfZ4mRhOiS6PzhncBlBd0mCUs7F8p96e",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-05T16:24:59.180Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:04:41.882Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-028-T"
+},
+{
+  "_id": {
+    "$oid": "6a23636a333110acec0a2c9f"
+  },
+  "staffType": "Teaching",
+  "name": "Soniya R marak",
+  "email": "soniyamarak98@gmail.com",
+  "contact": "6009642208",
+  "gender": "Female",
+  "address": {
+    "village": "Malapara",
+    "po": "Aradonga",
+    "ps": "Athiabari",
+    "pin": "793119",
+    "district": "West khasi hill",
+    "state": "Meghalaya"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A",
+  "experience": 1,
+  "subjectTaught": "History",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780704105/staff_profiles/teacher-photo-1780703969362-to3f2n.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780703969362-to3f2n"
+  },
+  "password": "$2b$10$ujFSHa3Mfoh3KzUJxkMNeuKbPL9m4lY3eEl.eqAl/SOtmIUB0/Xum",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T00:01:46.221Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:05:05.937Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-029-T"
+},
+{
+  "_id": {
+    "$oid": "6a237a747ec109c016faf04e"
+  },
+  "staffType": "Teaching",
+  "name": "Abdul Mannan Ali",
+  "email": "alimannan193@gmail.com",
+  "contact": "7896327790",
+  "gender": "Male",
+  "address": {
+    "village": "Kachumara nc",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B. A D. el. ed",
+  "experience": 12,
+  "subjectTaught": "Social Studies",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780710003/staff_profiles/teacher-photo-1780709541725-3jyefz.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780709541725-3jyefz"
+  },
+  "password": "$2b$10$eW95a2yLqsPfE2yhT6NH1ez5os5THNlXihLPIdp/QmfmpSIQn15yS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T01:40:04.022Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:05:34.833Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-030-T"
+},
+{
+  "_id": {
+    "$oid": "6a237e8f7ec109c016faf091"
+  },
+  "staffType": "Teaching",
+  "name": "Md Monser Ali",
+  "email": "monserali343@gmail.com",
+  "contact": "9365140372",
+  "gender": "Male",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.A. in Education",
+  "experience": 10,
+  "subjectTaught": "Education",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780711054/staff_profiles/teacher-photo-1780711047776-swynih.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780711047776-swynih"
+  },
+  "password": "$2b$10$ucgYJFfSmUyxehv3yvrHaeD4UhfV6maaLI3rEF2FuyvMZ1AkcHD1G",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T01:57:35.040Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:05:52.673Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-031-T"
+},
+{
+  "_id": {
+    "$oid": "6a237eb77ec109c016faf099"
+  },
+  "staffType": "Non-Teaching",
+  "name": "Jobeda Khatun",
+  "email": "kjabeda38@gmail.com",
+  "contact": "6901500774",
+  "gender": "Female",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Peon",
+  "qualification": "9",
+  "experience": 2,
+  "subjectTaught": null,
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780711095/staff_profiles/teacher-photo-1780710965984-7p8gzo.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780710965984-7p8gzo"
+  },
+  "password": "$2b$10$6PdUwFGU/kkjmXWhqHy8hOAJrxDdt54GmR3Z66I0f/H4x2X0SzLJK",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T01:58:15.932Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:06:16.018Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-002-NT"
+},
+{
+  "_id": {
+    "$oid": "6a2381b969ff00833bbab0c6"
+  },
+  "staffType": "Teaching",
+  "name": "Samina Nasrin",
+  "email": "saminanasrin493@gmail.com",
+  "contact": "9954929004",
+  "gender": "Female",
+  "address": {
+    "village": "Vill-Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "BA",
+  "experience": 7,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780711864/staff_profiles/teacher-photo-1780711673491-lw714s.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780711673491-lw714s"
+  },
+  "password": "$2b$10$aHMRCd8OmhFPx/tOSfeLQO.k3XC.474uIc3qUpmS8PgtMFyL3Zbg6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T02:11:05.152Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:06:36.301Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-032-T"
+},
+{
+  "_id": {
+    "$oid": "6a23936a6f596320ac8beb8b"
+  },
+  "staffType": "Teaching",
+  "name": "Alomgir Hussain",
+  "email": "alomgirh9577@gmail.com",
+  "contact": "8638710575",
+  "gender": "Male",
+  "address": {
+    "village": "2no Dakshi Rangapani",
+    "po": "Badla Bazar",
+    "ps": "Boko",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.Com",
+  "experience": 5,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780716393/staff_profiles/teacher-photo-1780716241343-c3fuo2.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780716241343-c3fuo2"
+  },
+  "password": "$2b$10$jsQW2cyYoySolp36k9Cw9erR9iG.f.AKP2VdHDokAlBFc/YNlW2hC",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T03:26:34.847Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-06T04:06:47.403Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-033-T"
+},
+{
+  "_id": {
+    "$oid": "6a2393f46f596320ac8bebab"
+  },
+  "staffType": "Teaching",
+  "name": "Elius Hussain",
+  "email": "eliushussain84@gmail.com",
+  "contact": "9365631927",
+  "gender": "Male",
+  "address": {
+    "village": "2 No. Uttar Rangapani",
+    "po": "Badla Bazar",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "MAMC, Hindi Bisharot,M.Com(App), CIA",
+  "experience": 3,
+  "subjectTaught": "Hindi",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780716531/staff_profiles/teacher-photo-1780716452788-hn7fd1.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780716452788-hn7fd1"
+  },
+  "password": "$2b$10$PySgSQdClNdWAGdan.mOAOgG8NkGpgtuU0k.UEndtRd1Z2zlpYkgm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-06T03:28:52.047Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-10T02:11:27.813Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-034-T"
+},
+{
+  "_id": {
+    "$oid": "6a264c7c33e4130868a2c22c"
+  },
+  "staffType": "Teaching",
+  "name": "Md. Badsha   miah",
+  "email": "bmiah1611@gmail.com",
+  "contact": "8011735636",
+  "gender": "Male",
+  "address": {
+    "village": "Aduripara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 20,
+  "subjectTaught": "Social Studies",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780894843/staff_profiles/teacher-photo-1780894398960-3ev8ha.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780894398960-3ev8ha"
+  },
+  "password": "$2b$10$LGUek3lTLeVw4/Zh6FRHoeaGhIU8bH9a.RY3hpLbLqnIZmYIpSIGK",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T05:00:44.977Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T07:34:47.067Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-035-T"
+},
+{
+  "_id": {
+    "$oid": "6a2654ecbe46d39ad0f3817f"
+  },
+  "staffType": "Teaching",
+  "name": "Sofikul Hoque",
+  "email": "sofikulhoque6901@gmail.com",
+  "contact": "6000900672",
+  "gender": "Male",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.Sc ,B.Ed pursuing",
+  "experience": 2,
+  "subjectTaught": "Biology",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780897004/staff_profiles/teacher-photo-1780896706553-04508i.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780896706553-04508i"
+  },
+  "password": "$2b$10$.cy9hw8ZNBp2P7kWK68rR.tzaHk8GV3.HN35U9f7e8Bhrr3dUm7Xy",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T05:36:44.890Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T07:35:02.329Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-036-T"
+},
+{
+  "_id": {
+    "$oid": "6a2663e1da866fb44dc27bca"
+  },
+  "staffType": "Non-Teaching",
+  "name": "Nurhamid",
+  "email": "n15696474@gmail.com",
+  "contact": "9365860556",
+  "gender": "Male",
+  "address": {
+    "village": "Simulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Peon",
+  "qualification": "H.S",
+  "experience": 8,
+  "subjectTaught": null,
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780900832/staff_profiles/teacher-photo-1780900688824-ifczke.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780900688824-ifczke"
+  },
+  "password": "$2b$10$8Haz7Xb4uOT6SICF2/tT3eFnTs66uZ96bY0zXyAUGTggE61kd8tHy",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T06:40:33.239Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T07:36:05.142Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-003-NT"
+},
+{
+  "_id": {
+    "$oid": "6a26656bda866fb44dc27c1a"
+  },
+  "staffType": "Teaching",
+  "name": "Shahinur Alom",
+  "email": "ariyanreings@gmail.com",
+  "contact": "6000072903",
+  "gender": "Male",
+  "address": {
+    "village": "Kashimpur",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.Sc",
+  "experience": 3,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780901227/staff_profiles/teacher-photo-1780901096921-t27tgq.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780901096921-t27tgq"
+  },
+  "password": "$2b$10$ugOsN1fFEw085LPwDJa.sesRn1tVhSCaD.KGD0jAYcTuuPUgSCRm.",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T06:47:07.933Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T07:35:23.654Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-037-T"
+},
+{
+  "_id": {
+    "$oid": "6a2667a967504ab8b6cf4c19"
+  },
+  "staffType": "Teaching",
+  "name": "INTAZUL HAQUE",
+  "email": "intazulhaque12345@gmail.com",
+  "contact": "9790825548",
+  "gender": "Male",
+  "address": {
+    "village": "No 1 Tupamari",
+    "po": "Tupamari",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "M.A",
+  "experience": 7,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780901801/staff_profiles/teacher-photo-1780901579274-ee6s0l.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780901579274-ee6s0l"
+  },
+  "password": "$2b$10$bV.YDZrHVjiLKl13ray5HeJexQRJMPWAnqfLRvwGNVrn9eALW1Y.G",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T06:56:41.844Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-08T07:35:38.060Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-038-T"
+},
+{
+  "_id": {
+    "$oid": "6a26d7ca8bcd40a8a16184f3"
+  },
+  "staffType": "Teaching",
+  "name": "Princewel ch marak",
+  "email": "princewelmarak@gmail252.com",
+  "contact": "8099986803",
+  "gender": "Male",
+  "address": {
+    "village": "Dhanhati",
+    "po": "Nalapara",
+    "ps": "Boko",
+    "pin": "781302",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A",
+  "experience": 5,
+  "subjectTaught": "English",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780930505/staff_profiles/teacher-photo-1780930226156-gzdifj.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780930226156-gzdifj"
+  },
+  "password": "$2b$10$r1F.n1hyQDcDIW61pjZ2wu4g1sfQq3KMwyrmjMHsGefSZvsxnkK7q",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T14:55:06.328Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T02:43:02.604Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-039-T"
+},
+{
+  "_id": {
+    "$oid": "6a26da8d791aa6ae02df756b"
+  },
+  "staffType": "Non-Teaching",
+  "name": "Jiabur rohman",
+  "email": "jubaidurkhan01@gmail.com",
+  "contact": "6003452451",
+  "gender": "Male",
+  "address": {
+    "village": "2no d.rangapani",
+    "po": "Bodla bazar",
+    "ps": "Sontoli",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Security Guard",
+  "qualification": "H S L C",
+  "experience": 24,
+  "subjectTaught": null,
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780931212/staff_profiles/teacher-photo-1780931042220-0vjr86.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780931042220-0vjr86"
+  },
+  "password": "$2b$10$PK4aL78A.LxVQ1pLrdNMHuG8FDrBPqn1xpGFl/Hw8IPBW1gApDJT6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-08T15:06:53.597Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T02:43:23.499Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-004-NT"
+},
+{
+  "_id": {
+    "$oid": "6a2761d2e4b1588e54816661"
+  },
+  "staffType": "Teaching",
+  "name": "Abul Kalam Azad",
+  "email": "abulkalamazad3376321@gmail.com",
+  "contact": "9678342388",
+  "gender": "Male",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B.A., Bisharat, D.I.E.LD",
+  "experience": 34,
+  "subjectTaught": "Hindi",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780965841/staff_profiles/teacher-photo-1780965555472-0y6tzp.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780965555472-0y6tzp"
+  },
+  "password": "$2b$10$6YyDKMN4oTgSV0PARr2LOecJ1VXruejdap5jCpvJitT08RcesKtZm",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-09T00:44:02.248Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T02:43:46.106Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-040-T"
+},
+{
+  "_id": {
+    "$oid": "6a27729c72ed0b8f73e0516c"
+  },
+  "staffType": "Non-Teaching",
+  "name": "Moriom Begum",
+  "email": "dimplerafika1989@gmail.com",
+  "contact": "8133933204",
+  "gender": "Female",
+  "address": {
+    "village": "Kachumara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Peon",
+  "qualification": "HSlC",
+  "experience": 7,
+  "subjectTaught": null,
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780970139/staff_profiles/teacher-photo-1780970120904-3jtfdh.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780970120904-3jtfdh"
+  },
+  "password": "$2b$10$k4bgNGsj1iAhdH.qtIFjouUYkc8cGr7xW4pc9200AzdHd5h/LZbTW",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-09T01:55:40.427Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T02:44:24.590Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-005-NT"
+},
+{
+  "_id": {
+    "$oid": "6a2775eff21ff43bf50664c7"
+  },
+  "staffType": "Teaching",
+  "name": "Noushad Ali",
+  "email": "noshad936561@gmail.com",
+  "contact": "9957886197",
+  "gender": "Male",
+  "address": {
+    "village": "Kachumara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "MM",
+  "experience": 17,
+  "subjectTaught": "Arabic",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780970990/staff_profiles/teacher-photo-1780970979352-4xhe3r.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780970979352-4xhe3r"
+  },
+  "password": "$2b$10$fhst.qoQL4wCG4PAvs6Q4Onhbh.VjQgyhp7vld.eYtVMzDGCgUHUi",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-09T02:09:51.799Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T02:44:39.332Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-041-T"
+},
+{
+  "_id": {
+    "$oid": "6a2786f8761beb239f345d70"
+  },
+  "staffType": "Teaching",
+  "name": "Abu Taher",
+  "email": "a07495993@gmail.com",
+  "contact": "9957027898",
+  "gender": "Male",
+  "address": {
+    "village": "Shimulbari",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 20,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780975351/staff_profiles/teacher-photo-1780975206169-8va23x.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780975206169-8va23x"
+  },
+  "password": "$2b$10$DCfopcTaSxnsQ2akKKWd/uYPhH/zvRn9bOGnfK/6GIXYp//lGGmB6",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-09T03:22:32.684Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T03:53:48.344Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-042-T"
+},
+{
+  "_id": {
+    "$oid": "6a27973178948d179624a007"
+  },
+  "staffType": "Teaching",
+  "name": "Soleman Ali",
+  "email": "ahmedrinkuwara@gmail.com",
+  "contact": "7002966756",
+  "gender": "Male",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumars",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "Bsc",
+  "experience": 10,
+  "subjectTaught": "Mathematics",
+  "image": {
+    "url": "https://res.cloudinary.com/dsyuyd5ve/image/upload/v1780979504/staff_profiles/teacher-photo-1780979306082-nw3o7b.jpg",
+    "publicId": "staff_profiles/teacher-photo-1780979306082-nw3o7b"
+  },
+  "password": "$2b$10$ch3p25kSHKdrdUYktrPNquwNVuAxXM7Ckr32t6NzhelutHFe0l3GS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Active",
+  "createdAt": {
+    "$date": "2026-06-09T04:31:45.059Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-09T07:38:49.587Z"
+  },
+  "__v": 0,
+  "staffId": "NAA-26-043-T"
+},
+{
+  "_id": {
+    "$oid": "6a28c3436336be5ebcf6515f"
+  },
+  "staffType": "Teaching",
+  "name": "Md Muzahidul Islam",
+  "email": "muzahidulislam6343@gmail.com",
+  "contact": "9859297987",
+  "gender": "Male",
+  "address": {
+    "village": "2No.uttar Rangapani",
+    "po": "Badla Bazar",
+    "ps": "Nagarbera",
+    "pin": "781127",
+    "district": "Kamrup",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "MA",
+  "experience": 16,
+  "subjectTaught": "Arabic",
+  "image": {
+    "url": "https://res.cloudinary.com/dsak28urf/image/upload/v1781056322/staff_profiles/teacher-photo-1781056168467-umh0bw.jpg",
+    "publicId": "staff_profiles/teacher-photo-1781056168467-umh0bw"
+  },
+  "password": "$2b$10$MuGFz6vcedkYlwkNC9jkS.cQtglgoo36FA//oOkwveNuUoF3nm75y",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2026-06-10T01:52:03.228Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-10T01:52:03.228Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a28da8aa5c8c872d938009c"
+  },
+  "staffType": "Teaching",
+  "name": "Rinkuwara Ahmed",
+  "email": "rinkuraahmed@gmial.com",
+  "contact": "7003966456",
+  "gender": "Female",
+  "address": {
+    "village": "Mahchara",
+    "po": "Kachumara",
+    "ps": "Kachumara",
+    "pin": "781127",
+    "district": "Barpeta",
+    "state": "Assam"
+  },
+  "designation": "Teacher",
+  "qualification": "B A",
+  "experience": 10,
+  "subjectTaught": "Assamese",
+  "image": {
+    "url": "https://res.cloudinary.com/dsak28urf/image/upload/v1781062281/staff_profiles/teacher-photo-1781061681139-nsf4ak.jpg",
+    "publicId": "staff_profiles/teacher-photo-1781061681139-nsf4ak"
+  },
+  "password": "$2b$10$8xP.2YRayc.4LMCmKq9eH.FMca6aYSwJI.ZAQ6ALblPdg0Y8jrznS",
+  "verificationOtp": null,
+  "verifyOtpExpireAt": null,
+  "isOtpVerified": false,
+  "status": "Pending",
+  "createdAt": {
+    "$date": "2026-06-10T03:31:22.567Z"
+  },
+  "updatedAt": {
+    "$date": "2026-06-10T03:31:22.567Z"
+  },
+  "__v": 0
+}]

@@ -19,7 +19,7 @@ const Home = () => {
       </Helmet>
 
       <Hero />
-      <NoticeBoard/>
+      {/* <NoticeBoard/> */}
       <MessageSection />
       <SalientFeatures />
       <Curriculum />
